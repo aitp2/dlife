@@ -19,6 +19,5 @@ pinfan 拼饭项目
 2.启动jhipster-registry 进入项目 执行mvn spring-boot:run 监听 8761端口
 3.启动UAA进入项目 执行mvn spring-boot:run 监听9999端口
 
-然后启动各自的微服务即可。
-
+然后启动各自的微服务即可,使用mapstruct 需要先编译代码在启动。
 
