@@ -38,7 +38,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="avatar" type="varchar(128)">
+            <column name="avatar" type="varchar(1024)">
                 <constraints nullable="true" />
             </column>
 

@@ -59,9 +59,9 @@ public class WechatUser implements Serializable {
     /**
      * 头像
      */
-    @Size(max = 128)
+    @Size(max = 1024)
     @ApiModelProperty(value = "头像")
-    @Column(name = "avatar", length = 128)
+    @Column(name = "avatar", length = 1024)
     private String avatar;
 
     /**
