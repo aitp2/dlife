@@ -1,0 +1,96 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "attendees",
+            "otherEntityName": "attendee",
+            "otherEntityRelationshipName": "activity"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "activitiyType",
+            "javadoc": "活动类型",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "descrption",
+            "javadoc": "活动描述",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "organizeUser",
+            "javadoc": "组织者",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "coverPicture",
+            "javadoc": "封面图",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "appointDatetime",
+            "javadoc": "约定时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "lowerLimit",
+            "javadoc": "最少参与者",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "upperLimit",
+            "javadoc": "最多参与者",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "payType",
+            "javadoc": "支付类型",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 32
+        },
+        {
+            "fieldName": "deadline",
+            "javadoc": "截至日期",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "comment",
+            "javadoc": "备注",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 500
+        },
+        {
+            "fieldName": "isActive",
+            "javadoc": "是否生效",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20180614062017",
+    "entityTableName": "activity",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "skipClient": true,
+    "microserviceName": "pinfan"
+}

@@ -1,0 +1,23 @@
+entity WechatUser{
+		/** 微信openid*/
+		openId String maxlength(255) required,
+    /** 微信号*/
+    wechatCode String maxlength(128),
+    /** 用户名*/
+    userName String maxlength(128),
+    /** 昵称*/
+    nickName String maxlength(128),
+    /** 头像*/
+    avatar String maxlength(1024),
+    /** 手机号码*/
+    mobileNum String maxlength(128),
+    /** 项目名称*/
+    project String maxlength(128),
+    /** 座位号*/
+    seat String maxlength(128),
+    
+}
+
+skipClient all
+service * with serviceClass
+dto * with mapstruct
