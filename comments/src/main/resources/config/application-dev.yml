@@ -16,7 +16,7 @@
 logging:
     level:
         ROOT: DEBUG
-        com.aitp.dlife.pinfan: DEBUG
+        com.aitp.dlife.comments: DEBUG
         io.github.jhipster: DEBUG
 
 eureka:
@@ -39,7 +39,7 @@ spring:
         serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3306/pinfan?useUnicode=true&characterEncoding=utf8&useSSL=false
+        url: jdbc:mysql://localhost:3306/comments?useUnicode=true&characterEncoding=utf8&useSSL=false
         username: root
         password:
         hikari:
@@ -86,7 +86,7 @@ liquibase:
 
 # ===================================================================
 # To enable SSL, generate a certificate using:
-# keytool -genkey -alias pinfan -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
+# keytool -genkey -alias comments -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
 #
 # You can also use Let's Encrypt:
 # https://maximilian-boehm.com/hp2121/Create-a-Java-Keystore-JKS-from-Let-s-Encrypt-Certificates.htm
@@ -99,10 +99,10 @@ liquibase:
 #        key-store: keystore.p12
 #        key-store-password: <your-password>
 #        key-store-type: PKCS12
-#        key-alias: pinfan
+#        key-alias: comments
 # ===================================================================
 server:
-    port: 8083
+    port: 8084
 
 # ===================================================================
 # JHipster specific properties
@@ -129,15 +129,15 @@ jhipster:
             client-id: internal
             client-secret: internal
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: pinfan@localhost
-        base-url: http://127.0.0.1:8083
+        from: comments@localhost
+        base-url: http://127.0.0.1:8084
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         graphite: # Use the "graphite" Maven profile to have the Graphite dependencies
             enabled: false
             host: localhost
             port: 2003
-            prefix: pinfan
+            prefix: comments
         prometheus: # Use the "prometheus" Maven profile to have the Prometheus dependencies
             enabled: false
             endpoint: /prometheusMetrics

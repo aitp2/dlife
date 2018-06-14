@@ -1,5 +1,5 @@
 # ===================================================================
-# Spring Boot configuration for the "dev" profile.
+# Spring Boot configuration for the "prod" profile.
 #
 # This configuration overrides the application.yml file.
 #
@@ -15,9 +15,9 @@
 
 logging:
     level:
-        ROOT: DEBUG
-        com.aitp.dlife.pinfan: DEBUG
-        io.github.jhipster: DEBUG
+        ROOT: INFO
+        com.aitp.dlife.comments: INFO
+        io.github.jhipster: INFO
 
 eureka:
     instance:
@@ -27,19 +27,14 @@ eureka:
             defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
 
 spring:
-    profiles:
-        active: dev
-        include: swagger
     devtools:
         restart:
-            enabled: true
+            enabled: false
         livereload:
-            enabled: false # we use gulp + BrowserSync for livereload
-    jackson:
-        serialization.indent_output: true
+            enabled: false
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3306/pinfan?useUnicode=true&characterEncoding=utf8&useSSL=false
+        url: jdbc:mysql://localhost:3306/comments?useUnicode=true&characterEncoding=utf8&useSSL=false
         username: root
         password:
         hikari:
@@ -51,29 +46,23 @@ spring:
     jpa:
         database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
         database: MYSQL
-        show-sql: true
+        show-sql: false
         properties:
             hibernate.id.new_generator_mappings: true
             hibernate.cache.use_second_level_cache: false
             hibernate.cache.use_query_cache: false
-            hibernate.generate_statistics: true
+            hibernate.generate_statistics: false
     data:
         elasticsearch:
             cluster-name:
-            cluster-nodes:
-            properties:
-                path:
-                    logs: target/elasticsearch/log
-                    data: target/elasticsearch/data
+            cluster-nodes: localhost:9300
     mail:
         host: localhost
         port: 25
         username:
         password:
-    messages:
-        cache-seconds: 1
     thymeleaf:
-        cache: false
+        cache: true
     zipkin: # Use the "zipkin" Maven profile to have the Spring Cloud Zipkin dependencies
         base-url: http://localhost:9411
         enabled: false
@@ -82,11 +71,11 @@ spring:
                 enabled: true
 
 liquibase:
-    contexts: dev
+    contexts: prod
 
 # ===================================================================
 # To enable SSL, generate a certificate using:
-# keytool -genkey -alias pinfan -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
+# keytool -genkey -alias comments -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
 #
 # You can also use Let's Encrypt:
 # https://maximilian-boehm.com/hp2121/Create-a-Java-Keystore-JKS-from-Let-s-Encrypt-Certificates.htm
@@ -94,15 +83,21 @@ liquibase:
 # Then, modify the server.ssl properties so your "server" configuration looks like:
 #
 # server:
-#    port: 8443
+#    port: 443
 #    ssl:
 #        key-store: keystore.p12
 #        key-store-password: <your-password>
 #        key-store-type: PKCS12
-#        key-alias: pinfan
+#        key-alias: comments
+#        # The ciphers suite enforce the security by deactivating some old and deprecated SSL cipher, this list was tested against SSL Labs (https://www.ssllabs.com/ssltest/)
+#        ciphers: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 ,TLS_DHE_RSA_WITH_AES_128_GCM_SHA256 ,TLS_DHE_RSA_WITH_AES_256_GCM_SHA384 ,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_DHE_RSA_WITH_AES_128_CBC_SHA256,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_256_CBC_SHA256,TLS_DHE_RSA_WITH_AES_256_CBC_SHA,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_256_CBC_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA,TLS_RSA_WITH_CAMELLIA_256_CBC_SHA,TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA,TLS_RSA_WITH_CAMELLIA_128_CBC_SHA
 # ===================================================================
 server:
-    port: 8083
+    port: 8084
+    compression:
+        enabled: true
+        mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
+        min-response-size: 1024
 
 # ===================================================================
 # JHipster specific properties
@@ -113,15 +108,8 @@ server:
 jhipster:
     http:
         version: V_1_1 # To use HTTP/2 you will need SSL support (see above the "server.ssl" configuration)
-    # CORS is disabled by default on microservices, as you should access them through a gateway.
-    # If you want to enable it, please uncomment the configuration below.
-    # cors:
-        # allowed-origins: "*"
-        # allowed-methods: "*"
-        # allowed-headers: "*"
-        # exposed-headers: "Authorization,Link,X-Total-Count"
-        # allow-credentials: true
-        # max-age: 1800
+        cache: # Used by the CachingHttpHeadersFilter
+            timeToLiveInDays: 1461
     security:
         client-authorization:
             access-token-uri: http://uaa/oauth/token
@@ -129,16 +117,16 @@ jhipster:
             client-id: internal
             client-secret: internal
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: pinfan@localhost
-        base-url: http://127.0.0.1:8083
+        from: comments@localhost
+        base-url: http://my-server-url-to-change # Modify according to your server's URL
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
-        graphite: # Use the "graphite" Maven profile to have the Graphite dependencies
+        graphite:
             enabled: false
             host: localhost
             port: 2003
-            prefix: pinfan
-        prometheus: # Use the "prometheus" Maven profile to have the Prometheus dependencies
+            prefix: comments
+        prometheus:
             enabled: false
             endpoint: /prometheusMetrics
         logs: # Reports Dropwizard metrics in the logs
@@ -162,7 +150,7 @@ oauth2:
         #max. rate at which public keys will be fetched (in ms)
         public-key-refresh-rate-limit: 10000
     web-client-configuration:
-        #keep in sync with UAA configuration
+        #change client secret in production, keep in sync with UAA configuration
         client-id: web_app
         secret: changeit
 
