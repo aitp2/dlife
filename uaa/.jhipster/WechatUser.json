@@ -46,7 +46,7 @@
             "fieldValidateRules": [
                 "maxlength"
             ],
-            "fieldValidateRulesMaxlength": 128
+            "fieldValidateRulesMaxlength": 1024
         },
         {
             "fieldName": "mobileNum",

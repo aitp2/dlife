@@ -25,7 +25,7 @@ public class WechatUserDTO implements Serializable {
     @Size(max = 128)
     private String nickName;
 
-    @Size(max = 128)
+    @Size(max = 1024)
     private String avatar;
 
     @Size(max = 128)
