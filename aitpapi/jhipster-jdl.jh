@@ -1,0 +1,247 @@
+/** 
+用户信息
+*/
+entity WechatUser{
+	/** 微信openid*/
+	openId String maxlength(255) required,
+    /** 微信号*/
+    wechatCode String maxlength(128),
+    /** 用户名*/
+    userName String maxlength(128),
+    /** 昵称*/
+    nickName String maxlength(128),
+    /** 头像*/
+    avatar String maxlength(1024),
+    /** 手机号码*/
+    mobileNum String maxlength(128),
+    /** 项目名称*/
+    project String maxlength(128),
+    /** 座位号*/
+    seat String maxlength(128),
+    /** 个人简介 */
+    introduce String maxlength(1024)
+    /** 性别 */
+    sex Boolean,
+    /** 角色 */
+    companyRole String maxlength(255),
+    /** 厨师标志 */
+    cookFlag Boolean,
+    /** 创建时间 */
+    createTime Instant,
+    /** 修改时间 */
+    modifyTime Instant    
+}
+
+/** 
+关注记录信息
+*/
+entity Follow{
+	followUserId Long,
+    followedUserId Long,
+    createTime Instant,
+    modifyTime Instant
+}
+/** 
+菜谱信息
+*/
+entity Recipe{
+	/** 发布者id */
+	wechatUserId String maxlength(128),
+    title String maxlength(255),
+    content String,
+    startTime Instant,
+    endTime Instant,
+    price Double,
+    num Integer max(9),    
+    status Integer max(2),
+    publishVersion Integer max(9),
+    hot Integer max(9),
+    createTime Instant,
+    modifyTime Instant
+}
+/** 
+菜谱图片信息
+*/
+entity Image{
+    /** 图片路径**/
+    ossPath String maxlength(255),
+    createTime Instant
+}
+/** 
+菜谱订单
+*/
+entity RecipeOrder{	
+    wechatUserId String maxlength(128),
+    recipeVersion Integer max(9),
+    price Double,
+    createTime Instant,
+    modifyTime Instant
+}
+/** 
+评价信息
+*/
+entity Evaluate{	
+    parentId Long,
+    content String maxlength(500),
+    tasteScore Integer,
+    serviceScore Integer,    
+    createTime Instant,
+    modifyTime Instant
+}
+
+/**
+拼饭活动
+*/
+entity PinFanActivity{
+    /** 发布者id */
+    wechatUserId String maxlength(128),
+	/** 活动类型*/
+	activitiyType Integer
+    /** 活动描述*/
+    descrption String maxlength(128),
+    /** 组织者*/
+    organizeUser String maxlength(128),
+    /** 封面图*/
+    coverPicture String maxlength(128),
+    /** 约定时间*/
+	appointDatetime Instant,
+    /** 最少参与者*/
+    lowerLimit Integer,
+    /** 最多参与者*/
+    upperLimit Integer,
+    /** 支付类型**/
+    payType String maxlength(32),
+    /** 截至日期**/
+    deadline Instant,
+    /** 备注**/
+    comment String maxlength(500),
+    /** 是否生效**/
+    isActive Boolean
+}
+/**
+拼饭活动参与信息
+*/
+entity Attendee{
+	/** 参与人ID**/
+	wechatUserId String maxlength(128),
+    /** 参与者昵称**/
+    nickName String maxlength(128)
+    /** 参与者头像**/
+    avatar String maxlength(1024)
+    /** 参与时间 **/
+    participationTime Instant
+
+}
+/**
+拼饭参与评价信息
+*/
+entity Rates {	
+    comments String maxlength(1024),
+    rating Integer max(2)
+    createTime Instant,
+    modifyTime Instant
+}
+
+/**
+
+*/
+entity PinfanPics{
+    /** 图片路径**/
+    ossPath String maxlength(255),
+    createTime Instant
+}
+
+/**
+健身活动信息
+*/
+entity FitnessActivity{
+	/** 发布者id */
+    wechatUserId String maxlength(128),
+    /** 活动标题*/
+    title String maxlength(64)
+    /** 活动描述*/
+    descrption String maxlength(128),
+    /** 用户id 创建人 **/
+    wechatUserId String maxlength(128),
+   /** 报名开始时间 **/
+    signStartTime Instant,
+   /** 报名截至时间 **/
+    signEndTime Instant,
+    /** 开始时间*/
+    activityStartTime Instant,
+    /** 结束时间 */
+    activityEndTime Instant
+}
+/**
+健身活动参与信息
+*/
+entity ActivityParticipation{
+    /** 参与人ID**/
+    wechatUserId String maxlength(128),
+    /** 参与者昵称**/
+    nickName String maxlength(128)
+    /** 参与者头像**/
+    avatar String maxlength(1024)
+    /** 参与时间 **/
+    participationTime Instant
+}
+/**
+打卡信息
+*/
+entity ClockIn{   
+    /** 签到日记 **/
+    signNote String maxlength(1024), 
+    /** 打卡时间 **/
+    punchDateTime Instant
+}
+
+/** 
+健身图片信息
+*/
+entity Pics{
+    ossPath String maxlength(255),
+    createTime Instant    
+}
+
+/**
+打卡汇总表
+*/
+entity ClockinSummary{
+    /** 用户id*/
+    wechatUserId String maxlength(128),
+    /** 总打卡天数 **/
+    totallyCount Integer,
+    /** 周打卡天数 **/
+    weeklyCount Integer,
+    /** 连续打卡天数 **/
+    serialCount Integer,
+    /** 最新打卡时间 **/    
+    lastClockInTime Instant
+    
+}
+
+relationship OneToMany {
+	Recipe{recipeOrder} to RecipeOrder{recipe}
+	Recipe{image} to Image{recipe}
+    RecipeOrder{evaluat} to Evaluate{recipeOrder}
+    Evaluate{image} to Image{evaluat}    
+}
+
+relationship OneToMany {
+	PinFanActivity{attendees} to Attendee{pinFanActivity}
+    PinFanActivity{rinfanPics} to PinfanPics{pinFanActivity}
+    PinFanActivity{rates} to Rates{pinFanActivity}
+    Rates{rinfanPics} to PinfanPics{rate}    
+}
+
+relationship OneToMany {
+    FitnessActivity{activityParticipation} to ActivityParticipation{activity}
+    FitnessActivity{image} to Pics{fitnessActivity}
+    ActivityParticipation{clockIn} to ClockIn{activityParticipation}    
+    ClockIn{pics} to Pics{clockIn}
+}
+
+paginate * with infinite-scroll
+paginate * with pagination
+service * with serviceClass
+dto * with mapstruct

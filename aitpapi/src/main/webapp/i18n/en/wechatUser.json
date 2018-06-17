@@ -1,0 +1,51 @@
+
+{
+    "aitpapiApp": {
+        "wechatUser" : {
+            "home": {
+                "title": "Wechat Users",
+                "createLabel": "Create a new Wechat User",
+                "createOrEditLabel": "Create or edit a Wechat User"
+            },
+            "created": "A new Wechat User is created with identifier {{ param }}",
+            "updated": "A Wechat User is updated with identifier {{ param }}",
+            "deleted": "A Wechat User is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Wechat User {{ id }}?"
+            },
+            "detail": {
+                "title": "Wechat User"
+            },
+            "openId": "Open Id",
+            "wechatCode": "Wechat Code",
+            "userName": "User Name",
+            "nickName": "Nick Name",
+            "avatar": "Avatar",
+            "mobileNum": "Mobile Num",
+            "project": "Project",
+            "seat": "Seat",
+            "introduce": "Introduce",
+            "sex": "Sex",
+            "companyRole": "Company Role",
+            "cookFlag": "Cook Flag",
+            "createTime": "Create Time",
+            "modifyTime": "Modify Time",
+            "help": {
+                "openId": "微信openid",
+                "wechatCode": "微信号",
+                "userName": "用户名",
+                "nickName": "昵称",
+                "avatar": "头像",
+                "mobileNum": "手机号码",
+                "project": "项目名称",
+                "seat": "座位号",
+                "introduce": "个人简介",
+                "sex": "性别",
+                "companyRole": "角色",
+                "cookFlag": "厨师标志",
+                "createTime": "创建时间",
+                "modifyTime": "修改时间"
+            }
+        }
+    }
+}

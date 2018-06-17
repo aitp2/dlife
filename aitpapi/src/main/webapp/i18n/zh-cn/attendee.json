@@ -1,0 +1,32 @@
+
+{
+    "aitpapiApp": {
+        "attendee" : {
+            "home": {
+                "title": "Attendees",
+                "createLabel": "创建新 Attendee",
+                "createOrEditLabel": "创建或编辑 Attendee"
+            },
+            "created": "Attendee {{ param }} 创建成功",
+            "updated": "Attendee {{ param }} 更新成功",
+            "deleted": "Attendee {{ param }} 删除成功",
+            "delete": {
+                "question": "你确定要删除 Attendee {{ id }} 吗？"
+            },
+            "detail": {
+                "title": "Attendee"
+            },
+            "wechatUserId": "Wechat User Id",
+            "nickName": "Nick Name",
+            "avatar": "Avatar",
+            "participationTime": "Participation Time",
+            "pinFanActivity": "Pin Fan Activity",
+            "help": {
+                "wechatUserId": "参与人ID",
+                "nickName": "参与者昵称",
+                "avatar": "参与者头像",
+                "participationTime": "参与时间"
+            }
+        }
+    }
+}

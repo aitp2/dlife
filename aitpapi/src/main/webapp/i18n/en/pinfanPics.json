@@ -1,0 +1,28 @@
+
+{
+    "aitpapiApp": {
+        "pinfanPics" : {
+            "home": {
+                "title": "Pinfan Pics",
+                "createLabel": "Create a new Pinfan Pics",
+                "createOrEditLabel": "Create or edit a Pinfan Pics"
+            },
+            "created": "A new Pinfan Pics is created with identifier {{ param }}",
+            "updated": "A Pinfan Pics is updated with identifier {{ param }}",
+            "deleted": "A Pinfan Pics is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Pinfan Pics {{ id }}?"
+            },
+            "detail": {
+                "title": "Pinfan Pics"
+            },
+            "ossPath": "Oss Path",
+            "createTime": "Create Time",
+            "pinFanActivity": "Pin Fan Activity",
+            "rate": "Rate",
+            "help": {
+                "ossPath": "图片路径"
+            }
+        }
+    }
+}

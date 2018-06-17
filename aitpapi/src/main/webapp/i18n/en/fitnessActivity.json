@@ -1,0 +1,39 @@
+
+{
+    "aitpapiApp": {
+        "fitnessActivity" : {
+            "home": {
+                "title": "Fitness Activities",
+                "createLabel": "Create a new Fitness Activity",
+                "createOrEditLabel": "Create or edit a Fitness Activity"
+            },
+            "created": "A new Fitness Activity is created with identifier {{ param }}",
+            "updated": "A Fitness Activity is updated with identifier {{ param }}",
+            "deleted": "A Fitness Activity is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Fitness Activity {{ id }}?"
+            },
+            "detail": {
+                "title": "Fitness Activity"
+            },
+            "wechatUserId": "Wechat User Id",
+            "title": "Title",
+            "descrption": "Descrption",
+            "signStartTime": "Sign Start Time",
+            "signEndTime": "Sign End Time",
+            "activityStartTime": "Activity Start Time",
+            "activityEndTime": "Activity End Time",
+            "activityParticipation": "Activity Participation",
+            "image": "Image",
+            "help": {
+                "wechatUserId": "用户id 创建人",
+                "title": "活动标题",
+                "descrption": "活动描述",
+                "signStartTime": "报名开始时间",
+                "signEndTime": "报名截至时间",
+                "activityStartTime": "开始时间",
+                "activityEndTime": "结束时间"
+            }
+        }
+    }
+}

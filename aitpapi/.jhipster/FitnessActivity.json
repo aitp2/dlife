@@ -1,0 +1,73 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "activityParticipation",
+            "otherEntityName": "activityParticipation",
+            "otherEntityRelationshipName": "activity"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "image",
+            "otherEntityName": "pics",
+            "otherEntityRelationshipName": "fitnessActivity"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "wechatUserId",
+            "javadoc": "用户id 创建人",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "title",
+            "javadoc": "活动标题",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 64
+        },
+        {
+            "fieldName": "descrption",
+            "javadoc": "活动描述",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "signStartTime",
+            "javadoc": "报名开始时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "signEndTime",
+            "javadoc": "报名截至时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "activityStartTime",
+            "javadoc": "开始时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "activityEndTime",
+            "javadoc": "结束时间",
+            "fieldType": "Instant"
+        }
+    ],
+    "changelogDate": "20180617142622",
+    "javadoc": "健身活动信息",
+    "entityTableName": "fitness_activity",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false
+}

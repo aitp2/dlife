@@ -1,0 +1,48 @@
+
+<div *ngIf="recipeOrder">
+    <h2><span jhiTranslate="aitpapiApp.recipeOrder.detail.title">Recipe Order</span> {{recipeOrder.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="aitpapiApp.recipeOrder.wechatUserId">Wechat User Id</span></dt>
+        <dd>
+            <span>{{recipeOrder.wechatUserId}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.recipeOrder.recipeVersion">Recipe Version</span></dt>
+        <dd>
+            <span>{{recipeOrder.recipeVersion}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.recipeOrder.price">Price</span></dt>
+        <dd>
+            <span>{{recipeOrder.price}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.recipeOrder.createTime">Create Time</span></dt>
+        <dd>
+            <span>{{recipeOrder.createTime | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.recipeOrder.modifyTime">Modify Time</span></dt>
+        <dd>
+            <span>{{recipeOrder.modifyTime | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.recipeOrder.recipe">Recipe</span></dt>
+        <dd>
+            <div *ngIf="recipeOrder.recipeId">
+                <a [routerLink]="['/recipe', recipeOrder.recipeId]">{{recipeOrder.recipeId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'recipe-order/'+ recipeOrder.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

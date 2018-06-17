@@ -1,0 +1,44 @@
+
+<div *ngIf="attendee">
+    <h2><span jhiTranslate="aitpapiApp.attendee.detail.title">Attendee</span> {{attendee.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="aitpapiApp.attendee.wechatUserId" [ngbTooltip]="'aitpapiApp.attendee.help.wechatUserId' | translate">Wechat User Id</span></dt>
+        <dd>
+            <span>{{attendee.wechatUserId}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.attendee.nickName" [ngbTooltip]="'aitpapiApp.attendee.help.nickName' | translate">Nick Name</span></dt>
+        <dd>
+            <span>{{attendee.nickName}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.attendee.avatar" [ngbTooltip]="'aitpapiApp.attendee.help.avatar' | translate">Avatar</span></dt>
+        <dd>
+            <span>{{attendee.avatar}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.attendee.participationTime" [ngbTooltip]="'aitpapiApp.attendee.help.participationTime' | translate">Participation Time</span></dt>
+        <dd>
+            <span>{{attendee.participationTime | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.attendee.pinFanActivity">Pin Fan Activity</span></dt>
+        <dd>
+            <div *ngIf="attendee.pinFanActivityId">
+                <a [routerLink]="['/pin-fan-activity', attendee.pinFanActivityId]">{{attendee.pinFanActivityId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'attendee/'+ attendee.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

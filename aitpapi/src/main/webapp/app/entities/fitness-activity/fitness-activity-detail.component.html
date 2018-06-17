@@ -1,0 +1,50 @@
+
+<div *ngIf="fitnessActivity">
+    <h2><span jhiTranslate="aitpapiApp.fitnessActivity.detail.title">Fitness Activity</span> {{fitnessActivity.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="aitpapiApp.fitnessActivity.wechatUserId" [ngbTooltip]="'aitpapiApp.fitnessActivity.help.wechatUserId' | translate">Wechat User Id</span></dt>
+        <dd>
+            <span>{{fitnessActivity.wechatUserId}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.fitnessActivity.title" [ngbTooltip]="'aitpapiApp.fitnessActivity.help.title' | translate">Title</span></dt>
+        <dd>
+            <span>{{fitnessActivity.title}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.fitnessActivity.descrption" [ngbTooltip]="'aitpapiApp.fitnessActivity.help.descrption' | translate">Descrption</span></dt>
+        <dd>
+            <span>{{fitnessActivity.descrption}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.fitnessActivity.signStartTime" [ngbTooltip]="'aitpapiApp.fitnessActivity.help.signStartTime' | translate">Sign Start Time</span></dt>
+        <dd>
+            <span>{{fitnessActivity.signStartTime | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.fitnessActivity.signEndTime" [ngbTooltip]="'aitpapiApp.fitnessActivity.help.signEndTime' | translate">Sign End Time</span></dt>
+        <dd>
+            <span>{{fitnessActivity.signEndTime | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.fitnessActivity.activityStartTime" [ngbTooltip]="'aitpapiApp.fitnessActivity.help.activityStartTime' | translate">Activity Start Time</span></dt>
+        <dd>
+            <span>{{fitnessActivity.activityStartTime | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.fitnessActivity.activityEndTime" [ngbTooltip]="'aitpapiApp.fitnessActivity.help.activityEndTime' | translate">Activity End Time</span></dt>
+        <dd>
+            <span>{{fitnessActivity.activityEndTime | date:'medium'}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'fitness-activity/'+ fitnessActivity.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

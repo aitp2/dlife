@@ -1,0 +1,42 @@
+
+<div *ngIf="image">
+    <h2><span jhiTranslate="aitpapiApp.image.detail.title">Image</span> {{image.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="aitpapiApp.image.ossPath" [ngbTooltip]="'aitpapiApp.image.help.ossPath' | translate">Oss Path</span></dt>
+        <dd>
+            <span>{{image.ossPath}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.image.createTime">Create Time</span></dt>
+        <dd>
+            <span>{{image.createTime | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.image.recipe">Recipe</span></dt>
+        <dd>
+            <div *ngIf="image.recipeId">
+                <a [routerLink]="['/recipe', image.recipeId]">{{image.recipeId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.image.evaluat">Evaluat</span></dt>
+        <dd>
+            <div *ngIf="image.evaluatId">
+                <a [routerLink]="['/evaluate', image.evaluatId]">{{image.evaluatId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'image/'+ image.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

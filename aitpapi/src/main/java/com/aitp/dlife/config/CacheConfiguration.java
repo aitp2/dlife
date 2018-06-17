@@ -41,6 +41,33 @@ public class CacheConfiguration {
             cm.createCache(com.aitp.dlife.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(com.aitp.dlife.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(com.aitp.dlife.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.WechatUser.class.getName(), jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.Follow.class.getName(), jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.Recipe.class.getName(), jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.Recipe.class.getName() + ".recipeOrders", jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.Recipe.class.getName() + ".images", jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.Image.class.getName(), jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.RecipeOrder.class.getName(), jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.RecipeOrder.class.getName() + ".evaluats", jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.Evaluate.class.getName(), jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.Evaluate.class.getName() + ".images", jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.PinFanActivity.class.getName(), jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.PinFanActivity.class.getName() + ".attendees", jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.PinFanActivity.class.getName() + ".rinfanPics", jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.PinFanActivity.class.getName() + ".rates", jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.Attendee.class.getName(), jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.Rates.class.getName(), jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.Rates.class.getName() + ".rinfanPics", jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.PinfanPics.class.getName(), jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.FitnessActivity.class.getName(), jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.FitnessActivity.class.getName() + ".activityParticipations", jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.FitnessActivity.class.getName() + ".images", jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.ActivityParticipation.class.getName(), jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.ActivityParticipation.class.getName() + ".clockIns", jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.ClockIn.class.getName(), jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.ClockIn.class.getName() + ".pics", jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.Pics.class.getName(), jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.ClockinSummary.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

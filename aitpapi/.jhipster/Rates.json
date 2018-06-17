@@ -1,0 +1,50 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "rinfanPics",
+            "otherEntityName": "pinfanPics",
+            "otherEntityRelationshipName": "rate"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "pinFanActivity",
+            "otherEntityName": "pinFanActivity",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "comments",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 1024
+        },
+        {
+            "fieldName": "rating",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "max"
+            ],
+            "fieldValidateRulesMax": 2
+        },
+        {
+            "fieldName": "createTime",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "modifyTime",
+            "fieldType": "Instant"
+        }
+    ],
+    "changelogDate": "20180617142620",
+    "javadoc": "拼饭参与评价信息",
+    "entityTableName": "rates",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false
+}

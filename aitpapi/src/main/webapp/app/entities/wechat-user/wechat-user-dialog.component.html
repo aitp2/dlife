@@ -1,0 +1,163 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myWechatUserLabel" jhiTranslate="aitpapiApp.wechatUser.home.createOrEditLabel">Create or edit a Wechat User</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!wechatUser.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="wechatUser.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.wechatUser.openId" for="field_openId" [ngbTooltip]="'aitpapiApp.wechatUser.help.openId' | translate">Open Id</label>
+            <input type="text" class="form-control" name="openId" id="field_openId"
+                [(ngModel)]="wechatUser.openId" required maxlength="255"/>
+            <div [hidden]="!(editForm.controls.openId?.dirty && editForm.controls.openId?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.openId?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.openId?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 255 }">
+                   This field cannot be longer than 255 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.wechatUser.wechatCode" for="field_wechatCode" [ngbTooltip]="'aitpapiApp.wechatUser.help.wechatCode' | translate">Wechat Code</label>
+            <input type="text" class="form-control" name="wechatCode" id="field_wechatCode"
+                [(ngModel)]="wechatUser.wechatCode" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.wechatCode?.dirty && editForm.controls.wechatCode?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.wechatCode?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 128 }">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.wechatUser.userName" for="field_userName" [ngbTooltip]="'aitpapiApp.wechatUser.help.userName' | translate">User Name</label>
+            <input type="text" class="form-control" name="userName" id="field_userName"
+                [(ngModel)]="wechatUser.userName" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.userName?.dirty && editForm.controls.userName?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.userName?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 128 }">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.wechatUser.nickName" for="field_nickName" [ngbTooltip]="'aitpapiApp.wechatUser.help.nickName' | translate">Nick Name</label>
+            <input type="text" class="form-control" name="nickName" id="field_nickName"
+                [(ngModel)]="wechatUser.nickName" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.nickName?.dirty && editForm.controls.nickName?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.nickName?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 128 }">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.wechatUser.avatar" for="field_avatar" [ngbTooltip]="'aitpapiApp.wechatUser.help.avatar' | translate">Avatar</label>
+            <input type="text" class="form-control" name="avatar" id="field_avatar"
+                [(ngModel)]="wechatUser.avatar" maxlength="1024"/>
+            <div [hidden]="!(editForm.controls.avatar?.dirty && editForm.controls.avatar?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.avatar?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 1024 }">
+                   This field cannot be longer than 1024 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.wechatUser.mobileNum" for="field_mobileNum" [ngbTooltip]="'aitpapiApp.wechatUser.help.mobileNum' | translate">Mobile Num</label>
+            <input type="text" class="form-control" name="mobileNum" id="field_mobileNum"
+                [(ngModel)]="wechatUser.mobileNum" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.mobileNum?.dirty && editForm.controls.mobileNum?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.mobileNum?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 128 }">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.wechatUser.project" for="field_project" [ngbTooltip]="'aitpapiApp.wechatUser.help.project' | translate">Project</label>
+            <input type="text" class="form-control" name="project" id="field_project"
+                [(ngModel)]="wechatUser.project" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.project?.dirty && editForm.controls.project?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.project?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 128 }">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.wechatUser.seat" for="field_seat" [ngbTooltip]="'aitpapiApp.wechatUser.help.seat' | translate">Seat</label>
+            <input type="text" class="form-control" name="seat" id="field_seat"
+                [(ngModel)]="wechatUser.seat" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.seat?.dirty && editForm.controls.seat?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.seat?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 128 }">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.wechatUser.introduce" for="field_introduce" [ngbTooltip]="'aitpapiApp.wechatUser.help.introduce' | translate">Introduce</label>
+            <input type="text" class="form-control" name="introduce" id="field_introduce"
+                [(ngModel)]="wechatUser.introduce" maxlength="1024"/>
+            <div [hidden]="!(editForm.controls.introduce?.dirty && editForm.controls.introduce?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.introduce?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 1024 }">
+                   This field cannot be longer than 1024 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.wechatUser.sex" for="field_sex" [ngbTooltip]="'aitpapiApp.wechatUser.help.sex' | translate">Sex</label>
+            <input type="checkbox" class="form-control" name="sex" id="field_sex"
+                [(ngModel)]="wechatUser.sex" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.wechatUser.companyRole" for="field_companyRole" [ngbTooltip]="'aitpapiApp.wechatUser.help.companyRole' | translate">Company Role</label>
+            <input type="text" class="form-control" name="companyRole" id="field_companyRole"
+                [(ngModel)]="wechatUser.companyRole" maxlength="255"/>
+            <div [hidden]="!(editForm.controls.companyRole?.dirty && editForm.controls.companyRole?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.companyRole?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 255 }">
+                   This field cannot be longer than 255 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.wechatUser.cookFlag" for="field_cookFlag" [ngbTooltip]="'aitpapiApp.wechatUser.help.cookFlag' | translate">Cook Flag</label>
+            <input type="checkbox" class="form-control" name="cookFlag" id="field_cookFlag"
+                [(ngModel)]="wechatUser.cookFlag" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.wechatUser.createTime" for="field_createTime" [ngbTooltip]="'aitpapiApp.wechatUser.help.createTime' | translate">Create Time</label>
+            <div class="d-flex">
+                <input id="field_createTime" type="datetime-local" class="form-control" name="createTime" [(ngModel)]="wechatUser.createTime"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.wechatUser.modifyTime" for="field_modifyTime" [ngbTooltip]="'aitpapiApp.wechatUser.help.modifyTime' | translate">Modify Time</label>
+            <div class="d-flex">
+                <input id="field_modifyTime" type="datetime-local" class="form-control" name="modifyTime" [(ngModel)]="wechatUser.modifyTime"
+                />
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

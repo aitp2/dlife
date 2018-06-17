@@ -1,0 +1,70 @@
+
+<div *ngIf="pinFanActivity">
+    <h2><span jhiTranslate="aitpapiApp.pinFanActivity.detail.title">Pin Fan Activity</span> {{pinFanActivity.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="aitpapiApp.pinFanActivity.wechatUserId" [ngbTooltip]="'aitpapiApp.pinFanActivity.help.wechatUserId' | translate">Wechat User Id</span></dt>
+        <dd>
+            <span>{{pinFanActivity.wechatUserId}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.pinFanActivity.activitiyType" [ngbTooltip]="'aitpapiApp.pinFanActivity.help.activitiyType' | translate">Activitiy Type</span></dt>
+        <dd>
+            <span>{{pinFanActivity.activitiyType}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.pinFanActivity.descrption" [ngbTooltip]="'aitpapiApp.pinFanActivity.help.descrption' | translate">Descrption</span></dt>
+        <dd>
+            <span>{{pinFanActivity.descrption}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.pinFanActivity.organizeUser" [ngbTooltip]="'aitpapiApp.pinFanActivity.help.organizeUser' | translate">Organize User</span></dt>
+        <dd>
+            <span>{{pinFanActivity.organizeUser}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.pinFanActivity.coverPicture" [ngbTooltip]="'aitpapiApp.pinFanActivity.help.coverPicture' | translate">Cover Picture</span></dt>
+        <dd>
+            <span>{{pinFanActivity.coverPicture}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.pinFanActivity.appointDatetime" [ngbTooltip]="'aitpapiApp.pinFanActivity.help.appointDatetime' | translate">Appoint Datetime</span></dt>
+        <dd>
+            <span>{{pinFanActivity.appointDatetime | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.pinFanActivity.lowerLimit" [ngbTooltip]="'aitpapiApp.pinFanActivity.help.lowerLimit' | translate">Lower Limit</span></dt>
+        <dd>
+            <span>{{pinFanActivity.lowerLimit}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.pinFanActivity.upperLimit" [ngbTooltip]="'aitpapiApp.pinFanActivity.help.upperLimit' | translate">Upper Limit</span></dt>
+        <dd>
+            <span>{{pinFanActivity.upperLimit}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.pinFanActivity.payType" [ngbTooltip]="'aitpapiApp.pinFanActivity.help.payType' | translate">Pay Type</span></dt>
+        <dd>
+            <span>{{pinFanActivity.payType}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.pinFanActivity.deadline" [ngbTooltip]="'aitpapiApp.pinFanActivity.help.deadline' | translate">Deadline</span></dt>
+        <dd>
+            <span>{{pinFanActivity.deadline | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.pinFanActivity.comment" [ngbTooltip]="'aitpapiApp.pinFanActivity.help.comment' | translate">Comment</span></dt>
+        <dd>
+            <span>{{pinFanActivity.comment}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.pinFanActivity.isActive" [ngbTooltip]="'aitpapiApp.pinFanActivity.help.isActive' | translate">Is Active</span></dt>
+        <dd>
+            <span>{{pinFanActivity.isActive}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'pin-fan-activity/'+ pinFanActivity.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

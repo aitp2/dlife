@@ -1,0 +1,27 @@
+
+{
+    "aitpapiApp": {
+        "rates" : {
+            "home": {
+                "title": "Rates",
+                "createLabel": "创建新 Rates",
+                "createOrEditLabel": "创建或编辑 Rates"
+            },
+            "created": "Rates {{ param }} 创建成功",
+            "updated": "Rates {{ param }} 更新成功",
+            "deleted": "Rates {{ param }} 删除成功",
+            "delete": {
+                "question": "你确定要删除 Rates {{ id }} 吗？"
+            },
+            "detail": {
+                "title": "Rates"
+            },
+            "comments": "Comments",
+            "rating": "Rating",
+            "createTime": "Create Time",
+            "modifyTime": "Modify Time",
+            "rinfanPics": "Rinfan Pics",
+            "pinFanActivity": "Pin Fan Activity"
+        }
+    }
+}

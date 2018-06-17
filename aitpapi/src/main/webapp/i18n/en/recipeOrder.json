@@ -1,0 +1,28 @@
+
+{
+    "aitpapiApp": {
+        "recipeOrder" : {
+            "home": {
+                "title": "Recipe Orders",
+                "createLabel": "Create a new Recipe Order",
+                "createOrEditLabel": "Create or edit a Recipe Order"
+            },
+            "created": "A new Recipe Order is created with identifier {{ param }}",
+            "updated": "A Recipe Order is updated with identifier {{ param }}",
+            "deleted": "A Recipe Order is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Recipe Order {{ id }}?"
+            },
+            "detail": {
+                "title": "Recipe Order"
+            },
+            "wechatUserId": "Wechat User Id",
+            "recipeVersion": "Recipe Version",
+            "price": "Price",
+            "createTime": "Create Time",
+            "modifyTime": "Modify Time",
+            "evaluat": "Evaluat",
+            "recipe": "Recipe"
+        }
+    }
+}

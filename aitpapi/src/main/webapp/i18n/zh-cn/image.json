@@ -1,0 +1,28 @@
+
+{
+    "aitpapiApp": {
+        "image" : {
+            "home": {
+                "title": "Images",
+                "createLabel": "创建新 Image",
+                "createOrEditLabel": "创建或编辑 Image"
+            },
+            "created": "Image {{ param }} 创建成功",
+            "updated": "Image {{ param }} 更新成功",
+            "deleted": "Image {{ param }} 删除成功",
+            "delete": {
+                "question": "你确定要删除 Image {{ id }} 吗？"
+            },
+            "detail": {
+                "title": "Image"
+            },
+            "ossPath": "Oss Path",
+            "createTime": "Create Time",
+            "recipe": "Recipe",
+            "evaluat": "Evaluat",
+            "help": {
+                "ossPath": "图片路径"
+            }
+        }
+    }
+}

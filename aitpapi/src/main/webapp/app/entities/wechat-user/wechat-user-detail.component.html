@@ -1,0 +1,78 @@
+
+<div *ngIf="wechatUser">
+    <h2><span jhiTranslate="aitpapiApp.wechatUser.detail.title">Wechat User</span> {{wechatUser.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="aitpapiApp.wechatUser.openId" [ngbTooltip]="'aitpapiApp.wechatUser.help.openId' | translate">Open Id</span></dt>
+        <dd>
+            <span>{{wechatUser.openId}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.wechatUser.wechatCode" [ngbTooltip]="'aitpapiApp.wechatUser.help.wechatCode' | translate">Wechat Code</span></dt>
+        <dd>
+            <span>{{wechatUser.wechatCode}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.wechatUser.userName" [ngbTooltip]="'aitpapiApp.wechatUser.help.userName' | translate">User Name</span></dt>
+        <dd>
+            <span>{{wechatUser.userName}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.wechatUser.nickName" [ngbTooltip]="'aitpapiApp.wechatUser.help.nickName' | translate">Nick Name</span></dt>
+        <dd>
+            <span>{{wechatUser.nickName}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.wechatUser.avatar" [ngbTooltip]="'aitpapiApp.wechatUser.help.avatar' | translate">Avatar</span></dt>
+        <dd>
+            <span>{{wechatUser.avatar}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.wechatUser.mobileNum" [ngbTooltip]="'aitpapiApp.wechatUser.help.mobileNum' | translate">Mobile Num</span></dt>
+        <dd>
+            <span>{{wechatUser.mobileNum}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.wechatUser.project" [ngbTooltip]="'aitpapiApp.wechatUser.help.project' | translate">Project</span></dt>
+        <dd>
+            <span>{{wechatUser.project}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.wechatUser.seat" [ngbTooltip]="'aitpapiApp.wechatUser.help.seat' | translate">Seat</span></dt>
+        <dd>
+            <span>{{wechatUser.seat}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.wechatUser.introduce" [ngbTooltip]="'aitpapiApp.wechatUser.help.introduce' | translate">Introduce</span></dt>
+        <dd>
+            <span>{{wechatUser.introduce}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.wechatUser.sex" [ngbTooltip]="'aitpapiApp.wechatUser.help.sex' | translate">Sex</span></dt>
+        <dd>
+            <span>{{wechatUser.sex}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.wechatUser.companyRole" [ngbTooltip]="'aitpapiApp.wechatUser.help.companyRole' | translate">Company Role</span></dt>
+        <dd>
+            <span>{{wechatUser.companyRole}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.wechatUser.cookFlag" [ngbTooltip]="'aitpapiApp.wechatUser.help.cookFlag' | translate">Cook Flag</span></dt>
+        <dd>
+            <span>{{wechatUser.cookFlag}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.wechatUser.createTime" [ngbTooltip]="'aitpapiApp.wechatUser.help.createTime' | translate">Create Time</span></dt>
+        <dd>
+            <span>{{wechatUser.createTime | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.wechatUser.modifyTime" [ngbTooltip]="'aitpapiApp.wechatUser.help.modifyTime' | translate">Modify Time</span></dt>
+        <dd>
+            <span>{{wechatUser.modifyTime | date:'medium'}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'wechat-user/'+ wechatUser.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,54 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "image",
+            "otherEntityName": "image",
+            "otherEntityRelationshipName": "evaluat"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "recipeOrder",
+            "otherEntityName": "recipeOrder",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "parentId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "content",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 500
+        },
+        {
+            "fieldName": "tasteScore",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "serviceScore",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "createTime",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "modifyTime",
+            "fieldType": "Instant"
+        }
+    ],
+    "changelogDate": "20180617142617",
+    "javadoc": "评价信息",
+    "entityTableName": "evaluate",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false
+}

@@ -1,0 +1,44 @@
+
+<div *ngIf="activityParticipation">
+    <h2><span jhiTranslate="aitpapiApp.activityParticipation.detail.title">Activity Participation</span> {{activityParticipation.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="aitpapiApp.activityParticipation.wechatUserId" [ngbTooltip]="'aitpapiApp.activityParticipation.help.wechatUserId' | translate">Wechat User Id</span></dt>
+        <dd>
+            <span>{{activityParticipation.wechatUserId}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.activityParticipation.nickName" [ngbTooltip]="'aitpapiApp.activityParticipation.help.nickName' | translate">Nick Name</span></dt>
+        <dd>
+            <span>{{activityParticipation.nickName}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.activityParticipation.avatar" [ngbTooltip]="'aitpapiApp.activityParticipation.help.avatar' | translate">Avatar</span></dt>
+        <dd>
+            <span>{{activityParticipation.avatar}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.activityParticipation.participationTime" [ngbTooltip]="'aitpapiApp.activityParticipation.help.participationTime' | translate">Participation Time</span></dt>
+        <dd>
+            <span>{{activityParticipation.participationTime | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="aitpapiApp.activityParticipation.activity">Activity</span></dt>
+        <dd>
+            <div *ngIf="activityParticipation.activityId">
+                <a [routerLink]="['/fitness-activity', activityParticipation.activityId]">{{activityParticipation.activityId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'activity-participation/'+ activityParticipation.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

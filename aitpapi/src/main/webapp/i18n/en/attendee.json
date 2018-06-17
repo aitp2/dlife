@@ -1,0 +1,32 @@
+
+{
+    "aitpapiApp": {
+        "attendee" : {
+            "home": {
+                "title": "Attendees",
+                "createLabel": "Create a new Attendee",
+                "createOrEditLabel": "Create or edit a Attendee"
+            },
+            "created": "A new Attendee is created with identifier {{ param }}",
+            "updated": "A Attendee is updated with identifier {{ param }}",
+            "deleted": "A Attendee is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Attendee {{ id }}?"
+            },
+            "detail": {
+                "title": "Attendee"
+            },
+            "wechatUserId": "Wechat User Id",
+            "nickName": "Nick Name",
+            "avatar": "Avatar",
+            "participationTime": "Participation Time",
+            "pinFanActivity": "Pin Fan Activity",
+            "help": {
+                "wechatUserId": "参与人ID",
+                "nickName": "参与者昵称",
+                "avatar": "参与者头像",
+                "participationTime": "参与时间"
+            }
+        }
+    }
+}

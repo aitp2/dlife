@@ -1,0 +1,29 @@
+
+{
+    "aitpapiApp": {
+        "evaluate" : {
+            "home": {
+                "title": "Evaluates",
+                "createLabel": "创建新 Evaluate",
+                "createOrEditLabel": "创建或编辑 Evaluate"
+            },
+            "created": "Evaluate {{ param }} 创建成功",
+            "updated": "Evaluate {{ param }} 更新成功",
+            "deleted": "Evaluate {{ param }} 删除成功",
+            "delete": {
+                "question": "你确定要删除 Evaluate {{ id }} 吗？"
+            },
+            "detail": {
+                "title": "Evaluate"
+            },
+            "parentId": "Parent Id",
+            "content": "Content",
+            "tasteScore": "Taste Score",
+            "serviceScore": "Service Score",
+            "createTime": "Create Time",
+            "modifyTime": "Modify Time",
+            "image": "Image",
+            "recipeOrder": "Recipe Order"
+        }
+    }
+}

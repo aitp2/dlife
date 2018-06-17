@@ -7,6 +7,21 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "数据",
+                "wechatUser": "Wechat User",
+                "follow": "Follow",
+                "recipe": "Recipe",
+                "image": "Image",
+                "recipeOrder": "Recipe Order",
+                "evaluate": "Evaluate",
+                "pinFanActivity": "Pin Fan Activity",
+                "attendee": "Attendee",
+                "rates": "Rates",
+                "pinfanPics": "Pinfan Pics",
+                "fitnessActivity": "Fitness Activity",
+                "activityParticipation": "Activity Participation",
+                "clockIn": "Clock In",
+                "pics": "Pics",
+                "clockinSummary": "Clockin Summary",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

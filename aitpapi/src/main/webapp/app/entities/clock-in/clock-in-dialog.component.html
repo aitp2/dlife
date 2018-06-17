@@ -1,0 +1,50 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myClockInLabel" jhiTranslate="aitpapiApp.clockIn.home.createOrEditLabel">Create or edit a Clock In</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!clockIn.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="clockIn.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.clockIn.signNote" for="field_signNote" [ngbTooltip]="'aitpapiApp.clockIn.help.signNote' | translate">Sign Note</label>
+            <input type="text" class="form-control" name="signNote" id="field_signNote"
+                [(ngModel)]="clockIn.signNote" maxlength="1024"/>
+            <div [hidden]="!(editForm.controls.signNote?.dirty && editForm.controls.signNote?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.signNote?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 1024 }">
+                   This field cannot be longer than 1024 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.clockIn.punchDateTime" for="field_punchDateTime" [ngbTooltip]="'aitpapiApp.clockIn.help.punchDateTime' | translate">Punch Date Time</label>
+            <div class="d-flex">
+                <input id="field_punchDateTime" type="datetime-local" class="form-control" name="punchDateTime" [(ngModel)]="clockIn.punchDateTime"
+                />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.clockIn.activityParticipation" for="field_activityParticipation">Activity Participation</label>
+            <select class="form-control" id="field_activityParticipation" name="activityParticipation" [(ngModel)]="clockIn.activityParticipationId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="activityParticipationOption.id" *ngFor="let activityParticipationOption of activityparticipations; trackBy: trackActivityParticipationById">{{activityParticipationOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

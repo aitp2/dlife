@@ -1,0 +1,116 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "attendees",
+            "otherEntityName": "attendee",
+            "otherEntityRelationshipName": "pinFanActivity"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "rinfanPics",
+            "otherEntityName": "pinfanPics",
+            "otherEntityRelationshipName": "pinFanActivity"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "rates",
+            "otherEntityName": "rates",
+            "otherEntityRelationshipName": "pinFanActivity"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "wechatUserId",
+            "javadoc": "发布者id",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "activitiyType",
+            "javadoc": "活动类型",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "descrption",
+            "javadoc": "活动描述",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "organizeUser",
+            "javadoc": "组织者",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "coverPicture",
+            "javadoc": "封面图",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "appointDatetime",
+            "javadoc": "约定时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "lowerLimit",
+            "javadoc": "最少参与者",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "upperLimit",
+            "javadoc": "最多参与者",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "payType",
+            "javadoc": "支付类型",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 32
+        },
+        {
+            "fieldName": "deadline",
+            "javadoc": "截至日期",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "comment",
+            "javadoc": "备注",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 500
+        },
+        {
+            "fieldName": "isActive",
+            "javadoc": "是否生效",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20180617142618",
+    "javadoc": "拼饭活动",
+    "entityTableName": "pin_fan_activity",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false
+}

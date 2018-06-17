@@ -1,0 +1,29 @@
+
+{
+    "aitpapiApp": {
+        "evaluate" : {
+            "home": {
+                "title": "Evaluates",
+                "createLabel": "Create a new Evaluate",
+                "createOrEditLabel": "Create or edit a Evaluate"
+            },
+            "created": "A new Evaluate is created with identifier {{ param }}",
+            "updated": "A Evaluate is updated with identifier {{ param }}",
+            "deleted": "A Evaluate is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Evaluate {{ id }}?"
+            },
+            "detail": {
+                "title": "Evaluate"
+            },
+            "parentId": "Parent Id",
+            "content": "Content",
+            "tasteScore": "Taste Score",
+            "serviceScore": "Service Score",
+            "createTime": "Create Time",
+            "modifyTime": "Modify Time",
+            "image": "Image",
+            "recipeOrder": "Recipe Order"
+        }
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "followUserId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "followedUserId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "createTime",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "modifyTime",
+            "fieldType": "Instant"
+        }
+    ],
+    "changelogDate": "20180617142613",
+    "javadoc": "关注记录信息",
+    "entityTableName": "follow",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false
+}

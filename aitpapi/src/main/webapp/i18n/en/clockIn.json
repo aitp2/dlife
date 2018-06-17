@@ -1,0 +1,29 @@
+
+{
+    "aitpapiApp": {
+        "clockIn" : {
+            "home": {
+                "title": "Clock Ins",
+                "createLabel": "Create a new Clock In",
+                "createOrEditLabel": "Create or edit a Clock In"
+            },
+            "created": "A new Clock In is created with identifier {{ param }}",
+            "updated": "A Clock In is updated with identifier {{ param }}",
+            "deleted": "A Clock In is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Clock In {{ id }}?"
+            },
+            "detail": {
+                "title": "Clock In"
+            },
+            "signNote": "Sign Note",
+            "punchDateTime": "Punch Date Time",
+            "pics": "Pics",
+            "activityParticipation": "Activity Participation",
+            "help": {
+                "signNote": "签到日记",
+                "punchDateTime": "打卡时间"
+            }
+        }
+    }
+}

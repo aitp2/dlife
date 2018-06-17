@@ -1,0 +1,50 @@
+
+{
+    "aitpapiApp": {
+        "pinFanActivity" : {
+            "home": {
+                "title": "Pin Fan Activities",
+                "createLabel": "创建新 Pin Fan Activity",
+                "createOrEditLabel": "创建或编辑 Pin Fan Activity"
+            },
+            "created": "Pin Fan Activity {{ param }} 创建成功",
+            "updated": "Pin Fan Activity {{ param }} 更新成功",
+            "deleted": "Pin Fan Activity {{ param }} 删除成功",
+            "delete": {
+                "question": "你确定要删除 Pin Fan Activity {{ id }} 吗？"
+            },
+            "detail": {
+                "title": "Pin Fan Activity"
+            },
+            "wechatUserId": "Wechat User Id",
+            "activitiyType": "Activitiy Type",
+            "descrption": "Descrption",
+            "organizeUser": "Organize User",
+            "coverPicture": "Cover Picture",
+            "appointDatetime": "Appoint Datetime",
+            "lowerLimit": "Lower Limit",
+            "upperLimit": "Upper Limit",
+            "payType": "Pay Type",
+            "deadline": "Deadline",
+            "comment": "Comment",
+            "isActive": "Is Active",
+            "attendees": "Attendees",
+            "rinfanPics": "Rinfan Pics",
+            "rates": "Rates",
+            "help": {
+                "wechatUserId": "发布者id",
+                "activitiyType": "活动类型",
+                "descrption": "活动描述",
+                "organizeUser": "组织者",
+                "coverPicture": "封面图",
+                "appointDatetime": "约定时间",
+                "lowerLimit": "最少参与者",
+                "upperLimit": "最多参与者",
+                "payType": "支付类型",
+                "deadline": "截至日期",
+                "comment": "备注",
+                "isActive": "是否生效"
+            }
+        }
+    }
+}
