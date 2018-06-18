@@ -7,6 +7,8 @@ import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import com.aitp.dlife.service.dto.ClockinSummaryDTO;
 import io.github.jhipster.web.util.ResponseUtil;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -123,5 +125,22 @@ public class ClockinSummaryResource {
         log.debug("REST request to delete ClockinSummary : {}", id);
         clockinSummaryService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    
+    /**
+     * GET  /clockin-summaries : GET a clockinSummary.
+     *
+     * @param clockinSummaryDTO the clockinSummaryDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new clockinSummaryDTO, or with status 400 (Bad Request) if the clockinSummary has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @GetMapping("/clockin-summaries/getByWechatUserId")
+    @Timed
+    public List<ClockinSummaryDTO> createClockinSummary(String wechatUserId) {
+        log.debug("REST request to get ClockinSummary by wechatUserId: {}", wechatUserId);
+        if (StringUtils.isEmpty(wechatUserId)) {
+            throw new BadRequestAlertException("wechatUserId is null", ENTITY_NAME, "wechatUserIdNULL");
+        }
+        return clockinSummaryService.findByWechatUserId(wechatUserId);
     }
 }

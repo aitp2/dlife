@@ -4,6 +4,11 @@ import com.aitp.dlife.domain.ClockinSummary;
 import com.aitp.dlife.repository.ClockinSummaryRepository;
 import com.aitp.dlife.service.dto.ClockinSummaryDTO;
 import com.aitp.dlife.service.mapper.ClockinSummaryMapper;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -78,4 +83,16 @@ public class ClockinSummaryService {
         log.debug("Request to delete ClockinSummary : {}", id);
         clockinSummaryRepository.delete(id);
     }
+    
+    /**
+     * Get one clockinSummary by wechatUserId.
+     * 
+     * @param wechatUserId
+     * @return
+     */
+    public List<ClockinSummaryDTO> findByWechatUserId(String wechatUserId) {
+		return clockinSummaryRepository.findByWechatUserId(wechatUserId).stream()
+	            .map(clockinSummaryMapper::toDto)
+	            .collect(Collectors.toCollection(LinkedList::new));
+	}
 }

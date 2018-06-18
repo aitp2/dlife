@@ -63,7 +63,7 @@ public class ActivityParticipation implements Serializable {
 
     @OneToMany(mappedBy = "activityParticipation")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<ClockIn> clockIns = new HashSet<>();
 
     @ManyToOne

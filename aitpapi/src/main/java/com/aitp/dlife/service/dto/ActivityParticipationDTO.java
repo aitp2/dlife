@@ -1,12 +1,15 @@
 package com.aitp.dlife.service.dto;
 
 
-import java.time.Instant;
-import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
+
+import javax.validation.constraints.Size;
+
+import com.aitp.dlife.domain.FitnessActivity;
 
 /**
  * A DTO for the ActivityParticipation entity.
@@ -27,6 +30,10 @@ public class ActivityParticipationDTO implements Serializable {
     private Instant participationTime;
 
     private Long activityId;
+    
+    private Set<PicsDTO> images = new HashSet<>();
+    
+    private Set<ClockInDTO> clockIns = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -75,8 +82,26 @@ public class ActivityParticipationDTO implements Serializable {
     public void setActivityId(Long fitnessActivityId) {
         this.activityId = fitnessActivityId;
     }
+    
 
-    @Override
+    public Set<ClockInDTO> getClockIns() {
+		return clockIns;
+	}
+
+	public void setClockIns(Set<ClockInDTO> clockIns) {
+		this.clockIns = clockIns;
+	}
+	
+
+	public Set<PicsDTO> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<PicsDTO> images) {
+		this.images = images;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

@@ -47,7 +47,7 @@ public class ClockIn implements Serializable {
 
     @OneToMany(mappedBy = "clockIn")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<Pics> pics = new HashSet<>();
 
     @ManyToOne

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -123,5 +123,27 @@ public class PicsResource {
         log.debug("REST request to delete Pics : {}", id);
         picsService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    
+    /**
+     * POST  /pics : Create new pics.
+     *
+     * @param picsDTO the picsDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new picsDTO, or with status 400 (Bad Request) if the pics has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/multi-pics")
+    @Timed
+    public ResponseEntity<List<PicsDTO>> createPics(@Valid @RequestBody List<PicsDTO> picsDTOs) throws URISyntaxException {
+    	List<PicsDTO> list = new ArrayList<>();      
+        for(PicsDTO picsDTO : picsDTOs){
+        	log.debug("REST request to save Pics : {}", picsDTO);
+            if (picsDTO.getId() != null) {
+                throw new BadRequestAlertException("A new pics cannot already have an ID", ENTITY_NAME, "idexists");
+            }
+            PicsDTO result = picsService.save(picsDTO);
+            list.add(result);
+        }
+        return ResponseEntity.ok(list);
     }
 }

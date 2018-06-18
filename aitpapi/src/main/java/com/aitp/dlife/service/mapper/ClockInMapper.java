@@ -1,9 +1,10 @@
 package com.aitp.dlife.service.mapper;
 
-import com.aitp.dlife.domain.*;
-import com.aitp.dlife.service.dto.ClockInDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import org.mapstruct.*;
+import com.aitp.dlife.domain.ClockIn;
+import com.aitp.dlife.service.dto.ClockInDTO;
 
 /**
  * Mapper for the entity ClockIn and its DTO ClockInDTO.
@@ -12,6 +13,7 @@ import org.mapstruct.*;
 public interface ClockInMapper extends EntityMapper<ClockInDTO, ClockIn> {
 
     @Mapping(source = "activityParticipation.id", target = "activityParticipationId")
+    @Mapping(source = "pics", target = "pics")
     ClockInDTO toDto(ClockIn clockIn);
 
     @Mapping(target = "pics", ignore = true)
