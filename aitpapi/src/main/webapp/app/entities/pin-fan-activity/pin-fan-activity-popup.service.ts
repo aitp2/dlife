@@ -33,6 +33,8 @@ export class PinFanActivityPopupService {
                         const pinFanActivity: PinFanActivity = pinFanActivityResponse.body;
                         pinFanActivity.appointDatetime = this.datePipe
                             .transform(pinFanActivity.appointDatetime, 'yyyy-MM-ddTHH:mm:ss');
+                        pinFanActivity.appointEndDatetime = this.datePipe
+                            .transform(pinFanActivity.appointEndDatetime, 'yyyy-MM-ddTHH:mm:ss');
                         pinFanActivity.deadline = this.datePipe
                             .transform(pinFanActivity.deadline, 'yyyy-MM-ddTHH:mm:ss');
                         this.ngbModalRef = this.pinFanActivityModalRef(component, pinFanActivity);

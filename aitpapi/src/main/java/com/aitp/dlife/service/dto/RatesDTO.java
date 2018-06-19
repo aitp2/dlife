@@ -1,6 +1,8 @@
 package com.aitp.dlife.service.dto;
 
 
+import com.aitp.dlife.domain.PinfanPics;
+
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -18,12 +20,21 @@ public class RatesDTO implements Serializable {
     @Size(max = 1024)
     private String comments;
 
-    @Max(value = 2)
     private Integer rating;
 
     private Instant createTime;
 
     private Instant modifyTime;
+
+    private Set<PinfanPicsDTO> pinfanPics = new HashSet<>();
+
+    public Set<PinfanPicsDTO> getPinfanPics() {
+        return pinfanPics;
+    }
+
+    public void setPinfanPics(Set<PinfanPicsDTO> pinfanPics) {
+        this.pinfanPics = pinfanPics;
+    }
 
     private Long pinFanActivityId;
 

@@ -4,6 +4,7 @@ package com.aitp.dlife.service.dto;
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -18,7 +19,21 @@ public class PinFanActivityDTO implements Serializable {
     @Size(max = 128)
     private String wechatUserId;
 
+    @Size(max = 1024)
+    private String avatar;
+
+    @Size(max = 128)
+    private String nickName;
+
     private Integer activitiyType;
+
+    @Size(max = 128)
+    private String activitiyTile;
+
+    private BigDecimal budget;
+
+    @Size(max = 2048)
+    private String activitiyAddre;
 
     @Size(max = 128)
     private String descrption;
@@ -30,6 +45,11 @@ public class PinFanActivityDTO implements Serializable {
     private String coverPicture;
 
     private Instant appointDatetime;
+
+    private Instant appointEndDatetime;
+
+    @Size(max = 1024)
+    private String salerUrl;
 
     private Integer lowerLimit;
 
@@ -44,6 +64,44 @@ public class PinFanActivityDTO implements Serializable {
     private String comment;
 
     private Boolean isActive;
+
+    private Set<AttendeeDTO> attendees = new HashSet<>();
+
+    private Set<PinfanPicsDTO> pinfanPics = new HashSet<>();
+
+    private Set<RatesDTO> rates = new HashSet<>();
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public Set<AttendeeDTO> getAttendees() {
+        return attendees;
+    }
+
+    public void setAttendees(Set<AttendeeDTO> attendees) {
+        this.attendees = attendees;
+    }
+
+    public Set<PinfanPicsDTO> getPinfanPics() {
+        return pinfanPics;
+    }
+
+    public void setPinfanPics(Set<PinfanPicsDTO> pinfanPics) {
+        this.pinfanPics = pinfanPics;
+    }
+
+    public Set<RatesDTO> getRates() {
+        return rates;
+    }
+
+    public void setRates(Set<RatesDTO> rates) {
+        this.rates = rates;
+    }
 
     public Long getId() {
         return id;
@@ -61,12 +119,52 @@ public class PinFanActivityDTO implements Serializable {
         this.wechatUserId = wechatUserId;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
     public Integer getActivitiyType() {
         return activitiyType;
     }
 
     public void setActivitiyType(Integer activitiyType) {
         this.activitiyType = activitiyType;
+    }
+
+    public String getActivitiyTile() {
+        return activitiyTile;
+    }
+
+    public void setActivitiyTile(String activitiyTile) {
+        this.activitiyTile = activitiyTile;
+    }
+
+    public BigDecimal getBudget() {
+        return budget;
+    }
+
+    public void setBudget(BigDecimal budget) {
+        this.budget = budget;
+    }
+
+    public String getActivitiyAddre() {
+        return activitiyAddre;
+    }
+
+    public void setActivitiyAddre(String activitiyAddre) {
+        this.activitiyAddre = activitiyAddre;
     }
 
     public String getDescrption() {
@@ -99,6 +197,22 @@ public class PinFanActivityDTO implements Serializable {
 
     public void setAppointDatetime(Instant appointDatetime) {
         this.appointDatetime = appointDatetime;
+    }
+
+    public Instant getAppointEndDatetime() {
+        return appointEndDatetime;
+    }
+
+    public void setAppointEndDatetime(Instant appointEndDatetime) {
+        this.appointEndDatetime = appointEndDatetime;
+    }
+
+    public String getSalerUrl() {
+        return salerUrl;
+    }
+
+    public void setSalerUrl(String salerUrl) {
+        this.salerUrl = salerUrl;
     }
 
     public Integer getLowerLimit() {
@@ -175,11 +289,18 @@ public class PinFanActivityDTO implements Serializable {
         return "PinFanActivityDTO{" +
             "id=" + getId() +
             ", wechatUserId='" + getWechatUserId() + "'" +
+            ", avatar='" + getAvatar() + "'" +
+            ", nickName='" + getNickName() + "'" +
             ", activitiyType=" + getActivitiyType() +
+            ", activitiyTile='" + getActivitiyTile() + "'" +
+            ", budget=" + getBudget() +
+            ", activitiyAddre='" + getActivitiyAddre() + "'" +
             ", descrption='" + getDescrption() + "'" +
             ", organizeUser='" + getOrganizeUser() + "'" +
             ", coverPicture='" + getCoverPicture() + "'" +
             ", appointDatetime='" + getAppointDatetime() + "'" +
+            ", appointEndDatetime='" + getAppointEndDatetime() + "'" +
+            ", salerUrl='" + getSalerUrl() + "'" +
             ", lowerLimit=" + getLowerLimit() +
             ", upperLimit=" + getUpperLimit() +
             ", payType='" + getPayType() + "'" +

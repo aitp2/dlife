@@ -18,11 +18,18 @@
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="wechatUserId"><span jhiTranslate="aitpapiApp.pinFanActivity.wechatUserId">Wechat User Id</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="userName"><span jhiTranslate="aitpapiApp.pinFanActivity.userName">User Name</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nickName"><span jhiTranslate="aitpapiApp.pinFanActivity.nickName">Nick Name</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="activitiyType"><span jhiTranslate="aitpapiApp.pinFanActivity.activitiyType">Activitiy Type</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="activitiyTile"><span jhiTranslate="aitpapiApp.pinFanActivity.activitiyTile">Activitiy Tile</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="budget"><span jhiTranslate="aitpapiApp.pinFanActivity.budget">Budget</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="activitiyAddre"><span jhiTranslate="aitpapiApp.pinFanActivity.activitiyAddre">Activitiy Addre</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="descrption"><span jhiTranslate="aitpapiApp.pinFanActivity.descrption">Descrption</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="organizeUser"><span jhiTranslate="aitpapiApp.pinFanActivity.organizeUser">Organize User</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="coverPicture"><span jhiTranslate="aitpapiApp.pinFanActivity.coverPicture">Cover Picture</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="appointDatetime"><span jhiTranslate="aitpapiApp.pinFanActivity.appointDatetime">Appoint Datetime</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="appointEndDatetime"><span jhiTranslate="aitpapiApp.pinFanActivity.appointEndDatetime">Appoint End Datetime</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="salerUrl"><span jhiTranslate="aitpapiApp.pinFanActivity.salerUrl">Saler Url</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="lowerLimit"><span jhiTranslate="aitpapiApp.pinFanActivity.lowerLimit">Lower Limit</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="upperLimit"><span jhiTranslate="aitpapiApp.pinFanActivity.upperLimit">Upper Limit</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="payType"><span jhiTranslate="aitpapiApp.pinFanActivity.payType">Pay Type</span> <span class="fa fa-sort"></span></th>
@@ -36,11 +43,18 @@
             <tr *ngFor="let pinFanActivity of pinFanActivities ;trackBy: trackId">
                 <td><a [routerLink]="['../pin-fan-activity', pinFanActivity.id ]">{{pinFanActivity.id}}</a></td>
                 <td>{{pinFanActivity.wechatUserId}}</td>
+                <td>{{pinFanActivity.userName}}</td>
+                <td>{{pinFanActivity.nickName}}</td>
                 <td>{{pinFanActivity.activitiyType}}</td>
+                <td>{{pinFanActivity.activitiyTile}}</td>
+                <td>{{pinFanActivity.budget}}</td>
+                <td>{{pinFanActivity.activitiyAddre}}</td>
                 <td>{{pinFanActivity.descrption}}</td>
                 <td>{{pinFanActivity.organizeUser}}</td>
                 <td>{{pinFanActivity.coverPicture}}</td>
                 <td>{{pinFanActivity.appointDatetime | date:'medium'}}</td>
+                <td>{{pinFanActivity.appointEndDatetime | date:'medium'}}</td>
+                <td>{{pinFanActivity.salerUrl}}</td>
                 <td>{{pinFanActivity.lowerLimit}}</td>
                 <td>{{pinFanActivity.upperLimit}}</td>
                 <td>{{pinFanActivity.payType}}</td>

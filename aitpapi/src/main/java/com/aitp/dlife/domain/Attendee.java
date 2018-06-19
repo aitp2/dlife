@@ -58,6 +58,14 @@ public class Attendee implements Serializable {
     @Column(name = "participation_time")
     private Instant participationTime;
 
+    /**
+     * 活动名称
+     */
+    @Size(max = 128)
+    @ApiModelProperty(value = "活动名称")
+    @Column(name = "activitiy_tile", length = 128)
+    private String activitiyTile;
+
     @ManyToOne
     private PinFanActivity pinFanActivity;
 
@@ -122,6 +130,19 @@ public class Attendee implements Serializable {
         this.participationTime = participationTime;
     }
 
+    public String getActivitiyTile() {
+        return activitiyTile;
+    }
+
+    public Attendee activitiyTile(String activitiyTile) {
+        this.activitiyTile = activitiyTile;
+        return this;
+    }
+
+    public void setActivitiyTile(String activitiyTile) {
+        this.activitiyTile = activitiyTile;
+    }
+
     public PinFanActivity getPinFanActivity() {
         return pinFanActivity;
     }
@@ -164,6 +185,7 @@ public class Attendee implements Serializable {
             ", nickName='" + getNickName() + "'" +
             ", avatar='" + getAvatar() + "'" +
             ", participationTime='" + getParticipationTime() + "'" +
+            ", activitiyTile='" + getActivitiyTile() + "'" +
             "}";
     }
 }

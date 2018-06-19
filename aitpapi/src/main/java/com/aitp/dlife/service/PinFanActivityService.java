@@ -4,6 +4,7 @@ import com.aitp.dlife.domain.PinFanActivity;
 import com.aitp.dlife.repository.PinFanActivityRepository;
 import com.aitp.dlife.service.dto.PinFanActivityDTO;
 import com.aitp.dlife.service.mapper.PinFanActivityMapper;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -52,8 +53,21 @@ public class PinFanActivityService {
     @Transactional(readOnly = true)
     public Page<PinFanActivityDTO> findAll(Pageable pageable) {
         log.debug("Request to get all PinFanActivities");
-        return pinFanActivityRepository.findAll(pageable)
-            .map(pinFanActivityMapper::toDto);
+        Page<PinFanActivity> all = pinFanActivityRepository.findAll(pageable);
+        if(all!=null){
+            for(PinFanActivity activity:all){
+                if(!Hibernate.isInitialized(activity.getPinfanPics())){
+                    Hibernate.initialize(activity.getPinfanPics());
+                }
+                if(!Hibernate.isInitialized(activity.getRates())){
+                    Hibernate.initialize(activity.getRates());
+                }
+                if(!Hibernate.isInitialized(activity.getAttendees())){
+                    Hibernate.initialize(activity.getAttendees());
+                }
+            }
+        }
+        return all.map(pinFanActivityMapper::toDto);
     }
 
     /**
@@ -66,6 +80,17 @@ public class PinFanActivityService {
     public PinFanActivityDTO findOne(Long id) {
         log.debug("Request to get PinFanActivity : {}", id);
         PinFanActivity pinFanActivity = pinFanActivityRepository.findOne(id);
+        if(pinFanActivity!=null){
+            if(!Hibernate.isInitialized(pinFanActivity.getPinfanPics())){
+                Hibernate.initialize(pinFanActivity.getPinfanPics());
+            }
+            if(!Hibernate.isInitialized(pinFanActivity.getRates())){
+                Hibernate.initialize(pinFanActivity.getRates());
+            }
+            if(!Hibernate.isInitialized(pinFanActivity.getAttendees())){
+                Hibernate.initialize(pinFanActivity.getAttendees());
+            }
+        }
         return pinFanActivityMapper.toDto(pinFanActivity);
     }
 

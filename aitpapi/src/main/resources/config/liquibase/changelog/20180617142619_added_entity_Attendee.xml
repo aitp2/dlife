@@ -38,6 +38,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="activitiy_tile" type="varchar(128)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="pin_fan_activity_id" type="bigint">
                 <constraints nullable="true" />
             </column>

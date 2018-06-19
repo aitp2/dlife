@@ -40,6 +40,15 @@
             "fieldName": "participationTime",
             "javadoc": "参与时间",
             "fieldType": "Instant"
+        },
+        {
+            "fieldName": "activitiyTile",
+            "javadoc": "活动名称",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
         }
     ],
     "changelogDate": "20180617142619",

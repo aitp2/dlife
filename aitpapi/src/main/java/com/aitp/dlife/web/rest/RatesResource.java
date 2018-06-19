@@ -1,5 +1,8 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.domain.PinfanPics;
+import com.aitp.dlife.service.PinfanPicsService;
+import com.aitp.dlife.service.dto.PinfanPicsDTO;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.RatesService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -20,8 +23,11 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * REST controller for managing Rates.
@@ -35,9 +41,13 @@ public class RatesResource {
     private static final String ENTITY_NAME = "rates";
 
     private final RatesService ratesService;
+    private final PinfanPicsService pinfanPicsService;
 
-    public RatesResource(RatesService ratesService) {
+
+    public RatesResource(RatesService ratesService, PinfanPicsService pinfanPicsService) {
         this.ratesService = ratesService;
+        this.pinfanPicsService=pinfanPicsService;
+
     }
 
     /**
@@ -54,7 +64,17 @@ public class RatesResource {
         if (ratesDTO.getId() != null) {
             throw new BadRequestAlertException("A new rates cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        Set<PinfanPicsDTO> pinfanPics = new HashSet<>();
+
         RatesDTO result = ratesService.save(ratesDTO);
+        if(ratesDTO.getPinfanPics()!=null&&!ratesDTO.getPinfanPics().isEmpty()){
+            for(PinfanPicsDTO pics:ratesDTO.getPinfanPics()){
+                pics.setRateId(result.getId());
+                pics.setCreateTime(Instant.now());
+                pinfanPics.add(pinfanPicsService.save(pics));
+            }
+        }
+        result.setPinfanPics(pinfanPics);
         return ResponseEntity.created(new URI("/api/rates/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);

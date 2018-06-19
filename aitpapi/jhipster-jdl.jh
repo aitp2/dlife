@@ -95,8 +95,18 @@ entity Evaluate{
 entity PinFanActivity{
     /** 发布者id */
     wechatUserId String maxlength(128),
-	/** 活动类型*/
-	activitiyType Integer
+ 	  /** 头像*/
+    avatar String maxlength(1024),
+    /** 昵称*/
+    nickName String maxlength(128),
+    /** 活动类型*/
+    activitiyType Integer,
+    /** 活动名称*/
+    activitiyTile String maxlength(128),
+    /** 人均预算*/
+    budget BigDecimal,
+    /** 活动名称*/
+    activitiyAddre String maxlength(2048),
     /** 活动描述*/
     descrption String maxlength(128),
     /** 组织者*/
@@ -104,7 +114,11 @@ entity PinFanActivity{
     /** 封面图*/
     coverPicture String maxlength(128),
     /** 约定时间*/
-	appointDatetime Instant,
+    appointDatetime Instant,
+     /** 约定结束时间*/
+    appointEndDatetime Instant,
+    /** 商家URL*/
+    salerUrl String maxlength(1024),
     /** 最少参与者*/
     lowerLimit Integer,
     /** 最多参与者*/
@@ -122,14 +136,16 @@ entity PinFanActivity{
 拼饭活动参与信息
 */
 entity Attendee{
-	/** 参与人ID**/
-	wechatUserId String maxlength(128),
+    /** 参与人ID**/
+    wechatUserId String maxlength(128),
     /** 参与者昵称**/
     nickName String maxlength(128)
     /** 参与者头像**/
     avatar String maxlength(1024)
     /** 参与时间 **/
-    participationTime Instant
+    participationTime Instant,
+    /** 活动名称*/
+    activitiyTile String maxlength(128)
 
 }
 /**
@@ -137,9 +153,10 @@ entity Attendee{
 */
 entity Rates {	
     comments String maxlength(1024),
-    rating Integer max(2)
+    rating Integer
     createTime Instant,
-    modifyTime Instant
+    modifyTime Instant,
+    
 }
 
 /**
@@ -229,9 +246,9 @@ relationship OneToMany {
 
 relationship OneToMany {
 	PinFanActivity{attendees} to Attendee{pinFanActivity}
-    PinFanActivity{rinfanPics} to PinfanPics{pinFanActivity}
+    PinFanActivity{pinfanPics} to PinfanPics{pinFanActivity}
     PinFanActivity{rates} to Rates{pinFanActivity}
-    Rates{rinfanPics} to PinfanPics{rate}    
+    Rates{pinfanPics} to PinfanPics{rate}    
 }
 
 relationship OneToMany {

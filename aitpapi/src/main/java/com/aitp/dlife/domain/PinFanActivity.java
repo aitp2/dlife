@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,11 +40,50 @@ public class PinFanActivity implements Serializable {
     private String wechatUserId;
 
     /**
+     * 头像
+     */
+    @Size(max = 1024)
+    @ApiModelProperty(value = "头像")
+    @Column(name = "avatar", length = 1024)
+    private String avatar;
+
+    /**
+     * 昵称
+     */
+    @Size(max = 128)
+    @ApiModelProperty(value = "昵称")
+    @Column(name = "nick_name", length = 128)
+    private String nickName;
+
+    /**
      * 活动类型
      */
     @ApiModelProperty(value = "活动类型")
     @Column(name = "activitiy_type")
     private Integer activitiyType;
+
+    /**
+     * 活动名称
+     */
+    @Size(max = 128)
+    @ApiModelProperty(value = "活动名称")
+    @Column(name = "activitiy_tile", length = 128)
+    private String activitiyTile;
+
+    /**
+     * 人均预算
+     */
+    @ApiModelProperty(value = "人均预算")
+    @Column(name = "budget", precision=10, scale=2)
+    private BigDecimal budget;
+
+    /**
+     * 活动名称
+     */
+    @Size(max = 2048)
+    @ApiModelProperty(value = "活动名称")
+    @Column(name = "activitiy_addre", length = 2048)
+    private String activitiyAddre;
 
     /**
      * 活动描述
@@ -75,6 +115,21 @@ public class PinFanActivity implements Serializable {
     @ApiModelProperty(value = "约定时间")
     @Column(name = "appoint_datetime")
     private Instant appointDatetime;
+
+    /**
+     * 约定结束时间
+     */
+    @ApiModelProperty(value = "约定结束时间")
+    @Column(name = "appoint_end_datetime")
+    private Instant appointEndDatetime;
+
+    /**
+     * 商家URL
+     */
+    @Size(max = 1024)
+    @ApiModelProperty(value = "商家URL")
+    @Column(name = "saler_url", length = 1024)
+    private String salerUrl;
 
     /**
      * 最少参与者
@@ -128,7 +183,7 @@ public class PinFanActivity implements Serializable {
     @OneToMany(mappedBy = "pinFanActivity")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<PinfanPics> rinfanPics = new HashSet<>();
+    private Set<PinfanPics> pinfanPics = new HashSet<>();
 
     @OneToMany(mappedBy = "pinFanActivity")
     @JsonIgnore
@@ -157,6 +212,32 @@ public class PinFanActivity implements Serializable {
         this.wechatUserId = wechatUserId;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public PinFanActivity avatar(String avatar) {
+        this.avatar = avatar;
+        return this;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public PinFanActivity nickName(String nickName) {
+        this.nickName = nickName;
+        return this;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
     public Integer getActivitiyType() {
         return activitiyType;
     }
@@ -168,6 +249,45 @@ public class PinFanActivity implements Serializable {
 
     public void setActivitiyType(Integer activitiyType) {
         this.activitiyType = activitiyType;
+    }
+
+    public String getActivitiyTile() {
+        return activitiyTile;
+    }
+
+    public PinFanActivity activitiyTile(String activitiyTile) {
+        this.activitiyTile = activitiyTile;
+        return this;
+    }
+
+    public void setActivitiyTile(String activitiyTile) {
+        this.activitiyTile = activitiyTile;
+    }
+
+    public BigDecimal getBudget() {
+        return budget;
+    }
+
+    public PinFanActivity budget(BigDecimal budget) {
+        this.budget = budget;
+        return this;
+    }
+
+    public void setBudget(BigDecimal budget) {
+        this.budget = budget;
+    }
+
+    public String getActivitiyAddre() {
+        return activitiyAddre;
+    }
+
+    public PinFanActivity activitiyAddre(String activitiyAddre) {
+        this.activitiyAddre = activitiyAddre;
+        return this;
+    }
+
+    public void setActivitiyAddre(String activitiyAddre) {
+        this.activitiyAddre = activitiyAddre;
     }
 
     public String getDescrption() {
@@ -220,6 +340,32 @@ public class PinFanActivity implements Serializable {
 
     public void setAppointDatetime(Instant appointDatetime) {
         this.appointDatetime = appointDatetime;
+    }
+
+    public Instant getAppointEndDatetime() {
+        return appointEndDatetime;
+    }
+
+    public PinFanActivity appointEndDatetime(Instant appointEndDatetime) {
+        this.appointEndDatetime = appointEndDatetime;
+        return this;
+    }
+
+    public void setAppointEndDatetime(Instant appointEndDatetime) {
+        this.appointEndDatetime = appointEndDatetime;
+    }
+
+    public String getSalerUrl() {
+        return salerUrl;
+    }
+
+    public PinFanActivity salerUrl(String salerUrl) {
+        this.salerUrl = salerUrl;
+        return this;
+    }
+
+    public void setSalerUrl(String salerUrl) {
+        this.salerUrl = salerUrl;
     }
 
     public Integer getLowerLimit() {
@@ -325,29 +471,29 @@ public class PinFanActivity implements Serializable {
         this.attendees = attendees;
     }
 
-    public Set<PinfanPics> getRinfanPics() {
-        return rinfanPics;
+    public Set<PinfanPics> getPinfanPics() {
+        return pinfanPics;
     }
 
-    public PinFanActivity rinfanPics(Set<PinfanPics> pinfanPics) {
-        this.rinfanPics = pinfanPics;
+    public PinFanActivity pinfanPics(Set<PinfanPics> pinfanPics) {
+        this.pinfanPics = pinfanPics;
         return this;
     }
 
-    public PinFanActivity addRinfanPics(PinfanPics pinfanPics) {
-        this.rinfanPics.add(pinfanPics);
+    public PinFanActivity addPinfanPics(PinfanPics pinfanPics) {
+        this.pinfanPics.add(pinfanPics);
         pinfanPics.setPinFanActivity(this);
         return this;
     }
 
-    public PinFanActivity removeRinfanPics(PinfanPics pinfanPics) {
-        this.rinfanPics.remove(pinfanPics);
+    public PinFanActivity removePinfanPics(PinfanPics pinfanPics) {
+        this.pinfanPics.remove(pinfanPics);
         pinfanPics.setPinFanActivity(null);
         return this;
     }
 
-    public void setRinfanPics(Set<PinfanPics> pinfanPics) {
-        this.rinfanPics = pinfanPics;
+    public void setPinfanPics(Set<PinfanPics> pinfanPics) {
+        this.pinfanPics = pinfanPics;
     }
 
     public Set<Rates> getRates() {
@@ -401,11 +547,18 @@ public class PinFanActivity implements Serializable {
         return "PinFanActivity{" +
             "id=" + getId() +
             ", wechatUserId='" + getWechatUserId() + "'" +
+            ", avatar='" + getAvatar() + "'" +
+            ", nickName='" + getNickName() + "'" +
             ", activitiyType=" + getActivitiyType() +
+            ", activitiyTile='" + getActivitiyTile() + "'" +
+            ", budget=" + getBudget() +
+            ", activitiyAddre='" + getActivitiyAddre() + "'" +
             ", descrption='" + getDescrption() + "'" +
             ", organizeUser='" + getOrganizeUser() + "'" +
             ", coverPicture='" + getCoverPicture() + "'" +
             ", appointDatetime='" + getAppointDatetime() + "'" +
+            ", appointEndDatetime='" + getAppointEndDatetime() + "'" +
+            ", salerUrl='" + getSalerUrl() + "'" +
             ", lowerLimit=" + getLowerLimit() +
             ", upperLimit=" + getUpperLimit() +
             ", payType='" + getPayType() + "'" +

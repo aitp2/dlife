@@ -1,5 +1,9 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.domain.PinfanPics;
+import com.aitp.dlife.service.PinfanPicsService;
+import com.aitp.dlife.service.dto.PinfanPicsDTO;
+import com.aitp.dlife.service.mapper.PinfanPicsMapper;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.PinFanActivityService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -20,8 +24,11 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * REST controller for managing PinFanActivity.
@@ -36,8 +43,10 @@ public class PinFanActivityResource {
 
     private final PinFanActivityService pinFanActivityService;
 
-    public PinFanActivityResource(PinFanActivityService pinFanActivityService) {
+    private final PinfanPicsService pinfanPicsService;
+    public PinFanActivityResource(PinFanActivityService pinFanActivityService,PinfanPicsService pinfanPicsService) {
         this.pinFanActivityService = pinFanActivityService;
+        this.pinfanPicsService=pinfanPicsService;
     }
 
     /**
@@ -54,7 +63,17 @@ public class PinFanActivityResource {
         if (pinFanActivityDTO.getId() != null) {
             throw new BadRequestAlertException("A new pinFanActivity cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        Set<PinfanPicsDTO> pinfanPicsDTOS=new HashSet<>();
         PinFanActivityDTO result = pinFanActivityService.save(pinFanActivityDTO);
+
+        if(pinFanActivityDTO.getPinfanPics()!=null&&!pinFanActivityDTO.getPinfanPics().isEmpty()){
+            for(PinfanPicsDTO pics:pinFanActivityDTO.getPinfanPics()){
+                pics.setCreateTime(Instant.now());
+                pics.setPinFanActivityId(result.getId());
+                pinfanPicsDTOS.add(pinfanPicsService.save(pics));
+            }
+        }
+        result.setPinfanPics(pinfanPicsDTOS);
         return ResponseEntity.created(new URI("/api/pin-fan-activities/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);

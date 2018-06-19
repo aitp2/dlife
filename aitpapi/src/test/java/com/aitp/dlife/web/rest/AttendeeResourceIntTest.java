@@ -55,6 +55,9 @@ public class AttendeeResourceIntTest {
     private static final Instant DEFAULT_PARTICIPATION_TIME = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_PARTICIPATION_TIME = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
+    private static final String DEFAULT_ACTIVITIY_TILE = "AAAAAAAAAA";
+    private static final String UPDATED_ACTIVITIY_TILE = "BBBBBBBBBB";
+
     @Autowired
     private AttendeeRepository attendeeRepository;
 
@@ -102,7 +105,8 @@ public class AttendeeResourceIntTest {
             .wechatUserId(DEFAULT_WECHAT_USER_ID)
             .nickName(DEFAULT_NICK_NAME)
             .avatar(DEFAULT_AVATAR)
-            .participationTime(DEFAULT_PARTICIPATION_TIME);
+            .participationTime(DEFAULT_PARTICIPATION_TIME)
+            .activitiyTile(DEFAULT_ACTIVITIY_TILE);
         return attendee;
     }
 
@@ -131,6 +135,7 @@ public class AttendeeResourceIntTest {
         assertThat(testAttendee.getNickName()).isEqualTo(DEFAULT_NICK_NAME);
         assertThat(testAttendee.getAvatar()).isEqualTo(DEFAULT_AVATAR);
         assertThat(testAttendee.getParticipationTime()).isEqualTo(DEFAULT_PARTICIPATION_TIME);
+        assertThat(testAttendee.getActivitiyTile()).isEqualTo(DEFAULT_ACTIVITIY_TILE);
     }
 
     @Test
@@ -167,7 +172,8 @@ public class AttendeeResourceIntTest {
             .andExpect(jsonPath("$.[*].wechatUserId").value(hasItem(DEFAULT_WECHAT_USER_ID.toString())))
             .andExpect(jsonPath("$.[*].nickName").value(hasItem(DEFAULT_NICK_NAME.toString())))
             .andExpect(jsonPath("$.[*].avatar").value(hasItem(DEFAULT_AVATAR.toString())))
-            .andExpect(jsonPath("$.[*].participationTime").value(hasItem(DEFAULT_PARTICIPATION_TIME.toString())));
+            .andExpect(jsonPath("$.[*].participationTime").value(hasItem(DEFAULT_PARTICIPATION_TIME.toString())))
+            .andExpect(jsonPath("$.[*].activitiyTile").value(hasItem(DEFAULT_ACTIVITIY_TILE.toString())));
     }
 
     @Test
@@ -184,7 +190,8 @@ public class AttendeeResourceIntTest {
             .andExpect(jsonPath("$.wechatUserId").value(DEFAULT_WECHAT_USER_ID.toString()))
             .andExpect(jsonPath("$.nickName").value(DEFAULT_NICK_NAME.toString()))
             .andExpect(jsonPath("$.avatar").value(DEFAULT_AVATAR.toString()))
-            .andExpect(jsonPath("$.participationTime").value(DEFAULT_PARTICIPATION_TIME.toString()));
+            .andExpect(jsonPath("$.participationTime").value(DEFAULT_PARTICIPATION_TIME.toString()))
+            .andExpect(jsonPath("$.activitiyTile").value(DEFAULT_ACTIVITIY_TILE.toString()));
     }
 
     @Test
@@ -210,7 +217,8 @@ public class AttendeeResourceIntTest {
             .wechatUserId(UPDATED_WECHAT_USER_ID)
             .nickName(UPDATED_NICK_NAME)
             .avatar(UPDATED_AVATAR)
-            .participationTime(UPDATED_PARTICIPATION_TIME);
+            .participationTime(UPDATED_PARTICIPATION_TIME)
+            .activitiyTile(UPDATED_ACTIVITIY_TILE);
         AttendeeDTO attendeeDTO = attendeeMapper.toDto(updatedAttendee);
 
         restAttendeeMockMvc.perform(put("/api/attendees")
@@ -226,6 +234,7 @@ public class AttendeeResourceIntTest {
         assertThat(testAttendee.getNickName()).isEqualTo(UPDATED_NICK_NAME);
         assertThat(testAttendee.getAvatar()).isEqualTo(UPDATED_AVATAR);
         assertThat(testAttendee.getParticipationTime()).isEqualTo(UPDATED_PARTICIPATION_TIME);
+        assertThat(testAttendee.getActivitiyTile()).isEqualTo(UPDATED_ACTIVITIY_TILE);
     }
 
     @Test

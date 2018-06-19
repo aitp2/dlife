@@ -4,11 +4,18 @@ export class PinFanActivity implements BaseEntity {
     constructor(
         public id?: number,
         public wechatUserId?: string,
+        public avatar?: string,
+        public nickName?: string,
         public activitiyType?: number,
+        public activitiyTile?: string,
+        public budget?: number,
+        public activitiyAddre?: string,
         public descrption?: string,
         public organizeUser?: string,
         public coverPicture?: string,
         public appointDatetime?: any,
+        public appointEndDatetime?: any,
+        public salerUrl?: string,
         public lowerLimit?: number,
         public upperLimit?: number,
         public payType?: string,
@@ -16,7 +23,7 @@ export class PinFanActivity implements BaseEntity {
         public comment?: string,
         public isActive?: boolean,
         public attendees?: BaseEntity[],
-        public rinfanPics?: BaseEntity[],
+        public pinfanPics?: BaseEntity[],
         public rates?: BaseEntity[],
     ) {
         this.isActive = false;

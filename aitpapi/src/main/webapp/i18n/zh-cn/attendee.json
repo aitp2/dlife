@@ -20,12 +20,14 @@
             "nickName": "Nick Name",
             "avatar": "Avatar",
             "participationTime": "Participation Time",
+            "activitiyTile": "Activitiy Tile",
             "pinFanActivity": "Pin Fan Activity",
             "help": {
                 "wechatUserId": "参与人ID",
                 "nickName": "参与者昵称",
                 "avatar": "参与者头像",
-                "participationTime": "参与时间"
+                "participationTime": "参与时间",
+                "activitiyTile": "活动名称"
             }
         }
     }

@@ -20,7 +20,7 @@
             "rating": "Rating",
             "createTime": "Create Time",
             "modifyTime": "Modify Time",
-            "rinfanPics": "Rinfan Pics",
+            "pinfanPics": "Pinfan Pics",
             "pinFanActivity": "Pin Fan Activity"
         }
     }

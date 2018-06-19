@@ -4,6 +4,7 @@ import com.aitp.dlife.AitpapiApp;
 
 import com.aitp.dlife.domain.Rates;
 import com.aitp.dlife.repository.RatesRepository;
+import com.aitp.dlife.service.PinfanPicsService;
 import com.aitp.dlife.service.RatesService;
 import com.aitp.dlife.service.dto.RatesDTO;
 import com.aitp.dlife.service.mapper.RatesMapper;
@@ -59,6 +60,9 @@ public class RatesResourceIntTest {
     private RatesRepository ratesRepository;
 
     @Autowired
+    private PinfanPicsService pinfanPicsService;
+
+    @Autowired
     private RatesMapper ratesMapper;
 
     @Autowired
@@ -83,7 +87,7 @@ public class RatesResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final RatesResource ratesResource = new RatesResource(ratesService);
+        final RatesResource ratesResource = new RatesResource(ratesService,pinfanPicsService);
         this.restRatesMockMvc = MockMvcBuilders.standaloneSetup(ratesResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

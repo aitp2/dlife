@@ -7,7 +7,7 @@ export class Rates implements BaseEntity {
         public rating?: number,
         public createTime?: any,
         public modifyTime?: any,
-        public rinfanPics?: BaseEntity[],
+        public pinfanPics?: BaseEntity[],
         public pinFanActivityId?: number,
     ) {
     }

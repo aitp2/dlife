@@ -3,7 +3,7 @@
     "relationships": [
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "rinfanPics",
+            "relationshipName": "pinfanPics",
             "otherEntityName": "pinfanPics",
             "otherEntityRelationshipName": "rate"
         },
@@ -25,11 +25,7 @@
         },
         {
             "fieldName": "rating",
-            "fieldType": "Integer",
-            "fieldValidateRules": [
-                "max"
-            ],
-            "fieldValidateRulesMax": 2
+            "fieldType": "Integer"
         },
         {
             "fieldName": "createTime",

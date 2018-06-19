@@ -68,6 +68,8 @@ public class CacheConfiguration {
             cm.createCache(com.aitp.dlife.domain.ClockIn.class.getName() + ".pics", jcacheConfiguration);
             cm.createCache(com.aitp.dlife.domain.Pics.class.getName(), jcacheConfiguration);
             cm.createCache(com.aitp.dlife.domain.ClockinSummary.class.getName(), jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.PinFanActivity.class.getName() + ".pinfanPics", jcacheConfiguration);
+            cm.createCache(com.aitp.dlife.domain.Rates.class.getName() + ".pinfanPics", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

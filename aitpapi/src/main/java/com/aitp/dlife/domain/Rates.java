@@ -33,7 +33,6 @@ public class Rates implements Serializable {
     @Column(name = "comments", length = 1024)
     private String comments;
 
-    @Max(value = 2)
     @Column(name = "rating")
     private Integer rating;
 
@@ -46,7 +45,7 @@ public class Rates implements Serializable {
     @OneToMany(mappedBy = "rate")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<PinfanPics> rinfanPics = new HashSet<>();
+    private Set<PinfanPics> pinfanPics = new HashSet<>();
 
     @ManyToOne
     private PinFanActivity pinFanActivity;
@@ -112,29 +111,29 @@ public class Rates implements Serializable {
         this.modifyTime = modifyTime;
     }
 
-    public Set<PinfanPics> getRinfanPics() {
-        return rinfanPics;
+    public Set<PinfanPics> getPinfanPics() {
+        return pinfanPics;
     }
 
-    public Rates rinfanPics(Set<PinfanPics> pinfanPics) {
-        this.rinfanPics = pinfanPics;
+    public Rates pinfanPics(Set<PinfanPics> pinfanPics) {
+        this.pinfanPics = pinfanPics;
         return this;
     }
 
-    public Rates addRinfanPics(PinfanPics pinfanPics) {
-        this.rinfanPics.add(pinfanPics);
+    public Rates addPinfanPics(PinfanPics pinfanPics) {
+        this.pinfanPics.add(pinfanPics);
         pinfanPics.setRate(this);
         return this;
     }
 
-    public Rates removeRinfanPics(PinfanPics pinfanPics) {
-        this.rinfanPics.remove(pinfanPics);
+    public Rates removePinfanPics(PinfanPics pinfanPics) {
+        this.pinfanPics.remove(pinfanPics);
         pinfanPics.setRate(null);
         return this;
     }
 
-    public void setRinfanPics(Set<PinfanPics> pinfanPics) {
-        this.rinfanPics = pinfanPics;
+    public void setPinfanPics(Set<PinfanPics> pinfanPics) {
+        this.pinfanPics = pinfanPics;
     }
 
     public PinFanActivity getPinFanActivity() {

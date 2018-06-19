@@ -20,6 +20,10 @@
         <dd>
             <span>{{attendee.participationTime | date:'medium'}}</span>
         </dd>
+        <dt><span jhiTranslate="aitpapiApp.attendee.activitiyTile" [ngbTooltip]="'aitpapiApp.attendee.help.activitiyTile' | translate">Activitiy Tile</span></dt>
+        <dd>
+            <span>{{attendee.activitiyTile}}</span>
+        </dd>
         <dt><span jhiTranslate="aitpapiApp.attendee.pinFanActivity">Pin Fan Activity</span></dt>
         <dd>
             <div *ngIf="attendee.pinFanActivityId">

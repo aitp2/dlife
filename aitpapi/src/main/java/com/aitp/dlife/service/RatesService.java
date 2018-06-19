@@ -4,6 +4,7 @@ import com.aitp.dlife.domain.Rates;
 import com.aitp.dlife.repository.RatesRepository;
 import com.aitp.dlife.service.dto.RatesDTO;
 import com.aitp.dlife.service.mapper.RatesMapper;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -52,8 +53,16 @@ public class RatesService {
     @Transactional(readOnly = true)
     public Page<RatesDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Rates");
-        return ratesRepository.findAll(pageable)
-            .map(ratesMapper::toDto);
+        Page<Rates> all = ratesRepository.findAll(pageable);
+        if(all!=null){
+            for(Rates rates:all){
+                if(Hibernate.isInitialized(rates.getPinfanPics())){
+                    Hibernate.initialize(rates.getPinfanPics());
+                }
+            }
+
+        }
+        return all.map(ratesMapper::toDto);
     }
 
     /**
@@ -66,6 +75,11 @@ public class RatesService {
     public RatesDTO findOne(Long id) {
         log.debug("Request to get Rates : {}", id);
         Rates rates = ratesRepository.findOne(id);
+        if(rates!=null){
+            if(Hibernate.isInitialized(rates.getPinfanPics())){
+                Hibernate.initialize(rates.getPinfanPics());
+            }
+        }
         return ratesMapper.toDto(rates);
     }
 

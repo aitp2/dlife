@@ -14,7 +14,7 @@ public interface RatesMapper extends EntityMapper<RatesDTO, Rates> {
     @Mapping(source = "pinFanActivity.id", target = "pinFanActivityId")
     RatesDTO toDto(Rates rates);
 
-    @Mapping(target = "rinfanPics", ignore = true)
+//    @Mapping(target = "pinfanPics", ignore = true)
     @Mapping(source = "pinFanActivityId", target = "pinFanActivity")
     Rates toEntity(RatesDTO ratesDTO);
 

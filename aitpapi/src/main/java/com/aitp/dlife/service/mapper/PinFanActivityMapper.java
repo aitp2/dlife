@@ -13,7 +13,7 @@ public interface PinFanActivityMapper extends EntityMapper<PinFanActivityDTO, Pi
 
 
     @Mapping(target = "attendees", ignore = true)
-    @Mapping(target = "rinfanPics", ignore = true)
+    @Mapping(target = "pinfanPics", ignore = true)
     @Mapping(target = "rates", ignore = true)
     PinFanActivity toEntity(PinFanActivityDTO pinFanActivityDTO);
 

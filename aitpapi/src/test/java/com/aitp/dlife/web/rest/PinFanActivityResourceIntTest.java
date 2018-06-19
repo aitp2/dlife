@@ -5,10 +5,10 @@ import com.aitp.dlife.AitpapiApp;
 import com.aitp.dlife.domain.PinFanActivity;
 import com.aitp.dlife.repository.PinFanActivityRepository;
 import com.aitp.dlife.service.PinFanActivityService;
+import com.aitp.dlife.service.PinfanPicsService;
 import com.aitp.dlife.service.dto.PinFanActivityDTO;
 import com.aitp.dlife.service.mapper.PinFanActivityMapper;
 import com.aitp.dlife.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -81,7 +81,8 @@ public class PinFanActivityResourceIntTest {
 
     @Autowired
     private PinFanActivityRepository pinFanActivityRepository;
-
+    @Autowired
+    private PinfanPicsService pinfanPicsService;
     @Autowired
     private PinFanActivityMapper pinFanActivityMapper;
 
@@ -107,7 +108,7 @@ public class PinFanActivityResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PinFanActivityResource pinFanActivityResource = new PinFanActivityResource(pinFanActivityService);
+        final PinFanActivityResource pinFanActivityResource = new PinFanActivityResource(pinFanActivityService,pinfanPicsService);
         this.restPinFanActivityMockMvc = MockMvcBuilders.standaloneSetup(pinFanActivityResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

@@ -7,6 +7,7 @@ export class Attendee implements BaseEntity {
         public nickName?: string,
         public avatar?: string,
         public participationTime?: any,
+        public activitiyTile?: string,
         public pinFanActivityId?: number,
     ) {
     }

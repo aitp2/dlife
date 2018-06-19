@@ -65,6 +65,8 @@ export class PinFanActivityService {
         const copy: PinFanActivity = Object.assign({}, pinFanActivity);
         copy.appointDatetime = this.dateUtils
             .convertDateTimeFromServer(pinFanActivity.appointDatetime);
+        copy.appointEndDatetime = this.dateUtils
+            .convertDateTimeFromServer(pinFanActivity.appointEndDatetime);
         copy.deadline = this.dateUtils
             .convertDateTimeFromServer(pinFanActivity.deadline);
         return copy;
@@ -77,6 +79,8 @@ export class PinFanActivityService {
         const copy: PinFanActivity = Object.assign({}, pinFanActivity);
 
         copy.appointDatetime = this.dateUtils.toDate(pinFanActivity.appointDatetime);
+
+        copy.appointEndDatetime = this.dateUtils.toDate(pinFanActivity.appointEndDatetime);
 
         copy.deadline = this.dateUtils.toDate(pinFanActivity.deadline);
         return copy;

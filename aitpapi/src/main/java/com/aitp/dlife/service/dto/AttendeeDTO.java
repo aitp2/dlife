@@ -26,6 +26,9 @@ public class AttendeeDTO implements Serializable {
 
     private Instant participationTime;
 
+    @Size(max = 128)
+    private String activitiyTile;
+
     private Long pinFanActivityId;
 
     public Long getId() {
@@ -68,6 +71,14 @@ public class AttendeeDTO implements Serializable {
         this.participationTime = participationTime;
     }
 
+    public String getActivitiyTile() {
+        return activitiyTile;
+    }
+
+    public void setActivitiyTile(String activitiyTile) {
+        this.activitiyTile = activitiyTile;
+    }
+
     public Long getPinFanActivityId() {
         return pinFanActivityId;
     }
@@ -105,6 +116,7 @@ public class AttendeeDTO implements Serializable {
             ", nickName='" + getNickName() + "'" +
             ", avatar='" + getAvatar() + "'" +
             ", participationTime='" + getParticipationTime() + "'" +
+            ", activitiyTile='" + getActivitiyTile() + "'" +
             "}";
     }
 }
