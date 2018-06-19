@@ -16,15 +16,6 @@
     ],
     "fields": [
         {
-            "fieldName": "wechatUserId",
-            "javadoc": "用户id 创建人",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "maxlength"
-            ],
-            "fieldValidateRulesMaxlength": 128
-        },
-        {
             "fieldName": "title",
             "javadoc": "活动标题",
             "fieldType": "String",
@@ -41,6 +32,51 @@
                 "maxlength"
             ],
             "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "wechatUserId",
+            "javadoc": "用户id 创建人",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "nickName",
+            "javadoc": "昵称",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "avatar",
+            "javadoc": "头像",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 1024
+        },
+        {
+            "fieldName": "project",
+            "javadoc": "项目名称",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "companyRole",
+            "javadoc": "角色",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 255
         },
         {
             "fieldName": "signStartTime",

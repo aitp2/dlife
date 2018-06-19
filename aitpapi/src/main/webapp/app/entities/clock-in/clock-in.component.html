@@ -17,6 +17,7 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="title"><span jhiTranslate="aitpapiApp.clockIn.title">Title</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="signNote"><span jhiTranslate="aitpapiApp.clockIn.signNote">Sign Note</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="punchDateTime"><span jhiTranslate="aitpapiApp.clockIn.punchDateTime">Punch Date Time</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="activityParticipationId"><span jhiTranslate="aitpapiApp.clockIn.activityParticipation">Activity Participation</span> <span class="fa fa-sort"></span></th>
@@ -26,6 +27,7 @@
             <tbody>
             <tr *ngFor="let clockIn of clockIns ;trackBy: trackId">
                 <td><a [routerLink]="['../clock-in', clockIn.id ]">{{clockIn.id}}</a></td>
+                <td>{{clockIn.title}}</td>
                 <td>{{clockIn.signNote}}</td>
                 <td>{{clockIn.punchDateTime | date:'medium'}}</td>
                 <td>

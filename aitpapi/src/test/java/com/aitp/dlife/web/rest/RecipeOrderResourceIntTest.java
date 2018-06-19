@@ -46,6 +46,12 @@ public class RecipeOrderResourceIntTest {
     private static final String DEFAULT_WECHAT_USER_ID = "AAAAAAAAAA";
     private static final String UPDATED_WECHAT_USER_ID = "BBBBBBBBBB";
 
+    private static final String DEFAULT_AVATAR = "AAAAAAAAAA";
+    private static final String UPDATED_AVATAR = "BBBBBBBBBB";
+
+    private static final String DEFAULT_NICK_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NICK_NAME = "BBBBBBBBBB";
+
     private static final Integer DEFAULT_RECIPE_VERSION = 9;
     private static final Integer UPDATED_RECIPE_VERSION = 8;
 
@@ -103,6 +109,8 @@ public class RecipeOrderResourceIntTest {
     public static RecipeOrder createEntity(EntityManager em) {
         RecipeOrder recipeOrder = new RecipeOrder()
             .wechatUserId(DEFAULT_WECHAT_USER_ID)
+            .avatar(DEFAULT_AVATAR)
+            .nickName(DEFAULT_NICK_NAME)
             .recipeVersion(DEFAULT_RECIPE_VERSION)
             .price(DEFAULT_PRICE)
             .createTime(DEFAULT_CREATE_TIME)
@@ -132,6 +140,8 @@ public class RecipeOrderResourceIntTest {
         assertThat(recipeOrderList).hasSize(databaseSizeBeforeCreate + 1);
         RecipeOrder testRecipeOrder = recipeOrderList.get(recipeOrderList.size() - 1);
         assertThat(testRecipeOrder.getWechatUserId()).isEqualTo(DEFAULT_WECHAT_USER_ID);
+        assertThat(testRecipeOrder.getAvatar()).isEqualTo(DEFAULT_AVATAR);
+        assertThat(testRecipeOrder.getNickName()).isEqualTo(DEFAULT_NICK_NAME);
         assertThat(testRecipeOrder.getRecipeVersion()).isEqualTo(DEFAULT_RECIPE_VERSION);
         assertThat(testRecipeOrder.getPrice()).isEqualTo(DEFAULT_PRICE);
         assertThat(testRecipeOrder.getCreateTime()).isEqualTo(DEFAULT_CREATE_TIME);
@@ -170,6 +180,8 @@ public class RecipeOrderResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(recipeOrder.getId().intValue())))
             .andExpect(jsonPath("$.[*].wechatUserId").value(hasItem(DEFAULT_WECHAT_USER_ID.toString())))
+            .andExpect(jsonPath("$.[*].avatar").value(hasItem(DEFAULT_AVATAR.toString())))
+            .andExpect(jsonPath("$.[*].nickName").value(hasItem(DEFAULT_NICK_NAME.toString())))
             .andExpect(jsonPath("$.[*].recipeVersion").value(hasItem(DEFAULT_RECIPE_VERSION)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
             .andExpect(jsonPath("$.[*].createTime").value(hasItem(DEFAULT_CREATE_TIME.toString())))
@@ -188,6 +200,8 @@ public class RecipeOrderResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(recipeOrder.getId().intValue()))
             .andExpect(jsonPath("$.wechatUserId").value(DEFAULT_WECHAT_USER_ID.toString()))
+            .andExpect(jsonPath("$.avatar").value(DEFAULT_AVATAR.toString()))
+            .andExpect(jsonPath("$.nickName").value(DEFAULT_NICK_NAME.toString()))
             .andExpect(jsonPath("$.recipeVersion").value(DEFAULT_RECIPE_VERSION))
             .andExpect(jsonPath("$.price").value(DEFAULT_PRICE.doubleValue()))
             .andExpect(jsonPath("$.createTime").value(DEFAULT_CREATE_TIME.toString()))
@@ -215,6 +229,8 @@ public class RecipeOrderResourceIntTest {
         em.detach(updatedRecipeOrder);
         updatedRecipeOrder
             .wechatUserId(UPDATED_WECHAT_USER_ID)
+            .avatar(UPDATED_AVATAR)
+            .nickName(UPDATED_NICK_NAME)
             .recipeVersion(UPDATED_RECIPE_VERSION)
             .price(UPDATED_PRICE)
             .createTime(UPDATED_CREATE_TIME)
@@ -231,6 +247,8 @@ public class RecipeOrderResourceIntTest {
         assertThat(recipeOrderList).hasSize(databaseSizeBeforeUpdate);
         RecipeOrder testRecipeOrder = recipeOrderList.get(recipeOrderList.size() - 1);
         assertThat(testRecipeOrder.getWechatUserId()).isEqualTo(UPDATED_WECHAT_USER_ID);
+        assertThat(testRecipeOrder.getAvatar()).isEqualTo(UPDATED_AVATAR);
+        assertThat(testRecipeOrder.getNickName()).isEqualTo(UPDATED_NICK_NAME);
         assertThat(testRecipeOrder.getRecipeVersion()).isEqualTo(UPDATED_RECIPE_VERSION);
         assertThat(testRecipeOrder.getPrice()).isEqualTo(UPDATED_PRICE);
         assertThat(testRecipeOrder.getCreateTime()).isEqualTo(UPDATED_CREATE_TIME);

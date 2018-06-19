@@ -34,6 +34,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="project" type="varchar(128)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="participation_time" type="timestamp">
                 <constraints nullable="true" />
             </column>

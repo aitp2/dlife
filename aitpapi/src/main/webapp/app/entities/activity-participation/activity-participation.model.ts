@@ -6,6 +6,7 @@ export class ActivityParticipation implements BaseEntity {
         public wechatUserId?: string,
         public nickName?: string,
         public avatar?: string,
+        public project?: string,
         public participationTime?: any,
         public clockIns?: BaseEntity[],
         public activityId?: number,

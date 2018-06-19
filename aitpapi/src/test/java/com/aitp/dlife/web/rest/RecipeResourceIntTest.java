@@ -46,6 +46,12 @@ public class RecipeResourceIntTest {
     private static final String DEFAULT_WECHAT_USER_ID = "AAAAAAAAAA";
     private static final String UPDATED_WECHAT_USER_ID = "BBBBBBBBBB";
 
+    private static final String DEFAULT_AVATAR = "AAAAAAAAAA";
+    private static final String UPDATED_AVATAR = "BBBBBBBBBB";
+
+    private static final String DEFAULT_NICK_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NICK_NAME = "BBBBBBBBBB";
+
     private static final String DEFAULT_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_TITLE = "BBBBBBBBBB";
 
@@ -124,6 +130,8 @@ public class RecipeResourceIntTest {
     public static Recipe createEntity(EntityManager em) {
         Recipe recipe = new Recipe()
             .wechatUserId(DEFAULT_WECHAT_USER_ID)
+            .avatar(DEFAULT_AVATAR)
+            .nickName(DEFAULT_NICK_NAME)
             .title(DEFAULT_TITLE)
             .content(DEFAULT_CONTENT)
             .startTime(DEFAULT_START_TIME)
@@ -160,6 +168,8 @@ public class RecipeResourceIntTest {
         assertThat(recipeList).hasSize(databaseSizeBeforeCreate + 1);
         Recipe testRecipe = recipeList.get(recipeList.size() - 1);
         assertThat(testRecipe.getWechatUserId()).isEqualTo(DEFAULT_WECHAT_USER_ID);
+        assertThat(testRecipe.getAvatar()).isEqualTo(DEFAULT_AVATAR);
+        assertThat(testRecipe.getNickName()).isEqualTo(DEFAULT_NICK_NAME);
         assertThat(testRecipe.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testRecipe.getContent()).isEqualTo(DEFAULT_CONTENT);
         assertThat(testRecipe.getStartTime()).isEqualTo(DEFAULT_START_TIME);
@@ -205,6 +215,8 @@ public class RecipeResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(recipe.getId().intValue())))
             .andExpect(jsonPath("$.[*].wechatUserId").value(hasItem(DEFAULT_WECHAT_USER_ID.toString())))
+            .andExpect(jsonPath("$.[*].avatar").value(hasItem(DEFAULT_AVATAR.toString())))
+            .andExpect(jsonPath("$.[*].nickName").value(hasItem(DEFAULT_NICK_NAME.toString())))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())))
             .andExpect(jsonPath("$.[*].content").value(hasItem(DEFAULT_CONTENT.toString())))
             .andExpect(jsonPath("$.[*].startTime").value(hasItem(DEFAULT_START_TIME.toString())))
@@ -230,6 +242,8 @@ public class RecipeResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(recipe.getId().intValue()))
             .andExpect(jsonPath("$.wechatUserId").value(DEFAULT_WECHAT_USER_ID.toString()))
+            .andExpect(jsonPath("$.avatar").value(DEFAULT_AVATAR.toString()))
+            .andExpect(jsonPath("$.nickName").value(DEFAULT_NICK_NAME.toString()))
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE.toString()))
             .andExpect(jsonPath("$.content").value(DEFAULT_CONTENT.toString()))
             .andExpect(jsonPath("$.startTime").value(DEFAULT_START_TIME.toString()))
@@ -264,6 +278,8 @@ public class RecipeResourceIntTest {
         em.detach(updatedRecipe);
         updatedRecipe
             .wechatUserId(UPDATED_WECHAT_USER_ID)
+            .avatar(UPDATED_AVATAR)
+            .nickName(UPDATED_NICK_NAME)
             .title(UPDATED_TITLE)
             .content(UPDATED_CONTENT)
             .startTime(UPDATED_START_TIME)
@@ -287,6 +303,8 @@ public class RecipeResourceIntTest {
         assertThat(recipeList).hasSize(databaseSizeBeforeUpdate);
         Recipe testRecipe = recipeList.get(recipeList.size() - 1);
         assertThat(testRecipe.getWechatUserId()).isEqualTo(UPDATED_WECHAT_USER_ID);
+        assertThat(testRecipe.getAvatar()).isEqualTo(UPDATED_AVATAR);
+        assertThat(testRecipe.getNickName()).isEqualTo(UPDATED_NICK_NAME);
         assertThat(testRecipe.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testRecipe.getContent()).isEqualTo(UPDATED_CONTENT);
         assertThat(testRecipe.getStartTime()).isEqualTo(UPDATED_START_TIME);

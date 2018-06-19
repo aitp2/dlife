@@ -24,6 +24,28 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.recipeOrder.avatar" for="field_avatar" [ngbTooltip]="'aitpapiApp.recipeOrder.help.avatar' | translate">Avatar</label>
+            <input type="text" class="form-control" name="avatar" id="field_avatar"
+                [(ngModel)]="recipeOrder.avatar" maxlength="1024"/>
+            <div [hidden]="!(editForm.controls.avatar?.dirty && editForm.controls.avatar?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.avatar?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 1024 }">
+                   This field cannot be longer than 1024 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.recipeOrder.nickName" for="field_nickName" [ngbTooltip]="'aitpapiApp.recipeOrder.help.nickName' | translate">Nick Name</label>
+            <input type="text" class="form-control" name="nickName" id="field_nickName"
+                [(ngModel)]="recipeOrder.nickName" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.nickName?.dirty && editForm.controls.nickName?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.nickName?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 128 }">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="form-control-label" jhiTranslate="aitpapiApp.recipeOrder.recipeVersion" for="field_recipeVersion">Recipe Version</label>
             <input type="number" class="form-control" name="recipeVersion" id="field_recipeVersion"
                 [(ngModel)]="recipeOrder.recipeVersion" max="9"/>

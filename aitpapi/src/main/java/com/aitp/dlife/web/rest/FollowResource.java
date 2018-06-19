@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -48,7 +49,7 @@ public class FollowResource {
      */
     @PostMapping("/follows")
     @Timed
-    public ResponseEntity<FollowDTO> createFollow(@RequestBody FollowDTO followDTO) throws URISyntaxException {
+    public ResponseEntity<FollowDTO> createFollow(@Valid @RequestBody FollowDTO followDTO) throws URISyntaxException {
         log.debug("REST request to save Follow : {}", followDTO);
         if (followDTO.getId() != null) {
             throw new BadRequestAlertException("A new follow cannot already have an ID", ENTITY_NAME, "idexists");
@@ -70,7 +71,7 @@ public class FollowResource {
      */
     @PutMapping("/follows")
     @Timed
-    public ResponseEntity<FollowDTO> updateFollow(@RequestBody FollowDTO followDTO) throws URISyntaxException {
+    public ResponseEntity<FollowDTO> updateFollow(@Valid @RequestBody FollowDTO followDTO) throws URISyntaxException {
         log.debug("REST request to update Follow : {}", followDTO);
         if (followDTO.getId() == null) {
             return createFollow(followDTO);

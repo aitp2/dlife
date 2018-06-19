@@ -17,12 +17,18 @@
                 "title": "Recipe Order"
             },
             "wechatUserId": "Wechat User Id",
+            "avatar": "Avatar",
+            "nickName": "Nick Name",
             "recipeVersion": "Recipe Version",
             "price": "Price",
             "createTime": "Create Time",
             "modifyTime": "Modify Time",
             "evaluat": "Evaluat",
-            "recipe": "Recipe"
+            "recipe": "Recipe",
+            "help": {
+                "avatar": "头像",
+                "nickName": "昵称"
+            }
         }
     }
 }

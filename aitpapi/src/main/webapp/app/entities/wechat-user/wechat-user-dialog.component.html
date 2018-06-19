@@ -137,6 +137,28 @@
                 [(ngModel)]="wechatUser.cookFlag" />
         </div>
         <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.wechatUser.intesting" for="field_intesting" [ngbTooltip]="'aitpapiApp.wechatUser.help.intesting' | translate">Intesting</label>
+            <input type="text" class="form-control" name="intesting" id="field_intesting"
+                [(ngModel)]="wechatUser.intesting" maxlength="1024"/>
+            <div [hidden]="!(editForm.controls.intesting?.dirty && editForm.controls.intesting?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.intesting?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 1024 }">
+                   This field cannot be longer than 1024 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aitpapiApp.wechatUser.skill" for="field_skill" [ngbTooltip]="'aitpapiApp.wechatUser.help.skill' | translate">Skill</label>
+            <input type="text" class="form-control" name="skill" id="field_skill"
+                [(ngModel)]="wechatUser.skill" maxlength="1024"/>
+            <div [hidden]="!(editForm.controls.skill?.dirty && editForm.controls.skill?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.skill?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 1024 }">
+                   This field cannot be longer than 1024 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="form-control-label" jhiTranslate="aitpapiApp.wechatUser.createTime" for="field_createTime" [ngbTooltip]="'aitpapiApp.wechatUser.help.createTime' | translate">Create Time</label>
             <div class="d-flex">
                 <input id="field_createTime" type="datetime-local" class="form-control" name="createTime" [(ngModel)]="wechatUser.createTime"

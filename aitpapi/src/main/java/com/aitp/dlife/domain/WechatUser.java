@@ -123,6 +123,22 @@ public class WechatUser implements Serializable {
     private Boolean cookFlag;
 
     /**
+     * 兴趣
+     */
+    @Size(max = 1024)
+    @ApiModelProperty(value = "兴趣")
+    @Column(name = "intesting", length = 1024)
+    private String intesting;
+
+    /**
+     * 擅长
+     */
+    @Size(max = 1024)
+    @ApiModelProperty(value = "擅长")
+    @Column(name = "skill", length = 1024)
+    private String skill;
+
+    /**
      * 创建时间
      */
     @ApiModelProperty(value = "创建时间")
@@ -301,6 +317,32 @@ public class WechatUser implements Serializable {
         this.cookFlag = cookFlag;
     }
 
+    public String getIntesting() {
+        return intesting;
+    }
+
+    public WechatUser intesting(String intesting) {
+        this.intesting = intesting;
+        return this;
+    }
+
+    public void setIntesting(String intesting) {
+        this.intesting = intesting;
+    }
+
+    public String getSkill() {
+        return skill;
+    }
+
+    public WechatUser skill(String skill) {
+        this.skill = skill;
+        return this;
+    }
+
+    public void setSkill(String skill) {
+        this.skill = skill;
+    }
+
     public Instant getCreateTime() {
         return createTime;
     }
@@ -364,6 +406,8 @@ public class WechatUser implements Serializable {
             ", sex='" + isSex() + "'" +
             ", companyRole='" + getCompanyRole() + "'" +
             ", cookFlag='" + isCookFlag() + "'" +
+            ", intesting='" + getIntesting() + "'" +
+            ", skill='" + getSkill() + "'" +
             ", createTime='" + getCreateTime() + "'" +
             ", modifyTime='" + getModifyTime() + "'" +
             "}";

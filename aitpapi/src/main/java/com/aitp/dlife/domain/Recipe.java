@@ -38,6 +38,22 @@ public class Recipe implements Serializable {
     @Column(name = "wechat_user_id", length = 128)
     private String wechatUserId;
 
+    /**
+     * 头像
+     */
+    @Size(max = 1024)
+    @ApiModelProperty(value = "头像")
+    @Column(name = "avatar", length = 1024)
+    private String avatar;
+
+    /**
+     * 昵称
+     */
+    @Size(max = 128)
+    @ApiModelProperty(value = "昵称")
+    @Column(name = "nick_name", length = 128)
+    private String nickName;
+
     @Size(max = 255)
     @Column(name = "title", length = 255)
     private String title;
@@ -106,6 +122,32 @@ public class Recipe implements Serializable {
 
     public void setWechatUserId(String wechatUserId) {
         this.wechatUserId = wechatUserId;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public Recipe avatar(String avatar) {
+        this.avatar = avatar;
+        return this;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public Recipe nickName(String nickName) {
+        this.nickName = nickName;
+        return this;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getTitle() {
@@ -327,6 +369,8 @@ public class Recipe implements Serializable {
         return "Recipe{" +
             "id=" + getId() +
             ", wechatUserId='" + getWechatUserId() + "'" +
+            ", avatar='" + getAvatar() + "'" +
+            ", nickName='" + getNickName() + "'" +
             ", title='" + getTitle() + "'" +
             ", content='" + getContent() + "'" +
             ", startTime='" + getStartTime() + "'" +

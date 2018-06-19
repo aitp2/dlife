@@ -31,6 +31,14 @@ public class ClockIn implements Serializable {
     private Long id;
 
     /**
+     * 活动标题
+     */
+    @Size(max = 64)
+    @ApiModelProperty(value = "活动标题")
+    @Column(name = "title", length = 64)
+    private String title;
+
+    /**
      * 签到日记
      */
     @Size(max = 1024)
@@ -47,7 +55,7 @@ public class ClockIn implements Serializable {
 
     @OneToMany(mappedBy = "clockIn")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONE)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Pics> pics = new HashSet<>();
 
     @ManyToOne
@@ -60,6 +68,19 @@ public class ClockIn implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public ClockIn title(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getSignNote() {
@@ -151,6 +172,7 @@ public class ClockIn implements Serializable {
     public String toString() {
         return "ClockIn{" +
             "id=" + getId() +
+            ", title='" + getTitle() + "'" +
             ", signNote='" + getSignNote() + "'" +
             ", punchDateTime='" + getPunchDateTime() + "'" +
             "}";

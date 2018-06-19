@@ -3,9 +3,13 @@ import { BaseEntity } from './../../shared';
 export class FitnessActivity implements BaseEntity {
     constructor(
         public id?: number,
-        public wechatUserId?: string,
         public title?: string,
         public descrption?: string,
+        public wechatUserId?: string,
+        public nickName?: string,
+        public avatar?: string,
+        public project?: string,
+        public companyRole?: string,
         public signStartTime?: any,
         public signEndTime?: any,
         public activityStartTime?: any,

@@ -46,8 +46,20 @@ public class FollowResourceIntTest {
     private static final Long DEFAULT_FOLLOW_USER_ID = 1L;
     private static final Long UPDATED_FOLLOW_USER_ID = 2L;
 
+    private static final String DEFAULT_FOLLOW_USER_NICKNAME = "AAAAAAAAAA";
+    private static final String UPDATED_FOLLOW_USER_NICKNAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_FOLLOW_USERAVATAR = "AAAAAAAAAA";
+    private static final String UPDATED_FOLLOW_USERAVATAR = "BBBBBBBBBB";
+
     private static final Long DEFAULT_FOLLOWED_USER_ID = 1L;
     private static final Long UPDATED_FOLLOWED_USER_ID = 2L;
+
+    private static final String DEFAULT_FOLLOWED_USER_NICKNAME = "AAAAAAAAAA";
+    private static final String UPDATED_FOLLOWED_USER_NICKNAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_FOLLOWED_USERAVATAR = "AAAAAAAAAA";
+    private static final String UPDATED_FOLLOWED_USERAVATAR = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_CREATE_TIME = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATE_TIME = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -100,7 +112,11 @@ public class FollowResourceIntTest {
     public static Follow createEntity(EntityManager em) {
         Follow follow = new Follow()
             .followUserId(DEFAULT_FOLLOW_USER_ID)
+            .followUserNickname(DEFAULT_FOLLOW_USER_NICKNAME)
+            .followUseravatar(DEFAULT_FOLLOW_USERAVATAR)
             .followedUserId(DEFAULT_FOLLOWED_USER_ID)
+            .followedUserNickname(DEFAULT_FOLLOWED_USER_NICKNAME)
+            .followedUseravatar(DEFAULT_FOLLOWED_USERAVATAR)
             .createTime(DEFAULT_CREATE_TIME)
             .modifyTime(DEFAULT_MODIFY_TIME);
         return follow;
@@ -128,7 +144,11 @@ public class FollowResourceIntTest {
         assertThat(followList).hasSize(databaseSizeBeforeCreate + 1);
         Follow testFollow = followList.get(followList.size() - 1);
         assertThat(testFollow.getFollowUserId()).isEqualTo(DEFAULT_FOLLOW_USER_ID);
+        assertThat(testFollow.getFollowUserNickname()).isEqualTo(DEFAULT_FOLLOW_USER_NICKNAME);
+        assertThat(testFollow.getFollowUseravatar()).isEqualTo(DEFAULT_FOLLOW_USERAVATAR);
         assertThat(testFollow.getFollowedUserId()).isEqualTo(DEFAULT_FOLLOWED_USER_ID);
+        assertThat(testFollow.getFollowedUserNickname()).isEqualTo(DEFAULT_FOLLOWED_USER_NICKNAME);
+        assertThat(testFollow.getFollowedUseravatar()).isEqualTo(DEFAULT_FOLLOWED_USERAVATAR);
         assertThat(testFollow.getCreateTime()).isEqualTo(DEFAULT_CREATE_TIME);
         assertThat(testFollow.getModifyTime()).isEqualTo(DEFAULT_MODIFY_TIME);
     }
@@ -165,7 +185,11 @@ public class FollowResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(follow.getId().intValue())))
             .andExpect(jsonPath("$.[*].followUserId").value(hasItem(DEFAULT_FOLLOW_USER_ID.intValue())))
+            .andExpect(jsonPath("$.[*].followUserNickname").value(hasItem(DEFAULT_FOLLOW_USER_NICKNAME.toString())))
+            .andExpect(jsonPath("$.[*].followUseravatar").value(hasItem(DEFAULT_FOLLOW_USERAVATAR.toString())))
             .andExpect(jsonPath("$.[*].followedUserId").value(hasItem(DEFAULT_FOLLOWED_USER_ID.intValue())))
+            .andExpect(jsonPath("$.[*].followedUserNickname").value(hasItem(DEFAULT_FOLLOWED_USER_NICKNAME.toString())))
+            .andExpect(jsonPath("$.[*].followedUseravatar").value(hasItem(DEFAULT_FOLLOWED_USERAVATAR.toString())))
             .andExpect(jsonPath("$.[*].createTime").value(hasItem(DEFAULT_CREATE_TIME.toString())))
             .andExpect(jsonPath("$.[*].modifyTime").value(hasItem(DEFAULT_MODIFY_TIME.toString())));
     }
@@ -182,7 +206,11 @@ public class FollowResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(follow.getId().intValue()))
             .andExpect(jsonPath("$.followUserId").value(DEFAULT_FOLLOW_USER_ID.intValue()))
+            .andExpect(jsonPath("$.followUserNickname").value(DEFAULT_FOLLOW_USER_NICKNAME.toString()))
+            .andExpect(jsonPath("$.followUseravatar").value(DEFAULT_FOLLOW_USERAVATAR.toString()))
             .andExpect(jsonPath("$.followedUserId").value(DEFAULT_FOLLOWED_USER_ID.intValue()))
+            .andExpect(jsonPath("$.followedUserNickname").value(DEFAULT_FOLLOWED_USER_NICKNAME.toString()))
+            .andExpect(jsonPath("$.followedUseravatar").value(DEFAULT_FOLLOWED_USERAVATAR.toString()))
             .andExpect(jsonPath("$.createTime").value(DEFAULT_CREATE_TIME.toString()))
             .andExpect(jsonPath("$.modifyTime").value(DEFAULT_MODIFY_TIME.toString()));
     }
@@ -208,7 +236,11 @@ public class FollowResourceIntTest {
         em.detach(updatedFollow);
         updatedFollow
             .followUserId(UPDATED_FOLLOW_USER_ID)
+            .followUserNickname(UPDATED_FOLLOW_USER_NICKNAME)
+            .followUseravatar(UPDATED_FOLLOW_USERAVATAR)
             .followedUserId(UPDATED_FOLLOWED_USER_ID)
+            .followedUserNickname(UPDATED_FOLLOWED_USER_NICKNAME)
+            .followedUseravatar(UPDATED_FOLLOWED_USERAVATAR)
             .createTime(UPDATED_CREATE_TIME)
             .modifyTime(UPDATED_MODIFY_TIME);
         FollowDTO followDTO = followMapper.toDto(updatedFollow);
@@ -223,7 +255,11 @@ public class FollowResourceIntTest {
         assertThat(followList).hasSize(databaseSizeBeforeUpdate);
         Follow testFollow = followList.get(followList.size() - 1);
         assertThat(testFollow.getFollowUserId()).isEqualTo(UPDATED_FOLLOW_USER_ID);
+        assertThat(testFollow.getFollowUserNickname()).isEqualTo(UPDATED_FOLLOW_USER_NICKNAME);
+        assertThat(testFollow.getFollowUseravatar()).isEqualTo(UPDATED_FOLLOW_USERAVATAR);
         assertThat(testFollow.getFollowedUserId()).isEqualTo(UPDATED_FOLLOWED_USER_ID);
+        assertThat(testFollow.getFollowedUserNickname()).isEqualTo(UPDATED_FOLLOWED_USER_NICKNAME);
+        assertThat(testFollow.getFollowedUseravatar()).isEqualTo(UPDATED_FOLLOWED_USERAVATAR);
         assertThat(testFollow.getCreateTime()).isEqualTo(UPDATED_CREATE_TIME);
         assertThat(testFollow.getModifyTime()).isEqualTo(UPDATED_MODIFY_TIME);
     }

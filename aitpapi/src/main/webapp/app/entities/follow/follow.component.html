@@ -18,7 +18,11 @@
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="followUserId"><span jhiTranslate="aitpapiApp.follow.followUserId">Follow User Id</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="followUserNickname"><span jhiTranslate="aitpapiApp.follow.followUserNickname">Follow User Nickname</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="followUseravatar"><span jhiTranslate="aitpapiApp.follow.followUseravatar">Follow Useravatar</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="followedUserId"><span jhiTranslate="aitpapiApp.follow.followedUserId">Followed User Id</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="followedUserNickname"><span jhiTranslate="aitpapiApp.follow.followedUserNickname">Followed User Nickname</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="followedUseravatar"><span jhiTranslate="aitpapiApp.follow.followedUseravatar">Followed Useravatar</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="createTime"><span jhiTranslate="aitpapiApp.follow.createTime">Create Time</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="modifyTime"><span jhiTranslate="aitpapiApp.follow.modifyTime">Modify Time</span> <span class="fa fa-sort"></span></th>
             <th></th>
@@ -28,7 +32,11 @@
             <tr *ngFor="let follow of follows ;trackBy: trackId">
                 <td><a [routerLink]="['../follow', follow.id ]">{{follow.id}}</a></td>
                 <td>{{follow.followUserId}}</td>
+                <td>{{follow.followUserNickname}}</td>
+                <td>{{follow.followUseravatar}}</td>
                 <td>{{follow.followedUserId}}</td>
+                <td>{{follow.followedUserNickname}}</td>
+                <td>{{follow.followedUseravatar}}</td>
                 <td>{{follow.createTime | date:'medium'}}</td>
                 <td>{{follow.modifyTime | date:'medium'}}</td>
                 <td class="text-right">

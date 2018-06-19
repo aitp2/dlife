@@ -15,6 +15,8 @@ export class WechatUser implements BaseEntity {
         public sex?: boolean,
         public companyRole?: string,
         public cookFlag?: boolean,
+        public intesting?: string,
+        public skill?: string,
         public createTime?: any,
         public modifyTime?: any,
     ) {

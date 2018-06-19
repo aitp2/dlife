@@ -1,10 +1,9 @@
 package com.aitp.dlife.service.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-
-import com.aitp.dlife.domain.ActivityParticipation;
+import com.aitp.dlife.domain.*;
 import com.aitp.dlife.service.dto.ActivityParticipationDTO;
+
+import org.mapstruct.*;
 
 /**
  * Mapper for the entity ActivityParticipation and its DTO ActivityParticipationDTO.
@@ -13,8 +12,6 @@ import com.aitp.dlife.service.dto.ActivityParticipationDTO;
 public interface ActivityParticipationMapper extends EntityMapper<ActivityParticipationDTO, ActivityParticipation> {
 
     @Mapping(source = "activity.id", target = "activityId")
-    @Mapping(source = "clockIns", target = "clockIns")
-    @Mapping(source = "activity.images", target = "images")
     ActivityParticipationDTO toDto(ActivityParticipation activityParticipation);
 
     @Mapping(target = "clockIns", ignore = true)

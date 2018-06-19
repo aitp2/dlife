@@ -17,7 +17,11 @@
                 "title": "Follow"
             },
             "followUserId": "Follow User Id",
+            "followUserNickname": "Follow User Nickname",
+            "followUseravatar": "Follow Useravatar",
             "followedUserId": "Followed User Id",
+            "followedUserNickname": "Followed User Nickname",
+            "followedUseravatar": "Followed Useravatar",
             "createTime": "Create Time",
             "modifyTime": "Modify Time"
         }

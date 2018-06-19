@@ -1,27 +1,19 @@
 package com.aitp.dlife.domain;
 
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import java.io.Serializable;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Objects;
 
 /**
  * 健身活动信息
@@ -39,14 +31,6 @@ public class FitnessActivity implements Serializable {
     private Long id;
 
     /**
-     * 用户id 创建人
-     */
-    @Size(max = 128)
-    @ApiModelProperty(value = "用户id 创建人")
-    @Column(name = "wechat_user_id", length = 128)
-    private String wechatUserId;
-
-    /**
      * 活动标题
      */
     @Size(max = 64)
@@ -61,6 +45,46 @@ public class FitnessActivity implements Serializable {
     @ApiModelProperty(value = "活动描述")
     @Column(name = "descrption", length = 128)
     private String descrption;
+
+    /**
+     * 用户id 创建人
+     */
+    @Size(max = 128)
+    @ApiModelProperty(value = "用户id 创建人")
+    @Column(name = "wechat_user_id", length = 128)
+    private String wechatUserId;
+
+    /**
+     * 昵称
+     */
+    @Size(max = 128)
+    @ApiModelProperty(value = "昵称")
+    @Column(name = "nick_name", length = 128)
+    private String nickName;
+
+    /**
+     * 头像
+     */
+    @Size(max = 1024)
+    @ApiModelProperty(value = "头像")
+    @Column(name = "avatar", length = 1024)
+    private String avatar;
+
+    /**
+     * 项目名称
+     */
+    @Size(max = 128)
+    @ApiModelProperty(value = "项目名称")
+    @Column(name = "project", length = 128)
+    private String project;
+
+    /**
+     * 角色
+     */
+    @Size(max = 255)
+    @ApiModelProperty(value = "角色")
+    @Column(name = "company_role", length = 255)
+    private String companyRole;
 
     /**
      * 报名开始时间
@@ -92,12 +116,12 @@ public class FitnessActivity implements Serializable {
 
     @OneToMany(mappedBy = "activity")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONE)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ActivityParticipation> activityParticipations = new HashSet<>();
 
     @OneToMany(mappedBy = "fitnessActivity")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONE)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Pics> images = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -107,19 +131,6 @@ public class FitnessActivity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getWechatUserId() {
-        return wechatUserId;
-    }
-
-    public FitnessActivity wechatUserId(String wechatUserId) {
-        this.wechatUserId = wechatUserId;
-        return this;
-    }
-
-    public void setWechatUserId(String wechatUserId) {
-        this.wechatUserId = wechatUserId;
     }
 
     public String getTitle() {
@@ -146,6 +157,71 @@ public class FitnessActivity implements Serializable {
 
     public void setDescrption(String descrption) {
         this.descrption = descrption;
+    }
+
+    public String getWechatUserId() {
+        return wechatUserId;
+    }
+
+    public FitnessActivity wechatUserId(String wechatUserId) {
+        this.wechatUserId = wechatUserId;
+        return this;
+    }
+
+    public void setWechatUserId(String wechatUserId) {
+        this.wechatUserId = wechatUserId;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public FitnessActivity nickName(String nickName) {
+        this.nickName = nickName;
+        return this;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public FitnessActivity avatar(String avatar) {
+        this.avatar = avatar;
+        return this;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getProject() {
+        return project;
+    }
+
+    public FitnessActivity project(String project) {
+        this.project = project;
+        return this;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
+    }
+
+    public String getCompanyRole() {
+        return companyRole;
+    }
+
+    public FitnessActivity companyRole(String companyRole) {
+        this.companyRole = companyRole;
+        return this;
+    }
+
+    public void setCompanyRole(String companyRole) {
+        this.companyRole = companyRole;
     }
 
     public Instant getSignStartTime() {
@@ -275,9 +351,13 @@ public class FitnessActivity implements Serializable {
     public String toString() {
         return "FitnessActivity{" +
             "id=" + getId() +
-            ", wechatUserId='" + getWechatUserId() + "'" +
             ", title='" + getTitle() + "'" +
             ", descrption='" + getDescrption() + "'" +
+            ", wechatUserId='" + getWechatUserId() + "'" +
+            ", nickName='" + getNickName() + "'" +
+            ", avatar='" + getAvatar() + "'" +
+            ", project='" + getProject() + "'" +
+            ", companyRole='" + getCompanyRole() + "'" +
             ", signStartTime='" + getSignStartTime() + "'" +
             ", signEndTime='" + getSignEndTime() + "'" +
             ", activityStartTime='" + getActivityStartTime() + "'" +

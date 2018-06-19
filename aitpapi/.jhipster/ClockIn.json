@@ -16,6 +16,15 @@
     ],
     "fields": [
         {
+            "fieldName": "title",
+            "javadoc": "活动标题",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 64
+        },
+        {
             "fieldName": "signNote",
             "javadoc": "签到日记",
             "fieldType": "String",

@@ -4,6 +4,10 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="aitpapiApp.clockIn.title" [ngbTooltip]="'aitpapiApp.clockIn.help.title' | translate">Title</span></dt>
+        <dd>
+            <span>{{clockIn.title}}</span>
+        </dd>
         <dt><span jhiTranslate="aitpapiApp.clockIn.signNote" [ngbTooltip]="'aitpapiApp.clockIn.help.signNote' | translate">Sign Note</span></dt>
         <dd>
             <span>{{clockIn.signNote}}</span>

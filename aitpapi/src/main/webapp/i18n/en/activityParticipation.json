@@ -19,6 +19,7 @@
             "wechatUserId": "Wechat User Id",
             "nickName": "Nick Name",
             "avatar": "Avatar",
+            "project": "Project",
             "participationTime": "Participation Time",
             "clockIn": "Clock In",
             "activity": "Activity",
@@ -26,6 +27,7 @@
                 "wechatUserId": "参与人ID",
                 "nickName": "参与者昵称",
                 "avatar": "参与者头像",
+                "project": "项目名称",
                 "participationTime": "参与时间"
             }
         }

@@ -79,6 +79,12 @@ public class WechatUserResourceIntTest {
     private static final Boolean DEFAULT_COOK_FLAG = false;
     private static final Boolean UPDATED_COOK_FLAG = true;
 
+    private static final String DEFAULT_INTESTING = "AAAAAAAAAA";
+    private static final String UPDATED_INTESTING = "BBBBBBBBBB";
+
+    private static final String DEFAULT_SKILL = "AAAAAAAAAA";
+    private static final String UPDATED_SKILL = "BBBBBBBBBB";
+
     private static final Instant DEFAULT_CREATE_TIME = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATE_TIME = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
@@ -141,6 +147,8 @@ public class WechatUserResourceIntTest {
             .sex(DEFAULT_SEX)
             .companyRole(DEFAULT_COMPANY_ROLE)
             .cookFlag(DEFAULT_COOK_FLAG)
+            .intesting(DEFAULT_INTESTING)
+            .skill(DEFAULT_SKILL)
             .createTime(DEFAULT_CREATE_TIME)
             .modifyTime(DEFAULT_MODIFY_TIME);
         return wechatUser;
@@ -179,6 +187,8 @@ public class WechatUserResourceIntTest {
         assertThat(testWechatUser.isSex()).isEqualTo(DEFAULT_SEX);
         assertThat(testWechatUser.getCompanyRole()).isEqualTo(DEFAULT_COMPANY_ROLE);
         assertThat(testWechatUser.isCookFlag()).isEqualTo(DEFAULT_COOK_FLAG);
+        assertThat(testWechatUser.getIntesting()).isEqualTo(DEFAULT_INTESTING);
+        assertThat(testWechatUser.getSkill()).isEqualTo(DEFAULT_SKILL);
         assertThat(testWechatUser.getCreateTime()).isEqualTo(DEFAULT_CREATE_TIME);
         assertThat(testWechatUser.getModifyTime()).isEqualTo(DEFAULT_MODIFY_TIME);
     }
@@ -245,6 +255,8 @@ public class WechatUserResourceIntTest {
             .andExpect(jsonPath("$.[*].sex").value(hasItem(DEFAULT_SEX.booleanValue())))
             .andExpect(jsonPath("$.[*].companyRole").value(hasItem(DEFAULT_COMPANY_ROLE.toString())))
             .andExpect(jsonPath("$.[*].cookFlag").value(hasItem(DEFAULT_COOK_FLAG.booleanValue())))
+            .andExpect(jsonPath("$.[*].intesting").value(hasItem(DEFAULT_INTESTING.toString())))
+            .andExpect(jsonPath("$.[*].skill").value(hasItem(DEFAULT_SKILL.toString())))
             .andExpect(jsonPath("$.[*].createTime").value(hasItem(DEFAULT_CREATE_TIME.toString())))
             .andExpect(jsonPath("$.[*].modifyTime").value(hasItem(DEFAULT_MODIFY_TIME.toString())));
     }
@@ -272,6 +284,8 @@ public class WechatUserResourceIntTest {
             .andExpect(jsonPath("$.sex").value(DEFAULT_SEX.booleanValue()))
             .andExpect(jsonPath("$.companyRole").value(DEFAULT_COMPANY_ROLE.toString()))
             .andExpect(jsonPath("$.cookFlag").value(DEFAULT_COOK_FLAG.booleanValue()))
+            .andExpect(jsonPath("$.intesting").value(DEFAULT_INTESTING.toString()))
+            .andExpect(jsonPath("$.skill").value(DEFAULT_SKILL.toString()))
             .andExpect(jsonPath("$.createTime").value(DEFAULT_CREATE_TIME.toString()))
             .andExpect(jsonPath("$.modifyTime").value(DEFAULT_MODIFY_TIME.toString()));
     }
@@ -308,6 +322,8 @@ public class WechatUserResourceIntTest {
             .sex(UPDATED_SEX)
             .companyRole(UPDATED_COMPANY_ROLE)
             .cookFlag(UPDATED_COOK_FLAG)
+            .intesting(UPDATED_INTESTING)
+            .skill(UPDATED_SKILL)
             .createTime(UPDATED_CREATE_TIME)
             .modifyTime(UPDATED_MODIFY_TIME);
         WechatUserDTO wechatUserDTO = wechatUserMapper.toDto(updatedWechatUser);
@@ -333,6 +349,8 @@ public class WechatUserResourceIntTest {
         assertThat(testWechatUser.isSex()).isEqualTo(UPDATED_SEX);
         assertThat(testWechatUser.getCompanyRole()).isEqualTo(UPDATED_COMPANY_ROLE);
         assertThat(testWechatUser.isCookFlag()).isEqualTo(UPDATED_COOK_FLAG);
+        assertThat(testWechatUser.getIntesting()).isEqualTo(UPDATED_INTESTING);
+        assertThat(testWechatUser.getSkill()).isEqualTo(UPDATED_SKILL);
         assertThat(testWechatUser.getCreateTime()).isEqualTo(UPDATED_CREATE_TIME);
         assertThat(testWechatUser.getModifyTime()).isEqualTo(UPDATED_MODIFY_TIME);
     }

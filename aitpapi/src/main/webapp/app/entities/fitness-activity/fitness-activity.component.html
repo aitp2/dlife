@@ -17,9 +17,13 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="wechatUserId"><span jhiTranslate="aitpapiApp.fitnessActivity.wechatUserId">Wechat User Id</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="title"><span jhiTranslate="aitpapiApp.fitnessActivity.title">Title</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="descrption"><span jhiTranslate="aitpapiApp.fitnessActivity.descrption">Descrption</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="wechatUserId"><span jhiTranslate="aitpapiApp.fitnessActivity.wechatUserId">Wechat User Id</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nickName"><span jhiTranslate="aitpapiApp.fitnessActivity.nickName">Nick Name</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="avatar"><span jhiTranslate="aitpapiApp.fitnessActivity.avatar">Avatar</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="project"><span jhiTranslate="aitpapiApp.fitnessActivity.project">Project</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="companyRole"><span jhiTranslate="aitpapiApp.fitnessActivity.companyRole">Company Role</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="signStartTime"><span jhiTranslate="aitpapiApp.fitnessActivity.signStartTime">Sign Start Time</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="signEndTime"><span jhiTranslate="aitpapiApp.fitnessActivity.signEndTime">Sign End Time</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="activityStartTime"><span jhiTranslate="aitpapiApp.fitnessActivity.activityStartTime">Activity Start Time</span> <span class="fa fa-sort"></span></th>
@@ -30,9 +34,13 @@
             <tbody>
             <tr *ngFor="let fitnessActivity of fitnessActivities ;trackBy: trackId">
                 <td><a [routerLink]="['../fitness-activity', fitnessActivity.id ]">{{fitnessActivity.id}}</a></td>
-                <td>{{fitnessActivity.wechatUserId}}</td>
                 <td>{{fitnessActivity.title}}</td>
                 <td>{{fitnessActivity.descrption}}</td>
+                <td>{{fitnessActivity.wechatUserId}}</td>
+                <td>{{fitnessActivity.nickName}}</td>
+                <td>{{fitnessActivity.avatar}}</td>
+                <td>{{fitnessActivity.project}}</td>
+                <td>{{fitnessActivity.companyRole}}</td>
                 <td>{{fitnessActivity.signStartTime | date:'medium'}}</td>
                 <td>{{fitnessActivity.signEndTime | date:'medium'}}</td>
                 <td>{{fitnessActivity.activityStartTime | date:'medium'}}</td>

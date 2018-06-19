@@ -18,6 +18,12 @@ public class RecipeOrderDTO implements Serializable {
     @Size(max = 128)
     private String wechatUserId;
 
+    @Size(max = 1024)
+    private String avatar;
+
+    @Size(max = 128)
+    private String nickName;
+
     @Max(value = 9)
     private Integer recipeVersion;
 
@@ -43,6 +49,22 @@ public class RecipeOrderDTO implements Serializable {
 
     public void setWechatUserId(String wechatUserId) {
         this.wechatUserId = wechatUserId;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public Integer getRecipeVersion() {
@@ -111,6 +133,8 @@ public class RecipeOrderDTO implements Serializable {
         return "RecipeOrderDTO{" +
             "id=" + getId() +
             ", wechatUserId='" + getWechatUserId() + "'" +
+            ", avatar='" + getAvatar() + "'" +
+            ", nickName='" + getNickName() + "'" +
             ", recipeVersion=" + getRecipeVersion() +
             ", price=" + getPrice() +
             ", createTime='" + getCreateTime() + "'" +

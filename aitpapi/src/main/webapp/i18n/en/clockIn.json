@@ -16,11 +16,13 @@
             "detail": {
                 "title": "Clock In"
             },
+            "title": "Title",
             "signNote": "Sign Note",
             "punchDateTime": "Punch Date Time",
             "pics": "Pics",
             "activityParticipation": "Activity Participation",
             "help": {
+                "title": "活动标题",
                 "signNote": "签到日记",
                 "punchDateTime": "打卡时间"
             }

@@ -28,6 +28,8 @@
             "sex": "Sex",
             "companyRole": "Company Role",
             "cookFlag": "Cook Flag",
+            "intesting": "Intesting",
+            "skill": "Skill",
             "createTime": "Create Time",
             "modifyTime": "Modify Time",
             "help": {
@@ -43,6 +45,8 @@
                 "sex": "性别",
                 "companyRole": "角色",
                 "cookFlag": "厨师标志",
+                "intesting": "兴趣",
+                "skill": "擅长",
                 "createTime": "创建时间",
                 "modifyTime": "修改时间"
             }

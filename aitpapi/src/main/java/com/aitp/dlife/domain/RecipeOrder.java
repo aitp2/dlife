@@ -2,6 +2,7 @@ package com.aitp.dlife.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -32,6 +33,22 @@ public class RecipeOrder implements Serializable {
     @Size(max = 128)
     @Column(name = "wechat_user_id", length = 128)
     private String wechatUserId;
+
+    /**
+     * 头像
+     */
+    @Size(max = 1024)
+    @ApiModelProperty(value = "头像")
+    @Column(name = "avatar", length = 1024)
+    private String avatar;
+
+    /**
+     * 昵称
+     */
+    @Size(max = 128)
+    @ApiModelProperty(value = "昵称")
+    @Column(name = "nick_name", length = 128)
+    private String nickName;
 
     @Max(value = 9)
     @Column(name = "recipe_version")
@@ -74,6 +91,32 @@ public class RecipeOrder implements Serializable {
 
     public void setWechatUserId(String wechatUserId) {
         this.wechatUserId = wechatUserId;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public RecipeOrder avatar(String avatar) {
+        this.avatar = avatar;
+        return this;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public RecipeOrder nickName(String nickName) {
+        this.nickName = nickName;
+        return this;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public Integer getRecipeVersion() {
@@ -192,6 +235,8 @@ public class RecipeOrder implements Serializable {
         return "RecipeOrder{" +
             "id=" + getId() +
             ", wechatUserId='" + getWechatUserId() + "'" +
+            ", avatar='" + getAvatar() + "'" +
+            ", nickName='" + getNickName() + "'" +
             ", recipeVersion=" + getRecipeVersion() +
             ", price=" + getPrice() +
             ", createTime='" + getCreateTime() + "'" +

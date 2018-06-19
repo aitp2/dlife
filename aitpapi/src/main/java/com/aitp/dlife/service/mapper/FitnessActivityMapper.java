@@ -1,10 +1,9 @@
 package com.aitp.dlife.service.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-
-import com.aitp.dlife.domain.FitnessActivity;
+import com.aitp.dlife.domain.*;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
+
+import org.mapstruct.*;
 
 /**
  * Mapper for the entity FitnessActivity and its DTO FitnessActivityDTO.
@@ -12,9 +11,6 @@ import com.aitp.dlife.service.dto.FitnessActivityDTO;
 @Mapper(componentModel = "spring", uses = {})
 public interface FitnessActivityMapper extends EntityMapper<FitnessActivityDTO, FitnessActivity> {
 
-	@Mapping(source = "activityParticipations", target = "activityParticipations")
-	@Mapping(source = "images", target = "images")
-	FitnessActivityDTO toDto(FitnessActivity activity);
 
     @Mapping(target = "activityParticipations", ignore = true)
     @Mapping(target = "images", ignore = true)

@@ -52,6 +52,9 @@ public class ActivityParticipationResourceIntTest {
     private static final String DEFAULT_AVATAR = "AAAAAAAAAA";
     private static final String UPDATED_AVATAR = "BBBBBBBBBB";
 
+    private static final String DEFAULT_PROJECT = "AAAAAAAAAA";
+    private static final String UPDATED_PROJECT = "BBBBBBBBBB";
+
     private static final Instant DEFAULT_PARTICIPATION_TIME = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_PARTICIPATION_TIME = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
@@ -102,6 +105,7 @@ public class ActivityParticipationResourceIntTest {
             .wechatUserId(DEFAULT_WECHAT_USER_ID)
             .nickName(DEFAULT_NICK_NAME)
             .avatar(DEFAULT_AVATAR)
+            .project(DEFAULT_PROJECT)
             .participationTime(DEFAULT_PARTICIPATION_TIME);
         return activityParticipation;
     }
@@ -130,6 +134,7 @@ public class ActivityParticipationResourceIntTest {
         assertThat(testActivityParticipation.getWechatUserId()).isEqualTo(DEFAULT_WECHAT_USER_ID);
         assertThat(testActivityParticipation.getNickName()).isEqualTo(DEFAULT_NICK_NAME);
         assertThat(testActivityParticipation.getAvatar()).isEqualTo(DEFAULT_AVATAR);
+        assertThat(testActivityParticipation.getProject()).isEqualTo(DEFAULT_PROJECT);
         assertThat(testActivityParticipation.getParticipationTime()).isEqualTo(DEFAULT_PARTICIPATION_TIME);
     }
 
@@ -167,6 +172,7 @@ public class ActivityParticipationResourceIntTest {
             .andExpect(jsonPath("$.[*].wechatUserId").value(hasItem(DEFAULT_WECHAT_USER_ID.toString())))
             .andExpect(jsonPath("$.[*].nickName").value(hasItem(DEFAULT_NICK_NAME.toString())))
             .andExpect(jsonPath("$.[*].avatar").value(hasItem(DEFAULT_AVATAR.toString())))
+            .andExpect(jsonPath("$.[*].project").value(hasItem(DEFAULT_PROJECT.toString())))
             .andExpect(jsonPath("$.[*].participationTime").value(hasItem(DEFAULT_PARTICIPATION_TIME.toString())));
     }
 
@@ -184,6 +190,7 @@ public class ActivityParticipationResourceIntTest {
             .andExpect(jsonPath("$.wechatUserId").value(DEFAULT_WECHAT_USER_ID.toString()))
             .andExpect(jsonPath("$.nickName").value(DEFAULT_NICK_NAME.toString()))
             .andExpect(jsonPath("$.avatar").value(DEFAULT_AVATAR.toString()))
+            .andExpect(jsonPath("$.project").value(DEFAULT_PROJECT.toString()))
             .andExpect(jsonPath("$.participationTime").value(DEFAULT_PARTICIPATION_TIME.toString()));
     }
 
@@ -210,6 +217,7 @@ public class ActivityParticipationResourceIntTest {
             .wechatUserId(UPDATED_WECHAT_USER_ID)
             .nickName(UPDATED_NICK_NAME)
             .avatar(UPDATED_AVATAR)
+            .project(UPDATED_PROJECT)
             .participationTime(UPDATED_PARTICIPATION_TIME);
         ActivityParticipationDTO activityParticipationDTO = activityParticipationMapper.toDto(updatedActivityParticipation);
 
@@ -225,6 +233,7 @@ public class ActivityParticipationResourceIntTest {
         assertThat(testActivityParticipation.getWechatUserId()).isEqualTo(UPDATED_WECHAT_USER_ID);
         assertThat(testActivityParticipation.getNickName()).isEqualTo(UPDATED_NICK_NAME);
         assertThat(testActivityParticipation.getAvatar()).isEqualTo(UPDATED_AVATAR);
+        assertThat(testActivityParticipation.getProject()).isEqualTo(UPDATED_PROJECT);
         assertThat(testActivityParticipation.getParticipationTime()).isEqualTo(UPDATED_PARTICIPATION_TIME);
     }
 

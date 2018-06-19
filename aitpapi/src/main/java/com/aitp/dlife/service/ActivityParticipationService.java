@@ -4,11 +4,6 @@ import com.aitp.dlife.domain.ActivityParticipation;
 import com.aitp.dlife.repository.ActivityParticipationRepository;
 import com.aitp.dlife.service.dto.ActivityParticipationDTO;
 import com.aitp.dlife.service.mapper.ActivityParticipationMapper;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -83,17 +78,4 @@ public class ActivityParticipationService {
         log.debug("Request to delete ActivityParticipation : {}", id);
         activityParticipationRepository.delete(id);
     }
-    
-	public List<ActivityParticipationDTO> findByActivity(Long activityId) {
-		return activityParticipationRepository.findByActivityId(activityId).stream()
-	            .map(activityParticipationMapper::toDto)
-	            .collect(Collectors.toCollection(LinkedList::new));
-		
-	}
-
-	public List<ActivityParticipationDTO> findByWechatUserId(String wechatUserId) {
-		return activityParticipationRepository.findByWechatUserId(wechatUserId).stream()
-	            .map(activityParticipationMapper::toDto)
-	            .collect(Collectors.toCollection(LinkedList::new));
-	}
 }

@@ -43,6 +43,15 @@
             "fieldValidateRulesMaxlength": 1024
         },
         {
+            "fieldName": "project",
+            "javadoc": "项目名称",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
             "fieldName": "participationTime",
             "javadoc": "参与时间",
             "fieldType": "Instant"

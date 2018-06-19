@@ -55,6 +55,14 @@ public class ActivityParticipation implements Serializable {
     private String avatar;
 
     /**
+     * 项目名称
+     */
+    @Size(max = 128)
+    @ApiModelProperty(value = "项目名称")
+    @Column(name = "project", length = 128)
+    private String project;
+
+    /**
      * 参与时间
      */
     @ApiModelProperty(value = "参与时间")
@@ -63,7 +71,7 @@ public class ActivityParticipation implements Serializable {
 
     @OneToMany(mappedBy = "activityParticipation")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONE)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ClockIn> clockIns = new HashSet<>();
 
     @ManyToOne
@@ -115,6 +123,19 @@ public class ActivityParticipation implements Serializable {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getProject() {
+        return project;
+    }
+
+    public ActivityParticipation project(String project) {
+        this.project = project;
+        return this;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
     }
 
     public Instant getParticipationTime() {
@@ -196,6 +217,7 @@ public class ActivityParticipation implements Serializable {
             ", wechatUserId='" + getWechatUserId() + "'" +
             ", nickName='" + getNickName() + "'" +
             ", avatar='" + getAvatar() + "'" +
+            ", project='" + getProject() + "'" +
             ", participationTime='" + getParticipationTime() + "'" +
             "}";
     }

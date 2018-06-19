@@ -1,15 +1,12 @@
 package com.aitp.dlife.service.dto;
 
 
-import java.io.Serializable;
 import java.time.Instant;
+import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
-
-import javax.validation.constraints.Size;
-
-import com.aitp.dlife.domain.FitnessActivity;
+import java.util.Objects;
 
 /**
  * A DTO for the ActivityParticipation entity.
@@ -27,13 +24,12 @@ public class ActivityParticipationDTO implements Serializable {
     @Size(max = 1024)
     private String avatar;
 
+    @Size(max = 128)
+    private String project;
+
     private Instant participationTime;
 
     private Long activityId;
-    
-    private Set<PicsDTO> images = new HashSet<>();
-    
-    private Set<ClockInDTO> clockIns = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -67,6 +63,14 @@ public class ActivityParticipationDTO implements Serializable {
         this.avatar = avatar;
     }
 
+    public String getProject() {
+        return project;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
+    }
+
     public Instant getParticipationTime() {
         return participationTime;
     }
@@ -82,26 +86,8 @@ public class ActivityParticipationDTO implements Serializable {
     public void setActivityId(Long fitnessActivityId) {
         this.activityId = fitnessActivityId;
     }
-    
 
-    public Set<ClockInDTO> getClockIns() {
-		return clockIns;
-	}
-
-	public void setClockIns(Set<ClockInDTO> clockIns) {
-		this.clockIns = clockIns;
-	}
-	
-
-	public Set<PicsDTO> getImages() {
-		return images;
-	}
-
-	public void setImages(Set<PicsDTO> images) {
-		this.images = images;
-	}
-
-	@Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -129,6 +115,7 @@ public class ActivityParticipationDTO implements Serializable {
             ", wechatUserId='" + getWechatUserId() + "'" +
             ", nickName='" + getNickName() + "'" +
             ", avatar='" + getAvatar() + "'" +
+            ", project='" + getProject() + "'" +
             ", participationTime='" + getParticipationTime() + "'" +
             "}";
     }

@@ -16,6 +16,10 @@
         <dd>
             <span>{{activityParticipation.avatar}}</span>
         </dd>
+        <dt><span jhiTranslate="aitpapiApp.activityParticipation.project" [ngbTooltip]="'aitpapiApp.activityParticipation.help.project' | translate">Project</span></dt>
+        <dd>
+            <span>{{activityParticipation.project}}</span>
+        </dd>
         <dt><span jhiTranslate="aitpapiApp.activityParticipation.participationTime" [ngbTooltip]="'aitpapiApp.activityParticipation.help.participationTime' | translate">Participation Time</span></dt>
         <dd>
             <span>{{activityParticipation.participationTime | date:'medium'}}</span>

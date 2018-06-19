@@ -18,6 +18,8 @@
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="wechatUserId"><span jhiTranslate="aitpapiApp.recipe.wechatUserId">Wechat User Id</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="avatar"><span jhiTranslate="aitpapiApp.recipe.avatar">Avatar</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nickName"><span jhiTranslate="aitpapiApp.recipe.nickName">Nick Name</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="title"><span jhiTranslate="aitpapiApp.recipe.title">Title</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="content"><span jhiTranslate="aitpapiApp.recipe.content">Content</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="startTime"><span jhiTranslate="aitpapiApp.recipe.startTime">Start Time</span> <span class="fa fa-sort"></span></th>
@@ -36,6 +38,8 @@
             <tr *ngFor="let recipe of recipes ;trackBy: trackId">
                 <td><a [routerLink]="['../recipe', recipe.id ]">{{recipe.id}}</a></td>
                 <td>{{recipe.wechatUserId}}</td>
+                <td>{{recipe.avatar}}</td>
+                <td>{{recipe.nickName}}</td>
                 <td>{{recipe.title}}</td>
                 <td>{{recipe.content}}</td>
                 <td>{{recipe.startTime | date:'medium'}}</td>

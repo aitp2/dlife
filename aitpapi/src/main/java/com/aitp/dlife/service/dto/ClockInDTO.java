@@ -3,9 +3,6 @@ package com.aitp.dlife.service.dto;
 
 import java.time.Instant;
 import javax.validation.constraints.*;
-
-import com.aitp.dlife.domain.Pics;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,14 +15,15 @@ public class ClockInDTO implements Serializable {
 
     private Long id;
 
+    @Size(max = 64)
+    private String title;
+
     @Size(max = 1024)
     private String signNote;
 
     private Instant punchDateTime;
 
     private Long activityParticipationId;
-    
-    private Set<PicsDTO> pics = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -33,6 +31,14 @@ public class ClockInDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getSignNote() {
@@ -58,17 +64,8 @@ public class ClockInDTO implements Serializable {
     public void setActivityParticipationId(Long activityParticipationId) {
         this.activityParticipationId = activityParticipationId;
     }
-    
 
-	public Set<PicsDTO> getPics() {
-		return pics;
-	}
-
-	public void setPics(Set<PicsDTO> pics) {
-		this.pics = pics;
-	}
-
-	@Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -93,6 +90,7 @@ public class ClockInDTO implements Serializable {
     public String toString() {
         return "ClockInDTO{" +
             "id=" + getId() +
+            ", title='" + getTitle() + "'" +
             ", signNote='" + getSignNote() + "'" +
             ", punchDateTime='" + getPunchDateTime() + "'" +
             "}";

@@ -7,8 +7,6 @@ import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import com.aitp.dlife.service.dto.ActivityParticipationDTO;
 import io.github.jhipster.web.util.ResponseUtil;
-
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -125,27 +123,5 @@ public class ActivityParticipationResource {
         log.debug("REST request to delete ActivityParticipation : {}", id);
         activityParticipationService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
-    
-    
-    @GetMapping("/activity-participations/getByActivityId")
-    @Timed
-    public List<ActivityParticipationDTO> getActivityParticipationByActivityId(Long activityId) {
-        log.debug("REST request to get ActivityParticipation : {}", activityId);
-        if (null == activityId) {
-            throw new BadRequestAlertException("activityId can not be null", ENTITY_NAME, "activityIdNULL");
-        }
-        return activityParticipationService.findByActivity(activityId);
-    }
-    
-    
-    @GetMapping("/activity-participations/getByWechatUserId")
-    @Timed
-    public List<ActivityParticipationDTO> getAttendedActivities(String wechatUserId) {
-        log.debug("REST request to get ActivityParticipation by  WechatUserId: {}", wechatUserId);
-        if (StringUtils.isEmpty(wechatUserId)) {
-            throw new BadRequestAlertException("wechatuserid can not be null", ENTITY_NAME, "weChatUserIdNULL");
-        }
-        return activityParticipationService.findByWechatUserId(wechatUserId);
     }
 }

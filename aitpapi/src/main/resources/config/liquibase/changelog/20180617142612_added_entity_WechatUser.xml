@@ -70,6 +70,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="intesting" type="varchar(1024)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="skill" type="varchar(1024)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="create_time" type="timestamp">
                 <constraints nullable="true" />
             </column>

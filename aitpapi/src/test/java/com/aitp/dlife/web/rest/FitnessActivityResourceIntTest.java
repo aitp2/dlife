@@ -43,14 +43,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = AitpapiApp.class)
 public class FitnessActivityResourceIntTest {
 
-    private static final String DEFAULT_WECHAT_USER_ID = "AAAAAAAAAA";
-    private static final String UPDATED_WECHAT_USER_ID = "BBBBBBBBBB";
-
     private static final String DEFAULT_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_TITLE = "BBBBBBBBBB";
 
     private static final String DEFAULT_DESCRPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRPTION = "BBBBBBBBBB";
+
+    private static final String DEFAULT_WECHAT_USER_ID = "AAAAAAAAAA";
+    private static final String UPDATED_WECHAT_USER_ID = "BBBBBBBBBB";
+
+    private static final String DEFAULT_NICK_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NICK_NAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_AVATAR = "AAAAAAAAAA";
+    private static final String UPDATED_AVATAR = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PROJECT = "AAAAAAAAAA";
+    private static final String UPDATED_PROJECT = "BBBBBBBBBB";
+
+    private static final String DEFAULT_COMPANY_ROLE = "AAAAAAAAAA";
+    private static final String UPDATED_COMPANY_ROLE = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_SIGN_START_TIME = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_SIGN_START_TIME = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -108,9 +120,13 @@ public class FitnessActivityResourceIntTest {
      */
     public static FitnessActivity createEntity(EntityManager em) {
         FitnessActivity fitnessActivity = new FitnessActivity()
-            .wechatUserId(DEFAULT_WECHAT_USER_ID)
             .title(DEFAULT_TITLE)
             .descrption(DEFAULT_DESCRPTION)
+            .wechatUserId(DEFAULT_WECHAT_USER_ID)
+            .nickName(DEFAULT_NICK_NAME)
+            .avatar(DEFAULT_AVATAR)
+            .project(DEFAULT_PROJECT)
+            .companyRole(DEFAULT_COMPANY_ROLE)
             .signStartTime(DEFAULT_SIGN_START_TIME)
             .signEndTime(DEFAULT_SIGN_END_TIME)
             .activityStartTime(DEFAULT_ACTIVITY_START_TIME)
@@ -139,9 +155,13 @@ public class FitnessActivityResourceIntTest {
         List<FitnessActivity> fitnessActivityList = fitnessActivityRepository.findAll();
         assertThat(fitnessActivityList).hasSize(databaseSizeBeforeCreate + 1);
         FitnessActivity testFitnessActivity = fitnessActivityList.get(fitnessActivityList.size() - 1);
-        assertThat(testFitnessActivity.getWechatUserId()).isEqualTo(DEFAULT_WECHAT_USER_ID);
         assertThat(testFitnessActivity.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testFitnessActivity.getDescrption()).isEqualTo(DEFAULT_DESCRPTION);
+        assertThat(testFitnessActivity.getWechatUserId()).isEqualTo(DEFAULT_WECHAT_USER_ID);
+        assertThat(testFitnessActivity.getNickName()).isEqualTo(DEFAULT_NICK_NAME);
+        assertThat(testFitnessActivity.getAvatar()).isEqualTo(DEFAULT_AVATAR);
+        assertThat(testFitnessActivity.getProject()).isEqualTo(DEFAULT_PROJECT);
+        assertThat(testFitnessActivity.getCompanyRole()).isEqualTo(DEFAULT_COMPANY_ROLE);
         assertThat(testFitnessActivity.getSignStartTime()).isEqualTo(DEFAULT_SIGN_START_TIME);
         assertThat(testFitnessActivity.getSignEndTime()).isEqualTo(DEFAULT_SIGN_END_TIME);
         assertThat(testFitnessActivity.getActivityStartTime()).isEqualTo(DEFAULT_ACTIVITY_START_TIME);
@@ -179,9 +199,13 @@ public class FitnessActivityResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(fitnessActivity.getId().intValue())))
-            .andExpect(jsonPath("$.[*].wechatUserId").value(hasItem(DEFAULT_WECHAT_USER_ID.toString())))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())))
             .andExpect(jsonPath("$.[*].descrption").value(hasItem(DEFAULT_DESCRPTION.toString())))
+            .andExpect(jsonPath("$.[*].wechatUserId").value(hasItem(DEFAULT_WECHAT_USER_ID.toString())))
+            .andExpect(jsonPath("$.[*].nickName").value(hasItem(DEFAULT_NICK_NAME.toString())))
+            .andExpect(jsonPath("$.[*].avatar").value(hasItem(DEFAULT_AVATAR.toString())))
+            .andExpect(jsonPath("$.[*].project").value(hasItem(DEFAULT_PROJECT.toString())))
+            .andExpect(jsonPath("$.[*].companyRole").value(hasItem(DEFAULT_COMPANY_ROLE.toString())))
             .andExpect(jsonPath("$.[*].signStartTime").value(hasItem(DEFAULT_SIGN_START_TIME.toString())))
             .andExpect(jsonPath("$.[*].signEndTime").value(hasItem(DEFAULT_SIGN_END_TIME.toString())))
             .andExpect(jsonPath("$.[*].activityStartTime").value(hasItem(DEFAULT_ACTIVITY_START_TIME.toString())))
@@ -199,9 +223,13 @@ public class FitnessActivityResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(fitnessActivity.getId().intValue()))
-            .andExpect(jsonPath("$.wechatUserId").value(DEFAULT_WECHAT_USER_ID.toString()))
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE.toString()))
             .andExpect(jsonPath("$.descrption").value(DEFAULT_DESCRPTION.toString()))
+            .andExpect(jsonPath("$.wechatUserId").value(DEFAULT_WECHAT_USER_ID.toString()))
+            .andExpect(jsonPath("$.nickName").value(DEFAULT_NICK_NAME.toString()))
+            .andExpect(jsonPath("$.avatar").value(DEFAULT_AVATAR.toString()))
+            .andExpect(jsonPath("$.project").value(DEFAULT_PROJECT.toString()))
+            .andExpect(jsonPath("$.companyRole").value(DEFAULT_COMPANY_ROLE.toString()))
             .andExpect(jsonPath("$.signStartTime").value(DEFAULT_SIGN_START_TIME.toString()))
             .andExpect(jsonPath("$.signEndTime").value(DEFAULT_SIGN_END_TIME.toString()))
             .andExpect(jsonPath("$.activityStartTime").value(DEFAULT_ACTIVITY_START_TIME.toString()))
@@ -228,9 +256,13 @@ public class FitnessActivityResourceIntTest {
         // Disconnect from session so that the updates on updatedFitnessActivity are not directly saved in db
         em.detach(updatedFitnessActivity);
         updatedFitnessActivity
-            .wechatUserId(UPDATED_WECHAT_USER_ID)
             .title(UPDATED_TITLE)
             .descrption(UPDATED_DESCRPTION)
+            .wechatUserId(UPDATED_WECHAT_USER_ID)
+            .nickName(UPDATED_NICK_NAME)
+            .avatar(UPDATED_AVATAR)
+            .project(UPDATED_PROJECT)
+            .companyRole(UPDATED_COMPANY_ROLE)
             .signStartTime(UPDATED_SIGN_START_TIME)
             .signEndTime(UPDATED_SIGN_END_TIME)
             .activityStartTime(UPDATED_ACTIVITY_START_TIME)
@@ -246,9 +278,13 @@ public class FitnessActivityResourceIntTest {
         List<FitnessActivity> fitnessActivityList = fitnessActivityRepository.findAll();
         assertThat(fitnessActivityList).hasSize(databaseSizeBeforeUpdate);
         FitnessActivity testFitnessActivity = fitnessActivityList.get(fitnessActivityList.size() - 1);
-        assertThat(testFitnessActivity.getWechatUserId()).isEqualTo(UPDATED_WECHAT_USER_ID);
         assertThat(testFitnessActivity.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testFitnessActivity.getDescrption()).isEqualTo(UPDATED_DESCRPTION);
+        assertThat(testFitnessActivity.getWechatUserId()).isEqualTo(UPDATED_WECHAT_USER_ID);
+        assertThat(testFitnessActivity.getNickName()).isEqualTo(UPDATED_NICK_NAME);
+        assertThat(testFitnessActivity.getAvatar()).isEqualTo(UPDATED_AVATAR);
+        assertThat(testFitnessActivity.getProject()).isEqualTo(UPDATED_PROJECT);
+        assertThat(testFitnessActivity.getCompanyRole()).isEqualTo(UPDATED_COMPANY_ROLE);
         assertThat(testFitnessActivity.getSignStartTime()).isEqualTo(UPDATED_SIGN_START_TIME);
         assertThat(testFitnessActivity.getSignEndTime()).isEqualTo(UPDATED_SIGN_END_TIME);
         assertThat(testFitnessActivity.getActivityStartTime()).isEqualTo(UPDATED_ACTIVITY_START_TIME);

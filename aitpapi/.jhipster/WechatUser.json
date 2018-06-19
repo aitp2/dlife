@@ -104,6 +104,24 @@
             "fieldType": "Boolean"
         },
         {
+            "fieldName": "intesting",
+            "javadoc": "兴趣",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 1024
+        },
+        {
+            "fieldName": "skill",
+            "javadoc": "擅长",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 1024
+        },
+        {
             "fieldName": "createTime",
             "javadoc": "创建时间",
             "fieldType": "Instant"

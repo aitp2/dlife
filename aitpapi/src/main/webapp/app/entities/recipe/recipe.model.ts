@@ -4,6 +4,8 @@ export class Recipe implements BaseEntity {
     constructor(
         public id?: number,
         public wechatUserId?: string,
+        public avatar?: string,
+        public nickName?: string,
         public title?: string,
         public content?: string,
         public startTime?: any,

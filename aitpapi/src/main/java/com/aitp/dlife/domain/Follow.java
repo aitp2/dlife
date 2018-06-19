@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -28,8 +29,24 @@ public class Follow implements Serializable {
     @Column(name = "follow_user_id")
     private Long followUserId;
 
+    @Size(max = 128)
+    @Column(name = "follow_user_nickname", length = 128)
+    private String followUserNickname;
+
+    @Size(max = 1024)
+    @Column(name = "follow_useravatar", length = 1024)
+    private String followUseravatar;
+
     @Column(name = "followed_user_id")
     private Long followedUserId;
+
+    @Size(max = 128)
+    @Column(name = "followed_user_nickname", length = 128)
+    private String followedUserNickname;
+
+    @Size(max = 1024)
+    @Column(name = "followed_useravatar", length = 1024)
+    private String followedUseravatar;
 
     @Column(name = "create_time")
     private Instant createTime;
@@ -59,6 +76,32 @@ public class Follow implements Serializable {
         this.followUserId = followUserId;
     }
 
+    public String getFollowUserNickname() {
+        return followUserNickname;
+    }
+
+    public Follow followUserNickname(String followUserNickname) {
+        this.followUserNickname = followUserNickname;
+        return this;
+    }
+
+    public void setFollowUserNickname(String followUserNickname) {
+        this.followUserNickname = followUserNickname;
+    }
+
+    public String getFollowUseravatar() {
+        return followUseravatar;
+    }
+
+    public Follow followUseravatar(String followUseravatar) {
+        this.followUseravatar = followUseravatar;
+        return this;
+    }
+
+    public void setFollowUseravatar(String followUseravatar) {
+        this.followUseravatar = followUseravatar;
+    }
+
     public Long getFollowedUserId() {
         return followedUserId;
     }
@@ -70,6 +113,32 @@ public class Follow implements Serializable {
 
     public void setFollowedUserId(Long followedUserId) {
         this.followedUserId = followedUserId;
+    }
+
+    public String getFollowedUserNickname() {
+        return followedUserNickname;
+    }
+
+    public Follow followedUserNickname(String followedUserNickname) {
+        this.followedUserNickname = followedUserNickname;
+        return this;
+    }
+
+    public void setFollowedUserNickname(String followedUserNickname) {
+        this.followedUserNickname = followedUserNickname;
+    }
+
+    public String getFollowedUseravatar() {
+        return followedUseravatar;
+    }
+
+    public Follow followedUseravatar(String followedUseravatar) {
+        this.followedUseravatar = followedUseravatar;
+        return this;
+    }
+
+    public void setFollowedUseravatar(String followedUseravatar) {
+        this.followedUseravatar = followedUseravatar;
     }
 
     public Instant getCreateTime() {
@@ -124,7 +193,11 @@ public class Follow implements Serializable {
         return "Follow{" +
             "id=" + getId() +
             ", followUserId=" + getFollowUserId() +
+            ", followUserNickname='" + getFollowUserNickname() + "'" +
+            ", followUseravatar='" + getFollowUseravatar() + "'" +
             ", followedUserId=" + getFollowedUserId() +
+            ", followedUserNickname='" + getFollowedUserNickname() + "'" +
+            ", followedUseravatar='" + getFollowedUseravatar() + "'" +
             ", createTime='" + getCreateTime() + "'" +
             ", modifyTime='" + getModifyTime() + "'" +
             "}";

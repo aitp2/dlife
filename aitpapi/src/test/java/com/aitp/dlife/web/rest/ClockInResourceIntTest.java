@@ -43,6 +43,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = AitpapiApp.class)
 public class ClockInResourceIntTest {
 
+    private static final String DEFAULT_TITLE = "AAAAAAAAAA";
+    private static final String UPDATED_TITLE = "BBBBBBBBBB";
+
     private static final String DEFAULT_SIGN_NOTE = "AAAAAAAAAA";
     private static final String UPDATED_SIGN_NOTE = "BBBBBBBBBB";
 
@@ -93,6 +96,7 @@ public class ClockInResourceIntTest {
      */
     public static ClockIn createEntity(EntityManager em) {
         ClockIn clockIn = new ClockIn()
+            .title(DEFAULT_TITLE)
             .signNote(DEFAULT_SIGN_NOTE)
             .punchDateTime(DEFAULT_PUNCH_DATE_TIME);
         return clockIn;
@@ -119,6 +123,7 @@ public class ClockInResourceIntTest {
         List<ClockIn> clockInList = clockInRepository.findAll();
         assertThat(clockInList).hasSize(databaseSizeBeforeCreate + 1);
         ClockIn testClockIn = clockInList.get(clockInList.size() - 1);
+        assertThat(testClockIn.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testClockIn.getSignNote()).isEqualTo(DEFAULT_SIGN_NOTE);
         assertThat(testClockIn.getPunchDateTime()).isEqualTo(DEFAULT_PUNCH_DATE_TIME);
     }
@@ -154,6 +159,7 @@ public class ClockInResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(clockIn.getId().intValue())))
+            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())))
             .andExpect(jsonPath("$.[*].signNote").value(hasItem(DEFAULT_SIGN_NOTE.toString())))
             .andExpect(jsonPath("$.[*].punchDateTime").value(hasItem(DEFAULT_PUNCH_DATE_TIME.toString())));
     }
@@ -169,6 +175,7 @@ public class ClockInResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(clockIn.getId().intValue()))
+            .andExpect(jsonPath("$.title").value(DEFAULT_TITLE.toString()))
             .andExpect(jsonPath("$.signNote").value(DEFAULT_SIGN_NOTE.toString()))
             .andExpect(jsonPath("$.punchDateTime").value(DEFAULT_PUNCH_DATE_TIME.toString()));
     }
@@ -193,6 +200,7 @@ public class ClockInResourceIntTest {
         // Disconnect from session so that the updates on updatedClockIn are not directly saved in db
         em.detach(updatedClockIn);
         updatedClockIn
+            .title(UPDATED_TITLE)
             .signNote(UPDATED_SIGN_NOTE)
             .punchDateTime(UPDATED_PUNCH_DATE_TIME);
         ClockInDTO clockInDTO = clockInMapper.toDto(updatedClockIn);
@@ -206,6 +214,7 @@ public class ClockInResourceIntTest {
         List<ClockIn> clockInList = clockInRepository.findAll();
         assertThat(clockInList).hasSize(databaseSizeBeforeUpdate);
         ClockIn testClockIn = clockInList.get(clockInList.size() - 1);
+        assertThat(testClockIn.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testClockIn.getSignNote()).isEqualTo(UPDATED_SIGN_NOTE);
         assertThat(testClockIn.getPunchDateTime()).isEqualTo(UPDATED_PUNCH_DATE_TIME);
     }
