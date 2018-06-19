@@ -1,4 +1,4 @@
-/** 
+/**
 用户信息
 */
 entity WechatUser{
@@ -26,40 +26,52 @@ entity WechatUser{
     companyRole String maxlength(255),
     /** 厨师标志 */
     cookFlag Boolean,
+    /** 兴趣 */
+    intesting String maxlength(1024),
+    /** 擅长 */
+    skill String maxlength(1024),
     /** 创建时间 */
     createTime Instant,
     /** 修改时间 */
-    modifyTime Instant    
+    modifyTime Instant
 }
 
-/** 
+/**
 关注记录信息
 */
 entity Follow{
 	followUserId Long,
+	followUserNickname String maxlength(128),
+	followUseravatar String maxlength(1024),
     followedUserId Long,
+    followedUserNickname String maxlength(128),
+    followedUseravatar String maxlength(1024),
     createTime Instant,
     modifyTime Instant
 }
-/** 
+/**
 菜谱信息
 */
 entity Recipe{
 	/** 发布者id */
 	wechatUserId String maxlength(128),
+	/** 头像*/
+    avatar String maxlength(1024),
+    /** 昵称*/
+    nickName String maxlength(128),
     title String maxlength(255),
     content String,
     startTime Instant,
     endTime Instant,
     price Double,
-    num Integer max(9),    
+    num Integer max(9),
     status Integer max(2),
     publishVersion Integer max(9),
     hot Integer max(9),
     createTime Instant,
     modifyTime Instant
 }
-/** 
+/**
 菜谱图片信息
 */
 entity Image{
@@ -67,24 +79,28 @@ entity Image{
     ossPath String maxlength(255),
     createTime Instant
 }
-/** 
+/**
 菜谱订单
 */
-entity RecipeOrder{	
+entity RecipeOrder{
     wechatUserId String maxlength(128),
+    /** 头像*/
+    avatar String maxlength(1024),
+    /** 昵称*/
+    nickName String maxlength(128),
     recipeVersion Integer max(9),
     price Double,
     createTime Instant,
     modifyTime Instant
 }
-/** 
+/**
 评价信息
 */
-entity Evaluate{	
+entity Evaluate{
     parentId Long,
     content String maxlength(500),
     tasteScore Integer,
-    serviceScore Integer,    
+    serviceScore Integer,
     createTime Instant,
     modifyTime Instant
 }
@@ -151,7 +167,7 @@ entity Attendee{
 /**
 拼饭参与评价信息
 */
-entity Rates {	
+entity Rates {
     comments String maxlength(1024),
     rating Integer
     createTime Instant,
@@ -172,14 +188,20 @@ entity PinfanPics{
 健身活动信息
 */
 entity FitnessActivity{
-	/** 发布者id */
-    wechatUserId String maxlength(128),
     /** 活动标题*/
     title String maxlength(64)
     /** 活动描述*/
     descrption String maxlength(128),
     /** 用户id 创建人 **/
     wechatUserId String maxlength(128),
+	/** 昵称*/
+    nickName String maxlength(128),
+    /** 头像*/
+    avatar String maxlength(1024),
+	 /** 项目名称*/
+    project String maxlength(128),
+    /** 角色 */
+    companyRole String maxlength(255),
    /** 报名开始时间 **/
     signStartTime Instant,
    /** 报名截至时间 **/
@@ -196,28 +218,32 @@ entity ActivityParticipation{
     /** 参与人ID**/
     wechatUserId String maxlength(128),
     /** 参与者昵称**/
-    nickName String maxlength(128)
+    nickName String maxlength(128),
     /** 参与者头像**/
-    avatar String maxlength(1024)
+    avatar String maxlength(1024),
+	 /** 项目名称*/
+    project String maxlength(128),
     /** 参与时间 **/
     participationTime Instant
 }
 /**
 打卡信息
 */
-entity ClockIn{   
+entity ClockIn{
+	/** 活动标题*/
+    title String maxlength(64)
     /** 签到日记 **/
-    signNote String maxlength(1024), 
+    signNote String maxlength(1024),
     /** 打卡时间 **/
     punchDateTime Instant
 }
 
-/** 
+/**
 健身图片信息
 */
 entity Pics{
     ossPath String maxlength(255),
-    createTime Instant    
+    createTime Instant
 }
 
 /**
@@ -232,16 +258,16 @@ entity ClockinSummary{
     weeklyCount Integer,
     /** 连续打卡天数 **/
     serialCount Integer,
-    /** 最新打卡时间 **/    
+    /** 最新打卡时间 **/
     lastClockInTime Instant
-    
+
 }
 
 relationship OneToMany {
 	Recipe{recipeOrder} to RecipeOrder{recipe}
 	Recipe{image} to Image{recipe}
     RecipeOrder{evaluat} to Evaluate{recipeOrder}
-    Evaluate{image} to Image{evaluat}    
+    Evaluate{image} to Image{evaluat}
 }
 
 relationship OneToMany {
@@ -254,7 +280,7 @@ relationship OneToMany {
 relationship OneToMany {
     FitnessActivity{activityParticipation} to ActivityParticipation{activity}
     FitnessActivity{image} to Pics{fitnessActivity}
-    ActivityParticipation{clockIn} to ClockIn{activityParticipation}    
+    ActivityParticipation{clockIn} to ClockIn{activityParticipation}
     ClockIn{pics} to Pics{clockIn}
 }
 
