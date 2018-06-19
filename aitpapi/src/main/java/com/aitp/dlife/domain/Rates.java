@@ -44,7 +44,7 @@ public class Rates implements Serializable {
 
     @OneToMany(mappedBy = "rate")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<PinfanPics> pinfanPics = new HashSet<>();
 
     @ManyToOne

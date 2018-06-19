@@ -177,17 +177,17 @@ public class PinFanActivity implements Serializable {
 
     @OneToMany(mappedBy = "pinFanActivity")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<Attendee> attendees = new HashSet<>();
 
     @OneToMany(mappedBy = "pinFanActivity")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<PinfanPics> pinfanPics = new HashSet<>();
 
     @OneToMany(mappedBy = "pinFanActivity")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<Rates> rates = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
