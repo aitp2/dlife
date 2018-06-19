@@ -56,15 +56,18 @@ public class PinFanActivityService {
         Page<PinFanActivity> all = pinFanActivityRepository.findAll(pageable);
         if(all!=null){
             for(PinFanActivity activity:all){
-                if(!Hibernate.isInitialized(activity.getPinfanPics())){
-                    Hibernate.initialize(activity.getPinfanPics());
-                }
-                if(!Hibernate.isInitialized(activity.getRates())){
-                    Hibernate.initialize(activity.getRates());
-                }
-                if(!Hibernate.isInitialized(activity.getAttendees())){
-                    Hibernate.initialize(activity.getAttendees());
-                }
+                activity.setPinfanPics(null);
+                activity.setRates(null);
+                activity.setAttendees(null);
+//                if(!Hibernate.isInitialized(activity.getPinfanPics())){
+//                    Hibernate.initialize(activity.getPinfanPics());
+//                }
+//                if(!Hibernate.isInitialized(activity.getRates())){
+//                    Hibernate.initialize(activity.getRates());
+//                }
+//                if(!Hibernate.isInitialized(activity.getAttendees())){
+//                    Hibernate.initialize(activity.getAttendees());
+//                }
             }
         }
         return all.map(pinFanActivityMapper::toDto);

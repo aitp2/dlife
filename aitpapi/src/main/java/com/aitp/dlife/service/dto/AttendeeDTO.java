@@ -24,7 +24,7 @@ public class AttendeeDTO implements Serializable {
     @Size(max = 1024)
     private String avatar;
 
-    private Instant participationTime;
+    private String participationTime;
 
     @Size(max = 128)
     private String activitiyTile;
@@ -63,11 +63,11 @@ public class AttendeeDTO implements Serializable {
         this.avatar = avatar;
     }
 
-    public Instant getParticipationTime() {
+    public String getParticipationTime() {
         return participationTime;
     }
 
-    public void setParticipationTime(Instant participationTime) {
+    public void setParticipationTime(String participationTime) {
         this.participationTime = participationTime;
     }
 

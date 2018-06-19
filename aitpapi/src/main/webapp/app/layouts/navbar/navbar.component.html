@@ -179,6 +179,12 @@
                             <span jhiTranslate="global.menu.entities.clockIn">Clock In</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="pin-fan-activity" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.pinFanActivity">Pin Fan Activity</span>
+                        </a>
+                    </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>

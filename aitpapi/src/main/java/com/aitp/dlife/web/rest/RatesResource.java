@@ -3,6 +3,7 @@ package com.aitp.dlife.web.rest;
 import com.aitp.dlife.domain.PinfanPics;
 import com.aitp.dlife.service.PinfanPicsService;
 import com.aitp.dlife.service.dto.PinfanPicsDTO;
+import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.RatesService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -24,10 +25,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * REST controller for managing Rates.
@@ -70,7 +68,7 @@ public class RatesResource {
         if(ratesDTO.getPinfanPics()!=null&&!ratesDTO.getPinfanPics().isEmpty()){
             for(PinfanPicsDTO pics:ratesDTO.getPinfanPics()){
                 pics.setRateId(result.getId());
-                pics.setCreateTime(Instant.now());
+                pics.setCreateTime(DateUtil.getYMDDateString(new Date()));
                 pinfanPics.add(pinfanPicsService.save(pics));
             }
         }
