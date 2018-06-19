@@ -26,6 +26,10 @@ entity WechatUser{
     companyRole String maxlength(255),
     /** 厨师标志 */
     cookFlag Boolean,
+    /** 兴趣 */
+    intesting String maxlength(1024),
+    /** 擅长 */
+    skill String maxlength(1024),
     /** 创建时间 */
     createTime Instant,
     /** 修改时间 */
@@ -37,7 +41,11 @@ entity WechatUser{
 */
 entity Follow{
 	followUserId Long,
+	followUserNickname String maxlength(128),
+	followUseravatar String maxlength(1024),
     followedUserId Long,
+    followedUserNickname String maxlength(128),
+    followedUseravatar String maxlength(1024),
     createTime Instant,
     modifyTime Instant
 }
@@ -47,6 +55,10 @@ entity Follow{
 entity Recipe{
 	/** 发布者id */
 	wechatUserId String maxlength(128),
+	/** 头像*/
+    avatar String maxlength(1024),
+    /** 昵称*/
+    nickName String maxlength(128),
     title String maxlength(255),
     content String,
     startTime Instant,
@@ -72,6 +84,10 @@ entity Image{
 */
 entity RecipeOrder{	
     wechatUserId String maxlength(128),
+    /** 头像*/
+    avatar String maxlength(1024),
+    /** 昵称*/
+    nickName String maxlength(128),
     recipeVersion Integer max(9),
     price Double,
     createTime Instant,
