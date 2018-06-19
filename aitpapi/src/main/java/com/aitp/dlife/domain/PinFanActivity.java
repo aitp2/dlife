@@ -22,7 +22,7 @@ import java.util.Objects;
 @ApiModel(description = "拼饭活动")
 @Entity
 @Table(name = "pin_fan_activity")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
 public class PinFanActivity implements Serializable {
 
     private static final long serialVersionUID = 1L;

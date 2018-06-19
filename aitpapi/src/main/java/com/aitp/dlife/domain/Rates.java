@@ -20,7 +20,7 @@ import java.util.Objects;
 @ApiModel(description = "拼饭参与评价信息")
 @Entity
 @Table(name = "rates")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage =  CacheConcurrencyStrategy.NONE)
 public class Rates implements Serializable {
 
     private static final long serialVersionUID = 1L;

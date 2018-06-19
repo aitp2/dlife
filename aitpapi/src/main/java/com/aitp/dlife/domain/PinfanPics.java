@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "pinfan_pics")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
 public class PinfanPics implements Serializable {
 
     private static final long serialVersionUID = 1L;
