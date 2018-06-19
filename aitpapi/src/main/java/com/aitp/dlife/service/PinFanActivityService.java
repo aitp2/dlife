@@ -58,16 +58,16 @@ public class PinFanActivityService {
             for(PinFanActivity activity:all){
                 activity.setPinfanPics(null);
                 activity.setRates(null);
-                activity.setAttendees(null);
+//                activity.setAttendees(null);
 //                if(!Hibernate.isInitialized(activity.getPinfanPics())){
 //                    Hibernate.initialize(activity.getPinfanPics());
 //                }
 //                if(!Hibernate.isInitialized(activity.getRates())){
 //                    Hibernate.initialize(activity.getRates());
 //                }
-//                if(!Hibernate.isInitialized(activity.getAttendees())){
-//                    Hibernate.initialize(activity.getAttendees());
-//                }
+                if(!Hibernate.isInitialized(activity.getAttendees())){
+                    Hibernate.initialize(activity.getAttendees());
+                }
             }
         }
         return all.map(pinFanActivityMapper::toDto);
