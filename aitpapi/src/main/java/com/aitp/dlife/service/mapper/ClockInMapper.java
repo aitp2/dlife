@@ -8,7 +8,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity ClockIn and its DTO ClockInDTO.
  */
-@Mapper(componentModel = "spring", uses = {ActivityParticipationMapper.class})
+@Mapper(componentModel = "spring", uses = {ActivityParticipationMapper.class,InstantMapper.class})
 public interface ClockInMapper extends EntityMapper<ClockInDTO, ClockIn> {
 
     @Mapping(source = "activityParticipation.id", target = "activityParticipationId")

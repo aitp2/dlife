@@ -39,13 +39,13 @@ public class FitnessActivityDTO implements Serializable {
     @Size(max = 255)
     private String companyRole;
 
-    private Instant signStartTime;
+    private String signStartTime;
 
-    private Instant signEndTime;
+    private String signEndTime;
 
-    private Instant activityStartTime;
+    private String activityStartTime;
 
-    private Instant activityEndTime;
+    private String activityEndTime;
     
     private Integer attendCount;
     
@@ -115,40 +115,41 @@ public class FitnessActivityDTO implements Serializable {
         this.companyRole = companyRole;
     }
 
-    public Instant getSignStartTime() {
-        return signStartTime;
-    }
+ 
 
-    public void setSignStartTime(Instant signStartTime) {
-        this.signStartTime = signStartTime;
-    }
+    public String getSignStartTime() {
+		return signStartTime;
+	}
 
-    public Instant getSignEndTime() {
-        return signEndTime;
-    }
+	public void setSignStartTime(String signStartTime) {
+		this.signStartTime = signStartTime;
+	}
 
-    public void setSignEndTime(Instant signEndTime) {
-        this.signEndTime = signEndTime;
-    }
+	public String getSignEndTime() {
+		return signEndTime;
+	}
 
-    public Instant getActivityStartTime() {
-        return activityStartTime;
-    }
+	public void setSignEndTime(String signEndTime) {
+		this.signEndTime = signEndTime;
+	}
 
-    public void setActivityStartTime(Instant activityStartTime) {
-        this.activityStartTime = activityStartTime;
-    }
+	public String getActivityStartTime() {
+		return activityStartTime;
+	}
 
-    public Instant getActivityEndTime() {
-        return activityEndTime;
-    }
+	public void setActivityStartTime(String activityStartTime) {
+		this.activityStartTime = activityStartTime;
+	}
 
-    public void setActivityEndTime(Instant activityEndTime) {
-        this.activityEndTime = activityEndTime;
-    }
-    
+	public String getActivityEndTime() {
+		return activityEndTime;
+	}
 
-    public Integer getAttendCount() {
+	public void setActivityEndTime(String activityEndTime) {
+		this.activityEndTime = activityEndTime;
+	}
+
+	public Integer getAttendCount() {
 		return attendCount;
 	}
 
