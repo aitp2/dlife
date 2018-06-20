@@ -19,5 +19,5 @@ import org.springframework.data.repository.query.Param;
 public interface RecipeOrderRepository extends JpaRepository<RecipeOrder, Long> {
 	
 	Page<RecipeOrder> findAllByWechatUserId(Pageable pageable, String wechatUserId);
-
+	
 }

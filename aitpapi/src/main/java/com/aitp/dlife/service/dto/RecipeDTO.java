@@ -50,8 +50,18 @@ public class RecipeDTO implements Serializable {
     private Instant createTime;
 
     private Instant modifyTime;
+    
+    private String imageURL;
 
-    public Long getId() {
+    public String getImageURL() {
+		return imageURL;
+	}
+
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
+	}
+
+	public Long getId() {
         return id;
     }
 
