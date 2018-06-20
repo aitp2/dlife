@@ -1,10 +1,5 @@
 package com.aitp.dlife.service;
 
-import com.aitp.dlife.domain.ClockIn;
-import com.aitp.dlife.repository.ClockInRepository;
-import com.aitp.dlife.service.dto.ClockInDTO;
-import com.aitp.dlife.service.mapper.ClockInMapper;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +10,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.aitp.dlife.domain.ClockIn;
+import com.aitp.dlife.repository.ClockInRepository;
+import com.aitp.dlife.service.dto.ClockInDTO;
+import com.aitp.dlife.service.mapper.ClockInMapper;
 
 
 /**
@@ -87,6 +87,17 @@ public class ClockInService {
 	public List<ClockInDTO> findClockinsByActivityParticipationId(Long activityParticipationId) {
 		
 		return clockInRepository.findClockinsByActivityParticipationId(activityParticipationId).stream()
+	            .map(clockInMapper::toDto)
+	            .collect(Collectors.toCollection(LinkedList::new));
+	}
+	
+	public List<String> getClockinsDateByWechatUserIdAndMonth(Long wechatUserId,String yearMonth) {
+		
+		return clockInRepository.findClockinsDateByWechatUserIdAndMonth(wechatUserId,yearMonth);
+	}
+
+	public List<ClockInDTO> getClockinsByWechatUserIdAndDate(Long wechatUserId, String yearMonthDate) {
+		return clockInRepository.getClockinsByWechatUserIdAndDate(wechatUserId,yearMonthDate).stream()
 	            .map(clockInMapper::toDto)
 	            .collect(Collectors.toCollection(LinkedList::new));
 	}
