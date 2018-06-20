@@ -30,6 +30,8 @@ public class ActivityParticipationDTO implements Serializable {
     private Instant participationTime;
 
     private Long activityId;
+    
+    private Integer clockinCount;
 
     public Long getId() {
         return id;
@@ -86,8 +88,17 @@ public class ActivityParticipationDTO implements Serializable {
     public void setActivityId(Long fitnessActivityId) {
         this.activityId = fitnessActivityId;
     }
+    
 
-    @Override
+    public Integer getClockinCount() {
+		return clockinCount;
+	}
+
+	public void setClockinCount(Integer clockinCount) {
+		this.clockinCount = clockinCount;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

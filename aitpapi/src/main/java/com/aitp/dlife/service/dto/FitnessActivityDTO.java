@@ -3,6 +3,9 @@ package com.aitp.dlife.service.dto;
 
 import java.time.Instant;
 import javax.validation.constraints.*;
+
+import com.aitp.dlife.domain.Pics;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,6 +46,10 @@ public class FitnessActivityDTO implements Serializable {
     private Instant activityStartTime;
 
     private Instant activityEndTime;
+    
+    private Integer attendCount;
+    
+    private Set<PicsDTO> images = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -139,8 +146,25 @@ public class FitnessActivityDTO implements Serializable {
     public void setActivityEndTime(Instant activityEndTime) {
         this.activityEndTime = activityEndTime;
     }
+    
 
-    @Override
+    public Integer getAttendCount() {
+		return attendCount;
+	}
+
+	public void setAttendCount(Integer attendCount) {
+		this.attendCount = attendCount;
+	}
+
+	public Set<PicsDTO> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<PicsDTO> images) {
+		this.images = images;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

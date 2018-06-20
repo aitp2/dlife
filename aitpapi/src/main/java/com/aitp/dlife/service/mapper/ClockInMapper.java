@@ -12,7 +12,9 @@ import org.mapstruct.*;
 public interface ClockInMapper extends EntityMapper<ClockInDTO, ClockIn> {
 
     @Mapping(source = "activityParticipation.id", target = "activityParticipationId")
+    @Mapping(source = "pics", target = "pics")
     ClockInDTO toDto(ClockIn clockIn);
+    
 
     @Mapping(target = "pics", ignore = true)
     @Mapping(source = "activityParticipationId", target = "activityParticipation")
