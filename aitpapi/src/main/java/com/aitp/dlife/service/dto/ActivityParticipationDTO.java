@@ -27,7 +27,7 @@ public class ActivityParticipationDTO implements Serializable {
     @Size(max = 128)
     private String project;
 
-    private Instant participationTime;
+    private String participationTime;
 
     private Long activityId;
     
@@ -73,15 +73,16 @@ public class ActivityParticipationDTO implements Serializable {
         this.project = project;
     }
 
-    public Instant getParticipationTime() {
-        return participationTime;
-    }
 
-    public void setParticipationTime(Instant participationTime) {
-        this.participationTime = participationTime;
-    }
+    public String getParticipationTime() {
+		return participationTime;
+	}
 
-    public Long getActivityId() {
+	public void setParticipationTime(String participationTime) {
+		this.participationTime = participationTime;
+	}
+
+	public Long getActivityId() {
         return activityId;
     }
 

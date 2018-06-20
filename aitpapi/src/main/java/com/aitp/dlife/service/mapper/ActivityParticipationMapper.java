@@ -1,9 +1,10 @@
 package com.aitp.dlife.service.mapper;
 
-import com.aitp.dlife.domain.*;
-import com.aitp.dlife.service.dto.ActivityParticipationDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import org.mapstruct.*;
+import com.aitp.dlife.domain.ActivityParticipation;
+import com.aitp.dlife.service.dto.ActivityParticipationDTO;
 
 /**
  * Mapper for the entity ActivityParticipation and its DTO ActivityParticipationDTO.
@@ -12,10 +13,12 @@ import org.mapstruct.*;
 public interface ActivityParticipationMapper extends EntityMapper<ActivityParticipationDTO, ActivityParticipation> {
 
     @Mapping(source = "activity.id", target = "activityId")
+    @Mapping(target = "participationTime", expression = "java(InstantMapper.toDateString(activityParticipation.getParticipationTime()))")
     ActivityParticipationDTO toDto(ActivityParticipation activityParticipation);
 
     @Mapping(target = "clockIns", ignore = true)
     @Mapping(source = "activityId", target = "activity")
+    @Mapping(target = "participationTime", expression = "java(InstantMapper.fromString(activityParticipationDTO.getParticipationTime()))")
     ActivityParticipation toEntity(ActivityParticipationDTO activityParticipationDTO);
 
     default ActivityParticipation fromId(Long id) {
