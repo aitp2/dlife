@@ -24,7 +24,7 @@ public class ClockInDTO implements Serializable {
     @Size(max = 1024)
     private String signNote;
 
-    private Instant punchDateTime;
+    private String punchDateTime;
 
     private Long activityParticipationId;
     
@@ -54,15 +54,16 @@ public class ClockInDTO implements Serializable {
         this.signNote = signNote;
     }
 
-    public Instant getPunchDateTime() {
-        return punchDateTime;
-    }
 
-    public void setPunchDateTime(Instant punchDateTime) {
-        this.punchDateTime = punchDateTime;
-    }
+    public String getPunchDateTime() {
+		return punchDateTime;
+	}
 
-    public Long getActivityParticipationId() {
+	public void setPunchDateTime(String punchDateTime) {
+		this.punchDateTime = punchDateTime;
+	}
+
+	public Long getActivityParticipationId() {
         return activityParticipationId;
     }
 

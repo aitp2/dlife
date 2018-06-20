@@ -4,6 +4,11 @@ import com.aitp.dlife.domain.ClockIn;
 import com.aitp.dlife.repository.ClockInRepository;
 import com.aitp.dlife.service.dto.ClockInDTO;
 import com.aitp.dlife.service.mapper.ClockInMapper;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -78,4 +83,11 @@ public class ClockInService {
         log.debug("Request to delete ClockIn : {}", id);
         clockInRepository.delete(id);
     }
+
+	public List<ClockInDTO> findClockinsByActivityParticipationId(Long activityParticipationId) {
+		
+		return clockInRepository.findClockinsByActivityParticipationId(activityParticipationId).stream()
+	            .map(clockInMapper::toDto)
+	            .collect(Collectors.toCollection(LinkedList::new));
+	}
 }

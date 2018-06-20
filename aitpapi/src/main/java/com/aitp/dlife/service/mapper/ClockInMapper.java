@@ -13,11 +13,13 @@ public interface ClockInMapper extends EntityMapper<ClockInDTO, ClockIn> {
 
     @Mapping(source = "activityParticipation.id", target = "activityParticipationId")
     @Mapping(source = "pics", target = "pics")
+    @Mapping(target = "punchDateTime", expression = "java(InstantMapper.toDateString(clockIn.getPunchDateTime()))")
     ClockInDTO toDto(ClockIn clockIn);
     
 
     @Mapping(target = "pics", ignore = true)
     @Mapping(source = "activityParticipationId", target = "activityParticipation")
+    @Mapping(target = "punchDateTime", expression = "java(InstantMapper.fromString(clockInDTO.getPunchDateTime()))")
     ClockIn toEntity(ClockInDTO clockInDTO);
 
     default ClockIn fromId(Long id) {

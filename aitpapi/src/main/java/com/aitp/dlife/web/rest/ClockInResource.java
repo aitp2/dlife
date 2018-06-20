@@ -5,6 +5,7 @@ import com.aitp.dlife.service.ClockInService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
+import com.aitp.dlife.service.dto.ActivityParticipationDTO;
 import com.aitp.dlife.service.dto.ClockInDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -123,5 +124,12 @@ public class ClockInResource {
         log.debug("REST request to delete ClockIn : {}", id);
         clockInService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    
+    @GetMapping("/clock-ins/getClockinsByActivityParticipationId")
+    @Timed
+    public List<ClockInDTO>  getClockinsByActivityParticipationId(Long activityParticipationId) {
+        log.debug("REST request to get Clockins : {}", activityParticipationId);
+        return clockInService.findClockinsByActivityParticipationId(activityParticipationId);
     }
 }
