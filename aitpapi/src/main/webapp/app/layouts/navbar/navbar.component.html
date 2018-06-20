@@ -186,6 +186,12 @@
                         </a>
                     </li>
                     <li>
+                        <a class="dropdown-item" routerLink="follow" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.follow">Follow</span>
+                        </a>
+                    </li>
+                    <li>
                         <a class="dropdown-item" routerLink="rates" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.rates">Rates</span>
