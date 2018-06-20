@@ -116,7 +116,7 @@ public class FitnessActivity implements Serializable {
 
     @OneToMany(mappedBy = "activity")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<ActivityParticipation> activityParticipations = new HashSet<>();
 
     @OneToMany(mappedBy = "fitnessActivity")

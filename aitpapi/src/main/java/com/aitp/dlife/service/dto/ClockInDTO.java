@@ -20,6 +20,8 @@ public class ClockInDTO implements Serializable {
 
     @Size(max = 64)
     private String title;
+    
+    private Long wechatUserId;
 
     @Size(max = 1024)
     private String signNote;
@@ -78,6 +80,16 @@ public class ClockInDTO implements Serializable {
 
 	public void setPics(Set<PicsDTO> pics) {
 		this.pics = pics;
+	}
+	
+	
+
+	public Long getWechatUserId() {
+		return wechatUserId;
+	}
+
+	public void setWechatUserId(Long wechatUserId) {
+		this.wechatUserId = wechatUserId;
 	}
 
 	@Override

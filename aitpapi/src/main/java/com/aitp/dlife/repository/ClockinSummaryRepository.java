@@ -18,6 +18,6 @@ public interface ClockinSummaryRepository extends JpaRepository<ClockinSummary, 
 
 	@Query("select clockinSummary from ClockinSummary clockinSummary "
 			+ "where clockinSummary.wechatUserId =:wechatUserId")
-	List<ClockinSummary> findByWechatUserId(@Param("wechatUserId") String wechatUserId);
+	ClockinSummary findByWechatUserId(@Param("wechatUserId") String wechatUserId);
 
 }

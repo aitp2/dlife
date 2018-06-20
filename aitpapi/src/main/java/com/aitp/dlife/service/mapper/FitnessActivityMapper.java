@@ -17,6 +17,7 @@ public interface FitnessActivityMapper extends EntityMapper<FitnessActivityDTO, 
 	@Mapping(target = "signEndTime", expression = "java(InstantMapper.toDateString(fitnessActivity.getSignEndTime()))")
 	@Mapping(target = "activityStartTime", expression = "java(InstantMapper.toDateString(fitnessActivity.getActivityStartTime()))")
 	@Mapping(target = "activityEndTime", expression = "java(InstantMapper.toDateString(fitnessActivity.getActivityEndTime()))")
+	 @Mapping(target = "attendCount", expression = "java(fitnessActivity.getActivityParticipations() == null ? 0 : fitnessActivity.getActivityParticipations().size())")
 	FitnessActivityDTO toDto(FitnessActivity fitnessActivity);
 
 	@Mapping(target = "activityParticipations", ignore = true)

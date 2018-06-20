@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aitp.dlife.service.FitnessActivityService;
 import com.aitp.dlife.service.PicsService;
+import com.aitp.dlife.service.dto.ClockinSummaryDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.dto.PicsDTO;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -155,5 +156,15 @@ public class FitnessActivityResource {
         log.debug("REST request to delete FitnessActivity : {}", id);
         fitnessActivityService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    
+    @GetMapping("/fitness-activities/getActivitiesByWechatUserId")
+    @Timed
+    public List<FitnessActivityDTO> getActivitiesByWechatUserId(Long wechatUserId) {
+        log.debug("REST request to get ClockinSummary by wechatUserId: {}", wechatUserId);
+        if (null == wechatUserId) {
+            throw new BadRequestAlertException("wechatUserId is null", ENTITY_NAME, "wechatUserIdNULL");
+        }
+        return fitnessActivityService.getActivitiesByWechatUserId(wechatUserId);
     }
 }
