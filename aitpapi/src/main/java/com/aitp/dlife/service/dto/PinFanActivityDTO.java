@@ -1,7 +1,6 @@
 package com.aitp.dlife.service.dto;
 
 
-import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -44,9 +43,9 @@ public class PinFanActivityDTO implements Serializable {
     @Size(max = 128)
     private String coverPicture;
 
-    private Instant appointDatetime;
+    private String appointDatetime;
 
-    private Instant appointEndDatetime;
+    private String appointEndDatetime;
 
     @Size(max = 1024)
     private String salerUrl;
@@ -58,26 +57,26 @@ public class PinFanActivityDTO implements Serializable {
     @Size(max = 32)
     private String payType;
 
-    private Instant deadline;
+    private String deadline;
 
     @Size(max = 500)
     private String comment;
 
-    private Boolean isActive;
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    private Integer status;
 
     private Set<AttendeeDTO> attendees = new HashSet<>();
 
     private Set<PinfanPicsDTO> pinfanPics = new HashSet<>();
 
     private Set<RatesDTO> rates = new HashSet<>();
-
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public void setActive(Boolean active) {
-        isActive = active;
-    }
 
     public Set<AttendeeDTO> getAttendees() {
         return attendees;
@@ -191,19 +190,19 @@ public class PinFanActivityDTO implements Serializable {
         this.coverPicture = coverPicture;
     }
 
-    public Instant getAppointDatetime() {
+    public String getAppointDatetime() {
         return appointDatetime;
     }
 
-    public void setAppointDatetime(Instant appointDatetime) {
+    public void setAppointDatetime(String appointDatetime) {
         this.appointDatetime = appointDatetime;
     }
 
-    public Instant getAppointEndDatetime() {
+    public String getAppointEndDatetime() {
         return appointEndDatetime;
     }
 
-    public void setAppointEndDatetime(Instant appointEndDatetime) {
+    public void setAppointEndDatetime(String appointEndDatetime) {
         this.appointEndDatetime = appointEndDatetime;
     }
 
@@ -239,11 +238,11 @@ public class PinFanActivityDTO implements Serializable {
         this.payType = payType;
     }
 
-    public Instant getDeadline() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Instant deadline) {
+    public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
 
@@ -255,13 +254,6 @@ public class PinFanActivityDTO implements Serializable {
         this.comment = comment;
     }
 
-    public Boolean isIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -306,7 +298,7 @@ public class PinFanActivityDTO implements Serializable {
             ", payType='" + getPayType() + "'" +
             ", deadline='" + getDeadline() + "'" +
             ", comment='" + getComment() + "'" +
-            ", isActive='" + isIsActive() + "'" +
+            ", status='" + getStatus() + "'" +
             "}";
     }
 }

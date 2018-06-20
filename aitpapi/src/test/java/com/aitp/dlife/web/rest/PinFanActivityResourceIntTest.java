@@ -76,8 +76,6 @@ public class PinFanActivityResourceIntTest {
     private static final String DEFAULT_COMMENT = "AAAAAAAAAA";
     private static final String UPDATED_COMMENT = "BBBBBBBBBB";
 
-    private static final Boolean DEFAULT_IS_ACTIVE = false;
-    private static final Boolean UPDATED_IS_ACTIVE = true;
 
     @Autowired
     private PinFanActivityRepository pinFanActivityRepository;
@@ -134,8 +132,7 @@ public class PinFanActivityResourceIntTest {
             .upperLimit(DEFAULT_UPPER_LIMIT)
             .payType(DEFAULT_PAY_TYPE)
             .deadline(DEFAULT_DEADLINE)
-            .comment(DEFAULT_COMMENT)
-            .isActive(DEFAULT_IS_ACTIVE);
+            .comment(DEFAULT_COMMENT);
         return pinFanActivity;
     }
 
@@ -171,7 +168,7 @@ public class PinFanActivityResourceIntTest {
         assertThat(testPinFanActivity.getPayType()).isEqualTo(DEFAULT_PAY_TYPE);
         assertThat(testPinFanActivity.getDeadline()).isEqualTo(DEFAULT_DEADLINE);
         assertThat(testPinFanActivity.getComment()).isEqualTo(DEFAULT_COMMENT);
-        assertThat(testPinFanActivity.isIsActive()).isEqualTo(DEFAULT_IS_ACTIVE);
+
     }
 
     @Test
@@ -215,8 +212,7 @@ public class PinFanActivityResourceIntTest {
             .andExpect(jsonPath("$.[*].upperLimit").value(hasItem(DEFAULT_UPPER_LIMIT)))
             .andExpect(jsonPath("$.[*].payType").value(hasItem(DEFAULT_PAY_TYPE.toString())))
             .andExpect(jsonPath("$.[*].deadline").value(hasItem(DEFAULT_DEADLINE.toString())))
-            .andExpect(jsonPath("$.[*].comment").value(hasItem(DEFAULT_COMMENT.toString())))
-            .andExpect(jsonPath("$.[*].isActive").value(hasItem(DEFAULT_IS_ACTIVE.booleanValue())));
+            .andExpect(jsonPath("$.[*].comment").value(hasItem(DEFAULT_COMMENT.toString()))) ;
     }
 
     @Test
@@ -240,8 +236,7 @@ public class PinFanActivityResourceIntTest {
             .andExpect(jsonPath("$.upperLimit").value(DEFAULT_UPPER_LIMIT))
             .andExpect(jsonPath("$.payType").value(DEFAULT_PAY_TYPE.toString()))
             .andExpect(jsonPath("$.deadline").value(DEFAULT_DEADLINE.toString()))
-            .andExpect(jsonPath("$.comment").value(DEFAULT_COMMENT.toString()))
-            .andExpect(jsonPath("$.isActive").value(DEFAULT_IS_ACTIVE.booleanValue()));
+            .andExpect(jsonPath("$.comment").value(DEFAULT_COMMENT.toString()));
     }
 
     @Test
@@ -274,8 +269,7 @@ public class PinFanActivityResourceIntTest {
             .upperLimit(UPDATED_UPPER_LIMIT)
             .payType(UPDATED_PAY_TYPE)
             .deadline(UPDATED_DEADLINE)
-            .comment(UPDATED_COMMENT)
-            .isActive(UPDATED_IS_ACTIVE);
+            .comment(UPDATED_COMMENT) ;
         PinFanActivityDTO pinFanActivityDTO = pinFanActivityMapper.toDto(updatedPinFanActivity);
 
         restPinFanActivityMockMvc.perform(put("/api/pin-fan-activities")
@@ -298,7 +292,7 @@ public class PinFanActivityResourceIntTest {
         assertThat(testPinFanActivity.getPayType()).isEqualTo(UPDATED_PAY_TYPE);
         assertThat(testPinFanActivity.getDeadline()).isEqualTo(UPDATED_DEADLINE);
         assertThat(testPinFanActivity.getComment()).isEqualTo(UPDATED_COMMENT);
-        assertThat(testPinFanActivity.isIsActive()).isEqualTo(UPDATED_IS_ACTIVE);
+
     }
 
     @Test

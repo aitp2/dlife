@@ -168,13 +168,6 @@ public class PinFanActivity implements Serializable {
     @Column(name = "jhi_comment", length = 500)
     private String comment;
 
-    /**
-     * 是否生效
-     */
-    @ApiModelProperty(value = "是否生效")
-    @Column(name = "is_active")
-    private Boolean isActive;
-
     @OneToMany(mappedBy = "pinFanActivity")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONE)
@@ -190,6 +183,21 @@ public class PinFanActivity implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<Rates> rates = new HashSet<>();
 
+    @ApiModelProperty(value = "活动状态 0-新建 1-完成 2-取消")
+    @Column(name = "status")
+    private Integer status;
+
+    public PinFanActivity status(Integer status) {
+        this.status = status;
+        return this;
+    }
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -433,19 +441,6 @@ public class PinFanActivity implements Serializable {
         this.comment = comment;
     }
 
-    public Boolean isIsActive() {
-        return isActive;
-    }
-
-    public PinFanActivity isActive(Boolean isActive) {
-        this.isActive = isActive;
-        return this;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
-
     public Set<Attendee> getAttendees() {
         return attendees;
     }
@@ -564,7 +559,7 @@ public class PinFanActivity implements Serializable {
             ", payType='" + getPayType() + "'" +
             ", deadline='" + getDeadline() + "'" +
             ", comment='" + getComment() + "'" +
-            ", isActive='" + isIsActive() + "'" +
+            ", status='" + getStatus() + "'" +
             "}";
     }
 }

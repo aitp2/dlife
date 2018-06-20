@@ -34,7 +34,7 @@
             "payType": "Pay Type",
             "deadline": "Deadline",
             "comment": "Comment",
-            "isActive": "Is Active",
+            "status": "Status",
             "attendees": "Attendees",
             "pinfanPics": "Pinfan Pics",
             "rates": "Rates",
@@ -57,7 +57,7 @@
                 "payType": "支付类型",
                 "deadline": "截至日期",
                 "comment": "备注",
-                "isActive": "是否生效"
+                "status": "活动状态 0-新建 1-完成 2-取消"
             }
         }
     }

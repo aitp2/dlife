@@ -4,6 +4,7 @@ import com.aitp.dlife.domain.PinfanPics;
 import com.aitp.dlife.service.PinfanPicsService;
 import com.aitp.dlife.service.dto.PinfanPicsDTO;
 import com.aitp.dlife.service.mapper.PinfanPicsMapper;
+import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.PinFanActivityService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -11,6 +12,7 @@ import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import com.aitp.dlife.service.dto.PinFanActivityDTO;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -25,10 +27,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * REST controller for managing PinFanActivity.
@@ -63,12 +62,17 @@ public class PinFanActivityResource {
         if (pinFanActivityDTO.getId() != null) {
             throw new BadRequestAlertException("A new pinFanActivity cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        if(pinFanActivityDTO.getStatus()==null){
+            pinFanActivityDTO.setStatus(0);
+        }
         Set<PinfanPicsDTO> pinfanPicsDTOS=new HashSet<>();
         PinFanActivityDTO result = pinFanActivityService.save(pinFanActivityDTO);
 
         if(pinFanActivityDTO.getPinfanPics()!=null&&!pinFanActivityDTO.getPinfanPics().isEmpty()){
             for(PinfanPicsDTO pics:pinFanActivityDTO.getPinfanPics()){
-                pics.setCreateTime(Instant.now());
+                if(!StringUtils.isEmpty(pics.getCreateTime())){
+                    pics.setCreateTime(DateUtil.getYMDDateString(new Date()));
+                }
                 pics.setPinFanActivityId(result.getId());
                 pinfanPicsDTOS.add(pinfanPicsService.save(pics));
             }

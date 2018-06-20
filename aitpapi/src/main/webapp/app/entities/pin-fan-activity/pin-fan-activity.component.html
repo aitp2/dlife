@@ -18,7 +18,7 @@
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="wechatUserId"><span jhiTranslate="aitpapiApp.pinFanActivity.wechatUserId">Wechat User Id</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="userName"><span jhiTranslate="aitpapiApp.pinFanActivity.userName">User Name</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="avatar"><span jhiTranslate="aitpapiApp.pinFanActivity.avatar">Avatar</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="nickName"><span jhiTranslate="aitpapiApp.pinFanActivity.nickName">Nick Name</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="activitiyType"><span jhiTranslate="aitpapiApp.pinFanActivity.activitiyType">Activitiy Type</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="activitiyTile"><span jhiTranslate="aitpapiApp.pinFanActivity.activitiyTile">Activitiy Tile</span> <span class="fa fa-sort"></span></th>
@@ -35,7 +35,7 @@
             <th jhiSortBy="payType"><span jhiTranslate="aitpapiApp.pinFanActivity.payType">Pay Type</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="deadline"><span jhiTranslate="aitpapiApp.pinFanActivity.deadline">Deadline</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="comment"><span jhiTranslate="aitpapiApp.pinFanActivity.comment">Comment</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="isActive"><span jhiTranslate="aitpapiApp.pinFanActivity.isActive">Is Active</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="status"><span jhiTranslate="aitpapiApp.pinFanActivity.status">Status</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -43,7 +43,7 @@
             <tr *ngFor="let pinFanActivity of pinFanActivities ;trackBy: trackId">
                 <td><a [routerLink]="['../pin-fan-activity', pinFanActivity.id ]">{{pinFanActivity.id}}</a></td>
                 <td>{{pinFanActivity.wechatUserId}}</td>
-                <td>{{pinFanActivity.userName}}</td>
+                <td>{{pinFanActivity.avatar}}</td>
                 <td>{{pinFanActivity.nickName}}</td>
                 <td>{{pinFanActivity.activitiyType}}</td>
                 <td>{{pinFanActivity.activitiyTile}}</td>
@@ -60,7 +60,7 @@
                 <td>{{pinFanActivity.payType}}</td>
                 <td>{{pinFanActivity.deadline | date:'medium'}}</td>
                 <td>{{pinFanActivity.comment}}</td>
-                <td>{{pinFanActivity.isActive}}</td>
+                <td>{{pinFanActivity.status}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

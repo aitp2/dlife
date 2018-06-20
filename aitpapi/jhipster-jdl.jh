@@ -145,8 +145,8 @@ entity PinFanActivity{
     deadline Instant,
     /** 备注**/
     comment String maxlength(500),
-    /** 是否生效**/
-    isActive Boolean
+    /** 活动状态 0-新建 1-完成 2-取消**/
+    status Integer
 }
 /**
 拼饭活动参与信息
@@ -172,7 +172,7 @@ entity Rates {
     rating Integer
     createTime Instant,
     modifyTime Instant,
-    
+
 }
 
 /**
@@ -274,7 +274,7 @@ relationship OneToMany {
 	PinFanActivity{attendees} to Attendee{pinFanActivity}
     PinFanActivity{pinfanPics} to PinfanPics{pinFanActivity}
     PinFanActivity{rates} to Rates{pinFanActivity}
-    Rates{pinfanPics} to PinfanPics{rate}    
+    Rates{pinfanPics} to PinfanPics{rate}
 }
 
 relationship OneToMany {

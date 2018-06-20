@@ -31,4 +31,6 @@
     <include file="config/liquibase/changelog/20180617142624_added_entity_constraints_ClockIn.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180617142625_added_entity_constraints_Pics.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <include file="config/liquibase/changelog/20180620142618_update_entity_PinFanActivity.xml" relativeToChangelogFile="false"/>
+
 </databaseChangeLog>

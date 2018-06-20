@@ -22,9 +22,9 @@ public class RatesDTO implements Serializable {
 
     private Integer rating;
 
-    private Instant createTime;
+    private String createTime;
 
-    private Instant modifyTime;
+    private String modifyTime;
 
     private Set<PinfanPicsDTO> pinfanPics = new HashSet<>();
 
@@ -62,19 +62,19 @@ public class RatesDTO implements Serializable {
         this.rating = rating;
     }
 
-    public Instant getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Instant createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Instant getModifyTime() {
+    public String getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(Instant modifyTime) {
+    public void setModifyTime(String modifyTime) {
         this.modifyTime = modifyTime;
     }
 

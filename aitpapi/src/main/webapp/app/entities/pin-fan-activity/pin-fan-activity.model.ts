@@ -21,11 +21,10 @@ export class PinFanActivity implements BaseEntity {
         public payType?: string,
         public deadline?: any,
         public comment?: string,
-        public isActive?: boolean,
+        public status?: number,
         public attendees?: BaseEntity[],
         public pinfanPics?: BaseEntity[],
         public rates?: BaseEntity[],
     ) {
-        this.isActive = false;
     }
 }
