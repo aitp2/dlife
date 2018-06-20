@@ -14,6 +14,7 @@ public interface ActivityParticipationMapper extends EntityMapper<ActivityPartic
 
     @Mapping(source = "activity.id", target = "activityId")
     @Mapping(target = "participationTime", expression = "java(InstantMapper.toDateString(activityParticipation.getParticipationTime()))")
+    @Mapping(target = "clockinCount", expression = "java(activityParticipation.getClockIns() == null ? 0 : activityParticipation.getClockIns().size())")
     ActivityParticipationDTO toDto(ActivityParticipation activityParticipation);
 
     @Mapping(target = "clockIns", ignore = true)

@@ -135,7 +135,10 @@ public class ActivityParticipationResource {
         if (null == activityId) {
             throw new BadRequestAlertException("activityId can not be null", ENTITY_NAME, "activityIdNULL");
         }
-        return activityParticipationService.findByActivity(activityId);
+        //resort
+        List<ActivityParticipationDTO> result = activityParticipationService.findByActivity(activityId);
+        result.sort((b1, b2) -> b1.getClockinCount() > b2.getClockinCount() ?  -1 : 1);
+        return result;
     }
     
 }
