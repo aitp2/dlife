@@ -40,10 +40,10 @@ entity WechatUser{
 关注记录信息
 */
 entity Follow{
-	followUserId Long,
+	followUserId String,
 	followUserNickname String maxlength(128),
 	followUseravatar String maxlength(1024),
-    followedUserId Long,
+    followedUserId String,
     followedUserNickname String maxlength(128),
     followedUseravatar String maxlength(1024),
     createTime Instant,

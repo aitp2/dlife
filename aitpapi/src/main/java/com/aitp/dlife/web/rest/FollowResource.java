@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -90,9 +91,18 @@ public class FollowResource {
      */
     @GetMapping("/follows")
     @Timed
-    public ResponseEntity<List<FollowDTO>> getAllFollows(Pageable pageable) {
+    public ResponseEntity<List<FollowDTO>> getAllFollows(Pageable pageable,
+    		@RequestParam(value = "followWechatUserId", required = false) String followWechatUserId,
+    		@RequestParam(value = "followedWechatUserId", required = false) String followedWechatUserId) {
         log.debug("REST request to get a page of Follows");
-        Page<FollowDTO> page = followService.findAll(pageable);
+        Page<FollowDTO> page = null;
+        if(!StringUtils.isEmpty(followWechatUserId)) {
+        	page = followService.findAllByFollowUserId(pageable, followWechatUserId);
+        }else if(!StringUtils.isEmpty(followedWechatUserId)) {
+        	page =  followService.findAllByFollowedUserId(pageable, followedWechatUserId);
+        }else {
+        	page = followService.findAll(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/follows");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

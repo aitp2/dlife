@@ -1,12 +1,12 @@
 package com.aitp.dlife.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import com.aitp.dlife.service.RecipeOrderService;
-import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
-import com.aitp.dlife.web.rest.util.HeaderUtil;
-import com.aitp.dlife.web.rest.util.PaginationUtil;
-import com.aitp.dlife.service.dto.RecipeOrderDTO;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -14,14 +14,25 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.aitp.dlife.service.RecipeOrderService;
+import com.aitp.dlife.service.dto.RecipeOrderDTO;
+import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
+import com.aitp.dlife.web.rest.util.HeaderUtil;
+import com.aitp.dlife.web.rest.util.PaginationUtil;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing RecipeOrder.
@@ -90,9 +101,15 @@ public class RecipeOrderResource {
      */
     @GetMapping("/recipe-orders")
     @Timed
-    public ResponseEntity<List<RecipeOrderDTO>> getAllRecipeOrders(Pageable pageable) {
+    public ResponseEntity<List<RecipeOrderDTO>> getAllRecipeOrders(Pageable pageable,
+    		@RequestParam(value = "wechatUserId", required = false) String wechatUserId) {
         log.debug("REST request to get a page of RecipeOrders");
-        Page<RecipeOrderDTO> page = recipeOrderService.findAll(pageable);
+        Page<RecipeOrderDTO> page = null;
+        if(!StringUtils.isEmpty(wechatUserId)) {
+        	page = recipeOrderService.findAllByWechatUserId(pageable, wechatUserId);
+        }else {
+        	page = recipeOrderService.findAll(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/recipe-orders");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
