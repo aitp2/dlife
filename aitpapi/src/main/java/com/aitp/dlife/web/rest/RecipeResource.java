@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -86,13 +87,20 @@ public class RecipeResource {
      * GET  /recipes : get all the recipes.
      *
      * @param pageable the pagination information
+     * @param wechatUserId the wechatUserId
      * @return the ResponseEntity with status 200 (OK) and the list of recipes in body
      */
     @GetMapping("/recipes")
     @Timed
-    public ResponseEntity<List<RecipeDTO>> getAllRecipes(Pageable pageable) {
+    public ResponseEntity<List<RecipeDTO>> getAllRecipes(Pageable pageable,
+    		@RequestParam(value = "wechatUserId", required = false) String wechatUserId) {
         log.debug("REST request to get a page of Recipes");
-        Page<RecipeDTO> page = recipeService.findAll(pageable);
+        Page<RecipeDTO> page = null;
+        if(!StringUtils.isEmpty(wechatUserId)) {
+        	page = recipeService.findAllByWechatUserId(pageable, wechatUserId);
+        }else {
+        	page = recipeService.findAll(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/recipes");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -124,4 +132,5 @@ public class RecipeResource {
         recipeService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+    
 }
