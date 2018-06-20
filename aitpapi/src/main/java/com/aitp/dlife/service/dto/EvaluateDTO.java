@@ -5,6 +5,7 @@ import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 
@@ -29,8 +30,18 @@ public class EvaluateDTO implements Serializable {
     private Instant modifyTime;
 
     private Long recipeOrderId;
+    
+    private List<String> listImageURL;
 
-    public Long getId() {
+    public List<String> getListImageURL() {
+		return listImageURL;
+	}
+
+	public void setListImageURL(List<String> listImageURL) {
+		this.listImageURL = listImageURL;
+	}
+
+	public Long getId() {
         return id;
     }
 

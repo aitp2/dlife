@@ -12,5 +12,7 @@ import org.springframework.data.jpa.repository.*;
 @SuppressWarnings("unused")
 @Repository
 public interface WechatUserRepository extends JpaRepository<WechatUser, Long> {
+	
+	WechatUser findByOpenId(String openId);
 
 }

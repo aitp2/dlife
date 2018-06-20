@@ -1,5 +1,8 @@
 package com.aitp.dlife.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -7,7 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.aitp.dlife.domain.Image;
 import com.aitp.dlife.domain.Recipe;
+import com.aitp.dlife.repository.ImageRepository;
 import com.aitp.dlife.repository.RecipeRepository;
 import com.aitp.dlife.service.dto.RecipeDTO;
 import com.aitp.dlife.service.mapper.RecipeMapper;
@@ -25,10 +30,13 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
 
     private final RecipeMapper recipeMapper;
+    
+    private final ImageRepository imageRepository;
 
-    public RecipeService(RecipeRepository recipeRepository, RecipeMapper recipeMapper) {
+    public RecipeService(RecipeRepository recipeRepository, RecipeMapper recipeMapper,ImageRepository imageRepository) {
         this.recipeRepository = recipeRepository;
         this.recipeMapper = recipeMapper;
+        this.imageRepository = imageRepository;
     }
 
     /**
@@ -53,8 +61,17 @@ public class RecipeService {
     @Transactional(readOnly = true)
     public Page<RecipeDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Recipes");
-        return recipeRepository.findAll(pageable)
-            .map(recipeMapper::toDto);
+        Page<RecipeDTO> page_return = recipeRepository.findAll(pageable)
+                .map(recipeMapper::toDto);
+    	for(RecipeDTO recipeDTO:page_return.getContent()) {
+    		List<Image> list = imageRepository.findByRecipeId(recipeDTO.getId());
+    		List<String> iamgePathList = new ArrayList<String>();
+    		for(Image image:list) {
+    			iamgePathList.add(image.getOssPath());
+    		}
+    		recipeDTO.setListImageURL(iamgePathList);
+    	}
+		return page_return;
     }
 
     /**
@@ -67,7 +84,14 @@ public class RecipeService {
     public RecipeDTO findOne(Long id) {
         log.debug("Request to get Recipe : {}", id);
         Recipe recipe = recipeRepository.findOne(id);
-        return recipeMapper.toDto(recipe);
+        RecipeDTO recipeDTO = recipeMapper.toDto(recipe);
+        List<Image> list = imageRepository.findByRecipeId(recipeDTO.getId());
+        List<String> iamgePathList = new ArrayList<String>();
+		for(Image image:list) {
+			iamgePathList.add(image.getOssPath());
+		}
+		recipeDTO.setListImageURL(iamgePathList);
+        return recipeDTO;
     }
 
     /**
@@ -87,7 +111,15 @@ public class RecipeService {
      * @return
      */
     public Page<RecipeDTO> findAllByWechatUserId(Pageable pageable,String wechatUserId) {
-    	return recipeRepository.findAllByWechatUserId(pageable, wechatUserId).map(recipeMapper::toDto);
-		
+    	Page<RecipeDTO> page_return = recipeRepository.findAllByWechatUserId(pageable, wechatUserId).map(recipeMapper::toDto);
+    	for(RecipeDTO recipeDTO:page_return.getContent()) {
+    		List<Image> list = imageRepository.findByRecipeId(recipeDTO.getId());
+    		List<String> iamgePathList = new ArrayList<String>();
+    		for(Image image:list) {
+    			iamgePathList.add(image.getOssPath());
+    		}
+    		recipeDTO.setListImageURL(iamgePathList);
+    	}
+		return page_return;
 	}
 }

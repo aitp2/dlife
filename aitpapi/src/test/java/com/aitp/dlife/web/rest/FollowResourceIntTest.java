@@ -43,8 +43,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = AitpapiApp.class)
 public class FollowResourceIntTest {
 
-    private static final Long DEFAULT_FOLLOW_USER_ID = 1L;
-    private static final Long UPDATED_FOLLOW_USER_ID = 2L;
+    private static final String DEFAULT_FOLLOW_USER_ID = "AAAAAAAAAA";
+    private static final String UPDATED_FOLLOW_USER_ID = "BBBBBBBBBB";
 
     private static final String DEFAULT_FOLLOW_USER_NICKNAME = "AAAAAAAAAA";
     private static final String UPDATED_FOLLOW_USER_NICKNAME = "BBBBBBBBBB";
@@ -52,8 +52,8 @@ public class FollowResourceIntTest {
     private static final String DEFAULT_FOLLOW_USERAVATAR = "AAAAAAAAAA";
     private static final String UPDATED_FOLLOW_USERAVATAR = "BBBBBBBBBB";
 
-    private static final Long DEFAULT_FOLLOWED_USER_ID = 1L;
-    private static final Long UPDATED_FOLLOWED_USER_ID = 2L;
+    private static final String DEFAULT_FOLLOWED_USER_ID = "AAAAAAAAAA";
+    private static final String UPDATED_FOLLOWED_USER_ID = "BBBBBBBBBB";
 
     private static final String DEFAULT_FOLLOWED_USER_NICKNAME = "AAAAAAAAAA";
     private static final String UPDATED_FOLLOWED_USER_NICKNAME = "BBBBBBBBBB";
@@ -184,10 +184,10 @@ public class FollowResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(follow.getId().intValue())))
-            .andExpect(jsonPath("$.[*].followUserId").value(hasItem(DEFAULT_FOLLOW_USER_ID.intValue())))
+            .andExpect(jsonPath("$.[*].followUserId").value(hasItem(DEFAULT_FOLLOW_USER_ID.toString())))
             .andExpect(jsonPath("$.[*].followUserNickname").value(hasItem(DEFAULT_FOLLOW_USER_NICKNAME.toString())))
             .andExpect(jsonPath("$.[*].followUseravatar").value(hasItem(DEFAULT_FOLLOW_USERAVATAR.toString())))
-            .andExpect(jsonPath("$.[*].followedUserId").value(hasItem(DEFAULT_FOLLOWED_USER_ID.intValue())))
+            .andExpect(jsonPath("$.[*].followedUserId").value(hasItem(DEFAULT_FOLLOWED_USER_ID.toString())))
             .andExpect(jsonPath("$.[*].followedUserNickname").value(hasItem(DEFAULT_FOLLOWED_USER_NICKNAME.toString())))
             .andExpect(jsonPath("$.[*].followedUseravatar").value(hasItem(DEFAULT_FOLLOWED_USERAVATAR.toString())))
             .andExpect(jsonPath("$.[*].createTime").value(hasItem(DEFAULT_CREATE_TIME.toString())))
@@ -205,10 +205,10 @@ public class FollowResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(follow.getId().intValue()))
-            .andExpect(jsonPath("$.followUserId").value(DEFAULT_FOLLOW_USER_ID.intValue()))
+            .andExpect(jsonPath("$.followUserId").value(DEFAULT_FOLLOW_USER_ID.toString()))
             .andExpect(jsonPath("$.followUserNickname").value(DEFAULT_FOLLOW_USER_NICKNAME.toString()))
             .andExpect(jsonPath("$.followUseravatar").value(DEFAULT_FOLLOW_USERAVATAR.toString()))
-            .andExpect(jsonPath("$.followedUserId").value(DEFAULT_FOLLOWED_USER_ID.intValue()))
+            .andExpect(jsonPath("$.followedUserId").value(DEFAULT_FOLLOWED_USER_ID.toString()))
             .andExpect(jsonPath("$.followedUserNickname").value(DEFAULT_FOLLOWED_USER_NICKNAME.toString()))
             .andExpect(jsonPath("$.followedUseravatar").value(DEFAULT_FOLLOWED_USERAVATAR.toString()))
             .andExpect(jsonPath("$.createTime").value(DEFAULT_CREATE_TIME.toString()))

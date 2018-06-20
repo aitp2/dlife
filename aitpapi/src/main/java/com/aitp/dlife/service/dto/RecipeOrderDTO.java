@@ -1,12 +1,12 @@
 package com.aitp.dlife.service.dto;
 
 
-import java.time.Instant;
-import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.Instant;
 import java.util.Objects;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 
 /**
  * A DTO for the RecipeOrder entity.
@@ -34,8 +34,38 @@ public class RecipeOrderDTO implements Serializable {
     private Instant modifyTime;
 
     private Long recipeId;
+    
+    private String imageURL;
+    
+    private String recipeTile;
+    
+    private Instant recipeStartTime; 
+    
+    public String getImageURL() {
+		return imageURL;
+	}
 
-    public Long getId() {
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
+	}
+
+	public String getRecipeTile() {
+		return recipeTile;
+	}
+
+	public void setRecipeTile(String recipeTile) {
+		this.recipeTile = recipeTile;
+	}
+
+	public Instant getRecipeStartTime() {
+		return recipeStartTime;
+	}
+
+	public void setRecipeStartTime(Instant recipeStartTime) {
+		this.recipeStartTime = recipeStartTime;
+	}
+
+	public Long getId() {
         return id;
     }
 

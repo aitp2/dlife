@@ -1,5 +1,8 @@
 package com.aitp.dlife.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -7,8 +10,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.aitp.dlife.domain.Image;
+import com.aitp.dlife.domain.Recipe;
 import com.aitp.dlife.domain.RecipeOrder;
+import com.aitp.dlife.repository.ImageRepository;
 import com.aitp.dlife.repository.RecipeOrderRepository;
+import com.aitp.dlife.repository.RecipeRepository;
 import com.aitp.dlife.service.dto.RecipeOrderDTO;
 import com.aitp.dlife.service.mapper.RecipeOrderMapper;
 
@@ -25,10 +32,16 @@ public class RecipeOrderService {
     private final RecipeOrderRepository recipeOrderRepository;
 
     private final RecipeOrderMapper recipeOrderMapper;
+    
+    private final RecipeRepository recipeRepository;
+    
+    private final ImageRepository imageRepository;
 
-    public RecipeOrderService(RecipeOrderRepository recipeOrderRepository, RecipeOrderMapper recipeOrderMapper) {
+    public RecipeOrderService(RecipeOrderRepository recipeOrderRepository, RecipeOrderMapper recipeOrderMapper,RecipeRepository recipeRepository,ImageRepository imageRepository) {
         this.recipeOrderRepository = recipeOrderRepository;
         this.recipeOrderMapper = recipeOrderMapper;
+        this.recipeRepository = recipeRepository;
+        this.imageRepository = imageRepository;
     }
 
     /**
@@ -87,7 +100,25 @@ public class RecipeOrderService {
      * @return
      */
     public Page<RecipeOrderDTO> findAllByWechatUserId(Pageable pageable,String wechatUserId) {
-    	return recipeOrderRepository.findAllByWechatUserId(pageable,wechatUserId).map(recipeOrderMapper::toDto);
-		
+    	Page<RecipeOrderDTO> page_return = recipeOrderRepository.findAllByWechatUserId(pageable,wechatUserId).map(recipeOrderMapper::toDto);
+    	for(RecipeOrderDTO recipeOrderDTO:page_return.getContent()) {
+    		Recipe recipe = recipeRepository.findOne(recipeOrderDTO.getRecipeId());
+    		List<Image> listimage = imageRepository.findByRecipeId(recipeOrderDTO.getRecipeId());
+    		if(listimage.size() > 0) {
+    			recipeOrderDTO.setImageURL(listimage.get(0).getOssPath());
+    		}
+    		recipeOrderDTO.setRecipeTile(recipe.getTitle());
+    		recipeOrderDTO.setRecipeStartTime(recipe.getStartTime());
+    	}
+		return page_return;
 	}
+    
+    public List<RecipeOrderDTO> findAllByRecipeId(Long recipeId){
+    	List<RecipeOrderDTO> list = new ArrayList<RecipeOrderDTO>();
+    	List<RecipeOrder> list_RecipeOrder = recipeOrderRepository.findAllByRecipeId( recipeId);
+    	for(RecipeOrder recipeOrder:list_RecipeOrder) {
+    		list.add(recipeOrderMapper.toDto(recipeOrder));
+    	}
+    	return list;
+    }
 }

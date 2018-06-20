@@ -27,7 +27,7 @@ public class Follow implements Serializable {
     private Long id;
 
     @Column(name = "follow_user_id")
-    private Long followUserId;
+    private String followUserId;
 
     @Size(max = 128)
     @Column(name = "follow_user_nickname", length = 128)
@@ -38,7 +38,7 @@ public class Follow implements Serializable {
     private String followUseravatar;
 
     @Column(name = "followed_user_id")
-    private Long followedUserId;
+    private String followedUserId;
 
     @Size(max = 128)
     @Column(name = "followed_user_nickname", length = 128)
@@ -63,16 +63,16 @@ public class Follow implements Serializable {
         this.id = id;
     }
 
-    public Long getFollowUserId() {
+    public String getFollowUserId() {
         return followUserId;
     }
 
-    public Follow followUserId(Long followUserId) {
+    public Follow followUserId(String followUserId) {
         this.followUserId = followUserId;
         return this;
     }
 
-    public void setFollowUserId(Long followUserId) {
+    public void setFollowUserId(String followUserId) {
         this.followUserId = followUserId;
     }
 
@@ -102,16 +102,16 @@ public class Follow implements Serializable {
         this.followUseravatar = followUseravatar;
     }
 
-    public Long getFollowedUserId() {
+    public String getFollowedUserId() {
         return followedUserId;
     }
 
-    public Follow followedUserId(Long followedUserId) {
+    public Follow followedUserId(String followedUserId) {
         this.followedUserId = followedUserId;
         return this;
     }
 
-    public void setFollowedUserId(Long followedUserId) {
+    public void setFollowedUserId(String followedUserId) {
         this.followedUserId = followedUserId;
     }
 
@@ -192,10 +192,10 @@ public class Follow implements Serializable {
     public String toString() {
         return "Follow{" +
             "id=" + getId() +
-            ", followUserId=" + getFollowUserId() +
+            ", followUserId='" + getFollowUserId() + "'" +
             ", followUserNickname='" + getFollowUserNickname() + "'" +
             ", followUseravatar='" + getFollowUseravatar() + "'" +
-            ", followedUserId=" + getFollowedUserId() +
+            ", followedUserId='" + getFollowedUserId() + "'" +
             ", followedUserNickname='" + getFollowedUserNickname() + "'" +
             ", followedUseravatar='" + getFollowedUseravatar() + "'" +
             ", createTime='" + getCreateTime() + "'" +
