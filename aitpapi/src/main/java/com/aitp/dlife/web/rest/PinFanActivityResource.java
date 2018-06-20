@@ -119,6 +119,21 @@ public class PinFanActivityResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/pin-fan-activities");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    @GetMapping("/pin-fan-activities/mine/{wechatUserId}")
+    @Timed
+    public ResponseEntity<List<PinFanActivityDTO>> getAllPinFanActivitiesByUserId(Pageable pageable,@PathVariable String wechatUserId) {
+        log.debug("REST request to get a page of PinFanActivities");
+        Page<PinFanActivityDTO> page = pinFanActivityService.findAllByWechatUserId(pageable,wechatUserId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/pin-fan-activities");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    @GetMapping("/pin-fan-activities/attended/{wechatUserId}")
+    @Timed
+    public ResponseEntity<List<PinFanActivityDTO>> getAllAttendedPinFanActivitiesByUserId(@PathVariable String wechatUserId) {
+        log.debug("REST request to get a page of PinFanActivities");
+        List<PinFanActivityDTO> page = pinFanActivityService.findAllAttendedByWechatUserId(wechatUserId);
+        return ResponseEntity.ok(page);
+    }
 
     /**
      * GET  /pin-fan-activities/:id : get the "id" pinFanActivity.
