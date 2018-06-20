@@ -78,4 +78,10 @@ public class WechatUserService {
         log.debug("Request to delete WechatUser : {}", id);
         wechatUserRepository.delete(id);
     }
+    
+    public WechatUserDTO findByOpenId(String openId) {
+        log.debug("Request to findByOpenId : {}", openId);
+        WechatUser wechatUser = wechatUserRepository.findByOpenId(openId);
+        return wechatUserMapper.toDto(wechatUser);
+    }
 }

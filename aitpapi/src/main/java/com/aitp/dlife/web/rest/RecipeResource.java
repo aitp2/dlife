@@ -1,15 +1,26 @@
 package com.aitp.dlife.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.aitp.dlife.service.EvaluateService;
+import com.aitp.dlife.service.ImageService;
+import com.aitp.dlife.service.RecipeOrderService;
 import com.aitp.dlife.service.RecipeService;
+import com.aitp.dlife.service.WechatUserService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
+import com.aitp.dlife.service.dto.EvaluateDTO;
+import com.aitp.dlife.service.dto.ImageDTO;
 import com.aitp.dlife.service.dto.RecipeDTO;
+import com.aitp.dlife.service.dto.RecipeDetailDTO;
+import com.aitp.dlife.service.dto.RecipeOrderDTO;
+import com.aitp.dlife.service.dto.WechatUserDTO;
+
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,7 +31,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,9 +48,22 @@ public class RecipeResource {
     private static final String ENTITY_NAME = "recipe";
 
     private final RecipeService recipeService;
+    
+    private final ImageService imageService;
+    
+    private final WechatUserService wechatUserService;
+    
+    private final RecipeOrderService recipeOrderService;
+    
+    private final EvaluateService evaluateService;
 
-    public RecipeResource(RecipeService recipeService) {
+    public RecipeResource(RecipeService recipeService,ImageService imageService,WechatUserService wechatUserService,
+    		RecipeOrderService recipeOrderService,EvaluateService evaluateService) {
         this.recipeService = recipeService;
+        this.imageService = imageService;
+        this.wechatUserService = wechatUserService;
+        this.recipeOrderService  = recipeOrderService;
+        this.evaluateService = evaluateService;
     }
 
     /**
@@ -56,6 +81,15 @@ public class RecipeResource {
             throw new BadRequestAlertException("A new recipe cannot already have an ID", ENTITY_NAME, "idexists");
         }
         RecipeDTO result = recipeService.save(recipeDTO);
+        //save image
+        List<String> imagePathList = recipeDTO.getListImageURL();
+        for(String path : imagePathList) {
+        	ImageDTO image = new ImageDTO();
+        	image.setOssPath(path);
+        	image.setRecipeId(result.getId());
+        	image.setCreateTime(Instant.now());
+        	imageService.save(image);
+        }
         return ResponseEntity.created(new URI("/api/recipes/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -78,6 +112,15 @@ public class RecipeResource {
             return createRecipe(recipeDTO);
         }
         RecipeDTO result = recipeService.save(recipeDTO);
+      //save image
+        List<String> imagePathList = recipeDTO.getListImageURL();
+        for(String path : imagePathList) {
+        	ImageDTO image = new ImageDTO();
+        	image.setOssPath(path);
+        	image.setRecipeId(result.getId());
+        	image.setCreateTime(Instant.now());
+        	imageService.save(image);
+        }
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, recipeDTO.getId().toString()))
             .body(result);
@@ -117,6 +160,35 @@ public class RecipeResource {
         log.debug("REST request to get Recipe : {}", id);
         RecipeDTO recipeDTO = recipeService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(recipeDTO));
+    }
+    
+    /**
+     * GET  /recipes/:id : get the "id" recipe.
+     *
+     * @param id the id of the recipeDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the recipeDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/recipedetails/{id}")
+    @Timed
+    public ResponseEntity<RecipeDetailDTO> getRecipeDetail(@PathVariable Long id) {
+        log.debug("REST request to get RecipeDetailDTO : {}", id);
+        RecipeDetailDTO recipeDetailDTO = new RecipeDetailDTO();
+        RecipeDTO recipeDTO = recipeService.findOne(id);
+        recipeDetailDTO.setRecipeDTO(recipeDTO);
+        //use
+        WechatUserDTO wechatUserDTO = wechatUserService.findByOpenId(recipeDTO.getWechatUserId());
+        recipeDetailDTO.setWechatUserDTO(wechatUserDTO);
+        //orders
+        List<RecipeOrderDTO>  list_RecipeOrderDTO = recipeOrderService.findAllByRecipeId(recipeDTO.getId());
+        recipeDetailDTO.setRecipeOrderDTOList(list_RecipeOrderDTO);
+        recipeDetailDTO.setRecipeOrderSize(new Long(list_RecipeOrderDTO.size()));
+        //evaluate
+        List<EvaluateDTO> list_evaluateDTO = new ArrayList<EvaluateDTO> ();
+        for(RecipeOrderDTO recipeOrderDTO:list_RecipeOrderDTO) {
+        	list_evaluateDTO.addAll(evaluateService.findAllByRecipeOrderId(recipeOrderDTO.getId()));
+        }
+        recipeDetailDTO.setEvaluateDTOList(list_evaluateDTO);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(recipeDetailDTO));
     }
 
     /**

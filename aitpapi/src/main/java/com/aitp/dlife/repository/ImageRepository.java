@@ -20,5 +20,8 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
 			+ "where image.recipe.id =:recipeId",nativeQuery = false)
 	List<Image> findByRecipeId(@Param("recipeId") Long recipeId);
 
+	@Query(value = "select image from Image image "
+			+ "where image.evaluat.id =:evaluatId",nativeQuery = false)
+	List<Image> findByEvaluatId(@Param("evaluatId") Long evaluatId);
 
 }

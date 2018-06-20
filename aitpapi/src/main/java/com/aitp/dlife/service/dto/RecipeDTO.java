@@ -5,6 +5,7 @@ import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 
@@ -51,14 +52,14 @@ public class RecipeDTO implements Serializable {
 
     private Instant modifyTime;
     
-    private String imageURL;
+    private List<String> listImageURL;
 
-    public String getImageURL() {
-		return imageURL;
+	public List<String> getListImageURL() {
+		return listImageURL;
 	}
 
-	public void setImageURL(String imageURL) {
-		this.imageURL = imageURL;
+	public void setListImageURL(List<String> listImageURL) {
+		this.listImageURL = listImageURL;
 	}
 
 	public Long getId() {

@@ -1,9 +1,17 @@
 package com.aitp.dlife.service;
 
 import com.aitp.dlife.domain.Evaluate;
+import com.aitp.dlife.domain.Image;
+import com.aitp.dlife.domain.RecipeOrder;
 import com.aitp.dlife.repository.EvaluateRepository;
+import com.aitp.dlife.repository.ImageRepository;
 import com.aitp.dlife.service.dto.EvaluateDTO;
+import com.aitp.dlife.service.dto.RecipeOrderDTO;
 import com.aitp.dlife.service.mapper.EvaluateMapper;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -24,10 +32,13 @@ public class EvaluateService {
     private final EvaluateRepository evaluateRepository;
 
     private final EvaluateMapper evaluateMapper;
+    
+    private final ImageRepository imageRepository;
 
-    public EvaluateService(EvaluateRepository evaluateRepository, EvaluateMapper evaluateMapper) {
+    public EvaluateService(EvaluateRepository evaluateRepository, EvaluateMapper evaluateMapper,ImageRepository imageRepository) {
         this.evaluateRepository = evaluateRepository;
         this.evaluateMapper = evaluateMapper;
+        this.imageRepository = imageRepository;
     }
 
     /**
@@ -77,5 +88,19 @@ public class EvaluateService {
     public void delete(Long id) {
         log.debug("Request to delete Evaluate : {}", id);
         evaluateRepository.delete(id);
+    }
+    
+    public List<EvaluateDTO> findAllByRecipeOrderId(Long recipeOrderId){
+    	List<EvaluateDTO> list = new ArrayList<EvaluateDTO>();
+    	for(Evaluate evaluate:evaluateRepository.findAllByRecipeOrderId(recipeOrderId)) {
+    		EvaluateDTO evaluateDTO = evaluateMapper.toDto(evaluate);
+    		List<String> imagePath = new ArrayList<String>();
+    		for(Image image:imageRepository.findByEvaluatId(evaluate.getId())) {
+    			imagePath.add(image.getOssPath());
+    		}
+    		evaluateDTO.setListImageURL(imagePath);
+    		list.add(evaluateDTO);
+    	}
+    	return list;
     }
 }

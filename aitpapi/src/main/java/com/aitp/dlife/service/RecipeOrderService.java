@@ -1,5 +1,6 @@
 package com.aitp.dlife.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -111,4 +112,13 @@ public class RecipeOrderService {
     	}
 		return page_return;
 	}
+    
+    public List<RecipeOrderDTO> findAllByRecipeId(Long recipeId){
+    	List<RecipeOrderDTO> list = new ArrayList<RecipeOrderDTO>();
+    	List<RecipeOrder> list_RecipeOrder = recipeOrderRepository.findAllByRecipeId( recipeId);
+    	for(RecipeOrder recipeOrder:list_RecipeOrder) {
+    		list.add(recipeOrderMapper.toDto(recipeOrder));
+    	}
+    	return list;
+    }
 }

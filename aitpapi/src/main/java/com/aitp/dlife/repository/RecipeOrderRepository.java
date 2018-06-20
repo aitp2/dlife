@@ -20,4 +20,8 @@ public interface RecipeOrderRepository extends JpaRepository<RecipeOrder, Long> 
 	
 	Page<RecipeOrder> findAllByWechatUserId(Pageable pageable, String wechatUserId);
 	
+	@Query(value = "select recipeOrder from RecipeOrder recipeOrder "
+			+ "where recipeOrder.recipe.id =:recipeId",nativeQuery = false)
+	List<RecipeOrder> findAllByRecipeId( @Param("recipeId") Long recipeId);
+	
 }

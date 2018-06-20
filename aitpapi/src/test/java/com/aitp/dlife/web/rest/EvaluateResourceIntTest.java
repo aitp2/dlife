@@ -5,6 +5,7 @@ import com.aitp.dlife.AitpapiApp;
 import com.aitp.dlife.domain.Evaluate;
 import com.aitp.dlife.repository.EvaluateRepository;
 import com.aitp.dlife.service.EvaluateService;
+import com.aitp.dlife.service.ImageService;
 import com.aitp.dlife.service.dto.EvaluateDTO;
 import com.aitp.dlife.service.mapper.EvaluateMapper;
 import com.aitp.dlife.web.rest.errors.ExceptionTranslator;
@@ -69,6 +70,9 @@ public class EvaluateResourceIntTest {
 
     @Autowired
     private EvaluateService evaluateService;
+    
+    @Autowired
+    private ImageService imageService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -89,7 +93,7 @@ public class EvaluateResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final EvaluateResource evaluateResource = new EvaluateResource(evaluateService);
+        final EvaluateResource evaluateResource = new EvaluateResource(evaluateService,imageService);
         this.restEvaluateMockMvc = MockMvcBuilders.standaloneSetup(evaluateResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

@@ -2,10 +2,13 @@ package com.aitp.dlife.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.EvaluateService;
+import com.aitp.dlife.service.ImageService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import com.aitp.dlife.service.dto.EvaluateDTO;
+import com.aitp.dlife.service.dto.ImageDTO;
+
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,9 +38,12 @@ public class EvaluateResource {
     private static final String ENTITY_NAME = "evaluate";
 
     private final EvaluateService evaluateService;
+    
+    private final ImageService imageService;
 
-    public EvaluateResource(EvaluateService evaluateService) {
+    public EvaluateResource(EvaluateService evaluateService,ImageService imageService) {
         this.evaluateService = evaluateService;
+        this.imageService =  imageService;
     }
 
     /**
@@ -55,6 +61,15 @@ public class EvaluateResource {
             throw new BadRequestAlertException("A new evaluate cannot already have an ID", ENTITY_NAME, "idexists");
         }
         EvaluateDTO result = evaluateService.save(evaluateDTO);
+      //save image
+        List<String> imagePathList = evaluateDTO.getListImageURL();
+        for(String path : imagePathList) {
+        	ImageDTO image = new ImageDTO();
+        	image.setOssPath(path);
+        	image.setEvaluatId(result.getId());
+        	image.setCreateTime(Instant.now());
+        	imageService.save(image);
+        }
         return ResponseEntity.created(new URI("/api/evaluates/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -77,6 +92,15 @@ public class EvaluateResource {
             return createEvaluate(evaluateDTO);
         }
         EvaluateDTO result = evaluateService.save(evaluateDTO);
+      //save image
+        List<String> imagePathList = evaluateDTO.getListImageURL();
+        for(String path : imagePathList) {
+        	ImageDTO image = new ImageDTO();
+        	image.setOssPath(path);
+        	image.setEvaluatId(result.getId());
+        	image.setCreateTime(Instant.now());
+        	imageService.save(image);
+        }
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, evaluateDTO.getId().toString()))
             .body(result);

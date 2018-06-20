@@ -4,7 +4,7 @@
     "fields": [
         {
             "fieldName": "followUserId",
-            "fieldType": "Long"
+            "fieldType": "String"
         },
         {
             "fieldName": "followUserNickname",
@@ -24,7 +24,7 @@
         },
         {
             "fieldName": "followedUserId",
-            "fieldType": "Long"
+            "fieldType": "String"
         },
         {
             "fieldName": "followedUserNickname",
