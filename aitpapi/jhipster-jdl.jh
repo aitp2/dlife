@@ -168,7 +168,15 @@ entity Attendee{
 拼饭参与评价信息
 */
 entity Rates {
+   /** 发布者id */
+    wechatUserId String maxlength(128),
+ 	  /** 头像*/
+    avatar String maxlength(1024),
+    /** 昵称*/
+    nickName String maxlength(128),
+
     comments String maxlength(1024),
+
     rating Integer
     createTime Instant,
     modifyTime Instant,

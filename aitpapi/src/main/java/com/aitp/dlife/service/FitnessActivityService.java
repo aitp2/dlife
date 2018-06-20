@@ -2,8 +2,14 @@ package com.aitp.dlife.service;
 
 import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.repository.FitnessActivityRepository;
+import com.aitp.dlife.service.dto.ClockinSummaryDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.mapper.FitnessActivityMapper;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -78,4 +84,10 @@ public class FitnessActivityService {
         log.debug("Request to delete FitnessActivity : {}", id);
         fitnessActivityRepository.delete(id);
     }
+
+	public List<FitnessActivityDTO> getActivitiesByWechatUserId(Long wechatUserId) {
+		return fitnessActivityRepository.findActivitiesByWechatUserId(wechatUserId).stream()
+	            .map(fitnessActivityMapper::toDto)
+	            .collect(Collectors.toCollection(LinkedList::new));
+	}
 }

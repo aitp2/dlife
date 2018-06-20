@@ -16,12 +16,20 @@
             "detail": {
                 "title": "Rates"
             },
+            "wechatUserId": "Wechat User Id",
+            "avatar": "Avatar",
+            "nickName": "Nick Name",
             "comments": "Comments",
             "rating": "Rating",
             "createTime": "Create Time",
             "modifyTime": "Modify Time",
             "pinfanPics": "Pinfan Pics",
-            "pinFanActivity": "Pin Fan Activity"
+            "pinFanActivity": "Pin Fan Activity",
+            "help": {
+                "wechatUserId": "发布者id",
+                "avatar": "头像",
+                "nickName": "昵称"
+            }
         }
     }
 }

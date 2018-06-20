@@ -1,9 +1,13 @@
 package com.aitp.dlife.repository;
 
-import com.aitp.dlife.domain.ActivityParticipation;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import org.springframework.data.jpa.repository.*;
+import com.aitp.dlife.domain.ActivityParticipation;
 
 
 /**
@@ -13,4 +17,7 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface ActivityParticipationRepository extends JpaRepository<ActivityParticipation, Long> {
 
+	@Query(value = "select activityParticipation from ActivityParticipation activityParticipation "
+			+ "where activityParticipation.activity.id =:activityId",nativeQuery = false)
+	List<ActivityParticipation> findByActivityId(@Param("activityId") Long activityId);
 }

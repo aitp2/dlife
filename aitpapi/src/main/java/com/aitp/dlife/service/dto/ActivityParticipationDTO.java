@@ -27,9 +27,11 @@ public class ActivityParticipationDTO implements Serializable {
     @Size(max = 128)
     private String project;
 
-    private Instant participationTime;
+    private String participationTime;
 
     private Long activityId;
+    
+    private Integer clockinCount;
 
     public Long getId() {
         return id;
@@ -71,23 +73,33 @@ public class ActivityParticipationDTO implements Serializable {
         this.project = project;
     }
 
-    public Instant getParticipationTime() {
-        return participationTime;
-    }
 
-    public void setParticipationTime(Instant participationTime) {
-        this.participationTime = participationTime;
-    }
+    public String getParticipationTime() {
+		return participationTime;
+	}
 
-    public Long getActivityId() {
+	public void setParticipationTime(String participationTime) {
+		this.participationTime = participationTime;
+	}
+
+	public Long getActivityId() {
         return activityId;
     }
 
     public void setActivityId(Long fitnessActivityId) {
         this.activityId = fitnessActivityId;
     }
+    
 
-    @Override
+    public Integer getClockinCount() {
+		return clockinCount;
+	}
+
+	public void setClockinCount(Integer clockinCount) {
+		this.clockinCount = clockinCount;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

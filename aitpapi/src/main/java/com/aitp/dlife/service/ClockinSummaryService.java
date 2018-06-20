@@ -90,9 +90,7 @@ public class ClockinSummaryService {
      * @param wechatUserId
      * @return
      */
-    public List<ClockinSummaryDTO> findByWechatUserId(String wechatUserId) {
-		return clockinSummaryRepository.findByWechatUserId(wechatUserId).stream()
-	            .map(clockinSummaryMapper::toDto)
-	            .collect(Collectors.toCollection(LinkedList::new));
+    public ClockinSummaryDTO findByWechatUserId(Long wechatUserId) {
+		return clockinSummaryMapper.toDto(clockinSummaryRepository.findByWechatUserId(String.valueOf(wechatUserId)));
 	}
 }

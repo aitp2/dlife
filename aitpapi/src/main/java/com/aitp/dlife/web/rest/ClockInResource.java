@@ -2,11 +2,21 @@ package com.aitp.dlife.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.ClockInService;
+import com.aitp.dlife.service.ClockinSummaryService;
+import com.aitp.dlife.service.PicsService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
+import com.aitp.dlife.web.rest.util.DateUtil;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
+import com.aitp.dlife.service.dto.ActivityParticipationDTO;
 import com.aitp.dlife.service.dto.ClockInDTO;
+import com.aitp.dlife.service.dto.ClockinSummaryDTO;
+import com.aitp.dlife.service.dto.PicsDTO;
+
 import io.github.jhipster.web.util.ResponseUtil;
+
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.Instant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -19,9 +29,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * REST controller for managing ClockIn.
@@ -35,10 +47,15 @@ public class ClockInResource {
     private static final String ENTITY_NAME = "clockIn";
 
     private final ClockInService clockInService;
+    private final PicsService picsService;
+    private final ClockinSummaryService clockinSummaryService;
 
-    public ClockInResource(ClockInService clockInService) {
-        this.clockInService = clockInService;
-    }
+	public ClockInResource(ClockInService clockInService, PicsService picsService,
+			ClockinSummaryService clockinSummaryService) {
+		this.clockInService = clockInService;
+		this.picsService = picsService;
+		this.clockinSummaryService = clockinSummaryService;
+	}
 
     /**
      * POST  /clock-ins : Create a new clockIn.
@@ -54,7 +71,39 @@ public class ClockInResource {
         if (clockInDTO.getId() != null) {
             throw new BadRequestAlertException("A new clockIn cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        Set<PicsDTO> imagesDTO = new HashSet<>();
         ClockInDTO result = clockInService.save(clockInDTO);
+        if (clockInDTO.getPics() != null && !clockInDTO.getPics().isEmpty()){
+        	for(PicsDTO pics : clockInDTO.getPics()){
+        		 if(!StringUtils.isEmpty(pics.getCreateTime())){
+                     pics.setCreateTime(DateUtil.getYMDDateString(new Date()));
+                 }
+        		 pics.setClockInId(result.getId());
+        		 imagesDTO.add(picsService.save(pics));
+        	}
+        }
+        result.setPics(imagesDTO);
+        //update clockin summary
+        ClockinSummaryDTO clockinSummaryDTO = clockinSummaryService.findByWechatUserId(clockInDTO.getWechatUserId());
+        if(null == clockinSummaryDTO ){
+        	ClockinSummaryDTO newClockinSummaryDTO = new ClockinSummaryDTO();
+        	newClockinSummaryDTO.setLastClockInTime(DateUtil.getYMDDateString(new Date()));
+        	newClockinSummaryDTO.setSerialCount(1);
+        	newClockinSummaryDTO.setWeeklyCount(1);
+        	newClockinSummaryDTO.setTotallyCount(1);
+        	newClockinSummaryDTO.setWechatUserId(String.valueOf(clockInDTO.getWechatUserId()));
+        	clockinSummaryService.save(newClockinSummaryDTO);
+        } else if(!DateUtil.isToday(DateUtil.fromYDMStringDate(clockinSummaryDTO.getLastClockInTime()))){
+        	ClockinSummaryDTO newClockinSummaryDTO = new ClockinSummaryDTO();
+        	newClockinSummaryDTO.setId(clockinSummaryDTO.getId());
+        	newClockinSummaryDTO.setLastClockInTime(DateUtil.getYMDDateString(new Date()));
+        	newClockinSummaryDTO.setSerialCount(clockinSummaryDTO.getSerialCount() + 1);
+        	newClockinSummaryDTO.setWeeklyCount(clockinSummaryDTO.getWeeklyCount() + 1);
+        	newClockinSummaryDTO.setTotallyCount(clockinSummaryDTO.getTotallyCount() + 1);
+        	newClockinSummaryDTO.setWechatUserId(String.valueOf(clockInDTO.getWechatUserId()));
+        	clockinSummaryService.save(newClockinSummaryDTO);
+        }
+        
         return ResponseEntity.created(new URI("/api/clock-ins/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -123,5 +172,26 @@ public class ClockInResource {
         log.debug("REST request to delete ClockIn : {}", id);
         clockInService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    
+    @GetMapping("/clock-ins/getClockinsByActivityParticipationId")
+    @Timed
+    public List<ClockInDTO>  getClockinsByActivityParticipationId(Long activityParticipationId) {
+        log.debug("REST request to get Clockins : {}", activityParticipationId);
+        return clockInService.findClockinsByActivityParticipationId(activityParticipationId);
+    }
+    
+    @GetMapping("/clock-ins/getClockinsDateByWechatUserIdAndMonth")
+    @Timed
+    public List<String>  getClockinsDateByWechatUserIdAndMonth(Long wechatUserId,String yearMonth) {
+        log.debug("REST request to get Clockins : {}", wechatUserId,yearMonth);
+        return clockInService.getClockinsDateByWechatUserIdAndMonth(wechatUserId,yearMonth);
+    }
+    
+    @GetMapping("/clock-ins/getClockinsByWechatUserIdAndDate")
+    @Timed
+    public List<ClockInDTO>  getClockinsByWechatUserIdAndDate(Long wechatUserId,String yearMonthDate) {
+        log.debug("REST request to get Clockins : {}", wechatUserId,yearMonthDate);
+        return clockInService.getClockinsByWechatUserIdAndDate(wechatUserId,yearMonthDate);
     }
 }
