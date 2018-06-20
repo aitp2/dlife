@@ -1,15 +1,16 @@
 package com.aitp.dlife.service;
 
-import com.aitp.dlife.domain.RecipeOrder;
-import com.aitp.dlife.repository.RecipeOrderRepository;
-import com.aitp.dlife.service.dto.RecipeOrderDTO;
-import com.aitp.dlife.service.mapper.RecipeOrderMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.aitp.dlife.domain.RecipeOrder;
+import com.aitp.dlife.repository.RecipeOrderRepository;
+import com.aitp.dlife.service.dto.RecipeOrderDTO;
+import com.aitp.dlife.service.mapper.RecipeOrderMapper;
 
 
 /**
@@ -78,4 +79,15 @@ public class RecipeOrderService {
         log.debug("Request to delete RecipeOrder : {}", id);
         recipeOrderRepository.delete(id);
     }
+    
+    /**
+     * find recipe order list By WechatUserId
+     * @param pageable
+     * @param wechatUserId
+     * @return
+     */
+    public Page<RecipeOrderDTO> findAllByWechatUserId(Pageable pageable,String wechatUserId) {
+    	return recipeOrderRepository.findAllByWechatUserId(pageable,wechatUserId).map(recipeOrderMapper::toDto);
+		
+	}
 }
