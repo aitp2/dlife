@@ -65,6 +65,7 @@ public class RecipeOrderResource {
         if (recipeOrderDTO.getId() != null) {
             throw new BadRequestAlertException("A new recipeOrder cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        //TODO 考虑抢购限量菜品，秒杀排队问题
         RecipeOrderDTO result = recipeOrderService.save(recipeOrderDTO);
         return ResponseEntity.created(new URI("/api/recipe-orders/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -87,6 +88,7 @@ public class RecipeOrderResource {
         if (recipeOrderDTO.getId() == null) {
             return createRecipeOrder(recipeOrderDTO);
         }
+        
         RecipeOrderDTO result = recipeOrderService.save(recipeOrderDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, recipeOrderDTO.getId().toString()))

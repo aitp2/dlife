@@ -21,7 +21,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -111,6 +114,7 @@ public class RecipeResource {
         if (recipeDTO.getId() == null) {
             return createRecipe(recipeDTO);
         }
+      //TODO recipeVersion 更新
         RecipeDTO result = recipeService.save(recipeDTO);
       //save image
         List<String> imagePathList = recipeDTO.getListImageURL();
@@ -188,6 +192,16 @@ public class RecipeResource {
         	list_evaluateDTO.addAll(evaluateService.findAllByRecipeOrderId(recipeOrderDTO.getId()));
         }
         recipeDetailDTO.setEvaluateDTOList(list_evaluateDTO);
+        //likeRecipe
+        int pageNumber = 1;
+        int pageSize = 2;
+        String descOrAsc="desc";
+        String sortFiled="startTime";
+        //生成Sort变量
+        Sort sort = new Sort(Direction.fromString(descOrAsc), sortFiled);
+        Pageable pageable = new PageRequest(pageNumber - 1, pageSize, sort);
+        Page<RecipeDTO> page = recipeService.findAll(pageable);
+        recipeDetailDTO.setLikeRecipeDTOList(page.getContent());
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(recipeDetailDTO));
     }
 
