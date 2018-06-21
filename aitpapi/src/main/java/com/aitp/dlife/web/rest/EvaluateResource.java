@@ -63,13 +63,16 @@ public class EvaluateResource {
         EvaluateDTO result = evaluateService.save(evaluateDTO);
       //save image
         List<String> imagePathList = evaluateDTO.getListImageURL();
-        for(String path : imagePathList) {
-        	ImageDTO image = new ImageDTO();
-        	image.setOssPath(path);
-        	image.setEvaluatId(result.getId());
-        	image.setCreateTime(Instant.now());
-        	imageService.save(image);
+        if(imagePathList != null && imagePathList.size()> 0) {
+        	for(String path : imagePathList) {
+            	ImageDTO image = new ImageDTO();
+            	image.setOssPath(path);
+            	image.setEvaluatId(result.getId());
+            	image.setCreateTime(Instant.now());
+            	imageService.save(image);
+            }
         }
+        
         return ResponseEntity.created(new URI("/api/evaluates/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -94,13 +97,16 @@ public class EvaluateResource {
         EvaluateDTO result = evaluateService.save(evaluateDTO);
       //save image
         List<String> imagePathList = evaluateDTO.getListImageURL();
-        for(String path : imagePathList) {
-        	ImageDTO image = new ImageDTO();
-        	image.setOssPath(path);
-        	image.setEvaluatId(result.getId());
-        	image.setCreateTime(Instant.now());
-        	imageService.save(image);
+        if(imagePathList != null && imagePathList.size()> 0) {
+        	for(String path : imagePathList) {
+            	ImageDTO image = new ImageDTO();
+            	image.setOssPath(path);
+            	image.setEvaluatId(result.getId());
+            	image.setCreateTime(Instant.now());
+            	imageService.save(image);
+            }
         }
+        
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, evaluateDTO.getId().toString()))
             .body(result);

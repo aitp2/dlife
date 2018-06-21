@@ -36,7 +36,7 @@ public class RecipeDTO implements Serializable {
 
     private Double price;
 
-    @Max(value = 9)
+    @Max(value = 999999)
     private Integer num;
 
     @Max(value = 2)
