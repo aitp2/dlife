@@ -1,5 +1,6 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.EvaluateService;
 import com.aitp.dlife.service.ImageService;
@@ -23,6 +24,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +40,7 @@ public class EvaluateResource {
     private static final String ENTITY_NAME = "evaluate";
 
     private final EvaluateService evaluateService;
-    
+
     private final ImageService imageService;
 
     public EvaluateResource(EvaluateService evaluateService,ImageService imageService) {
@@ -68,11 +70,11 @@ public class EvaluateResource {
             	ImageDTO image = new ImageDTO();
             	image.setOssPath(path);
             	image.setEvaluatId(result.getId());
-            	image.setCreateTime(Instant.now());
+            	image.setCreateTime(DateUtil.getYMDDateString(new Date()));
             	imageService.save(image);
             }
         }
-        
+
         return ResponseEntity.created(new URI("/api/evaluates/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -102,11 +104,11 @@ public class EvaluateResource {
             	ImageDTO image = new ImageDTO();
             	image.setOssPath(path);
             	image.setEvaluatId(result.getId());
-            	image.setCreateTime(Instant.now());
+            	image.setCreateTime(DateUtil.getYMDDateString(new Date()));
             	imageService.save(image);
             }
         }
-        
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, evaluateDTO.getId().toString()))
             .body(result);

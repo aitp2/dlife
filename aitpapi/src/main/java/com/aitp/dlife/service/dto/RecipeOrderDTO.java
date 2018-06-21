@@ -29,18 +29,18 @@ public class RecipeOrderDTO implements Serializable {
 
     private Double price;
 
-    private Instant createTime;
+    private String createTime;
 
-    private Instant modifyTime;
+    private String modifyTime;
 
     private Long recipeId;
-    
+
     private String imageURL;
-    
+
     private String recipeTile;
-    
-    private Instant recipeStartTime; 
-    
+
+    private String recipeStartTime;
+
     public String getImageURL() {
 		return imageURL;
 	}
@@ -57,11 +57,11 @@ public class RecipeOrderDTO implements Serializable {
 		this.recipeTile = recipeTile;
 	}
 
-	public Instant getRecipeStartTime() {
+	public String getRecipeStartTime() {
 		return recipeStartTime;
 	}
 
-	public void setRecipeStartTime(Instant recipeStartTime) {
+	public void setRecipeStartTime(String recipeStartTime) {
 		this.recipeStartTime = recipeStartTime;
 	}
 
@@ -113,19 +113,19 @@ public class RecipeOrderDTO implements Serializable {
         this.price = price;
     }
 
-    public Instant getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Instant createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Instant getModifyTime() {
+    public String getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(Instant modifyTime) {
+    public void setModifyTime(String modifyTime) {
         this.modifyTime = modifyTime;
     }
 

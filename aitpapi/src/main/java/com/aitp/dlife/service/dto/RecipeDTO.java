@@ -30,9 +30,9 @@ public class RecipeDTO implements Serializable {
 
     private String content;
 
-    private Instant startTime;
+    private String startTime;
 
-    private Instant endTime;
+    private String endTime;
 
     private Double price;
 
@@ -48,10 +48,10 @@ public class RecipeDTO implements Serializable {
     @Max(value = 9)
     private Integer hot;
 
-    private Instant createTime;
+    private String createTime;
 
-    private Instant modifyTime;
-    
+    private String modifyTime;
+
     private List<String> listImageURL;
 
 	public List<String> getListImageURL() {
@@ -110,19 +110,19 @@ public class RecipeDTO implements Serializable {
         this.content = content;
     }
 
-    public Instant getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Instant startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public Instant getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Instant endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
@@ -166,19 +166,19 @@ public class RecipeDTO implements Serializable {
         this.hot = hot;
     }
 
-    public Instant getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Instant createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Instant getModifyTime() {
+    public String getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(Instant modifyTime) {
+    public void setModifyTime(String modifyTime) {
         this.modifyTime = modifyTime;
     }
 

@@ -1,5 +1,6 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.EvaluateService;
 import com.aitp.dlife.service.ImageService;
@@ -36,6 +37,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,13 +53,13 @@ public class RecipeResource {
     private static final String ENTITY_NAME = "recipe";
 
     private final RecipeService recipeService;
-    
+
     private final ImageService imageService;
-    
+
     private final WechatUserService wechatUserService;
-    
+
     private final RecipeOrderService recipeOrderService;
-    
+
     private final EvaluateService evaluateService;
 
     public RecipeResource(RecipeService recipeService,ImageService imageService,WechatUserService wechatUserService,
@@ -90,7 +92,7 @@ public class RecipeResource {
         	ImageDTO image = new ImageDTO();
         	image.setOssPath(path);
         	image.setRecipeId(result.getId());
-        	image.setCreateTime(Instant.now());
+        	image.setCreateTime(DateUtil.getYMDDateString(new Date()));
         	imageService.save(image);
         }
         return ResponseEntity.created(new URI("/api/recipes/" + result.getId()))
@@ -122,7 +124,7 @@ public class RecipeResource {
         	ImageDTO image = new ImageDTO();
         	image.setOssPath(path);
         	image.setRecipeId(result.getId());
-        	image.setCreateTime(Instant.now());
+        	image.setCreateTime(DateUtil.getYMDDateString(new Date()));
         	imageService.save(image);
         }
         return ResponseEntity.ok()
@@ -165,7 +167,7 @@ public class RecipeResource {
         RecipeDTO recipeDTO = recipeService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(recipeDTO));
     }
-    
+
     /**
      * GET  /recipes/:id : get the "id" recipe.
      *
@@ -218,5 +220,5 @@ public class RecipeResource {
         recipeService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-    
+
 }
