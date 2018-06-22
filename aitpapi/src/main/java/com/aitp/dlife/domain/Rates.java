@@ -2,6 +2,7 @@ package com.aitp.dlife.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -29,6 +30,30 @@ public class Rates implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * 发布者id
+     */
+    @Size(max = 128)
+    @ApiModelProperty(value = "发布者id")
+    @Column(name = "wechat_user_id", length = 128)
+    private String wechatUserId;
+
+    /**
+     * 头像
+     */
+    @Size(max = 1024)
+    @ApiModelProperty(value = "头像")
+    @Column(name = "avatar", length = 1024)
+    private String avatar;
+
+    /**
+     * 昵称
+     */
+    @Size(max = 128)
+    @ApiModelProperty(value = "昵称")
+    @Column(name = "nick_name", length = 128)
+    private String nickName;
+
     @Size(max = 1024)
     @Column(name = "comments", length = 1024)
     private String comments;
@@ -43,7 +68,7 @@ public class Rates implements Serializable {
     private Instant modifyTime;
 
     @OneToMany(mappedBy = "rate")
-    @JsonIgnore
+//    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<PinfanPics> pinfanPics = new HashSet<>();
 
@@ -57,6 +82,45 @@ public class Rates implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getWechatUserId() {
+        return wechatUserId;
+    }
+
+    public Rates wechatUserId(String wechatUserId) {
+        this.wechatUserId = wechatUserId;
+        return this;
+    }
+
+    public void setWechatUserId(String wechatUserId) {
+        this.wechatUserId = wechatUserId;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public Rates avatar(String avatar) {
+        this.avatar = avatar;
+        return this;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public Rates nickName(String nickName) {
+        this.nickName = nickName;
+        return this;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getComments() {
@@ -174,6 +238,9 @@ public class Rates implements Serializable {
     public String toString() {
         return "Rates{" +
             "id=" + getId() +
+            ", wechatUserId='" + getWechatUserId() + "'" +
+            ", avatar='" + getAvatar() + "'" +
+            ", nickName='" + getNickName() + "'" +
             ", comments='" + getComments() + "'" +
             ", rating=" + getRating() +
             ", createTime='" + getCreateTime() + "'" +

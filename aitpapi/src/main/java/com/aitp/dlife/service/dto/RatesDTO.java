@@ -1,9 +1,5 @@
 package com.aitp.dlife.service.dto;
 
-
-import com.aitp.dlife.domain.PinfanPics;
-
-import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -16,6 +12,15 @@ import java.util.Objects;
 public class RatesDTO implements Serializable {
 
     private Long id;
+
+    @Size(max = 128)
+    private String wechatUserId;
+
+    @Size(max = 1024)
+    private String avatar;
+
+    @Size(max = 128)
+    private String nickName;
 
     @Size(max = 1024)
     private String comments;
@@ -44,6 +49,30 @@ public class RatesDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getWechatUserId() {
+        return wechatUserId;
+    }
+
+    public void setWechatUserId(String wechatUserId) {
+        this.wechatUserId = wechatUserId;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getComments() {
@@ -111,6 +140,9 @@ public class RatesDTO implements Serializable {
     public String toString() {
         return "RatesDTO{" +
             "id=" + getId() +
+            ", wechatUserId='" + getWechatUserId() + "'" +
+            ", avatar='" + getAvatar() + "'" +
+            ", nickName='" + getNickName() + "'" +
             ", comments='" + getComments() + "'" +
             ", rating=" + getRating() +
             ", createTime='" + getCreateTime() + "'" +

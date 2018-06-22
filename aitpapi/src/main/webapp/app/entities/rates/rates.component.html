@@ -17,6 +17,9 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="wechatUserId"><span jhiTranslate="aitpapiApp.rates.wechatUserId">Wechat User Id</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="avatar"><span jhiTranslate="aitpapiApp.rates.avatar">Avatar</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nickName"><span jhiTranslate="aitpapiApp.rates.nickName">Nick Name</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="comments"><span jhiTranslate="aitpapiApp.rates.comments">Comments</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="rating"><span jhiTranslate="aitpapiApp.rates.rating">Rating</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="createTime"><span jhiTranslate="aitpapiApp.rates.createTime">Create Time</span> <span class="fa fa-sort"></span></th>
@@ -28,6 +31,9 @@
             <tbody>
             <tr *ngFor="let rates of rates ;trackBy: trackId">
                 <td><a [routerLink]="['../rates', rates.id ]">{{rates.id}}</a></td>
+                <td>{{rates.wechatUserId}}</td>
+                <td>{{rates.avatar}}</td>
+                <td>{{rates.nickName}}</td>
                 <td>{{rates.comments}}</td>
                 <td>{{rates.rating}}</td>
                 <td>{{rates.createTime | date:'medium'}}</td>

@@ -1,6 +1,8 @@
 package com.aitp.dlife.service;
 
+import com.aitp.dlife.domain.Attendee;
 import com.aitp.dlife.domain.PinFanActivity;
+import com.aitp.dlife.repository.AttendeeRepository;
 import com.aitp.dlife.repository.PinFanActivityRepository;
 import com.aitp.dlife.service.dto.PinFanActivityDTO;
 import com.aitp.dlife.service.mapper.PinFanActivityMapper;
@@ -11,6 +13,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -24,11 +31,14 @@ public class PinFanActivityService {
 
     private final PinFanActivityRepository pinFanActivityRepository;
 
+    private final AttendeeRepository attendeeRepository;
+
     private final PinFanActivityMapper pinFanActivityMapper;
 
-    public PinFanActivityService(PinFanActivityRepository pinFanActivityRepository, PinFanActivityMapper pinFanActivityMapper) {
+    public PinFanActivityService(PinFanActivityRepository pinFanActivityRepository, PinFanActivityMapper pinFanActivityMapper,AttendeeRepository attendeeRepository) {
         this.pinFanActivityRepository = pinFanActivityRepository;
         this.pinFanActivityMapper = pinFanActivityMapper;
+        this.attendeeRepository=attendeeRepository;
     }
 
     /**
@@ -50,7 +60,7 @@ public class PinFanActivityService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    @Transactional(readOnly = true)
+      @Transactional(readOnly = true)
     public Page<PinFanActivityDTO> findAll(Pageable pageable) {
         log.debug("Request to get all PinFanActivities");
         Page<PinFanActivity> all = pinFanActivityRepository.findAll(pageable);
@@ -72,7 +82,50 @@ public class PinFanActivityService {
         }
         return all.map(pinFanActivityMapper::toDto);
     }
+    @Transactional(readOnly = true)
+    public Page<PinFanActivityDTO> findAllByWechatUserId(Pageable pageable,String wechatUserId) {
+        log.debug("Request to get all PinFanActivities");
+        Page<PinFanActivity> all = pinFanActivityRepository.findAllByWechatUserId(pageable,wechatUserId);
+        if(all!=null){
+            for(PinFanActivity activity:all){
+                activity.setPinfanPics(null);
+                activity.setRates(null);
+//                activity.setAttendees(null);
+//                if(!Hibernate.isInitialized(activity.getPinfanPics())){
+//                    Hibernate.initialize(activity.getPinfanPics());
+//                }
+//                if(!Hibernate.isInitialized(activity.getRates())){
+//                    Hibernate.initialize(activity.getRates());
+//                }
+                if(!Hibernate.isInitialized(activity.getAttendees())){
+                    Hibernate.initialize(activity.getAttendees());
+                }
+            }
+        }
+        return all.map(pinFanActivityMapper::toDto);
+    }
+    @Transactional(readOnly = true)
+    public List<PinFanActivityDTO> findAllAttendedByWechatUserId(String wechatUserId) {
+        log.debug("Request to get all PinFanActivities");
+        List<Attendee> attendees = attendeeRepository.findAllByWechatUserId(wechatUserId);
+        if(attendees==null || attendees.isEmpty()){
+            return null;
+        }
+        final Set<Long> actIds=new HashSet<>();
 
+        attendees.forEach(a->{actIds.add(a.getPinFanActivity().getId());});
+        List<PinFanActivity> activities = pinFanActivityRepository.findAllByIdIn(actIds);
+        if(activities!=null){
+            for(PinFanActivity activity:activities){
+                activity.setPinfanPics(null);
+                activity.setRates(null);
+                if(!Hibernate.isInitialized(activity.getAttendees())){
+                    Hibernate.initialize(activity.getAttendees());
+                }
+            }
+        }
+       return pinFanActivityMapper.toDto(activities);
+    }
     /**
      * Get one pinFanActivity by id.
      *

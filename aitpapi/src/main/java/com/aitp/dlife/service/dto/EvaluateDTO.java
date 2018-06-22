@@ -25,12 +25,12 @@ public class EvaluateDTO implements Serializable {
 
     private Integer serviceScore;
 
-    private Instant createTime;
+    private String createTime;
 
-    private Instant modifyTime;
+    private String modifyTime;
 
     private Long recipeOrderId;
-    
+
     private List<String> listImageURL;
 
     public List<String> getListImageURL() {
@@ -81,19 +81,19 @@ public class EvaluateDTO implements Serializable {
         this.serviceScore = serviceScore;
     }
 
-    public Instant getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Instant createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Instant getModifyTime() {
+    public String getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(Instant modifyTime) {
+    public void setModifyTime(String modifyTime) {
         this.modifyTime = modifyTime;
     }
 

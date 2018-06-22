@@ -44,11 +44,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = AitpapiApp.class)
 public class RatesResourceIntTest {
 
+    private static final String DEFAULT_WECHAT_USER_ID = "AAAAAAAAAA";
+    private static final String UPDATED_WECHAT_USER_ID = "BBBBBBBBBB";
+
+    private static final String DEFAULT_AVATAR = "AAAAAAAAAA";
+    private static final String UPDATED_AVATAR = "BBBBBBBBBB";
+
+    private static final String DEFAULT_NICK_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NICK_NAME = "BBBBBBBBBB";
+
     private static final String DEFAULT_COMMENTS = "AAAAAAAAAA";
     private static final String UPDATED_COMMENTS = "BBBBBBBBBB";
 
-    private static final Integer DEFAULT_RATING = 2;
-    private static final Integer UPDATED_RATING = 1;
+    private static final Integer DEFAULT_RATING = 1;
+    private static final Integer UPDATED_RATING = 2;
 
     private static final Instant DEFAULT_CREATE_TIME = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATE_TIME = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -103,6 +112,9 @@ public class RatesResourceIntTest {
      */
     public static Rates createEntity(EntityManager em) {
         Rates rates = new Rates()
+            .wechatUserId(DEFAULT_WECHAT_USER_ID)
+            .avatar(DEFAULT_AVATAR)
+            .nickName(DEFAULT_NICK_NAME)
             .comments(DEFAULT_COMMENTS)
             .rating(DEFAULT_RATING)
             .createTime(DEFAULT_CREATE_TIME)
@@ -131,6 +143,9 @@ public class RatesResourceIntTest {
         List<Rates> ratesList = ratesRepository.findAll();
         assertThat(ratesList).hasSize(databaseSizeBeforeCreate + 1);
         Rates testRates = ratesList.get(ratesList.size() - 1);
+        assertThat(testRates.getWechatUserId()).isEqualTo(DEFAULT_WECHAT_USER_ID);
+        assertThat(testRates.getAvatar()).isEqualTo(DEFAULT_AVATAR);
+        assertThat(testRates.getNickName()).isEqualTo(DEFAULT_NICK_NAME);
         assertThat(testRates.getComments()).isEqualTo(DEFAULT_COMMENTS);
         assertThat(testRates.getRating()).isEqualTo(DEFAULT_RATING);
         assertThat(testRates.getCreateTime()).isEqualTo(DEFAULT_CREATE_TIME);
@@ -168,6 +183,9 @@ public class RatesResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(rates.getId().intValue())))
+            .andExpect(jsonPath("$.[*].wechatUserId").value(hasItem(DEFAULT_WECHAT_USER_ID.toString())))
+            .andExpect(jsonPath("$.[*].avatar").value(hasItem(DEFAULT_AVATAR.toString())))
+            .andExpect(jsonPath("$.[*].nickName").value(hasItem(DEFAULT_NICK_NAME.toString())))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())))
             .andExpect(jsonPath("$.[*].rating").value(hasItem(DEFAULT_RATING)))
             .andExpect(jsonPath("$.[*].createTime").value(hasItem(DEFAULT_CREATE_TIME.toString())))
@@ -185,6 +203,9 @@ public class RatesResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(rates.getId().intValue()))
+            .andExpect(jsonPath("$.wechatUserId").value(DEFAULT_WECHAT_USER_ID.toString()))
+            .andExpect(jsonPath("$.avatar").value(DEFAULT_AVATAR.toString()))
+            .andExpect(jsonPath("$.nickName").value(DEFAULT_NICK_NAME.toString()))
             .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS.toString()))
             .andExpect(jsonPath("$.rating").value(DEFAULT_RATING))
             .andExpect(jsonPath("$.createTime").value(DEFAULT_CREATE_TIME.toString()))
@@ -211,6 +232,9 @@ public class RatesResourceIntTest {
         // Disconnect from session so that the updates on updatedRates are not directly saved in db
         em.detach(updatedRates);
         updatedRates
+            .wechatUserId(UPDATED_WECHAT_USER_ID)
+            .avatar(UPDATED_AVATAR)
+            .nickName(UPDATED_NICK_NAME)
             .comments(UPDATED_COMMENTS)
             .rating(UPDATED_RATING)
             .createTime(UPDATED_CREATE_TIME)
@@ -226,6 +250,9 @@ public class RatesResourceIntTest {
         List<Rates> ratesList = ratesRepository.findAll();
         assertThat(ratesList).hasSize(databaseSizeBeforeUpdate);
         Rates testRates = ratesList.get(ratesList.size() - 1);
+        assertThat(testRates.getWechatUserId()).isEqualTo(UPDATED_WECHAT_USER_ID);
+        assertThat(testRates.getAvatar()).isEqualTo(UPDATED_AVATAR);
+        assertThat(testRates.getNickName()).isEqualTo(UPDATED_NICK_NAME);
         assertThat(testRates.getComments()).isEqualTo(UPDATED_COMMENTS);
         assertThat(testRates.getRating()).isEqualTo(UPDATED_RATING);
         assertThat(testRates.getCreateTime()).isEqualTo(UPDATED_CREATE_TIME);

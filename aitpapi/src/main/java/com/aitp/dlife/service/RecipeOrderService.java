@@ -3,6 +3,7 @@ package com.aitp.dlife.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.aitp.dlife.service.mapper.InstantMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -32,9 +33,9 @@ public class RecipeOrderService {
     private final RecipeOrderRepository recipeOrderRepository;
 
     private final RecipeOrderMapper recipeOrderMapper;
-    
+
     private final RecipeRepository recipeRepository;
-    
+
     private final ImageRepository imageRepository;
 
     public RecipeOrderService(RecipeOrderRepository recipeOrderRepository, RecipeOrderMapper recipeOrderMapper,RecipeRepository recipeRepository,ImageRepository imageRepository) {
@@ -92,7 +93,7 @@ public class RecipeOrderService {
         log.debug("Request to delete RecipeOrder : {}", id);
         recipeOrderRepository.delete(id);
     }
-    
+
     /**
      * find recipe order list By WechatUserId
      * @param pageable
@@ -108,11 +109,11 @@ public class RecipeOrderService {
     			recipeOrderDTO.setImageURL(listimage.get(0).getOssPath());
     		}
     		recipeOrderDTO.setRecipeTile(recipe.getTitle());
-    		recipeOrderDTO.setRecipeStartTime(recipe.getStartTime());
+    		recipeOrderDTO.setRecipeStartTime(InstantMapper.toDateString(recipe.getStartTime()));
     	}
 		return page_return;
 	}
-    
+
     public List<RecipeOrderDTO> findAllByRecipeId(Long recipeId){
     	List<RecipeOrderDTO> list = new ArrayList<RecipeOrderDTO>();
     	List<RecipeOrder> list_RecipeOrder = recipeOrderRepository.findAllByRecipeId( recipeId);

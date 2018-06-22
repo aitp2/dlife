@@ -3,6 +3,9 @@ package com.aitp.dlife.service.dto;
 
 import java.time.Instant;
 import javax.validation.constraints.*;
+
+import com.aitp.dlife.domain.Pics;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,13 +20,17 @@ public class ClockInDTO implements Serializable {
 
     @Size(max = 64)
     private String title;
+    
+    private Long wechatUserId;
 
     @Size(max = 1024)
     private String signNote;
 
-    private Instant punchDateTime;
+    private String punchDateTime;
 
     private Long activityParticipationId;
+    
+    private Set<PicsDTO> pics = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -49,23 +56,43 @@ public class ClockInDTO implements Serializable {
         this.signNote = signNote;
     }
 
-    public Instant getPunchDateTime() {
-        return punchDateTime;
-    }
 
-    public void setPunchDateTime(Instant punchDateTime) {
-        this.punchDateTime = punchDateTime;
-    }
+    public String getPunchDateTime() {
+		return punchDateTime;
+	}
 
-    public Long getActivityParticipationId() {
+	public void setPunchDateTime(String punchDateTime) {
+		this.punchDateTime = punchDateTime;
+	}
+
+	public Long getActivityParticipationId() {
         return activityParticipationId;
     }
 
     public void setActivityParticipationId(Long activityParticipationId) {
         this.activityParticipationId = activityParticipationId;
     }
+    
 
-    @Override
+    public Set<PicsDTO> getPics() {
+		return pics;
+	}
+
+	public void setPics(Set<PicsDTO> pics) {
+		this.pics = pics;
+	}
+	
+	
+
+	public Long getWechatUserId() {
+		return wechatUserId;
+	}
+
+	public void setWechatUserId(Long wechatUserId) {
+		this.wechatUserId = wechatUserId;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

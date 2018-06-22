@@ -18,7 +18,7 @@ public class PicsDTO implements Serializable {
     @Size(max = 255)
     private String ossPath;
 
-    private Instant createTime;
+    private String createTime;
 
     private Long fitnessActivityId;
 
@@ -40,15 +40,16 @@ public class PicsDTO implements Serializable {
         this.ossPath = ossPath;
     }
 
-    public Instant getCreateTime() {
-        return createTime;
-    }
+   
+	public String getCreateTime() {
+		return createTime;
+	}
 
-    public void setCreateTime(Instant createTime) {
-        this.createTime = createTime;
-    }
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
 
-    public Long getFitnessActivityId() {
+	public Long getFitnessActivityId() {
         return fitnessActivityId;
     }
 
