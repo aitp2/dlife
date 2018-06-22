@@ -93,16 +93,19 @@ public class ClockInResource {
         	newClockinSummaryDTO.setTotallyCount(1);
         	newClockinSummaryDTO.setWechatUserId(String.valueOf(clockInDTO.getWechatUserId()));
         	clockinSummaryService.save(newClockinSummaryDTO);
-        } else if(!DateUtil.isToday(DateUtil.fromYDMStringDate(clockinSummaryDTO.getLastClockInTime()))){
-        	ClockinSummaryDTO newClockinSummaryDTO = new ClockinSummaryDTO();
-        	newClockinSummaryDTO.setId(clockinSummaryDTO.getId());
-        	newClockinSummaryDTO.setLastClockInTime(DateUtil.getYMDDateString(new Date()));
-        	newClockinSummaryDTO.setSerialCount(clockinSummaryDTO.getSerialCount() + 1);
-        	newClockinSummaryDTO.setWeeklyCount(clockinSummaryDTO.getWeeklyCount() + 1);
-        	newClockinSummaryDTO.setTotallyCount(clockinSummaryDTO.getTotallyCount() + 1);
-        	newClockinSummaryDTO.setWechatUserId(String.valueOf(clockInDTO.getWechatUserId()));
-        	clockinSummaryService.save(newClockinSummaryDTO);
-        }
+		} else if (!DateUtil.isToday(DateUtil.fromYDMStringDate(clockinSummaryDTO.getLastClockInTime()))) {
+			ClockinSummaryDTO newClockinSummaryDTO = new ClockinSummaryDTO();
+			newClockinSummaryDTO.setId(clockinSummaryDTO.getId());
+			newClockinSummaryDTO.setSerialCount(
+					DateUtil.isYesterday(DateUtil.fromYDMStringDate(clockinSummaryDTO.getLastClockInTime()))
+							? clockinSummaryDTO.getSerialCount() + 1 : 1);
+			newClockinSummaryDTO.setWeeklyCount(DateUtil.isThisWeek(clockinSummaryDTO.getLastClockInTime())
+					? clockinSummaryDTO.getWeeklyCount() + 1 : 1);
+			newClockinSummaryDTO.setTotallyCount(clockinSummaryDTO.getTotallyCount() + 1);
+			newClockinSummaryDTO.setWechatUserId(String.valueOf(clockInDTO.getWechatUserId()));
+			newClockinSummaryDTO.setLastClockInTime(DateUtil.getYMDDateString(new Date()));
+			clockinSummaryService.save(newClockinSummaryDTO);
+		}
         
         return ResponseEntity.created(new URI("/api/clock-ins/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
