@@ -1,6 +1,13 @@
 package com.aitp.web.aitpfront.controller;
 
+import com.aitp.web.aitpfront.service.beans.AuthInfo;
+import com.aitp.web.aitpfront.service.beans.Token;
 import com.aitp.web.aitpfront.service.dto.WechatUserDTO;
+import com.aitp.web.aitpfront.service.utils.HttpUtil;
+import com.aitp.web.aitpfront.service.wechat.AuthClient;
+import com.aitp.web.aitpfront.service.wechat.AuthToolNoCache;
+import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,23 +23,42 @@ public class WeChatUser {
     Logger logger = LoggerFactory.getLogger(WeChatUser.class);
     @Autowired
     private Environment env;
+    @Autowired
+    AuthClient authClient;
 
-    @RequestMapping("/login.html")
-    public String toLogin(){
-
-        return "login";
-    }
     @RequestMapping("/wechat_user.html")
     public WechatUserDTO toAccept(@RequestParam("code") String code, @RequestParam("state") String state){
-        logger.info("--------------------------");
-        logger.info(MessageFormat.format(env.getProperty("wechat_access_token_url"),"111","222","333"));
-        logger.info(code);
-        logger.info(state);
-        logger.info("--------------------------");
         WechatUserDTO wechatUserDTO=new WechatUserDTO();
-        wechatUserDTO.setUnionid("9999999999999");
-        wechatUserDTO.setUserName("Tom");
-        wechatUserDTO.setCity("China");
+        if(StringUtils.isNotBlank(code)){
+            AuthInfo authInfo=new AuthInfo();
+            authInfo.setAppid(env.getProperty("wechat_app_id"));
+            authInfo.setAppsecret(env.getProperty("wechat_app_secret"));
+            authInfo.setAccessTokenUrl(MessageFormat.format(env.getProperty("wechat_access_token_url"),authInfo.getAppid(),authInfo.getAppsecret(),code));
+
+            Token token = authClient.loadAccessToken(authInfo);
+            if(token!=null){
+                if(StringUtils.isNotBlank(token.getAccess_token())&&StringUtils.isNotBlank(token.getOpenid())){
+                    /**
+                     * 用access token获取当前微信账号信息
+                     */
+                    String userInfoUrl=MessageFormat.format(env.getProperty("wechat_snsapi_userinfo_url"),token.getAccess_token(),token.getOpenid());
+                    String userInfo = HttpUtil.doGetJson(userInfoUrl);
+                    logger.info("userInfo:{}",userInfo);
+                    if(StringUtils.isNotBlank(userInfo)){
+                        JSONObject user = JSONObject.parseObject(userInfo);
+                        wechatUserDTO.setUnionid(user.getString("unionid"));
+                        wechatUserDTO.setUserName(user.getString("nickname"));
+                        wechatUserDTO.setCity(user.getString("city"));
+                        wechatUserDTO.setCountry(user.getString("country"));
+                        wechatUserDTO.setHeadimgurl(user.getString("headimgurl"));
+                        wechatUserDTO.setOpenId(user.getString("openid"));
+                        wechatUserDTO.setPrivilege(user.getString("privilege"));
+                        wechatUserDTO.setSex(user.getString("sex"));
+                        wechatUserDTO.setProvince(user.getString("province"));
+                    }
+                }
+            }
+        }
         return wechatUserDTO;
     }
 
