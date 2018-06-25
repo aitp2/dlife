@@ -11,6 +11,7 @@ import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import com.aitp.dlife.service.dto.RatesDTO;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -63,7 +64,9 @@ public class RatesResource {
             throw new BadRequestAlertException("A new rates cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Set<PinfanPicsDTO> pinfanPics = new HashSet<>();
-
+        if(StringUtils.isEmpty(ratesDTO.getCreateTime())){
+            ratesDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
+        }
         RatesDTO result = ratesService.save(ratesDTO);
         if(ratesDTO.getPinfanPics()!=null&&!ratesDTO.getPinfanPics().isEmpty()){
             for(PinfanPicsDTO pics:ratesDTO.getPinfanPics()){
@@ -93,6 +96,9 @@ public class RatesResource {
         log.debug("REST request to update Rates : {}", ratesDTO);
         if (ratesDTO.getId() == null) {
             return createRates(ratesDTO);
+        }
+        if(StringUtils.isEmpty(ratesDTO.getModifyTime())){
+            ratesDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
         }
         RatesDTO result = ratesService.save(ratesDTO);
         return ResponseEntity.ok()
