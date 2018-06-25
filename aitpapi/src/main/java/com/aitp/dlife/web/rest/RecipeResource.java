@@ -18,6 +18,7 @@ import com.aitp.dlife.service.dto.RecipeOrderDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
 
 import io.github.jhipster.web.util.ResponseUtil;
+import org.apache.commons.lang3.BooleanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -85,16 +86,38 @@ public class RecipeResource {
         if (recipeDTO.getId() != null) {
             throw new BadRequestAlertException("A new recipe cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        RecipeDTO result = recipeService.save(recipeDTO);
-        //save image
-        List<String> imagePathList = recipeDTO.getListImageURL();
-        for(String path : imagePathList) {
-        	ImageDTO image = new ImageDTO();
-        	image.setOssPath(path);
-        	image.setRecipeId(result.getId());
-        	image.setCreateTime(DateUtil.getYMDDateString(new Date()));
-        	imageService.save(image);
+
+        // set the wechat user message
+        if (recipeDTO.getWechatUserId() == null)
+        {
+            throw new BadRequestAlertException("The request must have the weChatUserId", ENTITY_NAME, "noWeChatUserId");
         }
+        WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(recipeDTO.getWechatUserId()));
+        if (wechatUserDTO == null)
+        {
+            throw new BadRequestAlertException("Can not get the weChatUser by id:" + recipeDTO.getWechatUserId(), ENTITY_NAME, "noWeChatUser");
+        }
+//        else if(BooleanUtils.isNotTrue(wechatUserDTO.isCookFlag()))
+//        {
+//            throw new BadRequestAlertException("Have no permission to create recipes for WeChatUser id:" + recipeDTO.getWechatUserId(), ENTITY_NAME, "noPermissionWeChatUser");
+//        }
+        else
+        {
+            recipeDTO.setAvatar(wechatUserDTO.getAvatar());
+            recipeDTO.setNickName(wechatUserDTO.getNickName());
+        }
+
+        // set other default message
+        recipeDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
+        recipeDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
+        recipeDTO.setHot(Integer.valueOf(0));
+        if (recipeDTO.getPrice() == null)
+        {
+            recipeDTO.setPrice(Double.valueOf(0));
+        }
+        recipeDTO.setPublishVersion(Integer.valueOf(1));
+
+        RecipeDTO result = recipeService.save(recipeDTO);
         return ResponseEntity.created(new URI("/api/recipes/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -104,6 +127,7 @@ public class RecipeResource {
      * PUT  /recipes : Updates an existing recipe.
      *
      * @param recipeDTO the recipeDTO to update
+     * @param newVersion is the recipe need to build a new version
      * @return the ResponseEntity with status 200 (OK) and with body the updated recipeDTO,
      * or with status 400 (Bad Request) if the recipeDTO is not valid,
      * or with status 500 (Internal Server Error) if the recipeDTO couldn't be updated
@@ -111,45 +135,79 @@ public class RecipeResource {
      */
     @PutMapping("/recipes")
     @Timed
-    public ResponseEntity<RecipeDTO> updateRecipe(@Valid @RequestBody RecipeDTO recipeDTO) throws URISyntaxException {
+    public ResponseEntity<RecipeDTO> updateRecipe(@Valid @RequestBody RecipeDTO recipeDTO,
+            @RequestParam(value = "newVersion", required = false) Boolean newVersion) throws URISyntaxException {
         log.debug("REST request to update Recipe : {}", recipeDTO);
         if (recipeDTO.getId() == null) {
             return createRecipe(recipeDTO);
         }
-      //TODO recipeVersion 更新
-        RecipeDTO result = recipeService.save(recipeDTO);
-      //save image
-        List<String> imagePathList = recipeDTO.getListImageURL();
-        for(String path : imagePathList) {
-        	ImageDTO image = new ImageDTO();
-        	image.setOssPath(path);
-        	image.setRecipeId(result.getId());
-        	image.setCreateTime(DateUtil.getYMDDateString(new Date()));
-        	imageService.save(image);
+
+        //set default messages
+        recipeDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
+
+        // if new version is true, we will increase the recipe version
+        if (BooleanUtils.isTrue(newVersion))
+        {
+            RecipeDTO oldRecipeDTO = recipeService.findOne(recipeDTO.getId());
+            if (oldRecipeDTO == null)
+            {
+                throw new BadRequestAlertException("Can not get the recipe by id:" + recipeDTO.getId(), ENTITY_NAME, "noRecipe");
+            }
+            else if(oldRecipeDTO.getPublishVersion() == null)
+            {
+                recipeDTO.setPublishVersion(Integer.valueOf(1));
+            }
+            else
+            {
+                recipeDTO.setPublishVersion(Integer.valueOf(oldRecipeDTO.getPublishVersion().intValue() + 1));
+            }
         }
+
+        //TODO we need to consider that if the recipe have been ordered, and then the cooker change the version.
+
+        RecipeDTO result = recipeService.save(recipeDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, recipeDTO.getId().toString()))
             .body(result);
     }
 
     /**
+     * GET  /recipes : get the cook's recipes.
+     *
+     * @param pageable the pagination information
+     * @param id the cook's wechatUserId
+     * @return the ResponseEntity with status 200 (OK) and the list of recipes in body
+     */
+    @GetMapping("/cook-recipes/{id}")
+    @Timed
+    public ResponseEntity<List<RecipeDTO>> getCookRecipes(Pageable pageable,@PathVariable String id) {
+        log.debug("REST request to get a page of Recipes");
+        Page<RecipeDTO> page = null;
+        if(!StringUtils.isEmpty(id)) {
+        	page = recipeService.findAllByWechatUserId(pageable, id);
+        }
+        else
+        {
+            throw new BadRequestAlertException("The request must have id (the weChatUserId)", ENTITY_NAME, "noId");
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/recipes");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
      * GET  /recipes : get all the recipes.
      *
      * @param pageable the pagination information
-     * @param wechatUserId the wechatUserId
+     * @param currentUserId the currentUserId
      * @return the ResponseEntity with status 200 (OK) and the list of recipes in body
      */
     @GetMapping("/recipes")
     @Timed
     public ResponseEntity<List<RecipeDTO>> getAllRecipes(Pageable pageable,
-    		@RequestParam(value = "wechatUserId", required = false) String wechatUserId) {
+             @RequestParam(value = "currentUserId", required = true) String currentUserId) {
         log.debug("REST request to get a page of Recipes");
         Page<RecipeDTO> page = null;
-        if(!StringUtils.isEmpty(wechatUserId)) {
-        	page = recipeService.findAllByWechatUserId(pageable, wechatUserId);
-        }else {
-        	page = recipeService.findAll(pageable);
-        }
+        page = recipeService.findAll(pageable, currentUserId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/recipes");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -176,7 +234,8 @@ public class RecipeResource {
      */
     @GetMapping("/recipedetails/{id}")
     @Timed
-    public ResponseEntity<RecipeDetailDTO> getRecipeDetail(@PathVariable Long id) {
+    public ResponseEntity<RecipeDetailDTO> getRecipeDetail(@PathVariable Long id,
+            @RequestParam(value = "currentUserId", required = true) String currentUserId) {
         log.debug("REST request to get RecipeDetailDTO : {}", id);
         RecipeDetailDTO recipeDetailDTO = new RecipeDetailDTO();
         RecipeDTO recipeDTO = recipeService.findOne(id);

@@ -52,17 +52,28 @@ public class RecipeDTO implements Serializable {
 
     private String modifyTime;
 
-    private List<String> listImageURL;
+    private String bookStatus;
 
-	public List<String> getListImageURL() {
-		return listImageURL;
-	}
+    private Set<ImageDTO> images = new HashSet<>();
 
-	public void setListImageURL(List<String> listImageURL) {
-		this.listImageURL = listImageURL;
-	}
+    public String getBookStatus() {
+        return bookStatus;
+    }
 
-	public Long getId() {
+    public void setBookStatus(String bookStatus) {
+        this.bookStatus = bookStatus;
+    }
+
+
+    public Set<ImageDTO> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<ImageDTO> images) {
+        this.images = images;
+    }
+
+    public Long getId() {
         return id;
     }
 
@@ -181,6 +192,8 @@ public class RecipeDTO implements Serializable {
     public void setModifyTime(String modifyTime) {
         this.modifyTime = modifyTime;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

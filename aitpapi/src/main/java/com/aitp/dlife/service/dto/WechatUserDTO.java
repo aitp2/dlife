@@ -54,9 +54,9 @@ public class WechatUserDTO implements Serializable {
     @Size(max = 1024)
     private String skill;
 
-    private Instant createTime;
+    private String createTime;
 
-    private Instant modifyTime;
+    private String modifyTime;
 
     public Long getId() {
         return id;
@@ -178,19 +178,19 @@ public class WechatUserDTO implements Serializable {
         this.skill = skill;
     }
 
-    public Instant getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Instant createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Instant getModifyTime() {
+    public String getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(Instant modifyTime) {
+    public void setModifyTime(String modifyTime) {
         this.modifyTime = modifyTime;
     }
 

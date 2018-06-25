@@ -2,16 +2,19 @@ package com.aitp.dlife.service;
 
 import com.aitp.dlife.domain.Evaluate;
 import com.aitp.dlife.domain.Image;
+import com.aitp.dlife.domain.Recipe;
 import com.aitp.dlife.domain.RecipeOrder;
 import com.aitp.dlife.repository.EvaluateRepository;
 import com.aitp.dlife.repository.ImageRepository;
 import com.aitp.dlife.service.dto.EvaluateDTO;
+import com.aitp.dlife.service.dto.RecipeDTO;
 import com.aitp.dlife.service.dto.RecipeOrderDTO;
 import com.aitp.dlife.service.mapper.EvaluateMapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -32,7 +35,7 @@ public class EvaluateService {
     private final EvaluateRepository evaluateRepository;
 
     private final EvaluateMapper evaluateMapper;
-    
+
     private final ImageRepository imageRepository;
 
     public EvaluateService(EvaluateRepository evaluateRepository, EvaluateMapper evaluateMapper,ImageRepository imageRepository) {
@@ -63,8 +66,21 @@ public class EvaluateService {
     @Transactional(readOnly = true)
     public Page<EvaluateDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Evaluates");
-        return evaluateRepository.findAll(pageable)
-            .map(evaluateMapper::toDto);
+
+        Page<Evaluate> page_evaluate = evaluateRepository.findAll(pageable);
+
+        if(page_evaluate!=null && page_evaluate.getContent() != null){
+            for(Evaluate evaluate:page_evaluate.getContent()){
+                evaluate.setImages(null);
+                if(!Hibernate.isInitialized(evaluate.getImages())){
+                    Hibernate.initialize(evaluate.getImages());
+                }
+            }
+        }
+
+        Page<EvaluateDTO> page_return = page_evaluate.map(evaluateMapper::toDto);
+
+        return page_return;
     }
 
     /**
@@ -77,6 +93,13 @@ public class EvaluateService {
     public EvaluateDTO findOne(Long id) {
         log.debug("Request to get Evaluate : {}", id);
         Evaluate evaluate = evaluateRepository.findOne(id);
+
+        if(evaluate!=null){
+            if(!Hibernate.isInitialized(evaluate.getImages())){
+                Hibernate.initialize(evaluate.getImages());
+            }
+        }
+
         return evaluateMapper.toDto(evaluate);
     }
 
@@ -89,16 +112,18 @@ public class EvaluateService {
         log.debug("Request to delete Evaluate : {}", id);
         evaluateRepository.delete(id);
     }
-    
+
     public List<EvaluateDTO> findAllByRecipeOrderId(Long recipeOrderId){
     	List<EvaluateDTO> list = new ArrayList<EvaluateDTO>();
     	for(Evaluate evaluate:evaluateRepository.findAllByRecipeOrderId(recipeOrderId)) {
+
+            if(evaluate!=null){
+                if(!Hibernate.isInitialized(evaluate.getImages())){
+                    Hibernate.initialize(evaluate.getImages());
+                }
+            }
+
     		EvaluateDTO evaluateDTO = evaluateMapper.toDto(evaluate);
-    		List<String> imagePath = new ArrayList<String>();
-    		for(Image image:imageRepository.findByEvaluatId(evaluate.getId())) {
-    			imagePath.add(image.getOssPath());
-    		}
-    		evaluateDTO.setListImageURL(imagePath);
     		list.add(evaluateDTO);
     	}
     	return list;

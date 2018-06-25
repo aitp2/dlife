@@ -62,18 +62,12 @@ public class EvaluateResource {
         if (evaluateDTO.getId() != null) {
             throw new BadRequestAlertException("A new evaluate cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        //set default messages
+        evaluateDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
+        evaluateDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
+
         EvaluateDTO result = evaluateService.save(evaluateDTO);
-      //save image
-        List<String> imagePathList = evaluateDTO.getListImageURL();
-        if(imagePathList != null && imagePathList.size()> 0) {
-        	for(String path : imagePathList) {
-            	ImageDTO image = new ImageDTO();
-            	image.setOssPath(path);
-            	image.setEvaluatId(result.getId());
-            	image.setCreateTime(DateUtil.getYMDDateString(new Date()));
-            	imageService.save(image);
-            }
-        }
 
         return ResponseEntity.created(new URI("/api/evaluates/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -96,18 +90,11 @@ public class EvaluateResource {
         if (evaluateDTO.getId() == null) {
             return createEvaluate(evaluateDTO);
         }
+
+        //set default messages
+        evaluateDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
+
         EvaluateDTO result = evaluateService.save(evaluateDTO);
-      //save image
-        List<String> imagePathList = evaluateDTO.getListImageURL();
-        if(imagePathList != null && imagePathList.size()> 0) {
-        	for(String path : imagePathList) {
-            	ImageDTO image = new ImageDTO();
-            	image.setOssPath(path);
-            	image.setEvaluatId(result.getId());
-            	image.setCreateTime(DateUtil.getYMDDateString(new Date()));
-            	imageService.save(image);
-            }
-        }
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, evaluateDTO.getId().toString()))

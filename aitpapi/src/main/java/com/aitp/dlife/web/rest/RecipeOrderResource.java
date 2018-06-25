@@ -2,11 +2,18 @@ package com.aitp.dlife.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.aitp.dlife.service.RecipeService;
+import com.aitp.dlife.service.WechatUserService;
+import com.aitp.dlife.service.dto.RecipeDTO;
+import com.aitp.dlife.service.dto.WechatUserDTO;
+import com.aitp.dlife.web.rest.util.DateUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -14,7 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,8 +53,14 @@ public class RecipeOrderResource {
 
     private final RecipeOrderService recipeOrderService;
 
-    public RecipeOrderResource(RecipeOrderService recipeOrderService) {
+    private final RecipeService recipeService;
+
+    private final WechatUserService wechatUserService;
+
+    public RecipeOrderResource(RecipeOrderService recipeOrderService, RecipeService recipeService, WechatUserService wechatUserService) {
         this.recipeOrderService = recipeOrderService;
+        this.recipeService = recipeService;
+        this.wechatUserService = wechatUserService;
     }
 
     /**
@@ -65,6 +77,45 @@ public class RecipeOrderResource {
         if (recipeOrderDTO.getId() != null) {
             throw new BadRequestAlertException("A new recipeOrder cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        //set default messages
+        recipeOrderDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
+        recipeOrderDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
+
+        //set Wechat user message
+        if (StringUtils.isEmpty(recipeOrderDTO.getWechatUserId()))
+        {
+            throw new BadRequestAlertException("The request must have the wechatUserId", ENTITY_NAME, "noWechatUserId");
+        }
+        WechatUserDTO wechatUserDTO = wechatUserService.findByOpenId(recipeOrderDTO.getWechatUserId());
+        if (wechatUserDTO == null)
+        {
+            throw new BadRequestAlertException("Can not get the wehcatUser by user id:" + recipeOrderDTO.getWechatUserId(), ENTITY_NAME, "noFollowUser");
+        }
+        else
+        {
+            recipeOrderDTO.setAvatar(wechatUserDTO.getAvatar());
+            recipeOrderDTO.setNickName(wechatUserDTO.getNickName());
+        }
+
+        //set recipe message
+        if (recipeOrderDTO.getRecipeId() == null)
+        {
+            throw new BadRequestAlertException("The request must have the recipe id", ENTITY_NAME, "noRecipeId");
+        }
+        RecipeDTO recipeDTO = recipeService.findOne(recipeOrderDTO.getRecipeId());
+        if (recipeDTO == null)
+        {
+            throw new BadRequestAlertException("Can not get the recipeDTO by id:" + recipeOrderDTO.getRecipeId(), ENTITY_NAME, "noRecipe");
+        }
+        else
+        {
+            recipeOrderDTO.setPrice(recipeDTO.getPrice());
+            recipeOrderDTO.setRecipeTile(recipeDTO.getTitle());
+            recipeOrderDTO.setRecipeStartTime(recipeDTO.getStartTime());
+        }
+
+
         //TODO 考虑抢购限量菜品，秒杀排队问题
         RecipeOrderDTO result = recipeOrderService.save(recipeOrderDTO);
         return ResponseEntity.created(new URI("/api/recipe-orders/" + result.getId()))
@@ -88,7 +139,10 @@ public class RecipeOrderResource {
         if (recipeOrderDTO.getId() == null) {
             return createRecipeOrder(recipeOrderDTO);
         }
-        
+
+        //set default messages
+        recipeOrderDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
+
         RecipeOrderDTO result = recipeOrderService.save(recipeOrderDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, recipeOrderDTO.getId().toString()))
