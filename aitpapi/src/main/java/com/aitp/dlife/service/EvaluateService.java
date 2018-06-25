@@ -71,7 +71,6 @@ public class EvaluateService {
 
         if(page_evaluate!=null && page_evaluate.getContent() != null){
             for(Evaluate evaluate:page_evaluate.getContent()){
-                evaluate.setImages(null);
                 if(!Hibernate.isInitialized(evaluate.getImages())){
                     Hibernate.initialize(evaluate.getImages());
                 }

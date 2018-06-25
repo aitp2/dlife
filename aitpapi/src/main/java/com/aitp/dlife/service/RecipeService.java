@@ -78,7 +78,6 @@ public class RecipeService {
 
         if(page_recipe!=null && page_recipe.getContent() != null){
             for(Recipe recipe:page_recipe.getContent()){
-                recipe.setImages(null);
                 if(!Hibernate.isInitialized(recipe.getImages())){
                     Hibernate.initialize(recipe.getImages());
                 }
@@ -104,8 +103,7 @@ public class RecipeService {
         Page<Recipe> page_recipe = recipeRepository.findAll(pageable);
 
         if(page_recipe!=null && page_recipe.getContent() != null){
-            for(Recipe recipe:page_recipe.getContent()){
-                recipe.setImages(null);
+            for(Recipe recipe : page_recipe.getContent()){
                 if(!Hibernate.isInitialized(recipe.getImages())){
                     Hibernate.initialize(recipe.getImages());
                 }
@@ -193,7 +191,6 @@ public class RecipeService {
 
         if(page_recipe!=null && page_recipe.getContent() != null){
             for(Recipe recipe:page_recipe.getContent()){
-                recipe.setImages(null);
                 if(!Hibernate.isInitialized(recipe.getImages())){
                     Hibernate.initialize(recipe.getImages());
                 }
