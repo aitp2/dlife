@@ -186,14 +186,14 @@ public class ClockInResource {
     
     @GetMapping("/clock-ins/getClockinsDateByWechatUserIdAndMonth")
     @Timed
-    public List<String>  getClockinsDateByWechatUserIdAndMonth(Long wechatUserId,String yearMonth) {
+    public List<String>  getClockinsDateByWechatUserIdAndMonth(String wechatUserId,String yearMonth) {
         log.debug("REST request to get Clockins : {}", wechatUserId,yearMonth);
         return clockInService.getClockinsDateByWechatUserIdAndMonth(wechatUserId,yearMonth);
     }
     
     @GetMapping("/clock-ins/getClockinsByWechatUserIdAndDate")
     @Timed
-    public List<ClockInDTO>  getClockinsByWechatUserIdAndDate(Long wechatUserId,String yearMonthDate) {
+    public List<ClockInDTO>  getClockinsByWechatUserIdAndDate(String wechatUserId,String yearMonthDate) {
         log.debug("REST request to get Clockins : {}", wechatUserId,yearMonthDate);
         return clockInService.getClockinsByWechatUserIdAndDate(wechatUserId,yearMonthDate);
     }

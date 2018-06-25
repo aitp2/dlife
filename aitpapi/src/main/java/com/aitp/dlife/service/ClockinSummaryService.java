@@ -90,7 +90,7 @@ public class ClockinSummaryService {
      * @param wechatUserId
      * @return
      */
-    public ClockinSummaryDTO findByWechatUserId(Long wechatUserId) {
+    public ClockinSummaryDTO findByWechatUserId(String wechatUserId) {
     	ClockinSummaryDTO result = clockinSummaryMapper.toDto(clockinSummaryRepository.findByWechatUserId(String.valueOf(wechatUserId))) ;
     	if(null != result && null != result.getId()){
     		result.setWeeklyCount(DateUtil.isThisWeek(result.getLastClockInTime())

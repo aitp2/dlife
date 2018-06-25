@@ -136,7 +136,7 @@ public class ClockinSummaryResource {
      */
     @GetMapping("/clockin-summaries/getByWechatUserId")
     @Timed
-    public ClockinSummaryDTO createClockinSummary(Long wechatUserId) {
+    public ClockinSummaryDTO createClockinSummary(String wechatUserId) {
         log.debug("REST request to get ClockinSummary by wechatUserId: {}", wechatUserId);
         if (null == wechatUserId) {
             throw new BadRequestAlertException("wechatUserId is null", ENTITY_NAME, "wechatUserIdNULL");

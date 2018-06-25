@@ -160,7 +160,7 @@ public class FitnessActivityResource {
     
     @GetMapping("/fitness-activities/getActivitiesByWechatUserId")
     @Timed
-    public List<FitnessActivityDTO> getActivitiesByWechatUserId(Long wechatUserId) {
+    public List<FitnessActivityDTO> getActivitiesByWechatUserId(String wechatUserId) {
         log.debug("REST request to get ClockinSummary by wechatUserId: {}", wechatUserId);
         if (null == wechatUserId) {
             throw new BadRequestAlertException("wechatUserId is null", ENTITY_NAME, "wechatUserIdNULL");
