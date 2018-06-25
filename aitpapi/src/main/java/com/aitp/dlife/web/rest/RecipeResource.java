@@ -116,9 +116,9 @@ public class RecipeResource {
         if (recipeDTO.getId() == null) {
             return createRecipe(recipeDTO);
         }
-      //TODO recipeVersion 更新
+      
         RecipeDTO result = recipeService.save(recipeDTO);
-      //save image
+      //save image,first delete(in recipeService.save) ,then add
         List<String> imagePathList = recipeDTO.getListImageURL();
         for(String path : imagePathList) {
         	ImageDTO image = new ImageDTO();

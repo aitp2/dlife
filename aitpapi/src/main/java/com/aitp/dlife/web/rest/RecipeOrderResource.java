@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aitp.dlife.service.RecipeOrderService;
+import com.aitp.dlife.service.RecipeService;
+import com.aitp.dlife.service.dto.RecipeDTO;
 import com.aitp.dlife.service.dto.RecipeOrderDTO;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
@@ -46,9 +48,12 @@ public class RecipeOrderResource {
     private static final String ENTITY_NAME = "recipeOrder";
 
     private final RecipeOrderService recipeOrderService;
+    
+    private final RecipeService recipeService;
 
-    public RecipeOrderResource(RecipeOrderService recipeOrderService) {
+    public RecipeOrderResource(RecipeOrderService recipeOrderService,RecipeService recipeService) {
         this.recipeOrderService = recipeOrderService;
+        this.recipeService = recipeService;
     }
 
     /**
@@ -65,7 +70,12 @@ public class RecipeOrderResource {
         if (recipeOrderDTO.getId() != null) {
             throw new BadRequestAlertException("A new recipeOrder cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        //TODO 考虑抢购限量菜品，秒杀排队问题
+        //TODO 考虑抢购限量菜品，秒杀排队问题 暂考虑数量限制
+        RecipeDTO recipe = recipeService.findOne(recipeOrderDTO.getRecipeId());
+        List<RecipeOrderDTO> list_order =recipeOrderService.findAllByRecipeId(recipeOrderDTO.getRecipeId());
+        if(recipe.getNum()<=list_order.size()) {
+        	throw new BadRequestAlertException("recipe:"+recipe.getId() +"recipe num overflow", ENTITY_NAME, "recipenumoverflow");
+        }
         RecipeOrderDTO result = recipeOrderService.save(recipeOrderDTO);
         return ResponseEntity.created(new URI("/api/recipe-orders/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
