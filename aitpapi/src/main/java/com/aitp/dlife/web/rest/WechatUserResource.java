@@ -123,6 +123,20 @@ public class WechatUserResource {
     }
 
     /**
+     * GET  /wechat-users/userinfo/:openid : get the "openid" wechatUser.
+     *
+     * @param openid
+     * @return
+     */
+    @GetMapping("/wechat-users/userinfo/{openid}")
+    @Timed
+    public ResponseEntity<WechatUserDTO> getWechatUserByOpenID(@PathVariable String openid) {
+        log.debug("REST request to get WechatUser : {}", openid);
+        WechatUserDTO wechatUserDTO = wechatUserService.findByOpenId(openid);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(wechatUserDTO));
+    }
+
+    /**
      * DELETE  /wechat-users/:id : delete the "id" wechatUser.
      *
      * @param id the id of the wechatUserDTO to delete
