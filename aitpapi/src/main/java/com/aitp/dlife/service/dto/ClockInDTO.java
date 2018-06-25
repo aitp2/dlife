@@ -21,7 +21,7 @@ public class ClockInDTO implements Serializable {
     @Size(max = 64)
     private String title;
     
-    private Long wechatUserId;
+    private String wechatUserId;
 
     @Size(max = 1024)
     private String signNote;
@@ -84,11 +84,11 @@ public class ClockInDTO implements Serializable {
 	
 	
 
-	public Long getWechatUserId() {
+	public String getWechatUserId() {
 		return wechatUserId;
 	}
 
-	public void setWechatUserId(Long wechatUserId) {
+	public void setWechatUserId(String wechatUserId) {
 		this.wechatUserId = wechatUserId;
 	}
 

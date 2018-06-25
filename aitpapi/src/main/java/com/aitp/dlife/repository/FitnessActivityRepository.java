@@ -20,6 +20,6 @@ public interface FitnessActivityRepository extends JpaRepository<FitnessActivity
 
 	@Query(value = "select * from fitness_activity LEFT JOIN activity_participation ON fitness_activity.id = activity_participation.activity_id "
 			+ " where activity_participation.wechat_user_id =:wechatUserId",nativeQuery = true)
-	List<FitnessActivity> findActivitiesByWechatUserId(@Param("wechatUserId")Long wechatUserId);
+	List<FitnessActivity> findActivitiesByWechatUserId(@Param("wechatUserId")String wechatUserId);
 
 }

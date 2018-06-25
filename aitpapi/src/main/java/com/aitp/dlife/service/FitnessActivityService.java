@@ -85,7 +85,7 @@ public class FitnessActivityService {
         fitnessActivityRepository.delete(id);
     }
 
-	public List<FitnessActivityDTO> getActivitiesByWechatUserId(Long wechatUserId) {
+	public List<FitnessActivityDTO> getActivitiesByWechatUserId(String wechatUserId) {
 		return fitnessActivityRepository.findActivitiesByWechatUserId(wechatUserId).stream()
 	            .map(fitnessActivityMapper::toDto)
 	            .collect(Collectors.toCollection(LinkedList::new));
