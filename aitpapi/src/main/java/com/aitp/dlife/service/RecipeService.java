@@ -1,5 +1,6 @@
 package com.aitp.dlife.service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import com.aitp.dlife.domain.Image;
 import com.aitp.dlife.domain.Recipe;
 import com.aitp.dlife.repository.ImageRepository;
 import com.aitp.dlife.repository.RecipeRepository;
+import com.aitp.dlife.service.dto.ImageDTO;
 import com.aitp.dlife.service.dto.RecipeDTO;
 import com.aitp.dlife.service.mapper.RecipeMapper;
 import org.springframework.util.CollectionUtils;
@@ -57,6 +59,7 @@ public class RecipeService {
     public RecipeDTO save(RecipeDTO recipeDTO) {
         log.debug("Request to save Recipe : {}", recipeDTO);
         Recipe recipe = recipeMapper.toEntity(recipeDTO);
+
         recipe = recipeRepository.save(recipe);
         return recipeMapper.toDto(recipe);
     }
@@ -162,6 +165,9 @@ public class RecipeService {
         }
 
         RecipeDTO recipeDTO = recipeMapper.toDto(recipe);
+
+        recipeDTO.setBookStatus(checkCouldBookRecipe(recipeDTO,currentUserId));
+
         return recipeDTO;
     }
 

@@ -11,6 +11,7 @@ import com.aitp.dlife.service.dto.EvaluateDTO;
 import com.aitp.dlife.service.dto.ImageDTO;
 
 import io.github.jhipster.web.util.ResponseUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -18,12 +19,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -69,6 +72,19 @@ public class EvaluateResource {
 
         EvaluateDTO result = evaluateService.save(evaluateDTO);
 
+        if (!CollectionUtils.isEmpty(evaluateDTO.getImages()))
+        {
+            for(ImageDTO imageDTO : evaluateDTO.getImages())
+            {
+                if (imageDTO != null && StringUtils.isNotEmpty(imageDTO.getOssPath()))
+                {
+                    imageDTO.setRecipeId(evaluateDTO.getId());
+                    imageDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
+                    imageService.save(imageDTO);
+                }
+            }
+        }
+
         return ResponseEntity.created(new URI("/api/evaluates/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -93,6 +109,42 @@ public class EvaluateResource {
 
         //set default messages
         evaluateDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
+
+        //we need to compare the old image with the new image,
+        List<ImageDTO> oldImages = imageService.findImagesByEvaluatId(evaluateDTO.getId());
+        if (!CollectionUtils.isEmpty(evaluateDTO.getImages()))
+        {
+
+            List<Long> oldIds = new ArrayList<>();
+
+            for(ImageDTO newImage : evaluateDTO.getImages())
+            {
+                if(newImage.getId() == null)
+                {
+                    newImage.setCreateTime(DateUtil.getYMDDateString(new Date()));
+                    newImage.setRecipeId(evaluateDTO.getId());
+                    imageService.save(newImage);
+                    continue;
+                }
+
+                oldIds.add(newImage.getId());
+            }
+
+            for(ImageDTO oldImage : oldImages)
+            {
+                if (!oldIds.contains(oldImage.getId()))
+                {
+                    imageService.delete(oldImage.getId());
+                }
+            }
+        }
+        else
+        {
+            for(ImageDTO oldImage : oldImages)
+            {
+                imageService.delete(oldImage.getId());
+            }
+        }
 
         EvaluateDTO result = evaluateService.save(evaluateDTO);
 

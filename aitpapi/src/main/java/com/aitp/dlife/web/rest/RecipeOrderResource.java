@@ -32,6 +32,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aitp.dlife.service.RecipeOrderService;
+import com.aitp.dlife.service.RecipeService;
+import com.aitp.dlife.service.dto.RecipeDTO;
 import com.aitp.dlife.service.dto.RecipeOrderDTO;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
@@ -98,25 +100,13 @@ public class RecipeOrderResource {
             recipeOrderDTO.setNickName(wechatUserDTO.getNickName());
         }
 
-        //set recipe message
-        if (recipeOrderDTO.getRecipeId() == null)
-        {
-            throw new BadRequestAlertException("The request must have the recipe id", ENTITY_NAME, "noRecipeId");
-        }
-        RecipeDTO recipeDTO = recipeService.findOne(recipeOrderDTO.getRecipeId());
-        if (recipeDTO == null)
-        {
-            throw new BadRequestAlertException("Can not get the recipeDTO by id:" + recipeOrderDTO.getRecipeId(), ENTITY_NAME, "noRecipe");
-        }
-        else
-        {
-            recipeOrderDTO.setPrice(recipeDTO.getPrice());
-            recipeOrderDTO.setRecipeTile(recipeDTO.getTitle());
-            recipeOrderDTO.setRecipeStartTime(recipeDTO.getStartTime());
+        //TODO 考虑抢购限量菜品，秒杀排队问题 暂考虑数量限制
+        RecipeDTO recipe = recipeService.findOne(recipeOrderDTO.getRecipeId());
+        List<RecipeOrderDTO> list_order =recipeOrderService.findAllByRecipeId(recipeOrderDTO.getRecipeId());
+        if(recipe.getNum()<=list_order.size()) {
+        	throw new BadRequestAlertException("recipe:"+recipe.getId() +"recipe num overflow", ENTITY_NAME, "recipenumoverflow");
         }
 
-
-        //TODO 考虑抢购限量菜品，秒杀排队问题
         RecipeOrderDTO result = recipeOrderService.save(recipeOrderDTO);
         return ResponseEntity.created(new URI("/api/recipe-orders/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

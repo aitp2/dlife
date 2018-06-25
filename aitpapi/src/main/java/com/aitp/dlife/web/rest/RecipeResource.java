@@ -19,6 +19,7 @@ import com.aitp.dlife.service.dto.WechatUserDTO;
 
 import io.github.jhipster.web.util.ResponseUtil;
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -30,7 +31,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -92,7 +93,7 @@ public class RecipeResource {
         {
             throw new BadRequestAlertException("The request must have the weChatUserId", ENTITY_NAME, "noWeChatUserId");
         }
-        WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(recipeDTO.getWechatUserId()));
+        WechatUserDTO wechatUserDTO = wechatUserService.findByOpenId(recipeDTO.getWechatUserId());
         if (wechatUserDTO == null)
         {
             throw new BadRequestAlertException("Can not get the weChatUser by id:" + recipeDTO.getWechatUserId(), ENTITY_NAME, "noWeChatUser");
@@ -118,6 +119,19 @@ public class RecipeResource {
         recipeDTO.setPublishVersion(Integer.valueOf(1));
 
         RecipeDTO result = recipeService.save(recipeDTO);
+
+        if (!CollectionUtils.isEmpty(recipeDTO.getImages()))
+        {
+            for(ImageDTO imageDTO : recipeDTO.getImages())
+            {
+                if (imageDTO != null && StringUtils.isNotEmpty(imageDTO.getOssPath()))
+                {
+                    imageDTO.setRecipeId(result.getId());
+                    imageDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
+                    imageService.save(imageDTO);
+                }
+            }
+        }
         return ResponseEntity.created(new URI("/api/recipes/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -164,6 +178,42 @@ public class RecipeResource {
         }
 
         //TODO we need to consider that if the recipe have been ordered, and then the cooker change the version.
+
+        //we need to compare the old image with the new image,
+        List<ImageDTO> oldImages = imageService.findImagesByRecipeId(recipeDTO.getId());
+        if (!CollectionUtils.isEmpty(recipeDTO.getImages()))
+        {
+
+            List<Long> oldIds = new ArrayList<>();
+
+            for(ImageDTO newImage : recipeDTO.getImages())
+            {
+                if(newImage.getId() == null)
+                {
+                    newImage.setCreateTime(DateUtil.getYMDDateString(new Date()));
+                    newImage.setRecipeId(recipeDTO.getId());
+                    imageService.save(newImage);
+                    continue;
+                }
+
+                oldIds.add(newImage.getId());
+            }
+
+            for(ImageDTO oldImage : oldImages)
+            {
+                if (!oldIds.contains(oldImage.getId()))
+                {
+                    imageService.delete(oldImage.getId());
+                }
+            }
+        }
+        else
+        {
+            for(ImageDTO oldImage : oldImages)
+            {
+                imageService.delete(oldImage.getId());
+            }
+        }
 
         RecipeDTO result = recipeService.save(recipeDTO);
         return ResponseEntity.ok()
@@ -236,9 +286,17 @@ public class RecipeResource {
     @Timed
     public ResponseEntity<RecipeDetailDTO> getRecipeDetail(@PathVariable Long id,
             @RequestParam(value = "currentUserId", required = true) String currentUserId) {
+
         log.debug("REST request to get RecipeDetailDTO : {}", id);
         RecipeDetailDTO recipeDetailDTO = new RecipeDetailDTO();
-        RecipeDTO recipeDTO = recipeService.findOne(id);
+        RecipeDTO recipeDTO = recipeService.findOne(id,currentUserId);
+
+//        if (recipeDTO != null)
+//        {
+//            recipeDTO.setHot(Integer.valueOf(recipeDTO.getHot() == null ? 1 : recipeDTO.getHot().intValue() + 1));
+//            recipeService.save(recipeDTO);
+//        }
+
         recipeDetailDTO.setRecipeDTO(recipeDTO);
         //use
         WechatUserDTO wechatUserDTO = wechatUserService.findByOpenId(recipeDTO.getWechatUserId());
