@@ -1,7 +1,9 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.domain.Attendee;
 import com.aitp.dlife.domain.PinfanPics;
 import com.aitp.dlife.service.PinfanPicsService;
+import com.aitp.dlife.service.dto.AttendeeDTO;
 import com.aitp.dlife.service.dto.PinfanPicsDTO;
 import com.aitp.dlife.service.mapper.PinfanPicsMapper;
 import com.aitp.dlife.web.rest.util.DateUtil;
@@ -124,8 +126,27 @@ public class PinFanActivityResource {
     public ResponseEntity<List<PinFanActivityDTO>> getAllPinFanActivitiesByUserId(Pageable pageable,@PathVariable String wechatUserId) {
         log.debug("REST request to get a page of PinFanActivities");
         Page<PinFanActivityDTO> page = pinFanActivityService.findAllByWechatUserId(pageable,wechatUserId);
+        final List<PinFanActivityDTO> content = page.getContent();
+        if(content!=null){
+            for(PinFanActivityDTO activityDTO:content){
+                activityDTO.setAttended(isAttend(wechatUserId,activityDTO.getAttendees()));
+            }
+
+        }
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/pin-fan-activities");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return new ResponseEntity<>(content, headers, HttpStatus.OK);
+    }
+    private boolean isAttend(String wechatUserId,Set<AttendeeDTO> dtos){
+        if(dtos==null||dtos.isEmpty()){
+            return false;
+        }
+        for(AttendeeDTO attendeeDTO:dtos) {
+            if (wechatUserId.equals(attendeeDTO.getWechatUserId())) {
+                return true;
+            }
+        }
+        return false;
     }
     @GetMapping("/pin-fan-activities/attended/{wechatUserId}")
     @Timed
@@ -148,7 +169,15 @@ public class PinFanActivityResource {
         PinFanActivityDTO pinFanActivityDTO = pinFanActivityService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(pinFanActivityDTO));
     }
-
+    @GetMapping("/pin-fan-activities/{id}/{wechatUserId}")
+    @Timed
+    public ResponseEntity<PinFanActivityDTO> getPinFanActivityAndIsAttend(@PathVariable Long id,@PathVariable String wechatUserId ) {
+        PinFanActivityDTO pinFanActivityDTO = pinFanActivityService.findOne(id);
+        if(pinFanActivityDTO != null){
+            pinFanActivityDTO.setAttended(isAttend(wechatUserId,pinFanActivityDTO.getAttendees()));
+        }
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(pinFanActivityDTO));
+    }
     /**
      * DELETE  /pin-fan-activities/:id : delete the "id" pinFanActivity.
      *

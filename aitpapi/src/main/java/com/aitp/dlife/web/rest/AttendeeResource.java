@@ -1,5 +1,8 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.service.PinFanActivityService;
+import com.aitp.dlife.service.dto.PinFanActivityDTO;
+import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.AttendeeService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -7,6 +10,7 @@ import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import com.aitp.dlife.service.dto.AttendeeDTO;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -20,6 +24,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,9 +40,11 @@ public class AttendeeResource {
     private static final String ENTITY_NAME = "attendee";
 
     private final AttendeeService attendeeService;
+    private final PinFanActivityService pinFanActivityService;
 
-    public AttendeeResource(AttendeeService attendeeService) {
+    public AttendeeResource(AttendeeService attendeeService,PinFanActivityService pinFanActivityService) {
         this.attendeeService = attendeeService;
+        this.pinFanActivityService=pinFanActivityService;
     }
 
     /**
@@ -49,15 +56,21 @@ public class AttendeeResource {
      */
     @PostMapping("/attendees")
     @Timed
-    public ResponseEntity<AttendeeDTO> createAttendee(@Valid @RequestBody AttendeeDTO attendeeDTO) throws URISyntaxException {
+    public ResponseEntity createAttendee(@Valid @RequestBody AttendeeDTO attendeeDTO) throws URISyntaxException {
         log.debug("REST request to save Attendee : {}", attendeeDTO);
         if (attendeeDTO.getId() != null) {
             throw new BadRequestAlertException("A new attendee cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        if(StringUtils.isEmpty(attendeeDTO.getParticipationTime())){
+            attendeeDTO.setParticipationTime(DateUtil.getYMDDateString(new Date()));
+        }
         AttendeeDTO result = attendeeService.save(attendeeDTO);
-        return ResponseEntity.created(new URI("/api/attendees/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        PinFanActivityDTO activityDTO = pinFanActivityService.findOne(attendeeDTO.getPinFanActivityId());
+
+        if(activityDTO.getAttendees()!=null && activityDTO.getUpperLimit()>=activityDTO.getAttendees().size()){
+            throw new BadRequestAlertException("活动人数已达上限", ENTITY_NAME, "活动人数已达上限");
+        }
+        return ResponseEntity.ok().body(result);
     }
 
     /**
