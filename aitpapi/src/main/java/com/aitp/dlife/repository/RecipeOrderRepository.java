@@ -17,11 +17,15 @@ import org.springframework.data.repository.query.Param;
 @SuppressWarnings("unused")
 @Repository
 public interface RecipeOrderRepository extends JpaRepository<RecipeOrder, Long> {
-	
+
 	Page<RecipeOrder> findAllByWechatUserId(Pageable pageable, String wechatUserId);
-	
+
 	@Query(value = "select recipeOrder from RecipeOrder recipeOrder "
-			+ "where recipeOrder.recipe.id =:recipeId",nativeQuery = false)
-	List<RecipeOrder> findAllByRecipeId( @Param("recipeId") Long recipeId);
-	
+        + "where recipeOrder.recipe.id =:recipeId",nativeQuery = false)
+    List<RecipeOrder> findAllByRecipeId( @Param("recipeId") Long recipeId);
+
+    @Query(value = "select recipeOrder from RecipeOrder recipeOrder "
+        + "where recipeOrder.recipe.id =:recipeId and recipeOrder.recipeVersion =:version",nativeQuery = false)
+    List<RecipeOrder> findAllByRecipeIdAndVersion( @Param("recipeId") Long recipeId,@Param("version") Integer version);
+
 }

@@ -30,7 +30,7 @@ public interface ClockInRepository extends JpaRepository<ClockIn, Long> {
 			+ "  activity_participation.wechat_user_id =:wechatUserId "
 			+ " and DATE_FORMAT(clock_in.punch_date_time,'%Y-%m') =:yearMonth"
 			,nativeQuery = true)
-	List<String> findClockinsDateByWechatUserIdAndMonth(@Param("wechatUserId")Long wechatUserId,@Param("yearMonth")String yearMonth);
+	List<String> findClockinsDateByWechatUserIdAndMonth(@Param("wechatUserId")String wechatUserId,@Param("yearMonth")String yearMonth);
 
 	@Query(value = "SELECT * FROM clock_in "
 			+ " LEFT JOIN activity_participation "
@@ -39,7 +39,7 @@ public interface ClockInRepository extends JpaRepository<ClockIn, Long> {
 			+ "  activity_participation.wechat_user_id =:wechatUserId "
 			+ " and DATE_FORMAT(clock_in.punch_date_time,'%Y-%m-%d') =:yearMonthDate"
 			,nativeQuery = true)
-	List<ClockIn> getClockinsByWechatUserIdAndDate(@Param("wechatUserId")Long wechatUserId,@Param("yearMonthDate")String yearMonthDate);
+	List<ClockIn> getClockinsByWechatUserIdAndDate(@Param("wechatUserId")String wechatUserId,@Param("yearMonthDate")String yearMonthDate);
 
 	
 }

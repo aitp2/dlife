@@ -5,6 +5,7 @@ import com.aitp.dlife.AitpapiApp;
 import com.aitp.dlife.domain.Follow;
 import com.aitp.dlife.repository.FollowRepository;
 import com.aitp.dlife.service.FollowService;
+import com.aitp.dlife.service.WechatUserService;
 import com.aitp.dlife.service.dto.FollowDTO;
 import com.aitp.dlife.service.mapper.FollowMapper;
 import com.aitp.dlife.web.rest.errors.ExceptionTranslator;
@@ -77,6 +78,9 @@ public class FollowResourceIntTest {
     private FollowService followService;
 
     @Autowired
+    private WechatUserService wechatUserService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -95,7 +99,7 @@ public class FollowResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final FollowResource followResource = new FollowResource(followService);
+        final FollowResource followResource = new FollowResource(followService,wechatUserService);
         this.restFollowMockMvc = MockMvcBuilders.standaloneSetup(followResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

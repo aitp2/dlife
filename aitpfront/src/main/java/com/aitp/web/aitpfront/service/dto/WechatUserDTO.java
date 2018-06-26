@@ -9,6 +9,10 @@ public class WechatUserDTO {
      */
     private String openId;
     /**
+     * User id
+     */
+    private String userId;
+    /**
      * 用户昵称
      */
     private String userName;
@@ -111,5 +115,13 @@ public class WechatUserDTO {
 
     public void setUnionid(String unionid) {
         this.unionid = unionid;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

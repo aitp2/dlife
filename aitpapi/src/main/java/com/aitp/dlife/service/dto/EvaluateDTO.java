@@ -31,17 +31,17 @@ public class EvaluateDTO implements Serializable {
 
     private Long recipeOrderId;
 
-    private List<String> listImageURL;
+    private Set<ImageDTO> images = new HashSet<>();
 
-    public List<String> getListImageURL() {
-		return listImageURL;
-	}
+    public Set<ImageDTO> getImages() {
+        return images;
+    }
 
-	public void setListImageURL(List<String> listImageURL) {
-		this.listImageURL = listImageURL;
-	}
+    public void setImages(Set<ImageDTO> images) {
+        this.images = images;
+    }
 
-	public Long getId() {
+    public Long getId() {
         return id;
     }
 

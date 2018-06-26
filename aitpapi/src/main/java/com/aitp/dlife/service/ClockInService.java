@@ -91,12 +91,12 @@ public class ClockInService {
 	            .collect(Collectors.toCollection(LinkedList::new));
 	}
 	
-	public List<String> getClockinsDateByWechatUserIdAndMonth(Long wechatUserId,String yearMonth) {
+	public List<String> getClockinsDateByWechatUserIdAndMonth(String wechatUserId,String yearMonth) {
 		
 		return clockInRepository.findClockinsDateByWechatUserIdAndMonth(wechatUserId,yearMonth);
 	}
 
-	public List<ClockInDTO> getClockinsByWechatUserIdAndDate(Long wechatUserId, String yearMonthDate) {
+	public List<ClockInDTO> getClockinsByWechatUserIdAndDate(String wechatUserId, String yearMonthDate) {
 		return clockInRepository.getClockinsByWechatUserIdAndDate(wechatUserId,yearMonthDate).stream()
 	            .map(clockInMapper::toDto)
 	            .collect(Collectors.toCollection(LinkedList::new));

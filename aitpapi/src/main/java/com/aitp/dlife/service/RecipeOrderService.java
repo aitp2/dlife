@@ -122,4 +122,16 @@ public class RecipeOrderService {
     	}
     	return list;
     }
+
+    /**
+     * find all the recipe orders by id and version
+     * @param recipeId
+     * @param version
+     * @return the recipe orders
+     */
+    public List<RecipeOrder> findAllByRecipedIdAndVersion(Long recipeId, Integer version)
+    {
+        List<RecipeOrder> list_RecipeOrder = recipeOrderRepository.findAllByRecipeIdAndVersion(recipeId,version);
+        return list_RecipeOrder;
+    }
 }
