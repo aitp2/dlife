@@ -20,4 +20,9 @@ public interface ActivityParticipationRepository extends JpaRepository<ActivityP
 	@Query(value = "select activityParticipation from ActivityParticipation activityParticipation "
 			+ "where activityParticipation.activity.id =:activityId",nativeQuery = false)
 	List<ActivityParticipation> findByActivityId(@Param("activityId") Long activityId);
+
+    @Query(value = "select activityParticipation from ActivityParticipation activityParticipation "
+        + "where activityParticipation.activity.id =:activityId and activityParticipation.wechatUserId =:wechatUserId",nativeQuery = false)
+    ActivityParticipation findByUidAndActivityId(@Param("activityId") Long activityId,@Param("wechatUserId") String wechatUserId);
+
 }

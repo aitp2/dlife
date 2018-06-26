@@ -30,8 +30,10 @@ public class ActivityParticipationDTO implements Serializable {
     private String participationTime;
 
     private Long activityId;
-    
+
     private Integer clockinCount;
+
+    private Integer attendStatus;
 
     public Long getId() {
         return id;
@@ -89,7 +91,7 @@ public class ActivityParticipationDTO implements Serializable {
     public void setActivityId(Long fitnessActivityId) {
         this.activityId = fitnessActivityId;
     }
-    
+
 
     public Integer getClockinCount() {
 		return clockinCount;
@@ -99,7 +101,15 @@ public class ActivityParticipationDTO implements Serializable {
 		this.clockinCount = clockinCount;
 	}
 
-	@Override
+    public Integer getAttendStatus() {
+        return attendStatus;
+    }
+
+    public void setAttendStatus(Integer attendStatus) {
+        this.attendStatus = attendStatus;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
