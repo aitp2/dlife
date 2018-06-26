@@ -1,5 +1,8 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.domain.FitnessActivity;
+import com.aitp.dlife.service.FitnessActivityService;
+import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.ActivityParticipationService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -37,6 +40,8 @@ public class ActivityParticipationResource {
     private static final String ENTITY_NAME = "activityParticipation";
 
     private final ActivityParticipationService activityParticipationService;
+
+    private final FitnessActivityService fitnessActivityService;
 
     public ActivityParticipationResource(ActivityParticipationService activityParticipationService) {
         this.activityParticipationService = activityParticipationService;
@@ -126,8 +131,8 @@ public class ActivityParticipationResource {
         activityParticipationService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-    
-    
+
+
     @GetMapping("/activity-participations/getParticipationsByActivityId")
     @Timed
     public List<ActivityParticipationDTO>  getParticipationsByActivityId(Long activityId) {
@@ -140,5 +145,30 @@ public class ActivityParticipationResource {
         result.sort((b1, b2) -> b1.getClockinCount() > b2.getClockinCount() ?  -1 : 1);
         return result;
     }
-    
+
+
+    @PostMapping("/activity-participations/{wechatUserId}")
+    @Timed
+    public ResponseEntity<ActivityParticipationDTO> createActivityParticipations(@Valid @RequestBody ActivityParticipationDTO activityParticipationDTO,@PathVariable String wechatUserId) throws URISyntaxException {
+        log.debug("REST request to save ActivityParticipation : {}", activityParticipationDTO);
+        if (activityParticipationDTO.getId() != null) {
+            throw new BadRequestAlertException("A new activityParticipation cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        List<FitnessActivityDTO> fitnessActivityDTOS = fitnessActivityService.getActivitiesByWechatUserId(wechatUserId);
+        List<Long> activityIds = null;
+        for (FitnessActivityDTO fitnessActivityDTO:fitnessActivityDTOS){
+            activityIds.add(fitnessActivityDTO.getId());
+        }
+        if (activityIds.contains(activityParticipationDTO.getActivityId())){
+            activityParticipationDTO.setAttendStatus(1);
+        }else
+        {
+            activityParticipationDTO.setAttendStatus(0);
+        }
+        ActivityParticipationDTO result = activityParticipationService.save(activityParticipationDTO);
+        return ResponseEntity.created(new URI("/api/activity-participations/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
 }
