@@ -68,7 +68,7 @@ public class FollowResource {
         {
             throw new BadRequestAlertException("The request must have the follow user id", ENTITY_NAME, "noFollowUserId");
         }
-        WechatUserDTO followUserDTO = wechatUserService.findByOpenId(followDTO.getFollowUserId());
+        WechatUserDTO followUserDTO = wechatUserService.findOne(Long.valueOf(followDTO.getFollowUserId()));
         if (followUserDTO == null)
         {
             throw new BadRequestAlertException("Can not get the wehcatUser by user id:" + followDTO.getFollowUserId(), ENTITY_NAME, "noFollowUser");
@@ -84,7 +84,7 @@ public class FollowResource {
         {
             throw new BadRequestAlertException("The request must have the followed user id", ENTITY_NAME, "noFollowedUserId");
         }
-        WechatUserDTO followedUserDTO = wechatUserService.findByOpenId(followDTO.getFollowedUserId());
+        WechatUserDTO followedUserDTO = wechatUserService.findOne(Long.valueOf(followDTO.getFollowedUserId()));
         if (followedUserDTO == null)
         {
             throw new BadRequestAlertException("Can not get the wehcatUser by user id:" + followDTO.getFollowUserId(), ENTITY_NAME, "noFollowUser");

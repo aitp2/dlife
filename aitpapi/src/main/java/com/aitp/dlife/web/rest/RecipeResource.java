@@ -93,7 +93,7 @@ public class RecipeResource {
         {
             throw new BadRequestAlertException("The request must have the weChatUserId", ENTITY_NAME, "noWeChatUserId");
         }
-        WechatUserDTO wechatUserDTO = wechatUserService.findByOpenId(recipeDTO.getWechatUserId());
+        WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(recipeDTO.getWechatUserId()));
         if (wechatUserDTO == null)
         {
             throw new BadRequestAlertException("Can not get the weChatUser by id:" + recipeDTO.getWechatUserId(), ENTITY_NAME, "noWeChatUser");
@@ -248,16 +248,16 @@ public class RecipeResource {
      * GET  /recipes : get all the recipes.
      *
      * @param pageable the pagination information
-     * @param currentUserId the currentUserId
+     * @param wechatUserId the currentUserId
      * @return the ResponseEntity with status 200 (OK) and the list of recipes in body
      */
     @GetMapping("/recipes")
     @Timed
     public ResponseEntity<List<RecipeDTO>> getAllRecipes(Pageable pageable,
-             @RequestParam(value = "currentUserId", required = true) String currentUserId) {
+             @RequestParam(value = "wechatUserId", required = true) String wechatUserId) {
         log.debug("REST request to get a page of Recipes");
         Page<RecipeDTO> page = null;
-        page = recipeService.findAll(pageable, currentUserId);
+        page = recipeService.findAll(pageable, wechatUserId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/recipes");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -277,19 +277,20 @@ public class RecipeResource {
     }
 
     /**
-     * GET  /recipes/:id : get the "id" recipe.
+     * GET  /recipes/:recipeId : get the "recipeId" recipe.
      *
-     * @param id the id of the recipeDTO to retrieve
+     * @param recipeId the id of the recipeDTO to retrieve
+     * @param wechatUserId the wechatUserId of the recipeDTO to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the recipeDTO, or with status 404 (Not Found)
      */
-    @GetMapping("/recipedetails/{id}")
+    @GetMapping("/recipedetails/{recipeId}")
     @Timed
-    public ResponseEntity<RecipeDetailDTO> getRecipeDetail(@PathVariable Long id,
-            @RequestParam(value = "currentUserId", required = true) String currentUserId) {
+    public ResponseEntity<RecipeDetailDTO> getRecipeDetail(@PathVariable Long recipeId,
+            @RequestParam(value = "wechatUserId", required = true) String wechatUserId) {
 
-        log.debug("REST request to get RecipeDetailDTO : {}", id);
+        log.debug("REST request to get RecipeDetailDTO : {}", recipeId);
         RecipeDetailDTO recipeDetailDTO = new RecipeDetailDTO();
-        RecipeDTO recipeDTO = recipeService.findOne(id,currentUserId);
+        RecipeDTO recipeDTO = recipeService.findOne(recipeId,wechatUserId);
 
 //        if (recipeDTO != null)
 //        {
@@ -299,7 +300,7 @@ public class RecipeResource {
 
         recipeDetailDTO.setRecipeDTO(recipeDTO);
         //use
-        WechatUserDTO wechatUserDTO = wechatUserService.findByOpenId(recipeDTO.getWechatUserId());
+        WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(recipeDTO.getWechatUserId()));
         recipeDetailDTO.setWechatUserDTO(wechatUserDTO);
         //orders
         List<RecipeOrderDTO>  list_RecipeOrderDTO = recipeOrderService.findAllByRecipeId(recipeDTO.getId());

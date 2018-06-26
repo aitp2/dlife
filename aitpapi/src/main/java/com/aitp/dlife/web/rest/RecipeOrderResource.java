@@ -89,7 +89,7 @@ public class RecipeOrderResource {
         {
             throw new BadRequestAlertException("The request must have the wechatUserId", ENTITY_NAME, "noWechatUserId");
         }
-        WechatUserDTO wechatUserDTO = wechatUserService.findByOpenId(recipeOrderDTO.getWechatUserId());
+        WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(recipeOrderDTO.getWechatUserId()));
         if (wechatUserDTO == null)
         {
             throw new BadRequestAlertException("Can not get the wehcatUser by user id:" + recipeOrderDTO.getWechatUserId(), ENTITY_NAME, "noFollowUser");
@@ -100,8 +100,15 @@ public class RecipeOrderResource {
             recipeOrderDTO.setNickName(wechatUserDTO.getNickName());
         }
 
-        //TODO 考虑抢购限量菜品，秒杀排队问题 暂考虑数量限制
+        //set recipe message
+        if (recipeOrderDTO.getRecipeId() == null)
+        {
+            throw new BadRequestAlertException("The request must have the recipeId", ENTITY_NAME, "noRecipeId");
+        }
         RecipeDTO recipe = recipeService.findOne(recipeOrderDTO.getRecipeId());
+        recipeOrderDTO.setPrice(recipe.getPrice());
+
+        //TODO 考虑抢购限量菜品，秒杀排队问题 暂考虑数量限制
         List<RecipeOrderDTO> list_order =recipeOrderService.findAllByRecipeId(recipeOrderDTO.getRecipeId());
         if(recipe.getNum()<=list_order.size()) {
         	throw new BadRequestAlertException("recipe:"+recipe.getId() +"recipe num overflow", ENTITY_NAME, "recipenumoverflow");
