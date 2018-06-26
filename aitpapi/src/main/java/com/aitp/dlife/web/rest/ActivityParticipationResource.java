@@ -43,8 +43,9 @@ public class ActivityParticipationResource {
 
     private final FitnessActivityService fitnessActivityService;
 
-    public ActivityParticipationResource(ActivityParticipationService activityParticipationService) {
+    public ActivityParticipationResource(ActivityParticipationService activityParticipationService,FitnessActivityService fitnessActivityService) {
         this.activityParticipationService = activityParticipationService;
+        this.fitnessActivityService = fitnessActivityService;
     }
 
     /**
