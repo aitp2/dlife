@@ -93,6 +93,11 @@ public class RecipeResource {
         {
             throw new BadRequestAlertException("The request must have the weChatUserId", ENTITY_NAME, "noWeChatUserId");
         }
+        try {
+            Long.valueOf(recipeDTO.getWechatUserId());
+        } catch (NumberFormatException e) {
+            throw new BadRequestAlertException("The request wechat user id must be number type", ENTITY_NAME, "notNumberType");
+        }
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(recipeDTO.getWechatUserId()));
         if (wechatUserDTO == null)
         {
@@ -299,7 +304,14 @@ public class RecipeResource {
 //        }
 
         recipeDetailDTO.setRecipeDTO(recipeDTO);
-        //use
+
+        //user
+        try {
+            Long.valueOf(recipeDTO.getWechatUserId());
+        } catch (NumberFormatException e) {
+            throw new BadRequestAlertException("The request wechat user id must be number type", ENTITY_NAME, "notNumberType");
+        }
+
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(recipeDTO.getWechatUserId()));
         recipeDetailDTO.setWechatUserDTO(wechatUserDTO);
         //orders

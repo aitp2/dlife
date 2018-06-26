@@ -89,6 +89,11 @@ public class RecipeOrderResource {
         {
             throw new BadRequestAlertException("The request must have the wechatUserId", ENTITY_NAME, "noWechatUserId");
         }
+        try {
+            Long.valueOf(recipeOrderDTO.getWechatUserId());
+        } catch (NumberFormatException e) {
+            throw new BadRequestAlertException("The request wechat user id must be number type", ENTITY_NAME, "notNumberType");
+        }
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(recipeOrderDTO.getWechatUserId()));
         if (wechatUserDTO == null)
         {

@@ -68,6 +68,11 @@ public class FollowResource {
         {
             throw new BadRequestAlertException("The request must have the follow user id", ENTITY_NAME, "noFollowUserId");
         }
+        try {
+            Long.valueOf(followDTO.getFollowUserId());
+        } catch (NumberFormatException e) {
+            throw new BadRequestAlertException("The request wechat user id must be number type", ENTITY_NAME, "notNumberType");
+        }
         WechatUserDTO followUserDTO = wechatUserService.findOne(Long.valueOf(followDTO.getFollowUserId()));
         if (followUserDTO == null)
         {
@@ -83,6 +88,11 @@ public class FollowResource {
         if (StringUtils.isEmpty(followDTO.getFollowedUserId()))
         {
             throw new BadRequestAlertException("The request must have the followed user id", ENTITY_NAME, "noFollowedUserId");
+        }
+        try {
+            Long.valueOf(followDTO.getFollowedUserId());
+        } catch (NumberFormatException e) {
+            throw new BadRequestAlertException("The request wechat user id must be number type", ENTITY_NAME, "notNumberType");
         }
         WechatUserDTO followedUserDTO = wechatUserService.findOne(Long.valueOf(followDTO.getFollowedUserId()));
         if (followedUserDTO == null)
