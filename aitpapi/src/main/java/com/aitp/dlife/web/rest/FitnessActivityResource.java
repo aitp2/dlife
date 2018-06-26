@@ -80,9 +80,7 @@ public class FitnessActivityResource {
 
 		if (fitnessActivityDTO.getImages() != null && !fitnessActivityDTO.getImages().isEmpty()){
         	for(PicsDTO pics : fitnessActivityDTO.getImages()){
-        		 if(!StringUtils.isEmpty(pics.getCreateTime())){
                      pics.setCreateTime(DateUtil.getYMDDateString(new Date()));
-                 }
         		 pics.setFitnessActivityId(result.getId());
         		 imagesDTO.add(picsService.save(pics));
         	}
@@ -142,10 +140,10 @@ public class FitnessActivityResource {
         log.debug("REST request to get FitnessActivity : {}", id);
         FitnessActivityDTO fitnessActivityDTO = fitnessActivityService.findOne(id);
         if (fitnessActivityService.isActivityActive(fitnessActivityDTO)){
-            fitnessActivityDTO.setActive(true);
+            fitnessActivityDTO.setStatus(1);
         }else
         {
-            fitnessActivityDTO.setActive(false);
+            fitnessActivityDTO.setStatus(0);
         }
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(fitnessActivityDTO));
     }
@@ -173,4 +171,6 @@ public class FitnessActivityResource {
         }
         return fitnessActivityService.getActivitiesByWechatUserId(wechatUserId);
     }
+
+
 }

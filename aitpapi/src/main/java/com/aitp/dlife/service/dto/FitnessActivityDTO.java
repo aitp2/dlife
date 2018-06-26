@@ -49,7 +49,7 @@ public class FitnessActivityDTO implements Serializable {
 
     private Integer attendCount;
 
-    private Boolean isActive;
+    private Integer status;
 
     private Set<PicsDTO> images = new HashSet<>();
 
@@ -167,12 +167,12 @@ public class FitnessActivityDTO implements Serializable {
 		this.images = images;
 	}
 
-    public Boolean getActive() {
-        return isActive;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setActive(Boolean active) {
-        isActive = active;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     @Override

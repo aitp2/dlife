@@ -1,8 +1,7 @@
 package com.aitp.dlife.web.rest;
 
-import com.aitp.dlife.domain.FitnessActivity;
-import com.aitp.dlife.service.FitnessActivityService;
-import com.aitp.dlife.service.dto.FitnessActivityDTO;
+
+import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.ActivityParticipationService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -25,6 +24,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,11 +41,9 @@ public class ActivityParticipationResource {
 
     private final ActivityParticipationService activityParticipationService;
 
-    private final FitnessActivityService fitnessActivityService;
 
-    public ActivityParticipationResource(ActivityParticipationService activityParticipationService,FitnessActivityService fitnessActivityService) {
+    public ActivityParticipationResource(ActivityParticipationService activityParticipationService) {
         this.activityParticipationService = activityParticipationService;
-        this.fitnessActivityService = fitnessActivityService;
     }
 
     /**
@@ -62,6 +60,8 @@ public class ActivityParticipationResource {
         if (activityParticipationDTO.getId() != null) {
             throw new BadRequestAlertException("A new activityParticipation cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        activityParticipationDTO.setParticipationTime(DateUtil.getYMDDateString(new Date()));
+
         ActivityParticipationDTO result = activityParticipationService.save(activityParticipationDTO);
         return ResponseEntity.created(new URI("/api/activity-participations/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -148,28 +148,16 @@ public class ActivityParticipationResource {
     }
 
 
-    @PostMapping("/activity-participations/{wechatUserId}")
+
+    @GetMapping("/activity-participations/{wechatUserId}/{activityId}")
     @Timed
-    public ResponseEntity<ActivityParticipationDTO> createActivityParticipations(@Valid @RequestBody ActivityParticipationDTO activityParticipationDTO,@PathVariable String wechatUserId) throws URISyntaxException {
-        log.debug("REST request to save ActivityParticipation : {}", activityParticipationDTO);
-        if (activityParticipationDTO.getId() != null) {
-            throw new BadRequestAlertException("A new activityParticipation cannot already have an ID", ENTITY_NAME, "idexists");
+    public ResponseEntity<ActivityParticipationDTO> getSignUpInfo(@PathVariable String wechatUserId,@PathVariable Long activityId) {
+        log.debug("REST request to get ClockinSummary by wechatUserId: {}", wechatUserId);
+        if (wechatUserId == null||activityId == null) {
+            throw new BadRequestAlertException("wechatUserId or activityId can not be null", ENTITY_NAME, "idexists");
         }
-        List<FitnessActivityDTO> fitnessActivityDTOS = fitnessActivityService.getActivitiesByWechatUserId(wechatUserId);
-        List<Long> activityIds = null;
-        for (FitnessActivityDTO fitnessActivityDTO:fitnessActivityDTOS){
-            activityIds.add(fitnessActivityDTO.getId());
-        }
-        if (activityIds.contains(activityParticipationDTO.getActivityId())){
-            activityParticipationDTO.setAttendStatus(1);
-        }else
-        {
-            activityParticipationDTO.setAttendStatus(0);
-        }
-        ActivityParticipationDTO result = activityParticipationService.save(activityParticipationDTO);
-        return ResponseEntity.created(new URI("/api/activity-participations/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        ActivityParticipationDTO result = activityParticipationService.getByUidAndActivityId(activityId,wechatUserId);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
     }
 
 }
