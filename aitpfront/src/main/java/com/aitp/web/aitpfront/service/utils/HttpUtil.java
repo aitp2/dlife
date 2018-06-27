@@ -11,11 +11,15 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * http 工具类
  */
 public class HttpUtil {
+    static final Logger LOGGER = LoggerFactory.getLogger(HttpUtil.class);
+
     public static String doGetJson(String urlStr){
         String result="";
         HttpClient client = HttpClients.createDefault();
@@ -36,6 +40,7 @@ public class HttpUtil {
     }
 
     public static String doPostJson(String urlStr,JSONObject jsonObject){
+        LOGGER.info("-------------do post json data: url>>{} data>>>{}",urlStr,jsonObject.toJSONString());
         String respContent = null;
         try {
             HttpClient client = HttpClients.createDefault();
@@ -45,10 +50,13 @@ public class HttpUtil {
             entity.setContentType("application/json");
             httpPost.setEntity(entity);
             HttpResponse resp = client.execute(httpPost);
+            LOGGER.info("Status Code:{}",resp.getStatusLine().getStatusCode());
             if(resp.getStatusLine().getStatusCode() == 201) {
                 HttpEntity resultData = resp.getEntity();
                 respContent = EntityUtils.toString(resultData,"UTF-8");
             }
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,12 +64,12 @@ public class HttpUtil {
     }
 
     public static void main(String[] args) {
-        String urlStr = "http://localhost:9060/api/wechat-users";
+        String urlStr = "https://a5api.aitpgroup.tech/api/wechat-users";
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("avatar","http://thirdwx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/46");
-        jsonObject.put("openId","66677788888");
-        jsonObject.put("nickName","Tom");
-        jsonObject.put("sex",true);
+        jsonObject.put("openId","88888888899");
+        jsonObject.put("nickName","Jerry");
+     // jsonObject.put("sex",true);
         String resultData = HttpUtil.doPostJson(urlStr,jsonObject);
         System.out.println(resultData);
     }

@@ -63,11 +63,18 @@ public class WeChatUser {
                         wechatUserDTO.setProvince(user.getString("province"));
 
                         JSONObject userData = userService.getUserByOpenid(restApiPath, wechatUserDTO.getOpenId());
+                        logger.info("getUserByOpenid: " + userData);
                         if(userData==null){//如果用户信息为空，则创建用户信息到数据库
+                            logger.info("----------Create wechate user---------");
+                            logger.info("restApiPath:{}",restApiPath);
                             JSONObject resultData = userService.createUser(restApiPath,wechatUserDTO);
+                            logger.info("Save user result:{}", resultData);
                             if(resultData!=null){
+                                logger.info(resultData.toJSONString());
                                 wechatUserDTO.setUserId(resultData.getString("id"));
                             }
+                        }else{
+                            wechatUserDTO.setUserId(userData.getString("id"));
                         }
 
                     }
