@@ -113,7 +113,7 @@ public class PinFanActivityResource {
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of pinFanActivities in body
      */
-    @GetMapping("/pin-fan-activities")
+    @GetMapping("/pin-fan-activities/user/{wechatUserId}")
     @Timed
     public ResponseEntity<List<PinFanActivityDTO>> getAllPinFanActivities(Pageable pageable,@PathVariable String wechatUserId) {
         log.debug("REST request to get a page of PinFanActivities");
