@@ -148,16 +148,18 @@ public class ActivityParticipationResource {
     }
 
 
-
-    @GetMapping("/activity-participations/{wechatUserId}/{activityId}")
+	
+	@GetMapping("/activity-participations/getParticipationsByWechatUserIdAndActivityId")
     @Timed
-    public ResponseEntity<ActivityParticipationDTO> getSignUpInfo(@PathVariable String wechatUserId,@PathVariable Long activityId) {
-        log.debug("REST request to get ClockinSummary by wechatUserId: {}", wechatUserId);
+    public ActivityParticipationDTO getSignUpInfo(String wechatUserId,Long activityId) {
+        log.debug("REST request to get ActivityParticipation by wechatUserId: {}", wechatUserId);
         if (wechatUserId == null||activityId == null) {
             throw new BadRequestAlertException("wechatUserId or activityId can not be null", ENTITY_NAME, "idexists");
         }
         ActivityParticipationDTO result = activityParticipationService.getByUidAndActivityId(activityId,wechatUserId);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
+        return result;
     }
+	
+	
 
 }
