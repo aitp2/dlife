@@ -111,7 +111,17 @@ public class RecipeOrderResource {
             throw new BadRequestAlertException("The request must have the recipeId", ENTITY_NAME, "noRecipeId");
         }
         RecipeDTO recipe = recipeService.findOne(recipeOrderDTO.getRecipeId());
+        if (recipe == null)
+        {
+            throw new BadRequestAlertException("Can not get the recipe by recipeId:" + recipeOrderDTO.getRecipeId(), ENTITY_NAME, "noRecipe");
+        }
         recipeOrderDTO.setPrice(recipe.getPrice());
+        if (recipeOrderDTO.getRecipeVersion() == null)
+        {
+            recipeOrderDTO.setRecipeVersion(recipe.getPublishVersion());
+        }
+        recipeOrderDTO.setRecipeStartTime(recipe.getStartTime());
+        recipeOrderDTO.setRecipeTile(recipe.getTitle());
 
         //TODO 考虑抢购限量菜品，秒杀排队问题 暂考虑数量限制
         List<RecipeOrderDTO> list_order =recipeOrderService.findAllByRecipeId(recipeOrderDTO.getRecipeId());
