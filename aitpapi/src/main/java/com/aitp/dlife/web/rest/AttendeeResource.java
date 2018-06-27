@@ -67,7 +67,7 @@ public class AttendeeResource {
         AttendeeDTO result = attendeeService.save(attendeeDTO);
         PinFanActivityDTO activityDTO = pinFanActivityService.findOne(attendeeDTO.getPinFanActivityId());
 
-        if(activityDTO.getAttendees()!=null && activityDTO.getUpperLimit()>=activityDTO.getAttendees().size()){
+        if(activityDTO.getAttendees()!=null && activityDTO.getUpperLimit() != null && activityDTO.getAttendees().size()>=activityDTO.getUpperLimit()){
             throw new BadRequestAlertException("活动人数已达上限", ENTITY_NAME, "活动人数已达上限");
         }
         return ResponseEntity.ok().body(result);
