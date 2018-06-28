@@ -94,15 +94,20 @@ public class FitnessActivityService {
 	}
 
 
-	public Boolean isActivityActive(FitnessActivityDTO fitnessActivityDTO){
+	public void ActivityStatus(FitnessActivityDTO fitnessActivityDTO){
         Instant now = Instant.now();
         FitnessActivity fitnessActivity = fitnessActivityMapper.toEntity(fitnessActivityDTO);
         if (null !=fitnessActivity) {
             if (fitnessActivity.getActivityStartTime().isBefore(now) && fitnessActivity.getActivityEndTime().isAfter(now)) {
-                return true;
+                fitnessActivityDTO.setStatus(1);
+            }
+            else if (fitnessActivity.getActivityEndTime().isBefore(now)){
+                fitnessActivityDTO.setStatus(2);
+            }else
+            {
+                fitnessActivityDTO.setStatus(0);
             }
         }
-        return false;
     }
 
 
