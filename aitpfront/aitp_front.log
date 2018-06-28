@@ -1,119 +1,14 @@
-2018-06-27 00:37:31.859  INFO 5976 --- [main] c.a.w.a.AitpfrontApplicationTests        : Starting AitpfrontApplicationTests on CDC311182 with PID 5976 (started by l.mao in D:\A5\Workspace\dlife\aitpfront)
-2018-06-27 00:37:31.877  INFO 5976 --- [main] c.a.w.a.AitpfrontApplicationTests        : No active profile set, falling back to default profiles: default
-2018-06-27 00:37:31.952  INFO 5976 --- [main] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@26abb146: startup date [Wed Jun 27 00:37:31 CST 2018]; root of context hierarchy
-2018-06-27 00:37:35.101  INFO 5976 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2018-06-27 00:37:35.620  INFO 5976 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.web.context.support.GenericWebApplicationContext@26abb146: startup date [Wed Jun 27 00:37:31 CST 2018]; root of context hierarchy
-2018-06-27 00:37:35.811  INFO 5976 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/home.html]}" onto public java.lang.String com.aitp.web.aitpfront.controller.LoginDemo.toLogin(java.lang.String,java.lang.String,com.aitp.web.aitpfront.service.beans.Code)
-2018-06-27 00:37:35.813  INFO 5976 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/login.html]}" onto public java.lang.String com.aitp.web.aitpfront.controller.LoginDemo.toLogin()
-2018-06-27 00:37:35.816  INFO 5976 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/wechat_user.html]}" onto public com.aitp.web.aitpfront.service.dto.WechatUserDTO com.aitp.web.aitpfront.controller.WeChatUser.toAccept(java.lang.String,java.lang.String)
-2018-06-27 00:37:35.833  INFO 5976 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
-2018-06-27 00:37:35.847  INFO 5976 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
-2018-06-27 00:37:35.959  INFO 5976 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2018-06-27 00:37:35.960  INFO 5976 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2018-06-27 00:37:37.019  INFO 5976 --- [main] c.a.w.a.AitpfrontApplicationTests        : Started AitpfrontApplicationTests in 5.983 seconds (JVM running for 8.083)
-2018-06-27 00:37:37.758  INFO 5976 --- [Thread-2] o.s.w.c.s.GenericWebApplicationContext   : Closing org.springframework.web.context.support.GenericWebApplicationContext@26abb146: startup date [Wed Jun 27 00:37:31 CST 2018]; root of context hierarchy
-2018-06-27 00:58:54.199  INFO 19412 --- [main] c.a.web.aitpfront.AitpfrontApplication   : Starting AitpfrontApplication on CDC311182 with PID 19412 (D:\A5\Workspace\dlife\aitpfront\target\classes started by l.mao in D:\A5\Workspace\dlife\aitpfront)
-2018-06-27 00:58:54.217  INFO 19412 --- [main] c.a.web.aitpfront.AitpfrontApplication   : No active profile set, falling back to default profiles: default
-2018-06-27 00:58:54.367  INFO 19412 --- [main] ConfigServletWebServerApplicationContext : Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@7c0c77c7: startup date [Wed Jun 27 00:58:54 CST 2018]; root of context hierarchy
-2018-06-27 00:58:55.790  INFO 19412 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 80 (http)
-2018-06-27 00:58:55.816  INFO 19412 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2018-06-27 00:58:55.816  INFO 19412 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.31
-2018-06-27 00:58:55.822  INFO 19412 --- [localhost-startStop-1] o.a.catalina.core.AprLifecycleListener   : The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk1.8.0_171\bin;C:\windows\Sun\Java\bin;C:\windows\system32;C:\windows;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\TortoiseGit\bin;C:\Program Files\nodejs\;C:\Program Files (x86)\Yarn\bin\;C:\Users\l.mao\AppData\Local\Microsoft\WindowsApps;C:\Users\l.mao\AppData\Local\Programs\Git\cmd;C:\Users\l.mao\AppData\Roaming\npm;C:\Users\l.mao\AppData\Local\Yarn\bin;D:\MyOffice\Tools\apache-maven-3.5.3\bin;;.]
-2018-06-27 00:58:55.965  INFO 19412 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2018-06-27 00:58:55.966  INFO 19412 --- [localhost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1599 ms
-2018-06-27 00:58:56.198  INFO 19412 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Servlet dispatcherServlet mapped to [/]
-2018-06-27 00:58:56.202  INFO 19412 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
-2018-06-27 00:58:56.203  INFO 19412 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
-2018-06-27 00:58:56.203  INFO 19412 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
-2018-06-27 00:58:56.203  INFO 19412 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
-2018-06-27 00:58:56.346  INFO 19412 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2018-06-27 00:58:56.569  INFO 19412 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@7c0c77c7: startup date [Wed Jun 27 00:58:54 CST 2018]; root of context hierarchy
-2018-06-27 00:58:56.622  INFO 19412 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/home.html]}" onto public java.lang.String com.aitp.web.aitpfront.controller.LoginDemo.toLogin(java.lang.String,java.lang.String,com.aitp.web.aitpfront.service.beans.Code)
-2018-06-27 00:58:56.624  INFO 19412 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/login.html]}" onto public java.lang.String com.aitp.web.aitpfront.controller.LoginDemo.toLogin()
-2018-06-27 00:58:56.625  INFO 19412 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/wechat_user.html]}" onto public com.aitp.web.aitpfront.service.dto.WechatUserDTO com.aitp.web.aitpfront.controller.WeChatUser.toAccept(java.lang.String,java.lang.String)
-2018-06-27 00:58:56.630  INFO 19412 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
-2018-06-27 00:58:56.631  INFO 19412 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
-2018-06-27 00:58:56.655  INFO 19412 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2018-06-27 00:58:56.656  INFO 19412 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2018-06-27 00:58:56.962  INFO 19412 --- [main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
-2018-06-27 00:58:56.991 ERROR 19412 --- [main] o.apache.catalina.core.StandardService   : Failed to start connector [Connector[HTTP/1.1-80]]
-
-org.apache.catalina.LifecycleException: Failed to start component [Connector[HTTP/1.1-80]]
-	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:167) ~[tomcat-embed-core-8.5.31.jar:8.5.31]
-	at org.apache.catalina.core.StandardService.addConnector(StandardService.java:225) ~[tomcat-embed-core-8.5.31.jar:8.5.31]
-	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.addPreviouslyRemovedConnectors(TomcatWebServer.java:256) [spring-boot-2.0.3.RELEASE.jar:2.0.3.RELEASE]
-	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start(TomcatWebServer.java:198) [spring-boot-2.0.3.RELEASE.jar:2.0.3.RELEASE]
-	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.startWebServer(ServletWebServerApplicationContext.java:300) [spring-boot-2.0.3.RELEASE.jar:2.0.3.RELEASE]
-	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.finishRefresh(ServletWebServerApplicationContext.java:162) [spring-boot-2.0.3.RELEASE.jar:2.0.3.RELEASE]
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:553) [spring-context-5.0.7.RELEASE.jar:5.0.7.RELEASE]
-	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:140) [spring-boot-2.0.3.RELEASE.jar:2.0.3.RELEASE]
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:759) [spring-boot-2.0.3.RELEASE.jar:2.0.3.RELEASE]
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:395) [spring-boot-2.0.3.RELEASE.jar:2.0.3.RELEASE]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:327) [spring-boot-2.0.3.RELEASE.jar:2.0.3.RELEASE]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1255) [spring-boot-2.0.3.RELEASE.jar:2.0.3.RELEASE]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1243) [spring-boot-2.0.3.RELEASE.jar:2.0.3.RELEASE]
-	at com.aitp.web.aitpfront.AitpfrontApplication.main(AitpfrontApplication.java:10) [classes/:na]
-Caused by: org.apache.catalina.LifecycleException: Protocol handler start failed
-	at org.apache.catalina.connector.Connector.startInternal(Connector.java:1020) ~[tomcat-embed-core-8.5.31.jar:8.5.31]
-	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150) ~[tomcat-embed-core-8.5.31.jar:8.5.31]
-	... 13 common frames omitted
-Caused by: java.net.BindException: Address already in use: bind
-	at sun.nio.ch.Net.bind0(Native Method) ~[na:1.8.0_171]
-	at sun.nio.ch.Net.bind(Net.java:433) ~[na:1.8.0_171]
-	at sun.nio.ch.Net.bind(Net.java:425) ~[na:1.8.0_171]
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223) ~[na:1.8.0_171]
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74) ~[na:1.8.0_171]
-	at org.apache.tomcat.util.net.NioEndpoint.bind(NioEndpoint.java:210) ~[tomcat-embed-core-8.5.31.jar:8.5.31]
-	at org.apache.tomcat.util.net.AbstractEndpoint.start(AbstractEndpoint.java:1150) ~[tomcat-embed-core-8.5.31.jar:8.5.31]
-	at org.apache.coyote.AbstractProtocol.start(AbstractProtocol.java:591) ~[tomcat-embed-core-8.5.31.jar:8.5.31]
-	at org.apache.catalina.connector.Connector.startInternal(Connector.java:1018) ~[tomcat-embed-core-8.5.31.jar:8.5.31]
-	... 14 common frames omitted
-
-2018-06-27 00:58:56.996  INFO 19412 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
-2018-06-27 00:58:57.013  INFO 19412 --- [main] ConditionEvaluationReportLoggingListener : 
-
-Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
-2018-06-27 00:58:57.017 ERROR 19412 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
-
-***************************
-APPLICATION FAILED TO START
-***************************
-
-Description:
-
-The Tomcat connector configured to listen on port 80 failed to start. The port may already be in use or the connector may be misconfigured.
-
-Action:
-
-Verify the connector's configuration, identify and stop any process that's listening on port 80, or configure this application to listen on another port.
-
-2018-06-27 00:58:57.018  INFO 19412 --- [main] ConfigServletWebServerApplicationContext : Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@7c0c77c7: startup date [Wed Jun 27 00:58:54 CST 2018]; root of context hierarchy
-2018-06-27 00:58:57.020  INFO 19412 --- [main] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
-2018-06-27 09:51:37.833  INFO 1044 --- [main] c.a.w.a.AitpfrontApplicationTests        : Starting AitpfrontApplicationTests on CDC311182 with PID 1044 (started by l.mao in D:\A5\Workspace\dlife\aitpfront)
-2018-06-27 09:51:37.840  INFO 1044 --- [main] c.a.w.a.AitpfrontApplicationTests        : No active profile set, falling back to default profiles: default
-2018-06-27 09:51:37.916  INFO 1044 --- [main] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@65f8f5ae: startup date [Wed Jun 27 09:51:37 CST 2018]; root of context hierarchy
-2018-06-27 09:51:40.983  INFO 1044 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2018-06-27 09:51:41.641  INFO 1044 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.web.context.support.GenericWebApplicationContext@65f8f5ae: startup date [Wed Jun 27 09:51:37 CST 2018]; root of context hierarchy
-2018-06-27 09:51:42.132  INFO 1044 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/home.html]}" onto public java.lang.String com.aitp.web.aitpfront.controller.LoginDemo.toLogin(java.lang.String,java.lang.String,com.aitp.web.aitpfront.service.beans.Code)
-2018-06-27 09:51:42.138  INFO 1044 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/login.html]}" onto public java.lang.String com.aitp.web.aitpfront.controller.LoginDemo.toLogin()
-2018-06-27 09:51:42.141  INFO 1044 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/wechat_user.html]}" onto public com.aitp.web.aitpfront.service.dto.WechatUserDTO com.aitp.web.aitpfront.controller.WeChatUser.toAccept(java.lang.String,java.lang.String)
-2018-06-27 09:51:42.149  INFO 1044 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
-2018-06-27 09:51:42.150  INFO 1044 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
-2018-06-27 09:51:42.205  INFO 1044 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2018-06-27 09:51:42.205  INFO 1044 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2018-06-27 09:51:43.991  INFO 1044 --- [main] c.a.w.a.AitpfrontApplicationTests        : Started AitpfrontApplicationTests in 6.992 seconds (JVM running for 9.067)
-2018-06-27 09:51:45.931  INFO 1044 --- [Thread-2] o.s.w.c.s.GenericWebApplicationContext   : Closing org.springframework.web.context.support.GenericWebApplicationContext@65f8f5ae: startup date [Wed Jun 27 09:51:37 CST 2018]; root of context hierarchy
-2018-06-27 10:04:40.658  INFO 13496 --- [main] c.a.w.a.AitpfrontApplicationTests        : Starting AitpfrontApplicationTests on CDC311182 with PID 13496 (started by l.mao in D:\A5\Workspace\dlife\aitpfront)
-2018-06-27 10:04:40.662  INFO 13496 --- [main] c.a.w.a.AitpfrontApplicationTests        : No active profile set, falling back to default profiles: default
-2018-06-27 10:04:40.762  INFO 13496 --- [main] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@72c8e7b: startup date [Wed Jun 27 10:04:40 CST 2018]; root of context hierarchy
-2018-06-27 10:04:43.591  INFO 13496 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2018-06-27 10:04:44.005  INFO 13496 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.web.context.support.GenericWebApplicationContext@72c8e7b: startup date [Wed Jun 27 10:04:40 CST 2018]; root of context hierarchy
-2018-06-27 10:04:44.218  INFO 13496 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/home.html]}" onto public java.lang.String com.aitp.web.aitpfront.controller.LoginDemo.toLogin(java.lang.String,java.lang.String,com.aitp.web.aitpfront.service.beans.Code)
-2018-06-27 10:04:44.220  INFO 13496 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/login.html]}" onto public java.lang.String com.aitp.web.aitpfront.controller.LoginDemo.toLogin()
-2018-06-27 10:04:44.221  INFO 13496 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/wechat_user.html]}" onto public com.aitp.web.aitpfront.service.dto.WechatUserDTO com.aitp.web.aitpfront.controller.WeChatUser.toAccept(java.lang.String,java.lang.String)
-2018-06-27 10:04:44.230  INFO 13496 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
-2018-06-27 10:04:44.231  INFO 13496 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
-2018-06-27 10:04:44.298  INFO 13496 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2018-06-27 10:04:44.299  INFO 13496 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2018-06-27 10:04:45.225  INFO 13496 --- [main] c.a.w.a.AitpfrontApplicationTests        : Started AitpfrontApplicationTests in 5.301 seconds (JVM running for 7.355)
-2018-06-27 10:04:45.510  INFO 13496 --- [Thread-2] o.s.w.c.s.GenericWebApplicationContext   : Closing org.springframework.web.context.support.GenericWebApplicationContext@72c8e7b: startup date [Wed Jun 27 10:04:40 CST 2018]; root of context hierarchy
+2018-06-28 22:17:38.336  INFO 13016 --- [main] c.a.w.a.AitpfrontApplicationTests        : Starting AitpfrontApplicationTests on CDC311182 with PID 13016 (started by l.mao in D:\A5\Workspace\dlife\aitpfront)
+2018-06-28 22:17:38.351  INFO 13016 --- [main] c.a.w.a.AitpfrontApplicationTests        : No active profile set, falling back to default profiles: default
+2018-06-28 22:17:38.429  INFO 13016 --- [main] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@65f8f5ae: startup date [Thu Jun 28 22:17:38 CST 2018]; root of context hierarchy
+2018-06-28 22:17:41.492  INFO 13016 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-06-28 22:17:41.945  INFO 13016 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.web.context.support.GenericWebApplicationContext@65f8f5ae: startup date [Thu Jun 28 22:17:38 CST 2018]; root of context hierarchy
+2018-06-28 22:17:42.148  INFO 13016 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/home.html]}" onto public java.lang.String com.aitp.web.aitpfront.controller.LoginDemo.toLogin(java.lang.String,java.lang.String,com.aitp.web.aitpfront.service.beans.Code)
+2018-06-28 22:17:42.148  INFO 13016 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/login.html]}" onto public java.lang.String com.aitp.web.aitpfront.controller.LoginDemo.toLogin()
+2018-06-28 22:17:42.148  INFO 13016 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/wechat_user.html]}" onto public com.aitp.web.aitpfront.service.dto.WechatUserDTO com.aitp.web.aitpfront.controller.WeChatUser.toAccept(java.lang.String,java.lang.String)
+2018-06-28 22:17:42.148  INFO 13016 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-06-28 22:17:42.164  INFO 13016 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-06-28 22:17:42.211  INFO 13016 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-06-28 22:17:42.211  INFO 13016 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-06-28 22:17:43.070  INFO 13016 --- [main] c.a.w.a.AitpfrontApplicationTests        : Started AitpfrontApplicationTests in 5.562 seconds (JVM running for 7.704)
+2018-06-28 22:17:43.461  INFO 13016 --- [Thread-2] o.s.w.c.s.GenericWebApplicationContext   : Closing org.springframework.web.context.support.GenericWebApplicationContext@65f8f5ae: startup date [Thu Jun 28 22:17:38 CST 2018]; root of context hierarchy

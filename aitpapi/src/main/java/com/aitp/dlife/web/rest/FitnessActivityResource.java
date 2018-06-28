@@ -74,7 +74,6 @@ public class FitnessActivityResource {
         if (fitnessActivityDTO.getId() != null) {
             throw new BadRequestAlertException("A new fitnessActivity cannot already have an ID", ENTITY_NAME, "idexists");
         }
-
         Set<PicsDTO> imagesDTO = new HashSet<>();
         FitnessActivityDTO result = fitnessActivityService.save(fitnessActivityDTO);
 
@@ -139,12 +138,7 @@ public class FitnessActivityResource {
     public ResponseEntity<FitnessActivityDTO> getFitnessActivity(@PathVariable Long id) {
         log.debug("REST request to get FitnessActivity : {}", id);
         FitnessActivityDTO fitnessActivityDTO = fitnessActivityService.findOne(id);
-        if (fitnessActivityService.isActivityActive(fitnessActivityDTO)){
-            fitnessActivityDTO.setStatus(1);
-        }else
-        {
-            fitnessActivityDTO.setStatus(0);
-        }
+        fitnessActivityService.ActivityStatus(fitnessActivityDTO);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(fitnessActivityDTO));
     }
 
