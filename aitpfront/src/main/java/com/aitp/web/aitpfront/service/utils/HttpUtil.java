@@ -1,5 +1,7 @@
 package com.aitp.web.aitpfront.service.utils;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpEntity;
@@ -61,6 +63,29 @@ public class HttpUtil {
             e.printStackTrace();
         }
         return respContent;
+    }
+
+    public static String encoder(String text){
+        final Base64.Encoder encoder = Base64.getEncoder();
+        String encoderData=text;
+        try {
+            final byte[] textByte = text.getBytes("UTF-8");
+            encoderData=encoder.encodeToString(textByte);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return encoderData;
+    }
+
+    public static String decoder(String encodeText){
+        final Base64.Decoder decoder = Base64.getDecoder();
+        String decodeData=encodeText;
+        try {
+            decodeData=new String(decoder.decode(encodeText), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return decodeData;
     }
 
     public static void main(String[] args) {
