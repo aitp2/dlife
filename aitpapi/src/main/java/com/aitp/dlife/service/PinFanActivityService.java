@@ -14,10 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -132,6 +129,11 @@ public class PinFanActivityService {
             if(!Hibernate.isInitialized(pinFanActivity.getAttendees())){
                 Hibernate.initialize(pinFanActivity.getAttendees());
             }
+        }
+        if(pinFanActivity.getAttendees() !=null && !pinFanActivity.getAttendees().isEmpty()){
+            ArrayList<Attendee> attendees = new ArrayList<>(pinFanActivity.getAttendees());
+            Collections.sort(attendees,(a1,a2) -> {return a1.getParticipationTime().compareTo(a2.getParticipationTime());});
+            pinFanActivity.setAttendees(new HashSet<>(attendees));
         }
         return pinFanActivityMapper.toDto(pinFanActivity);
     }
