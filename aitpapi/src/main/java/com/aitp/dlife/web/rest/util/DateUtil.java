@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
  **/
 public class DateUtil {
 	private static String Y_M_D = "yyyy-MM-dd HH:mm:ss";
+    private static String YY_MM_DD = "yyyy-MM-dd";
 
 	public static String getYMDDateString(Date date) {
 		if (date == null) {
@@ -21,6 +22,14 @@ public class DateUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat(Y_M_D);
 		return sdf.format(date);
 	}
+
+    public static String getYYMMDDDateString(Date date) {
+        if (date == null) {
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(YY_MM_DD);
+        return sdf.format(date);
+    }
 
 	public static Date fromYDMStringDate(String date) {
 		if (StringUtils.isEmpty(date)) {
@@ -43,7 +52,7 @@ public class DateUtil {
 			return false;
 		}
 	}
-	
+
 	public static boolean isYesterday(Date date) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
@@ -55,8 +64,8 @@ public class DateUtil {
 			return false;
 		}
 	}
-	
-	
+
+
 
 	public static Date getThisWeekMonday() {
 		Calendar cal = Calendar.getInstance();
@@ -72,15 +81,15 @@ public class DateUtil {
 		cal.set(Calendar.SECOND, 0);
 		return cal.getTime();
 	}
-	
+
 	public static boolean isThisWeek(String dateStr){
 		Date date = fromYDMStringDate(dateStr);
 		if(null == date){
 			return false;
 		}
 		return date.getTime() > getThisWeekMonday().getTime();
-		
+
 	}
-	
-	
+
+
 }
