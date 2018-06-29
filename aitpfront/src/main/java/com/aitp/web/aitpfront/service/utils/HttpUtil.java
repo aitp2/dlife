@@ -65,37 +65,39 @@ public class HttpUtil {
         return respContent;
     }
 
-    public static String encoder(String text){
+    public static String baseEncoder(String text){
         final Base64.Encoder encoder = Base64.getEncoder();
         String encoderData=text;
         try {
             final byte[] textByte = text.getBytes("UTF-8");
             encoderData=encoder.encodeToString(textByte);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.error("Encoder error:{}",text);
         }
         return encoderData;
     }
 
-    public static String decoder(String encodeText){
+    public static String baseDecoder(String encodeText){
         final Base64.Decoder decoder = Base64.getDecoder();
         String decodeData=encodeText;
         try {
             decodeData=new String(decoder.decode(encodeText), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.error("Decoder error:{}",encodeText);
         }
         return decodeData;
     }
 
     public static void main(String[] args) {
-        String urlStr = "https://a5api.aitpgroup.tech/api/wechat-users";
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("avatar","http://thirdwx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/46");
-        jsonObject.put("openId","88888888899");
-        jsonObject.put("nickName","Jerry");
-     // jsonObject.put("sex",true);
-        String resultData = HttpUtil.doPostJson(urlStr,jsonObject);
-        System.out.println(resultData);
+        System.out.println(baseEncoder("毛磊"));
+ //       System.out.println(baseDecoder("ZWxseS5oIPCfjZI="));
+//        String urlStr = "https://a5api.aitpgroup.tech/api/wechat-users";
+//        JSONObject jsonObject=new JSONObject();
+//        jsonObject.put("avatar","http://thirdwx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/46");
+//        jsonObject.put("openId","88888888899");
+//        jsonObject.put("nickName","Jerry");
+//        jsonObject.put("sex",true);
+//        String resultData = HttpUtil.doPostJson(urlStr,jsonObject);
+//        System.out.println(resultData);
     }
 }
