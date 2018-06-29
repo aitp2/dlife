@@ -5,6 +5,7 @@ import java.time.Instant;
 import javax.validation.constraints.*;
 
 import com.aitp.dlife.domain.Pics;
+import com.aitp.dlife.web.rest.util.HttpUtil;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -86,11 +87,11 @@ public class FitnessActivityDTO implements Serializable {
     }
 
     public String getNickName() {
-        return nickName;
+        return HttpUtil.baseDecoder(nickName);
     }
 
     public void setNickName(String nickName) {
-        this.nickName = nickName;
+        this.nickName = HttpUtil.baseEncoder(nickName);
     }
 
     public String getAvatar() {

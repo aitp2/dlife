@@ -1,5 +1,7 @@
 package com.aitp.dlife.service.dto;
 
+import com.aitp.dlife.web.rest.util.HttpUtil;
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -68,11 +70,11 @@ public class RatesDTO implements Serializable {
     }
 
     public String getNickName() {
-        return nickName;
+        return HttpUtil.baseDecoder(nickName);
     }
 
     public void setNickName(String nickName) {
-        this.nickName = nickName;
+        this.nickName = HttpUtil.baseEncoder(nickName);
     }
 
     public String getComments() {
