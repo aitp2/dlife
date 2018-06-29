@@ -53,7 +53,7 @@ public class WeChatUser {
                     if(StringUtils.isNotBlank(userInfo)){
                         JSONObject user = JSONObject.parseObject(userInfo);
                         wechatUserDTO.setUnionid(user.getString("unionid"));
-                        wechatUserDTO.setUserName(user.getString("nickname"));
+                        wechatUserDTO.setUserName(HttpUtil.baseDecoder(user.getString("nickname")));
                         wechatUserDTO.setCity(user.getString("city"));
                         wechatUserDTO.setCountry(user.getString("country"));
                         wechatUserDTO.setHeadimgurl(user.getString("headimgurl"));

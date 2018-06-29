@@ -23,7 +23,7 @@ public class UserServiceImp implements UserService{
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("avatar",wechatUserDTO.getHeadimgurl());
         jsonObject.put("openId",wechatUserDTO.getOpenId());
-        jsonObject.put("nickName",wechatUserDTO.getUserName());
+        jsonObject.put("nickName",HttpUtil.baseEncoder(wechatUserDTO.getUserName()));
 //      jsonObject.put("sex",1);
         String resultData=HttpUtil.doPostJson(apiPath+"/wechat-users",jsonObject);
         if(StringUtils.isNotBlank(resultData)){
