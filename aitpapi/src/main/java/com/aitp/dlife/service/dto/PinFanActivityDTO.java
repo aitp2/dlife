@@ -1,7 +1,6 @@
 package com.aitp.dlife.service.dto;
 
 
-import com.aitp.dlife.web.rest.util.HttpUtil;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -139,11 +138,11 @@ public class PinFanActivityDTO implements Serializable {
     }
 
     public String getNickName() {
-        return HttpUtil.baseDecoder(nickName);
+        return nickName;
     }
 
     public void setNickName(String nickName) {
-        this.nickName = HttpUtil.baseEncoder(nickName);
+        this.nickName = nickName;
     }
 
     public Integer getActivitiyType() {

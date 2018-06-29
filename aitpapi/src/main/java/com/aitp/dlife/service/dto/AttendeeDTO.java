@@ -1,13 +1,9 @@
 package com.aitp.dlife.service.dto;
 
 
-import com.aitp.dlife.web.rest.util.HttpUtil;
 
-import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -50,11 +46,11 @@ public class AttendeeDTO implements Serializable {
     }
 
     public String getNickName() {
-        return HttpUtil.baseDecoder(nickName);
+        return nickName;
     }
 
     public void setNickName(String nickName) {
-        this.nickName = HttpUtil.baseEncoder(nickName);
+        this.nickName = nickName;
     }
 
     public String getAvatar() {
