@@ -89,7 +89,7 @@ public class HttpUtil {
 
     public static void main(String[] args) {
         System.out.println(baseEncoder("毛磊"));
-        System.out.println(baseDecoder("ZWxseS5oIPCfjZI="));
+        System.out.println(baseDecoder("Mu+/vSjvv73vv70="));
 //        String urlStr = "https://a5api.aitpgroup.tech/api/wechat-users";
 //        JSONObject jsonObject=new JSONObject();
 //        jsonObject.put("avatar","http://thirdwx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/46");
