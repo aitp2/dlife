@@ -73,7 +73,7 @@ public class ClockInResource {
         }
         if(clockInService.isClockIn(clockInDTO.getWechatUserId(),clockInDTO.getActivityParticipationId()))
         {
-            throw new BadRequestAlertException("A new clockIn cannot already have clockin today",ENTITY_NAME,"alreadyClockIn");
+            throw new BadRequestAlertException("A new clockIn cannot already have clockin today",ENTITY_NAME,"请不要重复打卡哦");
         }
         clockInDTO.setPunchDateTime(DateUtil.getYMDDateString(new Date()));
         Set<PicsDTO> imagesDTO = new HashSet<>();
