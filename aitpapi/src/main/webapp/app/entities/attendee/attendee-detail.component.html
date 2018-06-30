@@ -26,8 +26,8 @@
         </dd>
         <dt><span jhiTranslate="aitpapiApp.attendee.pinFanActivity">Pin Fan Activity</span></dt>
         <dd>
-            <div *ngIf="attendee.pinFanActivityId">
-                <a [routerLink]="['/pin-fan-activity', attendee.pinFanActivityId]">{{attendee.pinFanActivityId}}</a>
+            <div *ngIf="attendee.pinFanActivity">
+                <a [routerLink]="['/pin-fan-activity', attendee.pinFanActivity?.id]">{{attendee.pinFanActivity?.id}}</a>
             </div>
         </dd>
     </dl>

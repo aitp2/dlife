@@ -66,9 +66,9 @@
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aitpapiApp.attendee.pinFanActivity" for="field_pinFanActivity">Pin Fan Activity</label>
-            <select class="form-control" id="field_pinFanActivity" name="pinFanActivity" [(ngModel)]="attendee.pinFanActivityId" >
+            <select class="form-control" id="field_pinFanActivity" name="pinFanActivity" [(ngModel)]="attendee.pinFanActivity" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="pinFanActivityOption.id" *ngFor="let pinFanActivityOption of pinfanactivities; trackBy: trackPinFanActivityById">{{pinFanActivityOption.id}}</option>
+                <option [ngValue]="pinFanActivityOption.id === attendee.pinFanActivity?.id ? attendee.pinFanActivity : pinFanActivityOption" *ngFor="let pinFanActivityOption of pinfanactivities; trackBy: trackPinFanActivityById">{{pinFanActivityOption.id}}</option>
             </select>
         </div>
     </div>

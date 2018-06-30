@@ -30,8 +30,8 @@
         </dd>
         <dt><span jhiTranslate="aitpapiApp.evaluate.recipeOrder">Recipe Order</span></dt>
         <dd>
-            <div *ngIf="evaluate.recipeOrderId">
-                <a [routerLink]="['/recipe-order', evaluate.recipeOrderId]">{{evaluate.recipeOrderId}}</a>
+            <div *ngIf="evaluate.recipeOrder">
+                <a [routerLink]="['/recipe-order', evaluate.recipeOrder?.id]">{{evaluate.recipeOrder?.id}}</a>
             </div>
         </dd>
     </dl>

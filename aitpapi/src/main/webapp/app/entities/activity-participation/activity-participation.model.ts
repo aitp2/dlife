@@ -9,7 +9,7 @@ export class ActivityParticipation implements BaseEntity {
         public project?: string,
         public participationTime?: any,
         public clockIns?: BaseEntity[],
-        public activityId?: number,
+        public activity?: BaseEntity,
     ) {
     }
 }

@@ -14,14 +14,14 @@
         </dd>
         <dt><span jhiTranslate="aitpapiApp.pics.fitnessActivity">Fitness Activity</span></dt>
         <dd>
-            <div *ngIf="pics.fitnessActivityId">
-                <a [routerLink]="['/fitness-activity', pics.fitnessActivityId]">{{pics.fitnessActivityId}}</a>
+            <div *ngIf="pics.fitnessActivity">
+                <a [routerLink]="['/fitness-activity', pics.fitnessActivity?.id]">{{pics.fitnessActivity?.id}}</a>
             </div>
         </dd>
         <dt><span jhiTranslate="aitpapiApp.pics.clockIn">Clock In</span></dt>
         <dd>
-            <div *ngIf="pics.clockInId">
-                <a [routerLink]="['/clock-in', pics.clockInId]">{{pics.clockInId}}</a>
+            <div *ngIf="pics.clockIn">
+                <a [routerLink]="['/clock-in', pics.clockIn?.id]">{{pics.clockIn?.id}}</a>
             </div>
         </dd>
     </dl>

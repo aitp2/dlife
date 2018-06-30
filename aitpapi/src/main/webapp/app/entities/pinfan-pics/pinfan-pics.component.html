@@ -19,8 +19,8 @@
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="ossPath"><span jhiTranslate="aitpapiApp.pinfanPics.ossPath">Oss Path</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="createTime"><span jhiTranslate="aitpapiApp.pinfanPics.createTime">Create Time</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="pinFanActivityId"><span jhiTranslate="aitpapiApp.pinfanPics.pinFanActivity">Pin Fan Activity</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="rateId"><span jhiTranslate="aitpapiApp.pinfanPics.rate">Rate</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="pinFanActivity.id"><span jhiTranslate="aitpapiApp.pinfanPics.pinFanActivity">Pin Fan Activity</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="rate.id"><span jhiTranslate="aitpapiApp.pinfanPics.rate">Rate</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -30,13 +30,13 @@
                 <td>{{pinfanPics.ossPath}}</td>
                 <td>{{pinfanPics.createTime | date:'medium'}}</td>
                 <td>
-                    <div *ngIf="pinfanPics.pinFanActivityId">
-                        <a [routerLink]="['../pin-fan-activity', pinfanPics.pinFanActivityId  ]" >{{pinfanPics.pinFanActivityId}}</a>
+                    <div *ngIf="pinfanPics.pinFanActivity">
+                        <a [routerLink]="['../pin-fan-activity', pinfanPics.pinFanActivity?.id ]" >{{pinfanPics.pinFanActivity?.id}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="pinfanPics.rateId">
-                        <a [routerLink]="['../rates', pinfanPics.rateId  ]" >{{pinfanPics.rateId}}</a>
+                    <div *ngIf="pinfanPics.rate">
+                        <a [routerLink]="['../rates', pinfanPics.rate?.id ]" >{{pinfanPics.rate?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">

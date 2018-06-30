@@ -8,7 +8,7 @@ export class Attendee implements BaseEntity {
         public avatar?: string,
         public participationTime?: any,
         public activitiyTile?: string,
-        public pinFanActivityId?: number,
+        public pinFanActivity?: BaseEntity,
     ) {
     }
 }

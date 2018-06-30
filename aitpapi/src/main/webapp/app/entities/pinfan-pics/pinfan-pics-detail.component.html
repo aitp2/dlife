@@ -14,14 +14,14 @@
         </dd>
         <dt><span jhiTranslate="aitpapiApp.pinfanPics.pinFanActivity">Pin Fan Activity</span></dt>
         <dd>
-            <div *ngIf="pinfanPics.pinFanActivityId">
-                <a [routerLink]="['/pin-fan-activity', pinfanPics.pinFanActivityId]">{{pinfanPics.pinFanActivityId}}</a>
+            <div *ngIf="pinfanPics.pinFanActivity">
+                <a [routerLink]="['/pin-fan-activity', pinfanPics.pinFanActivity?.id]">{{pinfanPics.pinFanActivity?.id}}</a>
             </div>
         </dd>
         <dt><span jhiTranslate="aitpapiApp.pinfanPics.rate">Rate</span></dt>
         <dd>
-            <div *ngIf="pinfanPics.rateId">
-                <a [routerLink]="['/rates', pinfanPics.rateId]">{{pinfanPics.rateId}}</a>
+            <div *ngIf="pinfanPics.rate">
+                <a [routerLink]="['/rates', pinfanPics.rate?.id]">{{pinfanPics.rate?.id}}</a>
             </div>
         </dd>
     </dl>

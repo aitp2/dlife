@@ -24,7 +24,7 @@
             <th jhiSortBy="price"><span jhiTranslate="aitpapiApp.recipeOrder.price">Price</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="createTime"><span jhiTranslate="aitpapiApp.recipeOrder.createTime">Create Time</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="modifyTime"><span jhiTranslate="aitpapiApp.recipeOrder.modifyTime">Modify Time</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="recipeId"><span jhiTranslate="aitpapiApp.recipeOrder.recipe">Recipe</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="recipe.id"><span jhiTranslate="aitpapiApp.recipeOrder.recipe">Recipe</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -39,8 +39,8 @@
                 <td>{{recipeOrder.createTime | date:'medium'}}</td>
                 <td>{{recipeOrder.modifyTime | date:'medium'}}</td>
                 <td>
-                    <div *ngIf="recipeOrder.recipeId">
-                        <a [routerLink]="['../recipe', recipeOrder.recipeId  ]" >{{recipeOrder.recipeId}}</a>
+                    <div *ngIf="recipeOrder.recipe">
+                        <a [routerLink]="['../recipe', recipeOrder.recipe?.id ]" >{{recipeOrder.recipe?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">

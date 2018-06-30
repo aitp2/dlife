@@ -11,7 +11,7 @@ export class RecipeOrder implements BaseEntity {
         public createTime?: any,
         public modifyTime?: any,
         public evaluats?: BaseEntity[],
-        public recipeId?: number,
+        public recipe?: BaseEntity,
     ) {
     }
 }

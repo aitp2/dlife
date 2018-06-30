@@ -44,9 +44,9 @@
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aitpapiApp.clockIn.activityParticipation" for="field_activityParticipation">Activity Participation</label>
-            <select class="form-control" id="field_activityParticipation" name="activityParticipation" [(ngModel)]="clockIn.activityParticipationId" >
+            <select class="form-control" id="field_activityParticipation" name="activityParticipation" [(ngModel)]="clockIn.activityParticipation" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="activityParticipationOption.id" *ngFor="let activityParticipationOption of activityparticipations; trackBy: trackActivityParticipationById">{{activityParticipationOption.id}}</option>
+                <option [ngValue]="activityParticipationOption.id === clockIn.activityParticipation?.id ? clockIn.activityParticipation : activityParticipationOption" *ngFor="let activityParticipationOption of activityparticipations; trackBy: trackActivityParticipationById">{{activityParticipationOption.id}}</option>
             </select>
         </div>
     </div>

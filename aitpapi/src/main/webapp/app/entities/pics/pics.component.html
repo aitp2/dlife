@@ -19,8 +19,8 @@
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="ossPath"><span jhiTranslate="aitpapiApp.pics.ossPath">Oss Path</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="createTime"><span jhiTranslate="aitpapiApp.pics.createTime">Create Time</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="fitnessActivityId"><span jhiTranslate="aitpapiApp.pics.fitnessActivity">Fitness Activity</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="clockInId"><span jhiTranslate="aitpapiApp.pics.clockIn">Clock In</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="fitnessActivity.id"><span jhiTranslate="aitpapiApp.pics.fitnessActivity">Fitness Activity</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="clockIn.id"><span jhiTranslate="aitpapiApp.pics.clockIn">Clock In</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -30,13 +30,13 @@
                 <td>{{pics.ossPath}}</td>
                 <td>{{pics.createTime | date:'medium'}}</td>
                 <td>
-                    <div *ngIf="pics.fitnessActivityId">
-                        <a [routerLink]="['../fitness-activity', pics.fitnessActivityId  ]" >{{pics.fitnessActivityId}}</a>
+                    <div *ngIf="pics.fitnessActivity">
+                        <a [routerLink]="['../fitness-activity', pics.fitnessActivity?.id ]" >{{pics.fitnessActivity?.id}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="pics.clockInId">
-                        <a [routerLink]="['../clock-in', pics.clockInId  ]" >{{pics.clockInId}}</a>
+                    <div *ngIf="pics.clockIn">
+                        <a [routerLink]="['../clock-in', pics.clockIn?.id ]" >{{pics.clockIn?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">

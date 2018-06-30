@@ -26,8 +26,8 @@
         </dd>
         <dt><span jhiTranslate="aitpapiApp.activityParticipation.activity">Activity</span></dt>
         <dd>
-            <div *ngIf="activityParticipation.activityId">
-                <a [routerLink]="['/fitness-activity', activityParticipation.activityId]">{{activityParticipation.activityId}}</a>
+            <div *ngIf="activityParticipation.activity">
+                <a [routerLink]="['/fitness-activity', activityParticipation.activity?.id]">{{activityParticipation.activity?.id}}</a>
             </div>
         </dd>
     </dl>
