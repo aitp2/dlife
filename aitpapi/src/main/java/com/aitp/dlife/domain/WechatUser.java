@@ -18,7 +18,7 @@ import java.util.Objects;
 @ApiModel(description = "用户信息")
 @Entity
 @Table(name = "wechat_user")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
 public class WechatUser implements Serializable {
 
     private static final long serialVersionUID = 1L;

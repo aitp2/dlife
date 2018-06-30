@@ -21,7 +21,7 @@ import java.util.Objects;
 @ApiModel(description = "菜谱信息")
 @Entity
 @Table(name = "recipe")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
 public class Recipe implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -94,12 +94,12 @@ public class Recipe implements Serializable {
 
     @OneToMany(mappedBy = "recipe")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<RecipeOrder> recipeOrders = new HashSet<>();
 
     @OneToMany(mappedBy = "recipe")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<Image> images = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

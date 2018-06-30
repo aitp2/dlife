@@ -18,7 +18,7 @@ import java.util.Objects;
 @ApiModel(description = "菜谱图片信息")
 @Entity
 @Table(name = "image")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
 public class Image implements Serializable {
 
     private static final long serialVersionUID = 1L;
