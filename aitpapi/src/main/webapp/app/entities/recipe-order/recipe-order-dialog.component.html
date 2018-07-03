@@ -82,9 +82,9 @@
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aitpapiApp.recipeOrder.recipe" for="field_recipe">Recipe</label>
-            <select class="form-control" id="field_recipe" name="recipe" [(ngModel)]="recipeOrder.recipeId" >
+            <select class="form-control" id="field_recipe" name="recipe" [(ngModel)]="recipeOrder.recipe" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="recipeOption.id" *ngFor="let recipeOption of recipes; trackBy: trackRecipeById">{{recipeOption.id}}</option>
+                <option [ngValue]="recipeOption.id === recipeOrder.recipe?.id ? recipeOrder.recipe : recipeOption" *ngFor="let recipeOption of recipes; trackBy: trackRecipeById">{{recipeOption.id}}</option>
             </select>
         </div>
     </div>

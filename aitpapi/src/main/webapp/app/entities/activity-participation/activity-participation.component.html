@@ -22,7 +22,7 @@
             <th jhiSortBy="avatar"><span jhiTranslate="aitpapiApp.activityParticipation.avatar">Avatar</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="project"><span jhiTranslate="aitpapiApp.activityParticipation.project">Project</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="participationTime"><span jhiTranslate="aitpapiApp.activityParticipation.participationTime">Participation Time</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="activityId"><span jhiTranslate="aitpapiApp.activityParticipation.activity">Activity</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="activity.id"><span jhiTranslate="aitpapiApp.activityParticipation.activity">Activity</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -35,8 +35,8 @@
                 <td>{{activityParticipation.project}}</td>
                 <td>{{activityParticipation.participationTime | date:'medium'}}</td>
                 <td>
-                    <div *ngIf="activityParticipation.activityId">
-                        <a [routerLink]="['../fitness-activity', activityParticipation.activityId  ]" >{{activityParticipation.activityId}}</a>
+                    <div *ngIf="activityParticipation.activity">
+                        <a [routerLink]="['../fitness-activity', activityParticipation.activity?.id ]" >{{activityParticipation.activity?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">

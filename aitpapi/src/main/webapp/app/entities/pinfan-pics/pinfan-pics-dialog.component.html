@@ -33,16 +33,16 @@
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aitpapiApp.pinfanPics.pinFanActivity" for="field_pinFanActivity">Pin Fan Activity</label>
-            <select class="form-control" id="field_pinFanActivity" name="pinFanActivity" [(ngModel)]="pinfanPics.pinFanActivityId" >
+            <select class="form-control" id="field_pinFanActivity" name="pinFanActivity" [(ngModel)]="pinfanPics.pinFanActivity" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="pinFanActivityOption.id" *ngFor="let pinFanActivityOption of pinfanactivities; trackBy: trackPinFanActivityById">{{pinFanActivityOption.id}}</option>
+                <option [ngValue]="pinFanActivityOption.id === pinfanPics.pinFanActivity?.id ? pinfanPics.pinFanActivity : pinFanActivityOption" *ngFor="let pinFanActivityOption of pinfanactivities; trackBy: trackPinFanActivityById">{{pinFanActivityOption.id}}</option>
             </select>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aitpapiApp.pinfanPics.rate" for="field_rate">Rate</label>
-            <select class="form-control" id="field_rate" name="rate" [(ngModel)]="pinfanPics.rateId" >
+            <select class="form-control" id="field_rate" name="rate" [(ngModel)]="pinfanPics.rate" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="ratesOption.id" *ngFor="let ratesOption of rates; trackBy: trackRatesById">{{ratesOption.id}}</option>
+                <option [ngValue]="ratesOption.id === pinfanPics.rate?.id ? pinfanPics.rate : ratesOption" *ngFor="let ratesOption of rates; trackBy: trackRatesById">{{ratesOption.id}}</option>
             </select>
         </div>
     </div>

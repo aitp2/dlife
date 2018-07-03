@@ -20,7 +20,7 @@
             <th jhiSortBy="title"><span jhiTranslate="aitpapiApp.clockIn.title">Title</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="signNote"><span jhiTranslate="aitpapiApp.clockIn.signNote">Sign Note</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="punchDateTime"><span jhiTranslate="aitpapiApp.clockIn.punchDateTime">Punch Date Time</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="activityParticipationId"><span jhiTranslate="aitpapiApp.clockIn.activityParticipation">Activity Participation</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="activityParticipation.id"><span jhiTranslate="aitpapiApp.clockIn.activityParticipation">Activity Participation</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -31,8 +31,8 @@
                 <td>{{clockIn.signNote}}</td>
                 <td>{{clockIn.punchDateTime | date:'medium'}}</td>
                 <td>
-                    <div *ngIf="clockIn.activityParticipationId">
-                        <a [routerLink]="['../activity-participation', clockIn.activityParticipationId  ]" >{{clockIn.activityParticipationId}}</a>
+                    <div *ngIf="clockIn.activityParticipation">
+                        <a [routerLink]="['../activity-participation', clockIn.activityParticipation?.id ]" >{{clockIn.activityParticipation?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">

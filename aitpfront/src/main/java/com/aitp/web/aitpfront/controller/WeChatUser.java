@@ -6,7 +6,6 @@ import com.aitp.web.aitpfront.service.beans.Token;
 import com.aitp.web.aitpfront.service.dto.WechatUserDTO;
 import com.aitp.web.aitpfront.service.utils.HttpUtil;
 import com.aitp.web.aitpfront.service.wechat.AuthClient;
-import com.aitp.web.aitpfront.service.wechat.AuthToolNoCache;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -49,7 +48,7 @@ public class WeChatUser {
                      */
                     String userInfoUrl=MessageFormat.format(env.getProperty("wechat_snsapi_userinfo_url"),token.getAccess_token(),token.getOpenid());
                     String userInfo = HttpUtil.doGetJson(userInfoUrl);
-                    logger.info("userInfo:{}",userInfo);
+                    logger.info("wechatUserInfo:{}",userInfo);
                     if(StringUtils.isNotBlank(userInfo)){
                         JSONObject user = JSONObject.parseObject(userInfo);
                         wechatUserDTO.setUnionid(user.getString("unionid"));
@@ -64,17 +63,20 @@ public class WeChatUser {
 
                         JSONObject userData = userService.getUserByOpenid(restApiPath, wechatUserDTO.getOpenId());
                         if(userData==null){//如果用户信息为空，则创建用户信息到数据库
+                            logger.info("----------Create wechate user---------");
                             JSONObject resultData = userService.createUser(restApiPath,wechatUserDTO);
+                            logger.info("Save user result:{}", resultData);
                             if(resultData!=null){
                                 wechatUserDTO.setUserId(resultData.getString("id"));
                             }
+                        }else{
+                            wechatUserDTO.setUserId(userData.getString("id"));
                         }
-
                     }
+                    logger.info("wechatUserDTO:{}",JSONObject.toJSONString(wechatUserDTO));
                 }
             }
         }
         return wechatUserDTO;
     }
-
 }

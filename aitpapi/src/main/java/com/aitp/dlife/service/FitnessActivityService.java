@@ -6,6 +6,8 @@ import com.aitp.dlife.service.dto.ClockinSummaryDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.mapper.FitnessActivityMapper;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -90,4 +92,23 @@ public class FitnessActivityService {
 	            .map(fitnessActivityMapper::toDto)
 	            .collect(Collectors.toCollection(LinkedList::new));
 	}
+
+
+	public void ActivityStatus(FitnessActivityDTO fitnessActivityDTO){
+        Instant now = Instant.now();
+        FitnessActivity fitnessActivity = fitnessActivityMapper.toEntity(fitnessActivityDTO);
+        if (null !=fitnessActivity) {
+            if (fitnessActivity.getActivityStartTime().isBefore(now) && fitnessActivity.getActivityEndTime().isAfter(now)) {
+                fitnessActivityDTO.setStatus(1);
+            }
+            else if (fitnessActivity.getActivityEndTime().isBefore(now)){
+                fitnessActivityDTO.setStatus(2);
+            }else
+            {
+                fitnessActivityDTO.setStatus(0);
+            }
+        }
+    }
+
+
 }

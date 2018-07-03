@@ -11,7 +11,7 @@ export class Rates implements BaseEntity {
         public createTime?: any,
         public modifyTime?: any,
         public pinfanPics?: BaseEntity[],
-        public pinFanActivityId?: number,
+        public pinFanActivity?: BaseEntity,
     ) {
     }
 }

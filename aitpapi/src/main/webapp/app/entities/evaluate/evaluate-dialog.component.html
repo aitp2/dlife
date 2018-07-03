@@ -55,9 +55,9 @@
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aitpapiApp.evaluate.recipeOrder" for="field_recipeOrder">Recipe Order</label>
-            <select class="form-control" id="field_recipeOrder" name="recipeOrder" [(ngModel)]="evaluate.recipeOrderId" >
+            <select class="form-control" id="field_recipeOrder" name="recipeOrder" [(ngModel)]="evaluate.recipeOrder" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="recipeOrderOption.id" *ngFor="let recipeOrderOption of recipeorders; trackBy: trackRecipeOrderById">{{recipeOrderOption.id}}</option>
+                <option [ngValue]="recipeOrderOption.id === evaluate.recipeOrder?.id ? evaluate.recipeOrder : recipeOrderOption" *ngFor="let recipeOrderOption of recipeorders; trackBy: trackRecipeOrderById">{{recipeOrderOption.id}}</option>
             </select>
         </div>
     </div>

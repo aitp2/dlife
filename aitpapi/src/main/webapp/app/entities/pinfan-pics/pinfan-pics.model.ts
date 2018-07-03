@@ -5,8 +5,8 @@ export class PinfanPics implements BaseEntity {
         public id?: number,
         public ossPath?: string,
         public createTime?: any,
-        public pinFanActivityId?: number,
-        public rateId?: number,
+        public pinFanActivity?: BaseEntity,
+        public rate?: BaseEntity,
     ) {
     }
 }

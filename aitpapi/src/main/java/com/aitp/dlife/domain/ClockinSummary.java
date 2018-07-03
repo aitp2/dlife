@@ -18,7 +18,7 @@ import java.util.Objects;
 @ApiModel(description = "打卡汇总表")
 @Entity
 @Table(name = "clockin_summary")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
 public class ClockinSummary implements Serializable {
 
     private static final long serialVersionUID = 1L;

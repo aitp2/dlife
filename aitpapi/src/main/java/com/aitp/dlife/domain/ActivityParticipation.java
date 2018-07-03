@@ -21,7 +21,7 @@ import java.util.Objects;
 @ApiModel(description = "健身活动参与信息")
 @Entity
 @Table(name = "activity_participation")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
 public class ActivityParticipation implements Serializable {
 
     private static final long serialVersionUID = 1L;

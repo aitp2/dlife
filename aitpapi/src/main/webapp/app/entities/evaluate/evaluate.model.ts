@@ -10,7 +10,7 @@ export class Evaluate implements BaseEntity {
         public createTime?: any,
         public modifyTime?: any,
         public images?: BaseEntity[],
-        public recipeOrderId?: number,
+        public recipeOrder?: BaseEntity,
     ) {
     }
 }

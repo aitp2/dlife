@@ -19,8 +19,8 @@
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="ossPath"><span jhiTranslate="aitpapiApp.image.ossPath">Oss Path</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="createTime"><span jhiTranslate="aitpapiApp.image.createTime">Create Time</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="recipeId"><span jhiTranslate="aitpapiApp.image.recipe">Recipe</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="evaluatId"><span jhiTranslate="aitpapiApp.image.evaluat">Evaluat</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="recipe.id"><span jhiTranslate="aitpapiApp.image.recipe">Recipe</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="evaluat.id"><span jhiTranslate="aitpapiApp.image.evaluat">Evaluat</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -30,13 +30,13 @@
                 <td>{{image.ossPath}}</td>
                 <td>{{image.createTime | date:'medium'}}</td>
                 <td>
-                    <div *ngIf="image.recipeId">
-                        <a [routerLink]="['../recipe', image.recipeId  ]" >{{image.recipeId}}</a>
+                    <div *ngIf="image.recipe">
+                        <a [routerLink]="['../recipe', image.recipe?.id ]" >{{image.recipe?.id}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="image.evaluatId">
-                        <a [routerLink]="['../evaluate', image.evaluatId  ]" >{{image.evaluatId}}</a>
+                    <div *ngIf="image.evaluat">
+                        <a [routerLink]="['../evaluate', image.evaluat?.id ]" >{{image.evaluat?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">

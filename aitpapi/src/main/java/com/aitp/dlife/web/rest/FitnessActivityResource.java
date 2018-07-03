@@ -52,7 +52,7 @@ public class FitnessActivityResource {
     private static final String ENTITY_NAME = "fitnessActivity";
 
     private final FitnessActivityService fitnessActivityService;
-    
+
     private final PicsService picsService;
 
     public FitnessActivityResource(FitnessActivityService fitnessActivityService,PicsService picsService) {
@@ -74,15 +74,12 @@ public class FitnessActivityResource {
         if (fitnessActivityDTO.getId() != null) {
             throw new BadRequestAlertException("A new fitnessActivity cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        
         Set<PicsDTO> imagesDTO = new HashSet<>();
         FitnessActivityDTO result = fitnessActivityService.save(fitnessActivityDTO);
-        
+
 		if (fitnessActivityDTO.getImages() != null && !fitnessActivityDTO.getImages().isEmpty()){
         	for(PicsDTO pics : fitnessActivityDTO.getImages()){
-        		 if(!StringUtils.isEmpty(pics.getCreateTime())){
                      pics.setCreateTime(DateUtil.getYMDDateString(new Date()));
-                 }
         		 pics.setFitnessActivityId(result.getId());
         		 imagesDTO.add(picsService.save(pics));
         	}
@@ -141,6 +138,7 @@ public class FitnessActivityResource {
     public ResponseEntity<FitnessActivityDTO> getFitnessActivity(@PathVariable Long id) {
         log.debug("REST request to get FitnessActivity : {}", id);
         FitnessActivityDTO fitnessActivityDTO = fitnessActivityService.findOne(id);
+        fitnessActivityService.ActivityStatus(fitnessActivityDTO);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(fitnessActivityDTO));
     }
 
@@ -157,7 +155,7 @@ public class FitnessActivityResource {
         fitnessActivityService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-    
+
     @GetMapping("/fitness-activities/getActivitiesByWechatUserId")
     @Timed
     public List<FitnessActivityDTO> getActivitiesByWechatUserId(String wechatUserId) {
@@ -167,4 +165,6 @@ public class FitnessActivityResource {
         }
         return fitnessActivityService.getActivitiesByWechatUserId(wechatUserId);
     }
+
+
 }
