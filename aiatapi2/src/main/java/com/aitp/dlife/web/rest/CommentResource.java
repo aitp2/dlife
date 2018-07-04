@@ -1,6 +1,9 @@
 package com.aitp.dlife.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.aitp.dlife.domain.FitnessActivity;
+import com.aitp.dlife.repository.CommentRepository;
+import com.aitp.dlife.repository.FitnessActivityRepository;
 import com.aitp.dlife.service.CommentService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
@@ -19,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,9 +38,13 @@ public class CommentResource {
     private static final String ENTITY_NAME = "comment";
 
     private final CommentService commentService;
+    
+    private final FitnessActivityRepository fitnessActivityRepository;
+    
 
-    public CommentResource(CommentService commentService) {
+    public CommentResource(CommentService commentService,FitnessActivityRepository fitnessActivityRepository) {
         this.commentService = commentService;
+        this.fitnessActivityRepository = fitnessActivityRepository;
     }
 
     /**
@@ -55,6 +62,12 @@ public class CommentResource {
             throw new BadRequestAlertException("A new comment cannot already have an ID", ENTITY_NAME, "idexists");
         }
         CommentDTO result = commentService.save(commentDTO);
+        
+        FitnessActivity fitnessActivity = new FitnessActivity();
+        fitnessActivity.setId(commentDTO.getObjectId());
+        fitnessActivity.setModifyTime(Instant.now());
+        fitnessActivityRepository.save(fitnessActivity);
+        
         return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);

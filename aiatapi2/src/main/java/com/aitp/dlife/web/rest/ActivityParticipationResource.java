@@ -1,16 +1,15 @@
 package com.aitp.dlife.web.rest;
 
 
-import com.aitp.dlife.web.rest.util.DateUtil;
-import com.codahale.metrics.annotation.Timed;
-import com.aitp.dlife.service.ActivityParticipationService;
-import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
-import com.aitp.dlife.web.rest.util.HeaderUtil;
-import com.aitp.dlife.web.rest.util.PaginationUtil;
-import com.aitp.dlife.service.dto.ActivityParticipationDTO;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -18,15 +17,26 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.aitp.dlife.domain.FitnessActivity;
+import com.aitp.dlife.repository.FitnessActivityRepository;
+import com.aitp.dlife.service.ActivityParticipationService;
+import com.aitp.dlife.service.dto.ActivityParticipationDTO;
+import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
+import com.aitp.dlife.web.rest.util.DateUtil;
+import com.aitp.dlife.web.rest.util.HeaderUtil;
+import com.aitp.dlife.web.rest.util.PaginationUtil;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing ActivityParticipation.
@@ -40,10 +50,13 @@ public class ActivityParticipationResource {
     private static final String ENTITY_NAME = "activityParticipation";
 
     private final ActivityParticipationService activityParticipationService;
+    
+    private final FitnessActivityRepository fitnessActivityRepository;
 
 
-    public ActivityParticipationResource(ActivityParticipationService activityParticipationService) {
+    public ActivityParticipationResource(ActivityParticipationService activityParticipationService,FitnessActivityRepository fitnessActivityRepository) {
         this.activityParticipationService = activityParticipationService;
+        this.fitnessActivityRepository = fitnessActivityRepository;
     }
 
     /**
@@ -61,6 +74,11 @@ public class ActivityParticipationResource {
             throw new BadRequestAlertException("A new activityParticipation cannot already have an ID", ENTITY_NAME, "idexists");
         }
         activityParticipationDTO.setParticipationTime(DateUtil.getYMDDateString(new Date()));
+        
+        FitnessActivity fitnessActivity = new FitnessActivity();
+        fitnessActivity.setId(activityParticipationDTO.getActivityId());
+        fitnessActivity.setModifyTime(Instant.now());
+        fitnessActivityRepository.save(fitnessActivity);
 
         ActivityParticipationDTO result = activityParticipationService.save(activityParticipationDTO);
         return ResponseEntity.created(new URI("/api/activity-participations/" + result.getId()))
