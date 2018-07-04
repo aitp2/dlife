@@ -71,13 +71,16 @@ public class ClockInResource {
         if (clockInDTO.getId() != null) {
             throw new BadRequestAlertException("A new clockIn cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        if(clockInService.isClockIn(clockInDTO.getWechatUserId(),clockInDTO.getActivityParticipationId()))
+        {
+            throw new BadRequestAlertException("A new clockIn cannot already have clockin today",ENTITY_NAME,"请不要重复打卡哦");
+        }
+        clockInDTO.setPunchDateTime(DateUtil.getYMDDateString(new Date()));
         Set<PicsDTO> imagesDTO = new HashSet<>();
         ClockInDTO result = clockInService.save(clockInDTO);
         if (clockInDTO.getPics() != null && !clockInDTO.getPics().isEmpty()){
         	for(PicsDTO pics : clockInDTO.getPics()){
-        		 if(!StringUtils.isEmpty(pics.getCreateTime())){
                      pics.setCreateTime(DateUtil.getYMDDateString(new Date()));
-                 }
         		 pics.setClockInId(result.getId());
         		 imagesDTO.add(picsService.save(pics));
         	}
@@ -93,17 +96,20 @@ public class ClockInResource {
         	newClockinSummaryDTO.setTotallyCount(1);
         	newClockinSummaryDTO.setWechatUserId(String.valueOf(clockInDTO.getWechatUserId()));
         	clockinSummaryService.save(newClockinSummaryDTO);
-        } else if(!DateUtil.isToday(DateUtil.fromYDMStringDate(clockinSummaryDTO.getLastClockInTime()))){
-        	ClockinSummaryDTO newClockinSummaryDTO = new ClockinSummaryDTO();
-        	newClockinSummaryDTO.setId(clockinSummaryDTO.getId());
-        	newClockinSummaryDTO.setLastClockInTime(DateUtil.getYMDDateString(new Date()));
-        	newClockinSummaryDTO.setSerialCount(clockinSummaryDTO.getSerialCount() + 1);
-        	newClockinSummaryDTO.setWeeklyCount(clockinSummaryDTO.getWeeklyCount() + 1);
-        	newClockinSummaryDTO.setTotallyCount(clockinSummaryDTO.getTotallyCount() + 1);
-        	newClockinSummaryDTO.setWechatUserId(String.valueOf(clockInDTO.getWechatUserId()));
-        	clockinSummaryService.save(newClockinSummaryDTO);
-        }
-        
+		} else if (!DateUtil.isToday(DateUtil.fromYDMStringDate(clockinSummaryDTO.getLastClockInTime()))) {
+			ClockinSummaryDTO newClockinSummaryDTO = new ClockinSummaryDTO();
+			newClockinSummaryDTO.setId(clockinSummaryDTO.getId());
+			newClockinSummaryDTO.setSerialCount(
+					DateUtil.isYesterday(DateUtil.fromYDMStringDate(clockinSummaryDTO.getLastClockInTime()))
+							? clockinSummaryDTO.getSerialCount() + 1 : 1);
+			newClockinSummaryDTO.setWeeklyCount(DateUtil.isThisWeek(clockinSummaryDTO.getLastClockInTime())
+					? clockinSummaryDTO.getWeeklyCount() + 1 : 1);
+			newClockinSummaryDTO.setTotallyCount(clockinSummaryDTO.getTotallyCount() + 1);
+			newClockinSummaryDTO.setWechatUserId(String.valueOf(clockInDTO.getWechatUserId()));
+			newClockinSummaryDTO.setLastClockInTime(DateUtil.getYMDDateString(new Date()));
+			clockinSummaryService.save(newClockinSummaryDTO);
+		}
+
         return ResponseEntity.created(new URI("/api/clock-ins/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -173,24 +179,24 @@ public class ClockInResource {
         clockInService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-    
+
     @GetMapping("/clock-ins/getClockinsByActivityParticipationId")
     @Timed
     public List<ClockInDTO>  getClockinsByActivityParticipationId(Long activityParticipationId) {
         log.debug("REST request to get Clockins : {}", activityParticipationId);
         return clockInService.findClockinsByActivityParticipationId(activityParticipationId);
     }
-    
+
     @GetMapping("/clock-ins/getClockinsDateByWechatUserIdAndMonth")
     @Timed
-    public List<String>  getClockinsDateByWechatUserIdAndMonth(Long wechatUserId,String yearMonth) {
+    public List<String>  getClockinsDateByWechatUserIdAndMonth(String wechatUserId,String yearMonth) {
         log.debug("REST request to get Clockins : {}", wechatUserId,yearMonth);
         return clockInService.getClockinsDateByWechatUserIdAndMonth(wechatUserId,yearMonth);
     }
-    
+
     @GetMapping("/clock-ins/getClockinsByWechatUserIdAndDate")
     @Timed
-    public List<ClockInDTO>  getClockinsByWechatUserIdAndDate(Long wechatUserId,String yearMonthDate) {
+    public List<ClockInDTO>  getClockinsByWechatUserIdAndDate(String wechatUserId,String yearMonthDate) {
         log.debug("REST request to get Clockins : {}", wechatUserId,yearMonthDate);
         return clockInService.getClockinsByWechatUserIdAndDate(wechatUserId,yearMonthDate);
     }

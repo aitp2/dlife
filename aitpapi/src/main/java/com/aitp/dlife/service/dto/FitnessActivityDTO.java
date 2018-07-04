@@ -46,9 +46,11 @@ public class FitnessActivityDTO implements Serializable {
     private String activityStartTime;
 
     private String activityEndTime;
-    
+
     private Integer attendCount;
-    
+
+    private Integer status;
+
     private Set<PicsDTO> images = new HashSet<>();
 
     public Long getId() {
@@ -115,7 +117,7 @@ public class FitnessActivityDTO implements Serializable {
         this.companyRole = companyRole;
     }
 
- 
+
 
     public String getSignStartTime() {
 		return signStartTime;
@@ -165,7 +167,15 @@ public class FitnessActivityDTO implements Serializable {
 		this.images = images;
 	}
 
-	@Override
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

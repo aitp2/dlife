@@ -83,11 +83,16 @@ public class ActivityParticipationService {
         log.debug("Request to delete ActivityParticipation : {}", id);
         activityParticipationRepository.delete(id);
     }
-    
+
 	public List<ActivityParticipationDTO> findByActivity(Long activityId) {
 		return activityParticipationRepository.findByActivityId(activityId).stream()
 	            .map(activityParticipationMapper::toDto)
 	            .collect(Collectors.toCollection(LinkedList::new));
-		
+
 	}
+
+	public ActivityParticipationDTO getByUidAndActivityId(Long activityId,String uid){
+        ActivityParticipation activityParticipation = activityParticipationRepository.findByUidAndActivityId(activityId,uid);
+        return activityParticipationMapper.toDto(activityParticipation);
+    }
 }

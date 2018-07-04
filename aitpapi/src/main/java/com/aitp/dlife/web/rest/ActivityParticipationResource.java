@@ -1,5 +1,7 @@
 package com.aitp.dlife.web.rest;
 
+
+import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.ActivityParticipationService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -22,6 +24,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +40,7 @@ public class ActivityParticipationResource {
     private static final String ENTITY_NAME = "activityParticipation";
 
     private final ActivityParticipationService activityParticipationService;
+
 
     public ActivityParticipationResource(ActivityParticipationService activityParticipationService) {
         this.activityParticipationService = activityParticipationService;
@@ -56,6 +60,8 @@ public class ActivityParticipationResource {
         if (activityParticipationDTO.getId() != null) {
             throw new BadRequestAlertException("A new activityParticipation cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        activityParticipationDTO.setParticipationTime(DateUtil.getYMDDateString(new Date()));
+
         ActivityParticipationDTO result = activityParticipationService.save(activityParticipationDTO);
         return ResponseEntity.created(new URI("/api/activity-participations/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -126,8 +132,8 @@ public class ActivityParticipationResource {
         activityParticipationService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-    
-    
+
+
     @GetMapping("/activity-participations/getParticipationsByActivityId")
     @Timed
     public List<ActivityParticipationDTO>  getParticipationsByActivityId(Long activityId) {
@@ -140,5 +146,18 @@ public class ActivityParticipationResource {
         result.sort((b1, b2) -> b1.getClockinCount() > b2.getClockinCount() ?  -1 : 1);
         return result;
     }
-    
+
+
+
+    @GetMapping("/activity-participations/{wechatUserId}/{activityId}")
+    @Timed
+    public ResponseEntity<ActivityParticipationDTO> getSignUpInfo(@PathVariable String wechatUserId,@PathVariable Long activityId) {
+        log.debug("REST request to get ClockinSummary by wechatUserId: {}", wechatUserId);
+        if (wechatUserId == null||activityId == null) {
+            throw new BadRequestAlertException("wechatUserId or activityId can not be null", ENTITY_NAME, "idexists");
+        }
+        ActivityParticipationDTO result = activityParticipationService.getByUidAndActivityId(activityId,wechatUserId);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
+    }
+
 }

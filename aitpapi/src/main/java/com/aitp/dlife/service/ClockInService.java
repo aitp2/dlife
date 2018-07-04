@@ -1,9 +1,11 @@
 package com.aitp.dlife.service;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.aitp.dlife.web.rest.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -15,6 +17,7 @@ import com.aitp.dlife.domain.ClockIn;
 import com.aitp.dlife.repository.ClockInRepository;
 import com.aitp.dlife.service.dto.ClockInDTO;
 import com.aitp.dlife.service.mapper.ClockInMapper;
+import org.springframework.util.CollectionUtils;
 
 
 /**
@@ -85,20 +88,36 @@ public class ClockInService {
     }
 
 	public List<ClockInDTO> findClockinsByActivityParticipationId(Long activityParticipationId) {
-		
+
 		return clockInRepository.findClockinsByActivityParticipationId(activityParticipationId).stream()
 	            .map(clockInMapper::toDto)
 	            .collect(Collectors.toCollection(LinkedList::new));
 	}
-	
-	public List<String> getClockinsDateByWechatUserIdAndMonth(Long wechatUserId,String yearMonth) {
-		
+
+	public List<String> getClockinsDateByWechatUserIdAndMonth(String wechatUserId,String yearMonth) {
+
 		return clockInRepository.findClockinsDateByWechatUserIdAndMonth(wechatUserId,yearMonth);
 	}
 
-	public List<ClockInDTO> getClockinsByWechatUserIdAndDate(Long wechatUserId, String yearMonthDate) {
+	public List<ClockInDTO> getClockinsByWechatUserIdAndDate(String wechatUserId, String yearMonthDate) {
 		return clockInRepository.getClockinsByWechatUserIdAndDate(wechatUserId,yearMonthDate).stream()
 	            .map(clockInMapper::toDto)
 	            .collect(Collectors.toCollection(LinkedList::new));
 	}
+
+    public List<ClockInDTO> getClockinsByWechatUserIdAndDateAndActivityId(String wechatUserId,Long activityParticipationId, String yearMonthDate) {
+        return clockInRepository.getClockinsByWechatUserIdAndDateAndActivityId(wechatUserId,activityParticipationId,yearMonthDate).stream()
+            .map(clockInMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    public boolean isClockIn(String wechatUserId,Long activityParticipationId)
+    {
+        String today = DateUtil.getYYMMDDDateString(new Date());
+        if(CollectionUtils.isEmpty(getClockinsByWechatUserIdAndDateAndActivityId(wechatUserId,activityParticipationId,today)))
+        {
+            return false;
+        }
+        return true;
+    }
 }

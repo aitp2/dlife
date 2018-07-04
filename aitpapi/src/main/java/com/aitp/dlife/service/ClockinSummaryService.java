@@ -3,7 +3,7 @@ package com.aitp.dlife.service;
 import com.aitp.dlife.domain.ClockinSummary;
 import com.aitp.dlife.repository.ClockinSummaryRepository;
 import com.aitp.dlife.service.dto.ClockinSummaryDTO;
-import com.aitp.dlife.service.mapper.ClockinSummaryMapper;
+import com.aitp.dlife.service.mapper.ClockinSummaryMapper;import com.aitp.dlife.web.rest.util.DateUtil;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -90,7 +90,15 @@ public class ClockinSummaryService {
      * @param wechatUserId
      * @return
      */
-    public ClockinSummaryDTO findByWechatUserId(Long wechatUserId) {
-		return clockinSummaryMapper.toDto(clockinSummaryRepository.findByWechatUserId(String.valueOf(wechatUserId)));
+    public ClockinSummaryDTO findByWechatUserId(String wechatUserId) {
+    	ClockinSummaryDTO result = clockinSummaryMapper.toDto(clockinSummaryRepository.findByWechatUserId(String.valueOf(wechatUserId))) ;
+    	if(null != result && null != result.getId()){
+    		result.setWeeklyCount(DateUtil.isThisWeek(result.getLastClockInTime())
+					? result.getWeeklyCount() : 0);
+    		result.setSerialCount(
+					DateUtil.isYesterday(DateUtil.fromYDMStringDate(result.getLastClockInTime())) || DateUtil.isToday(DateUtil.fromYDMStringDate(result.getLastClockInTime()))
+							? result.getSerialCount() : 0);
+    	}
+		return result;
 	}
 }
