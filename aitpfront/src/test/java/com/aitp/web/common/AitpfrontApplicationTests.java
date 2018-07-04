@@ -1,4 +1,4 @@
-package com.aitp.web.aitpfront;
+package com.aitp.web.common;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

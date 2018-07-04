@@ -1,6 +1,6 @@
-package com.aitp.web.aitpfront.service;
+package com.aitp.web.common.service;
 
-import com.aitp.web.aitpfront.service.dto.WechatUserDTO;
+import com.aitp.web.common.service.dto.WechatUserDTO;
 import com.alibaba.fastjson.JSONObject;
 
 /**

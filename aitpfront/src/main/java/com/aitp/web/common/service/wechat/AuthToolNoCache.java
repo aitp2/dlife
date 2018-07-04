@@ -1,8 +1,8 @@
-package com.aitp.web.aitpfront.service.wechat;
+package com.aitp.web.common.service.wechat;
 
-import com.aitp.web.aitpfront.service.beans.AuthInfo;
-import com.aitp.web.aitpfront.service.beans.Token;
-import com.aitp.web.aitpfront.service.utils.HttpUtil;
+import com.aitp.web.common.service.beans.AuthInfo;
+import com.aitp.web.common.service.beans.Token;
+import com.aitp.web.common.service.utils.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;

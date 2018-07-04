@@ -1,7 +1,7 @@
-package com.aitp.web.aitpfront.service;
+package com.aitp.web.common.service;
 
-import com.aitp.web.aitpfront.service.dto.WechatUserDTO;
-import com.aitp.web.aitpfront.service.utils.HttpUtil;
+import com.aitp.web.common.service.dto.WechatUserDTO;
+import com.aitp.web.common.service.utils.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;

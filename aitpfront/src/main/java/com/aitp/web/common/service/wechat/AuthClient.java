@@ -1,7 +1,7 @@
-package com.aitp.web.aitpfront.service.wechat;
+package com.aitp.web.common.service.wechat;
 
-import com.aitp.web.aitpfront.service.beans.AuthInfo;
-import com.aitp.web.aitpfront.service.beans.Token;
+import com.aitp.web.common.service.beans.AuthInfo;
+import com.aitp.web.common.service.beans.Token;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

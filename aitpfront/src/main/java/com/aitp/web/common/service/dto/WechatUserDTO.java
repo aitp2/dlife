@@ -1,4 +1,4 @@
-package com.aitp.web.aitpfront.service.dto;
+package com.aitp.web.common.service.dto;
 
 /**
  * 微信用户信息
