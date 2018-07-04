@@ -1,9 +1,12 @@
 package com.aitp.dlife.repository;
 
 import com.aitp.dlife.domain.Pics;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
+
+import java.util.List;
 
 
 /**
@@ -13,4 +16,7 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface PicsRepository extends JpaRepository<Pics, Long> {
 
+    @Query(value = "select pics from Pics pics "
+        + "where pics.clockIn.id =:clockInId",nativeQuery = false)
+    List<Pics> findPicsByClockInId(@Param("clockInId") Long clockInId);
 }

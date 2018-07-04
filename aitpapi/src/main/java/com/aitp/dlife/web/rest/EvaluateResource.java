@@ -78,7 +78,7 @@ public class EvaluateResource {
             {
                 if (imageDTO != null && StringUtils.isNotEmpty(imageDTO.getOssPath()))
                 {
-                    imageDTO.setRecipeId(evaluateDTO.getId());
+                    imageDTO.setEvaluatId(evaluateDTO.getId());
                     imageDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
                     imageService.save(imageDTO);
                 }
@@ -122,7 +122,7 @@ public class EvaluateResource {
                 if(newImage.getId() == null)
                 {
                     newImage.setCreateTime(DateUtil.getYMDDateString(new Date()));
-                    newImage.setRecipeId(evaluateDTO.getId());
+                    newImage.setEvaluatId(evaluateDTO.getId());
                     imageService.save(newImage);
                     continue;
                 }
