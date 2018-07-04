@@ -1,7 +1,6 @@
-package com.aitp.web.aitpfront.controller;
+package com.aitp.web.common.controller;
 
-import com.aitp.web.aitpfront.service.beans.AuthInfo;
-import com.aitp.web.aitpfront.service.beans.Code;
+import com.aitp.web.common.service.beans.Code;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

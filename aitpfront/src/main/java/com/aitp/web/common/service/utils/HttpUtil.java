@@ -1,4 +1,4 @@
-package com.aitp.web.aitpfront.service.utils;
+package com.aitp.web.common.service.utils;
 import java.io.IOException;
 import java.util.Base64;
 

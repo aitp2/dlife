@@ -1,11 +1,11 @@
-package com.aitp.web.aitpfront.controller;
+package com.aitp.web.common.controller;
 
-import com.aitp.web.aitpfront.service.UserService;
-import com.aitp.web.aitpfront.service.beans.AuthInfo;
-import com.aitp.web.aitpfront.service.beans.Token;
-import com.aitp.web.aitpfront.service.dto.WechatUserDTO;
-import com.aitp.web.aitpfront.service.utils.HttpUtil;
-import com.aitp.web.aitpfront.service.wechat.AuthClient;
+import com.aitp.web.common.service.UserService;
+import com.aitp.web.common.service.beans.AuthInfo;
+import com.aitp.web.common.service.beans.Token;
+import com.aitp.web.common.service.dto.WechatUserDTO;
+import com.aitp.web.common.service.utils.HttpUtil;
+import com.aitp.web.common.service.wechat.AuthClient;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
