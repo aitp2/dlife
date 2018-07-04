@@ -1,0 +1,54 @@
+
+<div *ngIf="follow">
+    <h2><span>Follow</span> {{follow.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Follow User Id</span></dt>
+        <dd>
+            <span>{{follow.followUserId}}</span>
+        </dd>
+        <dt><span>Follow User Nickname</span></dt>
+        <dd>
+            <span>{{follow.followUserNickname}}</span>
+        </dd>
+        <dt><span>Follow Useravatar</span></dt>
+        <dd>
+            <span>{{follow.followUseravatar}}</span>
+        </dd>
+        <dt><span>Followed User Id</span></dt>
+        <dd>
+            <span>{{follow.followedUserId}}</span>
+        </dd>
+        <dt><span>Followed User Nickname</span></dt>
+        <dd>
+            <span>{{follow.followedUserNickname}}</span>
+        </dd>
+        <dt><span>Followed Useravatar</span></dt>
+        <dd>
+            <span>{{follow.followedUseravatar}}</span>
+        </dd>
+        <dt><span>Create Time</span></dt>
+        <dd>
+            <span>{{follow.createTime | date:'medium'}}</span>
+        </dd>
+        <dt><span>Modify Time</span></dt>
+        <dd>
+            <span>{{follow.modifyTime | date:'medium'}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'follow/'+ follow.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

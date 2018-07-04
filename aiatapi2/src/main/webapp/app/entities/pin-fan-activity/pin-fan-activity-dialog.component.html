@@ -1,0 +1,197 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myPinFanActivityLabel">Create or edit a Pin Fan Activity</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!pinFanActivity.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="pinFanActivity.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_wechatUserId">Wechat User Id</label>
+            <input type="text" class="form-control" name="wechatUserId" id="field_wechatUserId"
+                [(ngModel)]="pinFanActivity.wechatUserId" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.wechatUserId?.dirty && editForm.controls.wechatUserId?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.wechatUserId?.errors?.maxlength">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_avatar">Avatar</label>
+            <input type="text" class="form-control" name="avatar" id="field_avatar"
+                [(ngModel)]="pinFanActivity.avatar" maxlength="1024"/>
+            <div [hidden]="!(editForm.controls.avatar?.dirty && editForm.controls.avatar?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.avatar?.errors?.maxlength">
+                   This field cannot be longer than 1024 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_nickName">Nick Name</label>
+            <input type="text" class="form-control" name="nickName" id="field_nickName"
+                [(ngModel)]="pinFanActivity.nickName" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.nickName?.dirty && editForm.controls.nickName?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.nickName?.errors?.maxlength">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_activitiyType">Activitiy Type</label>
+            <input type="number" class="form-control" name="activitiyType" id="field_activitiyType"
+                [(ngModel)]="pinFanActivity.activitiyType" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_activitiyTile">Activitiy Tile</label>
+            <input type="text" class="form-control" name="activitiyTile" id="field_activitiyTile"
+                [(ngModel)]="pinFanActivity.activitiyTile" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.activitiyTile?.dirty && editForm.controls.activitiyTile?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.activitiyTile?.errors?.maxlength">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_budget">Budget</label>
+            <input type="number" class="form-control" name="budget" id="field_budget"
+                [(ngModel)]="pinFanActivity.budget" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_activitiyAddre">Activitiy Addre</label>
+            <input type="text" class="form-control" name="activitiyAddre" id="field_activitiyAddre"
+                [(ngModel)]="pinFanActivity.activitiyAddre" maxlength="1024"/>
+            <div [hidden]="!(editForm.controls.activitiyAddre?.dirty && editForm.controls.activitiyAddre?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.activitiyAddre?.errors?.maxlength">
+                   This field cannot be longer than 1024 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_descrption">Descrption</label>
+            <input type="text" class="form-control" name="descrption" id="field_descrption"
+                [(ngModel)]="pinFanActivity.descrption" maxlength="1024"/>
+            <div [hidden]="!(editForm.controls.descrption?.dirty && editForm.controls.descrption?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.descrption?.errors?.maxlength">
+                   This field cannot be longer than 1024 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_organizeUser">Organize User</label>
+            <input type="text" class="form-control" name="organizeUser" id="field_organizeUser"
+                [(ngModel)]="pinFanActivity.organizeUser" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.organizeUser?.dirty && editForm.controls.organizeUser?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.organizeUser?.errors?.maxlength">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_coverPicture">Cover Picture</label>
+            <input type="text" class="form-control" name="coverPicture" id="field_coverPicture"
+                [(ngModel)]="pinFanActivity.coverPicture" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.coverPicture?.dirty && editForm.controls.coverPicture?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.coverPicture?.errors?.maxlength">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_appointDatetime">Appoint Datetime</label>
+            <div class="d-flex">
+                <input id="field_appointDatetime" type="datetime-local" class="form-control" name="appointDatetime" [(ngModel)]="pinFanActivity.appointDatetime"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_appointEndDatetime">Appoint End Datetime</label>
+            <div class="d-flex">
+                <input id="field_appointEndDatetime" type="datetime-local" class="form-control" name="appointEndDatetime" [(ngModel)]="pinFanActivity.appointEndDatetime"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_salerUrl">Saler Url</label>
+            <input type="text" class="form-control" name="salerUrl" id="field_salerUrl"
+                [(ngModel)]="pinFanActivity.salerUrl" maxlength="1024"/>
+            <div [hidden]="!(editForm.controls.salerUrl?.dirty && editForm.controls.salerUrl?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.salerUrl?.errors?.maxlength">
+                   This field cannot be longer than 1024 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_lowerLimit">Lower Limit</label>
+            <input type="number" class="form-control" name="lowerLimit" id="field_lowerLimit"
+                [(ngModel)]="pinFanActivity.lowerLimit" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_upperLimit">Upper Limit</label>
+            <input type="number" class="form-control" name="upperLimit" id="field_upperLimit"
+                [(ngModel)]="pinFanActivity.upperLimit" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_payType">Pay Type</label>
+            <input type="text" class="form-control" name="payType" id="field_payType"
+                [(ngModel)]="pinFanActivity.payType" maxlength="32"/>
+            <div [hidden]="!(editForm.controls.payType?.dirty && editForm.controls.payType?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.payType?.errors?.maxlength">
+                   This field cannot be longer than 32 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_deadline">Deadline</label>
+            <div class="d-flex">
+                <input id="field_deadline" type="datetime-local" class="form-control" name="deadline" [(ngModel)]="pinFanActivity.deadline"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_comment">Comment</label>
+            <input type="text" class="form-control" name="comment" id="field_comment"
+                [(ngModel)]="pinFanActivity.comment" maxlength="500"/>
+            <div [hidden]="!(editForm.controls.comment?.dirty && editForm.controls.comment?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.comment?.errors?.maxlength">
+                   This field cannot be longer than 500 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_status">Status</label>
+            <input type="number" class="form-control" name="status" id="field_status"
+                [(ngModel)]="pinFanActivity.status" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_commentCount">Comment Count</label>
+            <input type="number" class="form-control" name="commentCount" id="field_commentCount"
+                [(ngModel)]="pinFanActivity.commentCount" />
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

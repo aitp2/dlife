@@ -1,0 +1,74 @@
+<div>
+    <h2>
+        <span>Pinfan Pics</span>
+        <button class="btn btn-primary float-right jh-create-entity create-pinfan-pics" [routerLink]="['/', { outlets: { popup: ['pinfan-pics-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span >
+            Create new Pinfan Pics
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="pinfanPics">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="ossPath"><span>Oss Path</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="createTime"><span>Create Time</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="pinFanActivityId"><span>Pin Fan Activity</span> <span class="fa fa-sort"></span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let pinfanPics of pinfanPics ;trackBy: trackId">
+                <td><a [routerLink]="['../pinfan-pics', pinfanPics.id ]">{{pinfanPics.id}}</a></td>
+                <td>{{pinfanPics.ossPath}}</td>
+                <td>{{pinfanPics.createTime | date:'medium'}}</td>
+                <td>
+                    <div *ngIf="pinfanPics.pinFanActivityId">
+                        <a [routerLink]="['../pin-fan-activity', pinfanPics.pinFanActivityId  ]" >{{pinfanPics.pinFanActivityId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../pinfan-pics', pinfanPics.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'pinfan-pics/'+ pinfanPics.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'pinfan-pics/'+ pinfanPics.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="pinfanPics && pinfanPics.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

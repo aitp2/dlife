@@ -1,0 +1,56 @@
+
+<div *ngIf="recipeOrder">
+    <h2><span>Recipe Order</span> {{recipeOrder.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Wechat User Id</span></dt>
+        <dd>
+            <span>{{recipeOrder.wechatUserId}}</span>
+        </dd>
+        <dt><span>Avatar</span></dt>
+        <dd>
+            <span>{{recipeOrder.avatar}}</span>
+        </dd>
+        <dt><span>Nick Name</span></dt>
+        <dd>
+            <span>{{recipeOrder.nickName}}</span>
+        </dd>
+        <dt><span>Recipe Version</span></dt>
+        <dd>
+            <span>{{recipeOrder.recipeVersion}}</span>
+        </dd>
+        <dt><span>Price</span></dt>
+        <dd>
+            <span>{{recipeOrder.price}}</span>
+        </dd>
+        <dt><span>Create Time</span></dt>
+        <dd>
+            <span>{{recipeOrder.createTime | date:'medium'}}</span>
+        </dd>
+        <dt><span>Modify Time</span></dt>
+        <dd>
+            <span>{{recipeOrder.modifyTime | date:'medium'}}</span>
+        </dd>
+        <dt><span>Recipe</span></dt>
+        <dd>
+            <div *ngIf="recipeOrder.recipeId">
+                <a [routerLink]="['/recipe', recipeOrder.recipeId]">{{recipeOrder.recipeId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'recipe-order/'+ recipeOrder.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

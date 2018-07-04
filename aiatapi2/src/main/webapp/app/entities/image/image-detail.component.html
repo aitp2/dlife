@@ -1,0 +1,36 @@
+
+<div *ngIf="image">
+    <h2><span>Image</span> {{image.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Oss Path</span></dt>
+        <dd>
+            <span>{{image.ossPath}}</span>
+        </dd>
+        <dt><span>Create Time</span></dt>
+        <dd>
+            <span>{{image.createTime | date:'medium'}}</span>
+        </dd>
+        <dt><span>Recipe</span></dt>
+        <dd>
+            <div *ngIf="image.recipeId">
+                <a [routerLink]="['/recipe', image.recipeId]">{{image.recipeId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'image/'+ image.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,99 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myRecipeOrderLabel">Create or edit a Recipe Order</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!recipeOrder.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="recipeOrder.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_wechatUserId">Wechat User Id</label>
+            <input type="text" class="form-control" name="wechatUserId" id="field_wechatUserId"
+                [(ngModel)]="recipeOrder.wechatUserId" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.wechatUserId?.dirty && editForm.controls.wechatUserId?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.wechatUserId?.errors?.maxlength">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_avatar">Avatar</label>
+            <input type="text" class="form-control" name="avatar" id="field_avatar"
+                [(ngModel)]="recipeOrder.avatar" maxlength="1024"/>
+            <div [hidden]="!(editForm.controls.avatar?.dirty && editForm.controls.avatar?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.avatar?.errors?.maxlength">
+                   This field cannot be longer than 1024 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_nickName">Nick Name</label>
+            <input type="text" class="form-control" name="nickName" id="field_nickName"
+                [(ngModel)]="recipeOrder.nickName" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.nickName?.dirty && editForm.controls.nickName?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.nickName?.errors?.maxlength">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_recipeVersion">Recipe Version</label>
+            <input type="number" class="form-control" name="recipeVersion" id="field_recipeVersion"
+                [(ngModel)]="recipeOrder.recipeVersion" max="9"/>
+            <div [hidden]="!(editForm.controls.recipeVersion?.dirty && editForm.controls.recipeVersion?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.recipeVersion?.errors?.max">
+                    This field cannot be more than 9.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.recipeVersion?.errors?.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_price">Price</label>
+            <input type="number" class="form-control" name="price" id="field_price"
+                [(ngModel)]="recipeOrder.price" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_createTime">Create Time</label>
+            <div class="d-flex">
+                <input id="field_createTime" type="datetime-local" class="form-control" name="createTime" [(ngModel)]="recipeOrder.createTime"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_modifyTime">Modify Time</label>
+            <div class="d-flex">
+                <input id="field_modifyTime" type="datetime-local" class="form-control" name="modifyTime" [(ngModel)]="recipeOrder.modifyTime"
+                />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" for="field_recipe">Recipe</label>
+            <select class="form-control" id="field_recipe" name="recipe" [(ngModel)]="recipeOrder.recipeId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="recipeOption.id" *ngFor="let recipeOption of recipes; trackBy: trackRecipeById">{{recipeOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

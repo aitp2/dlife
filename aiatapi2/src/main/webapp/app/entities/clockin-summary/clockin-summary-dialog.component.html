@@ -1,0 +1,58 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myClockinSummaryLabel">Create or edit a Clockin Summary</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!clockinSummary.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="clockinSummary.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_wechatUserId">Wechat User Id</label>
+            <input type="text" class="form-control" name="wechatUserId" id="field_wechatUserId"
+                [(ngModel)]="clockinSummary.wechatUserId" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.wechatUserId?.dirty && editForm.controls.wechatUserId?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.wechatUserId?.errors?.maxlength">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_totallyCount">Totally Count</label>
+            <input type="number" class="form-control" name="totallyCount" id="field_totallyCount"
+                [(ngModel)]="clockinSummary.totallyCount" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_weeklyCount">Weekly Count</label>
+            <input type="number" class="form-control" name="weeklyCount" id="field_weeklyCount"
+                [(ngModel)]="clockinSummary.weeklyCount" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_serialCount">Serial Count</label>
+            <input type="number" class="form-control" name="serialCount" id="field_serialCount"
+                [(ngModel)]="clockinSummary.serialCount" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_lastClockInTime">Last Clock In Time</label>
+            <div class="d-flex">
+                <input id="field_lastClockInTime" type="datetime-local" class="form-control" name="lastClockInTime" [(ngModel)]="clockinSummary.lastClockInTime"
+                />
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

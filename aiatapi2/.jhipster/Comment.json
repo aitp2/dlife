@@ -1,0 +1,95 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "commentPic",
+            "otherEntityName": "commentPic",
+            "otherEntityRelationshipName": "comment"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "parentId",
+            "javadoc": "上一级评论id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "objectId",
+            "javadoc": "评论对象id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "channel",
+            "javadoc": "评论渠道",
+            "fieldType": "CommentChannel",
+            "fieldValues": "COOK,FIT,PIN"
+        },
+        {
+            "fieldName": "wechatUserId",
+            "javadoc": "发布者id",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "avatar",
+            "javadoc": "头像",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 1024
+        },
+        {
+            "fieldName": "nickName",
+            "javadoc": "昵称",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "content",
+            "javadoc": "评论内容",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 1024
+        },
+        {
+            "fieldName": "rating1",
+            "javadoc": "评价级别 1",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "rating2",
+            "javadoc": "评价级别 2",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "rating3",
+            "javadoc": "评价级别 3",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "createTime",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "modifyTime",
+            "fieldType": "Instant"
+        }
+    ],
+    "changelogDate": "20180704083409",
+    "javadoc": "评论信息",
+    "entityTableName": "comment",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false
+}
