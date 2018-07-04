@@ -78,4 +78,14 @@ public class PicsService {
         log.debug("Request to delete Pics : {}", id);
         picsRepository.delete(id);
     }
+
+    /**
+     * Delete all of the pics which is related to the ClockIn by the clockIn id.
+     *
+     * @param clockInId the id of the ClockIn id
+     */
+    public void deleteByClockInId(Long clockInId) {
+        log.debug("Request to delete all of the pics which is related to the ClockIn by the clockIn id : {}", clockInId);
+        picsRepository.findPicsByClockInId(clockInId).stream().forEach(entry -> delete(entry.getId()));
+    }
 }

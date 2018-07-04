@@ -33,9 +33,12 @@ public class ClockInService {
 
     private final ClockInMapper clockInMapper;
 
-    public ClockInService(ClockInRepository clockInRepository, ClockInMapper clockInMapper) {
+    private final PicsService picsService;
+
+    public ClockInService(ClockInRepository clockInRepository, ClockInMapper clockInMapper, PicsService picsService) {
         this.clockInRepository = clockInRepository;
         this.clockInMapper = clockInMapper;
+        this.picsService = picsService;
     }
 
     /**
@@ -85,6 +88,30 @@ public class ClockInService {
     public void delete(Long id) {
         log.debug("Request to delete ClockIn : {}", id);
         clockInRepository.delete(id);
+    }
+
+    /**
+     * Delete all of the clockIn data by activityParticipationId.
+     *
+     * @param activityParticipationId the id of the related ActivityParticipation id
+     */
+    public void deleteByActivityParticipationId(Long activityParticipationId) {
+        log.debug("Request to delete all of the clockIn data by activityParticipationId : {}", activityParticipationId);
+
+        // before delete the clock in data, we need to delete the related image data.
+        clockInRepository.findClockinsByActivityParticipationId(activityParticipationId).stream().forEach(entry ->
+            deletePicsAndClockIn(entry.getId())
+        );
+    }
+
+    /**
+     * Delete all of the clockIn data by activityParticipationId.
+     *
+     * @param clockInId the id of the related ActivityParticipation id
+     */
+    private void deletePicsAndClockIn(Long clockInId){
+        picsService.deleteByClockInId(clockInId);
+        delete(clockInId);
     }
 
 	public List<ClockInDTO> findClockinsByActivityParticipationId(Long activityParticipationId) {

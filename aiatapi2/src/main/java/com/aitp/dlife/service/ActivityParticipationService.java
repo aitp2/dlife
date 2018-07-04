@@ -30,9 +30,12 @@ public class ActivityParticipationService {
 
     private final ActivityParticipationMapper activityParticipationMapper;
 
-    public ActivityParticipationService(ActivityParticipationRepository activityParticipationRepository, ActivityParticipationMapper activityParticipationMapper) {
+    private final ClockInService clockInService;
+
+    public ActivityParticipationService(ActivityParticipationRepository activityParticipationRepository, ActivityParticipationMapper activityParticipationMapper, ClockInService clockInService) {
         this.activityParticipationRepository = activityParticipationRepository;
         this.activityParticipationMapper = activityParticipationMapper;
+        this.clockInService = clockInService;
     }
 
     /**
@@ -81,6 +84,9 @@ public class ActivityParticipationService {
      */
     public void delete(Long id) {
         log.debug("Request to delete ActivityParticipation : {}", id);
+
+        // before we remove the repository, we need to remove the related ClockIn data
+        clockInService.deleteByActivityParticipationId(id);
         activityParticipationRepository.delete(id);
     }
 
