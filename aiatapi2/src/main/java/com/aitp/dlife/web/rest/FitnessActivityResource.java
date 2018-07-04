@@ -106,7 +106,17 @@ public class FitnessActivityResource {
         if (fitnessActivityDTO.getId() == null) {
             return createFitnessActivity(fitnessActivityDTO);
         }
+
+        Set<PicsDTO> imagesDTO = new HashSet<>();
         FitnessActivityDTO result = fitnessActivityService.save(fitnessActivityDTO);
+        if (fitnessActivityDTO.getImages() != null && !fitnessActivityDTO.getImages().isEmpty()){
+            for(PicsDTO pics : fitnessActivityDTO.getImages()){
+                pics.setCreateTime(DateUtil.getYMDDateString(new Date()));
+                pics.setFitnessActivityId(result.getId());
+                imagesDTO.add(picsService.save(pics));
+            }
+        }
+        result.setImages(imagesDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, fitnessActivityDTO.getId().toString()))
             .body(result);
