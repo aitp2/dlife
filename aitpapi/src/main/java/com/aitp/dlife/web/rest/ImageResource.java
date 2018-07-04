@@ -1,5 +1,6 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.ImageService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -20,6 +21,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +56,10 @@ public class ImageResource {
         if (imageDTO.getId() != null) {
             throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        //set default messages
+        imageDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
+
         ImageDTO result = imageService.save(imageDTO);
         return ResponseEntity.created(new URI("/api/images/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

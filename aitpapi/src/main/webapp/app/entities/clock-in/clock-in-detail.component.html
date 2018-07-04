@@ -18,8 +18,8 @@
         </dd>
         <dt><span jhiTranslate="aitpapiApp.clockIn.activityParticipation">Activity Participation</span></dt>
         <dd>
-            <div *ngIf="clockIn.activityParticipationId">
-                <a [routerLink]="['/activity-participation', clockIn.activityParticipationId]">{{clockIn.activityParticipationId}}</a>
+            <div *ngIf="clockIn.activityParticipation">
+                <a [routerLink]="['/activity-participation', clockIn.activityParticipation?.id]">{{clockIn.activityParticipation?.id}}</a>
             </div>
         </dd>
     </dl>

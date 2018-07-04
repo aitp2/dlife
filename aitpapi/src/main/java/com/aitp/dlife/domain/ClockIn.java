@@ -21,7 +21,7 @@ import java.util.Objects;
 @ApiModel(description = "打卡信息")
 @Entity
 @Table(name = "clock_in")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
 public class ClockIn implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -55,7 +55,7 @@ public class ClockIn implements Serializable {
 
     @OneToMany(mappedBy = "clockIn")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<Pics> pics = new HashSet<>();
 
     @ManyToOne

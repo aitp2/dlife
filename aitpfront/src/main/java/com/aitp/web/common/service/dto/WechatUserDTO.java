@@ -1,4 +1,4 @@
-package com.aitp.web.aitpfront.service.dto;
+package com.aitp.web.common.service.dto;
 
 /**
  * 微信用户信息
@@ -8,6 +8,10 @@ public class WechatUserDTO {
      * 用户的唯一标识
      */
     private String openId;
+    /**
+     * User id
+     */
+    private String userId;
     /**
      * 用户昵称
      */
@@ -111,5 +115,13 @@ public class WechatUserDTO {
 
     public void setUnionid(String unionid) {
         this.unionid = unionid;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

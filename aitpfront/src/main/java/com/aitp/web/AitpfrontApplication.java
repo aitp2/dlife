@@ -1,4 +1,4 @@
-package com.aitp.web.aitpfront;
+package com.aitp.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

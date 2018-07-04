@@ -5,8 +5,8 @@ export class Pics implements BaseEntity {
         public id?: number,
         public ossPath?: string,
         public createTime?: any,
-        public fitnessActivityId?: number,
-        public clockInId?: number,
+        public fitnessActivity?: BaseEntity,
+        public clockIn?: BaseEntity,
     ) {
     }
 }

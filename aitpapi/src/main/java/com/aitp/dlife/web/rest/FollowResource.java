@@ -1,5 +1,8 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.service.WechatUserService;
+import com.aitp.dlife.service.dto.WechatUserDTO;
+import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.FollowService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -7,6 +10,7 @@ import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import com.aitp.dlife.service.dto.FollowDTO;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -14,13 +18,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,8 +41,11 @@ public class FollowResource {
 
     private final FollowService followService;
 
-    public FollowResource(FollowService followService) {
+    private final WechatUserService wechatUserService;
+
+    public FollowResource(FollowService followService, WechatUserService wechatUserService) {
         this.followService = followService;
+        this.wechatUserService = wechatUserService;
     }
 
     /**
@@ -55,6 +62,53 @@ public class FollowResource {
         if (followDTO.getId() != null) {
             throw new BadRequestAlertException("A new follow cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        //set follow user message
+        if (StringUtils.isEmpty(followDTO.getFollowUserId()))
+        {
+            throw new BadRequestAlertException("The request must have the follow user id", ENTITY_NAME, "noFollowUserId");
+        }
+        try {
+            Long.valueOf(followDTO.getFollowUserId());
+        } catch (NumberFormatException e) {
+            throw new BadRequestAlertException("The request wechat user id must be number type", ENTITY_NAME, "notNumberType");
+        }
+        WechatUserDTO followUserDTO = wechatUserService.findOne(Long.valueOf(followDTO.getFollowUserId()));
+        if (followUserDTO == null)
+        {
+            throw new BadRequestAlertException("Can not get the wehcatUser by user id:" + followDTO.getFollowUserId(), ENTITY_NAME, "noFollowUser");
+        }
+        else
+        {
+            followDTO.setFollowUseravatar(followUserDTO.getAvatar());
+            followDTO.setFollowUserNickname(followUserDTO.getNickName());
+        }
+
+        //set followed user message
+        if (StringUtils.isEmpty(followDTO.getFollowedUserId()))
+        {
+            throw new BadRequestAlertException("The request must have the followed user id", ENTITY_NAME, "noFollowedUserId");
+        }
+        try {
+            Long.valueOf(followDTO.getFollowedUserId());
+        } catch (NumberFormatException e) {
+            throw new BadRequestAlertException("The request wechat user id must be number type", ENTITY_NAME, "notNumberType");
+        }
+        WechatUserDTO followedUserDTO = wechatUserService.findOne(Long.valueOf(followDTO.getFollowedUserId()));
+        if (followedUserDTO == null)
+        {
+            throw new BadRequestAlertException("Can not get the wehcatUser by user id:" + followDTO.getFollowUserId(), ENTITY_NAME, "noFollowUser");
+        }
+        else
+        {
+            followDTO.setFollowedUseravatar(followedUserDTO.getAvatar());
+            followDTO.setFollowedUserNickname(followedUserDTO.getNickName());
+        }
+
+        //set default messages
+        followDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
+        followDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
+
         FollowDTO result = followService.save(followDTO);
         return ResponseEntity.created(new URI("/api/follows/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -77,6 +131,10 @@ public class FollowResource {
         if (followDTO.getId() == null) {
             return createFollow(followDTO);
         }
+
+        //set default messages
+        followDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
+
         FollowDTO result = followService.save(followDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, followDTO.getId().toString()))

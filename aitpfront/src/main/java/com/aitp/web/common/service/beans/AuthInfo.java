@@ -1,4 +1,4 @@
-package com.aitp.web.aitpfront.service.beans;
+package com.aitp.web.common.service.beans;
 
 public class AuthInfo {
     private String appid;

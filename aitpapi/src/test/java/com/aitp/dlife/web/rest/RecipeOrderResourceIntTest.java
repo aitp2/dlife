@@ -5,6 +5,8 @@ import com.aitp.dlife.AitpapiApp;
 import com.aitp.dlife.domain.RecipeOrder;
 import com.aitp.dlife.repository.RecipeOrderRepository;
 import com.aitp.dlife.service.RecipeOrderService;
+import com.aitp.dlife.service.RecipeService;
+import com.aitp.dlife.service.WechatUserService;
 import com.aitp.dlife.service.dto.RecipeOrderDTO;
 import com.aitp.dlife.service.mapper.RecipeOrderMapper;
 import com.aitp.dlife.web.rest.errors.ExceptionTranslator;
@@ -74,6 +76,12 @@ public class RecipeOrderResourceIntTest {
     private RecipeOrderService recipeOrderService;
 
     @Autowired
+    private RecipeService recipeService;
+
+    @Autowired
+    private WechatUserService wechatUserService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -92,7 +100,7 @@ public class RecipeOrderResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final RecipeOrderResource recipeOrderResource = new RecipeOrderResource(recipeOrderService);
+        final RecipeOrderResource recipeOrderResource = new RecipeOrderResource(recipeOrderService,recipeService,wechatUserService);
         this.restRecipeOrderMockMvc = MockMvcBuilders.standaloneSetup(recipeOrderResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

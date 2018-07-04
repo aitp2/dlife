@@ -66,9 +66,9 @@
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aitpapiApp.activityParticipation.activity" for="field_activity">Activity</label>
-            <select class="form-control" id="field_activity" name="activity" [(ngModel)]="activityParticipation.activityId" >
+            <select class="form-control" id="field_activity" name="activity" [(ngModel)]="activityParticipation.activity" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="fitnessActivityOption.id" *ngFor="let fitnessActivityOption of fitnessactivities; trackBy: trackFitnessActivityById">{{fitnessActivityOption.id}}</option>
+                <option [ngValue]="fitnessActivityOption.id === activityParticipation.activity?.id ? activityParticipation.activity : fitnessActivityOption" *ngFor="let fitnessActivityOption of fitnessactivities; trackBy: trackFitnessActivityById">{{fitnessActivityOption.id}}</option>
             </select>
         </div>
     </div>

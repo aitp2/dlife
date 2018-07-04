@@ -24,7 +24,7 @@
             <th jhiSortBy="rating"><span jhiTranslate="aitpapiApp.rates.rating">Rating</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="createTime"><span jhiTranslate="aitpapiApp.rates.createTime">Create Time</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="modifyTime"><span jhiTranslate="aitpapiApp.rates.modifyTime">Modify Time</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="pinFanActivityId"><span jhiTranslate="aitpapiApp.rates.pinFanActivity">Pin Fan Activity</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="pinFanActivity.id"><span jhiTranslate="aitpapiApp.rates.pinFanActivity">Pin Fan Activity</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -39,8 +39,8 @@
                 <td>{{rates.createTime | date:'medium'}}</td>
                 <td>{{rates.modifyTime | date:'medium'}}</td>
                 <td>
-                    <div *ngIf="rates.pinFanActivityId">
-                        <a [routerLink]="['../pin-fan-activity', rates.pinFanActivityId  ]" >{{rates.pinFanActivityId}}</a>
+                    <div *ngIf="rates.pinFanActivity">
+                        <a [routerLink]="['../pin-fan-activity', rates.pinFanActivity?.id ]" >{{rates.pinFanActivity?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">

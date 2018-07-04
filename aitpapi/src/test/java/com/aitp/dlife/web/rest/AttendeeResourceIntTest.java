@@ -5,10 +5,12 @@ import com.aitp.dlife.AitpapiApp;
 import com.aitp.dlife.domain.Attendee;
 import com.aitp.dlife.repository.AttendeeRepository;
 import com.aitp.dlife.service.AttendeeService;
+import com.aitp.dlife.service.PinFanActivityService;
 import com.aitp.dlife.service.dto.AttendeeDTO;
 import com.aitp.dlife.service.mapper.AttendeeMapper;
 import com.aitp.dlife.web.rest.errors.ExceptionTranslator;
 
+import org.checkerframework.checker.units.qual.A;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,6 +64,9 @@ public class AttendeeResourceIntTest {
     private AttendeeRepository attendeeRepository;
 
     @Autowired
+    private PinFanActivityService pinFanActivityService;
+
+    @Autowired
     private AttendeeMapper attendeeMapper;
 
     @Autowired
@@ -86,7 +91,7 @@ public class AttendeeResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final AttendeeResource attendeeResource = new AttendeeResource(attendeeService);
+        final AttendeeResource attendeeResource = new AttendeeResource(attendeeService,pinFanActivityService);
         this.restAttendeeMockMvc = MockMvcBuilders.standaloneSetup(attendeeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

@@ -20,7 +20,7 @@ import java.util.Objects;
 @ApiModel(description = "评价信息")
 @Entity
 @Table(name = "evaluate")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
 public class Evaluate implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,7 +50,7 @@ public class Evaluate implements Serializable {
 
     @OneToMany(mappedBy = "evaluat")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<Image> images = new HashSet<>();
 
     @ManyToOne

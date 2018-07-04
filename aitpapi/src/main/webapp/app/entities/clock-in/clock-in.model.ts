@@ -7,7 +7,7 @@ export class ClockIn implements BaseEntity {
         public signNote?: string,
         public punchDateTime?: any,
         public pics?: BaseEntity[],
-        public activityParticipationId?: number,
+        public activityParticipation?: BaseEntity,
     ) {
     }
 }

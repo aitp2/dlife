@@ -1,4 +1,4 @@
-package com.aitp.web.aitpfront.service.beans;
+package com.aitp.web.common.service.beans;
 
 /**
  * 微信接口返回的Token信息分装类

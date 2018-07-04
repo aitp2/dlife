@@ -33,16 +33,16 @@
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aitpapiApp.pics.fitnessActivity" for="field_fitnessActivity">Fitness Activity</label>
-            <select class="form-control" id="field_fitnessActivity" name="fitnessActivity" [(ngModel)]="pics.fitnessActivityId" >
+            <select class="form-control" id="field_fitnessActivity" name="fitnessActivity" [(ngModel)]="pics.fitnessActivity" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="fitnessActivityOption.id" *ngFor="let fitnessActivityOption of fitnessactivities; trackBy: trackFitnessActivityById">{{fitnessActivityOption.id}}</option>
+                <option [ngValue]="fitnessActivityOption.id === pics.fitnessActivity?.id ? pics.fitnessActivity : fitnessActivityOption" *ngFor="let fitnessActivityOption of fitnessactivities; trackBy: trackFitnessActivityById">{{fitnessActivityOption.id}}</option>
             </select>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aitpapiApp.pics.clockIn" for="field_clockIn">Clock In</label>
-            <select class="form-control" id="field_clockIn" name="clockIn" [(ngModel)]="pics.clockInId" >
+            <select class="form-control" id="field_clockIn" name="clockIn" [(ngModel)]="pics.clockIn" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="clockInOption.id" *ngFor="let clockInOption of clockins; trackBy: trackClockInById">{{clockInOption.id}}</option>
+                <option [ngValue]="clockInOption.id === pics.clockIn?.id ? pics.clockIn : clockInOption" *ngFor="let clockInOption of clockins; trackBy: trackClockInById">{{clockInOption.id}}</option>
             </select>
         </div>
     </div>

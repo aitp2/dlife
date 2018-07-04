@@ -10,6 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -67,6 +71,54 @@ public class ImageService {
         log.debug("Request to get Image : {}", id);
         Image image = imageRepository.findOne(id);
         return imageMapper.toDto(image);
+    }
+
+    /**
+     * Get one image by id.
+     *
+     * @param recipeId the id of the recipeId
+     * @return the entities
+     */
+    @Transactional(readOnly = true)
+    public List<ImageDTO> findImagesByRecipeId(Long recipeId) {
+        log.debug("Request to get Image : {}", recipeId);
+        List<Image> images = imageRepository.findByRecipeId(recipeId);
+
+        final List<ImageDTO> result = new ArrayList<>();
+
+        if (!CollectionUtils.isEmpty(images))
+        {
+            for(Image image : images)
+            {
+                result.add(imageMapper.toDto(image));
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Get one image by id.
+     *
+     * @param evaluatId the id of the recipeId
+     * @return the entities
+     */
+    @Transactional(readOnly = true)
+    public List<ImageDTO> findImagesByEvaluatId(Long evaluatId) {
+        log.debug("Request to get Image : {}", evaluatId);
+        List<Image> images = imageRepository.findByEvaluatId(evaluatId);
+
+        final List<ImageDTO> result = new ArrayList<>();
+
+        if (!CollectionUtils.isEmpty(images))
+        {
+            for(Image image : images)
+            {
+                result.add(imageMapper.toDto(image));
+            }
+        }
+
+        return result;
     }
 
     /**

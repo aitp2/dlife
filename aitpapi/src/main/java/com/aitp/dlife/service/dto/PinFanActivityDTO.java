@@ -1,6 +1,7 @@
 package com.aitp.dlife.service.dto;
 
 
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -71,6 +72,16 @@ public class PinFanActivityDTO implements Serializable {
     }
 
     private Integer status;
+
+    public boolean isAttended() {
+        return attended;
+    }
+
+    public void setAttended(boolean attended) {
+        this.attended = attended;
+    }
+
+    private boolean attended = false;
 
     private Set<AttendeeDTO> attendees = new HashSet<>();
 

@@ -1,23 +1,24 @@
-package com.aitp.web.aitpfront.controller;
+package com.aitp.web.common.controller;
 
-import com.aitp.web.aitpfront.service.beans.AuthInfo;
-import com.aitp.web.aitpfront.service.beans.Token;
-import com.aitp.web.aitpfront.service.dto.WechatUserDTO;
-import com.aitp.web.aitpfront.service.utils.HttpUtil;
-import com.aitp.web.aitpfront.service.wechat.AuthClient;
-import com.aitp.web.aitpfront.service.wechat.AuthToolNoCache;
+import com.aitp.web.common.service.UserService;
+import com.aitp.web.common.service.beans.AuthInfo;
+import com.aitp.web.common.service.beans.Token;
+import com.aitp.web.common.service.dto.WechatUserDTO;
+import com.aitp.web.common.service.utils.HttpUtil;
+import com.aitp.web.common.service.wechat.AuthClient;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.MessageFormat;
-
+@CrossOrigin
 @RestController
 public class WeChatUser {
     Logger logger = LoggerFactory.getLogger(WeChatUser.class);
@@ -25,10 +26,14 @@ public class WeChatUser {
     private Environment env;
     @Autowired
     AuthClient authClient;
+    @Autowired
+    UserService userService;
 
     @RequestMapping("/wechat_user.html")
     public WechatUserDTO toAccept(@RequestParam("code") String code, @RequestParam("state") String state){
         WechatUserDTO wechatUserDTO=new WechatUserDTO();
+        String restApiPath=env.getProperty("rest_api_url");
+
         if(StringUtils.isNotBlank(code)){
             AuthInfo authInfo=new AuthInfo();
             authInfo.setAppid(env.getProperty("wechat_app_id"));
@@ -43,7 +48,7 @@ public class WeChatUser {
                      */
                     String userInfoUrl=MessageFormat.format(env.getProperty("wechat_snsapi_userinfo_url"),token.getAccess_token(),token.getOpenid());
                     String userInfo = HttpUtil.doGetJson(userInfoUrl);
-                    logger.info("userInfo:{}",userInfo);
+                    logger.info("wechatUserInfo:{}",userInfo);
                     if(StringUtils.isNotBlank(userInfo)){
                         JSONObject user = JSONObject.parseObject(userInfo);
                         wechatUserDTO.setUnionid(user.getString("unionid"));
@@ -55,11 +60,23 @@ public class WeChatUser {
                         wechatUserDTO.setPrivilege(user.getString("privilege"));
                         wechatUserDTO.setSex(user.getString("sex"));
                         wechatUserDTO.setProvince(user.getString("province"));
+
+                        JSONObject userData = userService.getUserByOpenid(restApiPath, wechatUserDTO.getOpenId());
+                        if(userData==null){//如果用户信息为空，则创建用户信息到数据库
+                            logger.info("----------Create wechate user---------");
+                            JSONObject resultData = userService.createUser(restApiPath,wechatUserDTO);
+                            logger.info("Save user result:{}", resultData);
+                            if(resultData!=null){
+                                wechatUserDTO.setUserId(resultData.getString("id"));
+                            }
+                        }else{
+                            wechatUserDTO.setUserId(userData.getString("id"));
+                        }
                     }
+                    logger.info("wechatUserDTO:{}",JSONObject.toJSONString(wechatUserDTO));
                 }
             }
         }
         return wechatUserDTO;
     }
-
 }

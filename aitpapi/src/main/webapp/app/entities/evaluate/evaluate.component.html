@@ -23,7 +23,7 @@
             <th jhiSortBy="serviceScore"><span jhiTranslate="aitpapiApp.evaluate.serviceScore">Service Score</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="createTime"><span jhiTranslate="aitpapiApp.evaluate.createTime">Create Time</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="modifyTime"><span jhiTranslate="aitpapiApp.evaluate.modifyTime">Modify Time</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="recipeOrderId"><span jhiTranslate="aitpapiApp.evaluate.recipeOrder">Recipe Order</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="recipeOrder.id"><span jhiTranslate="aitpapiApp.evaluate.recipeOrder">Recipe Order</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -37,8 +37,8 @@
                 <td>{{evaluate.createTime | date:'medium'}}</td>
                 <td>{{evaluate.modifyTime | date:'medium'}}</td>
                 <td>
-                    <div *ngIf="evaluate.recipeOrderId">
-                        <a [routerLink]="['../recipe-order', evaluate.recipeOrderId  ]" >{{evaluate.recipeOrderId}}</a>
+                    <div *ngIf="evaluate.recipeOrder">
+                        <a [routerLink]="['../recipe-order', evaluate.recipeOrder?.id ]" >{{evaluate.recipeOrder?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">
