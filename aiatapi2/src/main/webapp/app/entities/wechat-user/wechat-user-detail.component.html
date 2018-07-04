@@ -1,0 +1,86 @@
+
+<div *ngIf="wechatUser">
+    <h2><span>Wechat User</span> {{wechatUser.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Open Id</span></dt>
+        <dd>
+            <span>{{wechatUser.openId}}</span>
+        </dd>
+        <dt><span>Wechat Code</span></dt>
+        <dd>
+            <span>{{wechatUser.wechatCode}}</span>
+        </dd>
+        <dt><span>User Name</span></dt>
+        <dd>
+            <span>{{wechatUser.userName}}</span>
+        </dd>
+        <dt><span>Nick Name</span></dt>
+        <dd>
+            <span>{{wechatUser.nickName}}</span>
+        </dd>
+        <dt><span>Avatar</span></dt>
+        <dd>
+            <span>{{wechatUser.avatar}}</span>
+        </dd>
+        <dt><span>Mobile Num</span></dt>
+        <dd>
+            <span>{{wechatUser.mobileNum}}</span>
+        </dd>
+        <dt><span>Project</span></dt>
+        <dd>
+            <span>{{wechatUser.project}}</span>
+        </dd>
+        <dt><span>Seat</span></dt>
+        <dd>
+            <span>{{wechatUser.seat}}</span>
+        </dd>
+        <dt><span>Introduce</span></dt>
+        <dd>
+            <span>{{wechatUser.introduce}}</span>
+        </dd>
+        <dt><span>Sex</span></dt>
+        <dd>
+            <span>{{wechatUser.sex}}</span>
+        </dd>
+        <dt><span>Company Role</span></dt>
+        <dd>
+            <span>{{wechatUser.companyRole}}</span>
+        </dd>
+        <dt><span>Cook Flag</span></dt>
+        <dd>
+            <span>{{wechatUser.cookFlag}}</span>
+        </dd>
+        <dt><span>Intesting</span></dt>
+        <dd>
+            <span>{{wechatUser.intesting}}</span>
+        </dd>
+        <dt><span>Skill</span></dt>
+        <dd>
+            <span>{{wechatUser.skill}}</span>
+        </dd>
+        <dt><span>Create Time</span></dt>
+        <dd>
+            <span>{{wechatUser.createTime | date:'medium'}}</span>
+        </dd>
+        <dt><span>Modify Time</span></dt>
+        <dd>
+            <span>{{wechatUser.modifyTime | date:'medium'}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'wechat-user/'+ wechatUser.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,42 @@
+
+<div *ngIf="clockinSummary">
+    <h2><span>Clockin Summary</span> {{clockinSummary.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Wechat User Id</span></dt>
+        <dd>
+            <span>{{clockinSummary.wechatUserId}}</span>
+        </dd>
+        <dt><span>Totally Count</span></dt>
+        <dd>
+            <span>{{clockinSummary.totallyCount}}</span>
+        </dd>
+        <dt><span>Weekly Count</span></dt>
+        <dd>
+            <span>{{clockinSummary.weeklyCount}}</span>
+        </dd>
+        <dt><span>Serial Count</span></dt>
+        <dd>
+            <span>{{clockinSummary.serialCount}}</span>
+        </dd>
+        <dt><span>Last Clock In Time</span></dt>
+        <dd>
+            <span>{{clockinSummary.lastClockInTime | date:'medium'}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'clockin-summary/'+ clockinSummary.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

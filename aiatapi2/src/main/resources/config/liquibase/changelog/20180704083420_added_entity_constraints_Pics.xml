@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Pics.
+    -->
+    <changeSet id="20180704083420-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="fitness_activity_id"
+                                 baseTableName="pics"
+                                 constraintName="fk_pics_fitness_activity_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="fitness_activity"/>
+
+        <addForeignKeyConstraint baseColumnNames="clock_in_id"
+                                 baseTableName="pics"
+                                 constraintName="fk_pics_clock_in_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="clock_in"/>
+
+    </changeSet>
+</databaseChangeLog>

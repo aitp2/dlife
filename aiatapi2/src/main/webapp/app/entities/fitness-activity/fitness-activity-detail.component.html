@@ -1,0 +1,74 @@
+
+<div *ngIf="fitnessActivity">
+    <h2><span>Fitness Activity</span> {{fitnessActivity.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Title</span></dt>
+        <dd>
+            <span>{{fitnessActivity.title}}</span>
+        </dd>
+        <dt><span>Descrption</span></dt>
+        <dd>
+            <span>{{fitnessActivity.descrption}}</span>
+        </dd>
+        <dt><span>Wechat User Id</span></dt>
+        <dd>
+            <span>{{fitnessActivity.wechatUserId}}</span>
+        </dd>
+        <dt><span>Nick Name</span></dt>
+        <dd>
+            <span>{{fitnessActivity.nickName}}</span>
+        </dd>
+        <dt><span>Avatar</span></dt>
+        <dd>
+            <span>{{fitnessActivity.avatar}}</span>
+        </dd>
+        <dt><span>Project</span></dt>
+        <dd>
+            <span>{{fitnessActivity.project}}</span>
+        </dd>
+        <dt><span>Company Role</span></dt>
+        <dd>
+            <span>{{fitnessActivity.companyRole}}</span>
+        </dd>
+        <dt><span>Sign Start Time</span></dt>
+        <dd>
+            <span>{{fitnessActivity.signStartTime | date:'medium'}}</span>
+        </dd>
+        <dt><span>Sign End Time</span></dt>
+        <dd>
+            <span>{{fitnessActivity.signEndTime | date:'medium'}}</span>
+        </dd>
+        <dt><span>Activity Start Time</span></dt>
+        <dd>
+            <span>{{fitnessActivity.activityStartTime | date:'medium'}}</span>
+        </dd>
+        <dt><span>Activity End Time</span></dt>
+        <dd>
+            <span>{{fitnessActivity.activityEndTime | date:'medium'}}</span>
+        </dd>
+        <dt><span>Comment Count</span></dt>
+        <dd>
+            <span>{{fitnessActivity.commentCount}}</span>
+        </dd>
+        <dt><span>Modify Time</span></dt>
+        <dd>
+            <span>{{fitnessActivity.modifyTime | date:'medium'}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'fitness-activity/'+ fitnessActivity.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

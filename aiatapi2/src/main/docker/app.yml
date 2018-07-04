@@ -1,0 +1,14 @@
+version: '2'
+services:
+    aitpapi-app:
+        image: aitpapi
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_DATASOURCE_URL=jdbc:mysql://aitpapi-mysql:3306/aitpapi?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
+        ports:
+            - 8080:8080
+    aitpapi-mysql:
+        extends:
+            file: mysql.yml
+            service: aitpapi-mysql

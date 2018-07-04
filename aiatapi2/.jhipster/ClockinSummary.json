@@ -1,0 +1,42 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "wechatUserId",
+            "javadoc": "用户id",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "totallyCount",
+            "javadoc": "总打卡天数",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "weeklyCount",
+            "javadoc": "周打卡天数",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "serialCount",
+            "javadoc": "连续打卡天数",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "lastClockInTime",
+            "javadoc": "最新打卡时间",
+            "fieldType": "Instant"
+        }
+    ],
+    "changelogDate": "20180704083421",
+    "javadoc": "打卡汇总表",
+    "entityTableName": "clockin_summary",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false
+}

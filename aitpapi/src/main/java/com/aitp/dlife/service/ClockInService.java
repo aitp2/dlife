@@ -114,7 +114,6 @@ public class ClockInService {
     public boolean isClockIn(String wechatUserId,Long activityParticipationId)
     {
         String today = DateUtil.getYYMMDDDateString(new Date());
-        System.out.print("11111111" + today);
         if(CollectionUtils.isEmpty(getClockinsByWechatUserIdAndDateAndActivityId(wechatUserId,activityParticipationId,today)))
         {
             return false;
