@@ -40,9 +40,11 @@ public class CommentDTO implements Serializable {
 
     private Integer rating3;
 
-    private Instant createTime;
+    private String createTime;
 
-    private Instant modifyTime;
+    private String modifyTime;
+
+    private Set<CommentPicDTO> commentPics = new HashSet<>();;
 
     public Long getId() {
         return id;
@@ -132,20 +134,28 @@ public class CommentDTO implements Serializable {
         this.rating3 = rating3;
     }
 
-    public Instant getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Instant createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Instant getModifyTime() {
+    public String getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(Instant modifyTime) {
+    public void setModifyTime(String modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public Set<CommentPicDTO> getCommentPics() {
+        return commentPics;
+    }
+
+    public void setCommentPics(Set<CommentPicDTO> commentPics) {
+        this.commentPics = commentPics;
     }
 
     @Override

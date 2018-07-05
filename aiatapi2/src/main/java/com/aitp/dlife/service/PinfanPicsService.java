@@ -10,6 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -67,6 +71,26 @@ public class PinfanPicsService {
         log.debug("Request to get PinfanPics : {}", id);
         PinfanPics pinfanPics = pinfanPicsRepository.findOne(id);
         return pinfanPicsMapper.toDto(pinfanPics);
+    }
+
+
+    /**
+     * Get  pinfanPics by activityId.
+     *
+     * @param activityId the id of the activityId
+     * @return the entity
+     */
+    @Transactional(readOnly = true)
+    public List<PinfanPicsDTO> findPicsByActivityId(Long activityId) {
+        log.debug("Request to get PinfanPics : {}", activityId);
+        List<PinfanPics> pinfanPics = pinfanPicsRepository.findByActivityId(activityId);
+        final List<PinfanPicsDTO> result = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(pinfanPics)){
+            for (PinfanPics pic: pinfanPics) {
+                result.add(pinfanPicsMapper.toDto(pic));
+            }
+        }
+        return result;
     }
 
     /**
