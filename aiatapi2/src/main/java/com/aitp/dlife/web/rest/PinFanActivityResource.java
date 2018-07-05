@@ -74,6 +74,7 @@ public class PinFanActivityResource {
         if(pinFanActivityDTO.getStatus()==null){
             pinFanActivityDTO.setStatus(0);
         }
+        pinFanActivityDTO.setCommentCount(0);
         Set<PinfanPicsDTO> pinfanPicsDTOS=new HashSet<>();
         PinFanActivityDTO result = pinFanActivityService.save(pinFanActivityDTO);
 

@@ -81,6 +81,7 @@ public class FitnessActivityResource {
             throw new BadRequestAlertException("A new fitnessActivity cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Set<PicsDTO> imagesDTO = new HashSet<>();
+        fitnessActivityDTO.setCommentCount(0);
         FitnessActivityDTO result = fitnessActivityService.save(fitnessActivityDTO);
 
 		if (fitnessActivityDTO.getImages() != null && !fitnessActivityDTO.getImages().isEmpty()){
