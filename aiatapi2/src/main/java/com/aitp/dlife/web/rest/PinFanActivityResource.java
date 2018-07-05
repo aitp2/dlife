@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -102,6 +103,44 @@ public class PinFanActivityResource {
             return createPinFanActivity(pinFanActivityDTO);
         }
         PinFanActivityDTO result = pinFanActivityService.save(pinFanActivityDTO);
+
+        //we need to compar image with the new image,
+        List<PinfanPicsDTO> oldImages = pinfanPicsService.findPicsByActivityId(pinFanActivityDTO.getId());
+        if (!CollectionUtils.isEmpty(pinFanActivityDTO.getPinfanPics()))
+        {
+
+            List<Long> oldIds = new ArrayList<>();
+
+            for(PinfanPicsDTO newImage : pinFanActivityDTO.getPinfanPics())
+            {
+                if(newImage.getId() == null)
+                {
+                    newImage.setCreateTime(DateUtil.getYMDDateString(new Date()));
+                    newImage.setPinFanActivityId(pinFanActivityDTO.getId());
+                    pinfanPicsService.save(newImage);
+                    continue;
+                }
+
+                oldIds.add(newImage.getId());
+            }
+
+            for(PinfanPicsDTO oldImage : oldImages)
+            {
+                if (!oldIds.contains(oldImage.getId()))
+                {
+                    pinfanPicsService.delete(oldImage.getId());
+                }
+            }
+        }
+        else
+        {
+            for(PinfanPicsDTO oldImage : oldImages)
+            {
+                pinfanPicsService.delete(oldImage.getId());
+            }
+        }
+
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, pinFanActivityDTO.getId().toString()))
             .body(result);
