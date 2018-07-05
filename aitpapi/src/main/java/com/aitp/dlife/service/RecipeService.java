@@ -61,6 +61,13 @@ public class RecipeService {
         Recipe recipe = recipeMapper.toEntity(recipeDTO);
 
         recipe = recipeRepository.save(recipe);
+
+        if(recipe!=null){
+            if(!Hibernate.isInitialized(recipe.getImages())){
+                Hibernate.initialize(recipe.getImages());
+            }
+        }
+
         return recipeMapper.toDto(recipe);
     }
 

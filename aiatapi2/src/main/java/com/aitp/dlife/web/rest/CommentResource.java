@@ -1,9 +1,13 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.service.CommentPicService;
 import com.aitp.dlife.service.dto.CommentPicDTO;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
+import com.aitp.dlife.domain.FitnessActivity;
+import com.aitp.dlife.repository.CommentRepository;
+import com.aitp.dlife.repository.FitnessActivityRepository;
 import com.aitp.dlife.service.CommentService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
@@ -24,7 +28,13 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+
 import java.util.*;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+
 
 /**
  * REST controller for managing Comment.
@@ -41,9 +51,13 @@ public class CommentResource {
 
     private final CommentPicService commentPicService;
 
-    public CommentResource(CommentService commentService,CommentPicService commentPicService) {
+    private final FitnessActivityRepository fitnessActivityRepository;
+
+
+    public CommentResource(CommentService commentService,CommentPicService commentPicService,FitnessActivityRepository fitnessActivityRepository) {
         this.commentService = commentService;
         this.commentPicService=commentPicService;
+        this.fitnessActivityRepository = fitnessActivityRepository;
     }
 
     /**
@@ -65,6 +79,7 @@ public class CommentResource {
         commentDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
 
         CommentDTO result = commentService.save(commentDTO);
+
         Set<CommentPicDTO> picDTOS = new HashSet<>();
         if (commentDTO.getCommentPics()!=null && !commentDTO.getCommentPics().isEmpty()){
 
@@ -76,6 +91,13 @@ public class CommentResource {
                 picDTOS.add(commentPicService.save(pics));
             }
             result.setCommentPics(picDTOS);
+        }
+
+        if (null!=commentDTO.getChannel()&&commentDTO.getChannel().equals(CommentChannel.FIT)){
+            FitnessActivity fitnessActivity = new FitnessActivity();
+            fitnessActivity.setId(commentDTO.getObjectId());
+            fitnessActivity.setModifyTime(Instant.now());
+            fitnessActivityRepository.save(fitnessActivity);
         }
 
         return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
