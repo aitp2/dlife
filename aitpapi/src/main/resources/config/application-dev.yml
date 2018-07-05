@@ -40,7 +40,7 @@ spring:
         serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://rm-bp1ymf161p7o36y2l.mysql.rds.aliyuncs.com:3306/aitprestapi?useUnicode=true&characterEncoding=utf8&useSSL=false
+        url: jdbc:mysql://rm-bp1ymf161p7o36y2l.mysql.rds.aliyuncs.com:3306/aitpdevapi?useUnicode=true&characterEncoding=utf8&useSSL=false
         username: transdb
         password: aiTP2018(]
         hikari:
