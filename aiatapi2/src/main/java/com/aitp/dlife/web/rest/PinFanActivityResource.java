@@ -146,6 +146,26 @@ public class PinFanActivityResource {
             .body(result);
     }
 
+
+    /**
+     * PUT  /pin-fan-activities : Cancel an existing pinFanActivity.
+     *
+     * @param id the pinFanActivityDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated pinFanActivityDTO,
+     * or with status 400 (Bad Request) if the pinFanActivityDTO is not valid,
+     * or with status 500 (Internal Server Error) if the pinFanActivityDTO couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/pin-fan-activities/cancel/{id}")
+    @Timed
+    public ResponseEntity<Void> cancelPinFanActivity(@PathVariable Long id) throws URISyntaxException {
+        log.debug("REST request to cancel PinFanActivity : {}", id);
+        PinFanActivityDTO pinFanActivityDTO = pinFanActivityService.findOne(id);
+        pinFanActivityDTO.setStatus(2);
+        pinFanActivityService.save(pinFanActivityDTO);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, id.toString())).build();
+    }
+
     /**
      * GET  /pin-fan-activities : get all the pinFanActivities.
      *
