@@ -10,6 +10,11 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.aitp.dlife.service.FitnessActivityService;
+import com.aitp.dlife.service.WechatUserService;
+import com.aitp.dlife.service.dto.FitnessActivityDTO;
+import com.aitp.dlife.service.dto.WechatUserDTO;
+import com.aitp.dlife.web.rest.util.HttpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -50,13 +55,18 @@ public class ActivityParticipationResource {
     private static final String ENTITY_NAME = "activityParticipation";
 
     private final ActivityParticipationService activityParticipationService;
-    
+
     private final FitnessActivityRepository fitnessActivityRepository;
 
+    private final WechatUserService wechatUserService;
 
-    public ActivityParticipationResource(ActivityParticipationService activityParticipationService,FitnessActivityRepository fitnessActivityRepository) {
+    private final FitnessActivityService fitnessActivityService;
+
+    public ActivityParticipationResource(ActivityParticipationService activityParticipationService,FitnessActivityRepository fitnessActivityRepository,WechatUserService wechatUserService,FitnessActivityService fitnessActivityService) {
         this.activityParticipationService = activityParticipationService;
         this.fitnessActivityRepository = fitnessActivityRepository;
+        this.wechatUserService = wechatUserService;
+        this.fitnessActivityService = fitnessActivityService;
     }
 
     /**
@@ -74,11 +84,26 @@ public class ActivityParticipationResource {
             throw new BadRequestAlertException("A new activityParticipation cannot already have an ID", ENTITY_NAME, "idexists");
         }
         activityParticipationDTO.setParticipationTime(DateUtil.getYMDDateString(new Date()));
-        
+
         FitnessActivity fitnessActivity = new FitnessActivity();
         fitnessActivity.setId(activityParticipationDTO.getActivityId());
         fitnessActivity.setModifyTime(Instant.now());
         fitnessActivityRepository.save(fitnessActivity);
+
+        //log for markting start
+        WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(activityParticipationDTO.getWechatUserId()));
+        boolean sex = wechatUserDTO.isSex();
+        String sexString="";
+        if (sex) {
+            sexString = "male";
+        }else{
+            sexString = "female";
+        }
+        FitnessActivityDTO dto = fitnessActivityService.findOne(activityParticipationDTO.getActivityId());
+
+        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit",dto.getId(),HttpUtil.baseEncoder(dto.getTitle()),"attend",new Date(),wechatUserDTO.getNickName(),sexString);
+        //log for markting end
+
 
         ActivityParticipationDTO result = activityParticipationService.save(activityParticipationDTO);
         return ResponseEntity.created(new URI("/api/activity-participations/" + result.getId()))
@@ -171,9 +196,23 @@ public class ActivityParticipationResource {
     @Timed
     public ResponseEntity<ActivityParticipationDTO> getSignUpInfo(@PathVariable String wechatUserId,@PathVariable Long activityId) {
         log.debug("REST request to get ClockinSummary by wechatUserId: {}", wechatUserId);
+
+        //log for markting start
         if (wechatUserId == null||activityId == null) {
             throw new BadRequestAlertException("wechatUserId or activityId can not be null", ENTITY_NAME, "idexists");
         }
+        FitnessActivityDTO dto = fitnessActivityService.findOne(activityId);
+        WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(wechatUserId));
+        boolean sex = wechatUserDTO.isSex();
+        String sexString="";
+        if (sex) {
+            sexString = "male";
+        }else{
+            sexString = "female";
+        }
+        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit",dto.getId(),HttpUtil.baseEncoder(dto.getTitle()),"PDP",new Date(),wechatUserDTO.getNickName(),sexString);
+        //log for markting end
+
         ActivityParticipationDTO result = activityParticipationService.getByUidAndActivityId(activityId,wechatUserId);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
     }

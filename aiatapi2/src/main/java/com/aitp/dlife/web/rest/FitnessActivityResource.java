@@ -10,6 +10,9 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
+import com.aitp.dlife.service.WechatUserService;
+import com.aitp.dlife.service.dto.WechatUserDTO;
+import com.aitp.dlife.web.rest.util.HttpUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,9 +58,12 @@ public class FitnessActivityResource {
 
     private final PicsService picsService;
 
-    public FitnessActivityResource(FitnessActivityService fitnessActivityService,PicsService picsService) {
+    private final WechatUserService wechatUserService;
+
+    public FitnessActivityResource(FitnessActivityService fitnessActivityService,PicsService picsService,WechatUserService wechatUserService) {
         this.fitnessActivityService = fitnessActivityService;
         this.picsService = picsService;
+        this.wechatUserService=wechatUserService;
     }
 
     /**
@@ -85,6 +91,21 @@ public class FitnessActivityResource {
         	}
         }
         result.setImages(imagesDTO);
+
+
+        //log for markting start
+        WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(fitnessActivityDTO.getWechatUserId()));
+        boolean sex = wechatUserDTO.isSex();
+        String sexString="";
+        if (sex) {
+            sexString = "male";
+        }else{
+            sexString = "female";
+        }
+        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit","",HttpUtil.baseEncoder(fitnessActivityDTO.getTitle()),"createActivity",new Date(),wechatUserDTO.getNickName(),sexString);
+        //log for markting end
+
+
         return ResponseEntity.created(new URI("/api/fitness-activities/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -173,8 +194,27 @@ public class FitnessActivityResource {
         if (null == wechatUserId) {
             throw new BadRequestAlertException("wechatUserId is null", ENTITY_NAME, "wechatUserIdNULL");
         }
+
+
         return fitnessActivityService.getActivitiesByWechatUserId(wechatUserId);
     }
 
+
+    @GetMapping("/fitness-activities/createView/{wechatUserId}")
+    @Timed
+    public ResponseEntity<Void> viewCreateFitnessActivity(@PathVariable String wechatUserId) {
+        //log for markting start
+        WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(wechatUserId));
+        boolean sex = wechatUserDTO.isSex();
+        String sexString="";
+        if (sex) {
+            sexString = "male";
+        }else{
+            sexString = "female";
+        }
+        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit","","","createView",new Date(),wechatUserDTO.getNickName(),sexString);
+        //log for markting end
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wechatUserId)).build();
+    }
 
 }

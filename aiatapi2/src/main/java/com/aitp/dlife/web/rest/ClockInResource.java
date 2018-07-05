@@ -1,17 +1,13 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.service.*;
+import com.aitp.dlife.service.dto.*;
+import com.aitp.dlife.web.rest.util.HttpUtil;
 import com.codahale.metrics.annotation.Timed;
-import com.aitp.dlife.service.ClockInService;
-import com.aitp.dlife.service.ClockinSummaryService;
-import com.aitp.dlife.service.PicsService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
-import com.aitp.dlife.service.dto.ActivityParticipationDTO;
-import com.aitp.dlife.service.dto.ClockInDTO;
-import com.aitp.dlife.service.dto.ClockinSummaryDTO;
-import com.aitp.dlife.service.dto.PicsDTO;
 
 import io.github.jhipster.web.util.ResponseUtil;
 
@@ -49,12 +45,18 @@ public class ClockInResource {
     private final ClockInService clockInService;
     private final PicsService picsService;
     private final ClockinSummaryService clockinSummaryService;
+    private final WechatUserService wechatUserService;
+    private final FitnessActivityService fitnessActivityService;
+    private final ActivityParticipationService activityParticipationService;
 
 	public ClockInResource(ClockInService clockInService, PicsService picsService,
-			ClockinSummaryService clockinSummaryService) {
+			ClockinSummaryService clockinSummaryService,WechatUserService wechatUserService,FitnessActivityService fitnessActivityService,ActivityParticipationService activityParticipationService) {
 		this.clockInService = clockInService;
 		this.picsService = picsService;
 		this.clockinSummaryService = clockinSummaryService;
+		this.wechatUserService=wechatUserService;
+		this.fitnessActivityService=fitnessActivityService;
+		this.activityParticipationService=activityParticipationService;
 	}
 
     /**
@@ -109,6 +111,22 @@ public class ClockInResource {
 			newClockinSummaryDTO.setLastClockInTime(DateUtil.getYMDDateString(new Date()));
 			clockinSummaryService.save(newClockinSummaryDTO);
 		}
+
+
+        //log for markting start
+        WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(clockInDTO.getWechatUserId()));
+        boolean sex = wechatUserDTO.isSex();
+        String sexString="";
+        if (sex) {
+            sexString = "male";
+        }else{
+            sexString = "female";
+        }
+        ActivityParticipationDTO participationDTO = activityParticipationService.findOne(clockInDTO.getActivityParticipationId());
+        FitnessActivityDTO dto = fitnessActivityService.findOne(participationDTO.getActivityId());
+        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit",dto.getId(),HttpUtil.baseEncoder(dto.getTitle()),"PDP",new Date(),wechatUserDTO.getNickName(),sexString);
+        //log for markting end
+
 
         return ResponseEntity.created(new URI("/api/clock-ins/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

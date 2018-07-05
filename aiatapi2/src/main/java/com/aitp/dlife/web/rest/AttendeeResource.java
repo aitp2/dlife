@@ -1,8 +1,11 @@
 package com.aitp.dlife.web.rest;
 
 import com.aitp.dlife.service.PinFanActivityService;
+import com.aitp.dlife.service.WechatUserService;
 import com.aitp.dlife.service.dto.PinFanActivityDTO;
+import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.web.rest.util.DateUtil;
+import com.aitp.dlife.web.rest.util.HttpUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.AttendeeService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -41,10 +44,12 @@ public class AttendeeResource {
 
     private final AttendeeService attendeeService;
     private final PinFanActivityService pinFanActivityService;
+    private final WechatUserService wechatUserService;
 
-    public AttendeeResource(AttendeeService attendeeService,PinFanActivityService pinFanActivityService) {
+    public AttendeeResource(AttendeeService attendeeService,PinFanActivityService pinFanActivityService,WechatUserService wechatUserService) {
         this.attendeeService = attendeeService;
         this.pinFanActivityService=pinFanActivityService;
+        this.wechatUserService=wechatUserService;
     }
 
     /**
@@ -69,6 +74,20 @@ public class AttendeeResource {
             throw new BadRequestAlertException("活动人数已达上限", ENTITY_NAME, "活动人数已达上限");
         }
         AttendeeDTO result = attendeeService.save(attendeeDTO);
+
+        //log for markting start
+        WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(attendeeDTO.getWechatUserId()));
+        boolean sex = wechatUserDTO.isSex();
+        String sexString="";
+        if (sex) {
+            sexString = "male";
+        }else{
+            sexString = "female";
+        }
+        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan",activityDTO.getId(),HttpUtil.baseEncoder(activityDTO.getActivitiyTile()),"attend",new Date(),wechatUserDTO.getNickName(),sexString);
+        //log for markting end
+
+
         return ResponseEntity.ok().body(result);
     }
 
