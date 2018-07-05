@@ -50,7 +50,7 @@ public class ActivityParticipationResource {
     private static final String ENTITY_NAME = "activityParticipation";
 
     private final ActivityParticipationService activityParticipationService;
-    
+
     private final FitnessActivityRepository fitnessActivityRepository;
 
 
@@ -74,7 +74,7 @@ public class ActivityParticipationResource {
             throw new BadRequestAlertException("A new activityParticipation cannot already have an ID", ENTITY_NAME, "idexists");
         }
         activityParticipationDTO.setParticipationTime(DateUtil.getYMDDateString(new Date()));
-        
+
         FitnessActivity fitnessActivity = new FitnessActivity();
         fitnessActivity.setId(activityParticipationDTO.getActivityId());
         fitnessActivity.setModifyTime(Instant.now());
@@ -161,7 +161,7 @@ public class ActivityParticipationResource {
         }
         //resort
         List<ActivityParticipationDTO> result = activityParticipationService.findByActivity(activityId);
-        result.sort((b1, b2) -> b1.getClockinCount() > b2.getClockinCount() ?  -1 : 1);
+        result.sort((b1, b2) -> b1.getClockinCount() == b2.getClockinCount() ? 0 : (b1.getClockinCount() > b2.getClockinCount() ? -1 : 1));
         return result;
     }
 
