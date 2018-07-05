@@ -1,0 +1,49 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "pics",
+            "otherEntityName": "pics",
+            "otherEntityRelationshipName": "clockIn"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "activityParticipation",
+            "otherEntityName": "activityParticipation",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "title",
+            "javadoc": "活动标题",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "signNote",
+            "javadoc": "签到日记",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 1024
+        },
+        {
+            "fieldName": "punchDateTime",
+            "javadoc": "打卡时间",
+            "fieldType": "Instant"
+        }
+    ],
+    "changelogDate": "20180704083419",
+    "javadoc": "打卡信息",
+    "entityTableName": "clock_in",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false
+}

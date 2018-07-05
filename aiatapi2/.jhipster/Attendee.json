@@ -1,0 +1,61 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "pinFanActivity",
+            "otherEntityName": "pinFanActivity",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "wechatUserId",
+            "javadoc": "参与人ID",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "nickName",
+            "javadoc": "参与者昵称",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "avatar",
+            "javadoc": "参与者头像",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 1024
+        },
+        {
+            "fieldName": "participationTime",
+            "javadoc": "参与时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "activitiyTile",
+            "javadoc": "活动名称",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        }
+    ],
+    "changelogDate": "20180704083415",
+    "javadoc": "拼饭活动参与信息",
+    "entityTableName": "attendee",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false
+}

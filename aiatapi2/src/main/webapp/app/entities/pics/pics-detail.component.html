@@ -1,0 +1,42 @@
+
+<div *ngIf="pics">
+    <h2><span>Pics</span> {{pics.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Oss Path</span></dt>
+        <dd>
+            <span>{{pics.ossPath}}</span>
+        </dd>
+        <dt><span>Create Time</span></dt>
+        <dd>
+            <span>{{pics.createTime | date:'medium'}}</span>
+        </dd>
+        <dt><span>Fitness Activity</span></dt>
+        <dd>
+            <div *ngIf="pics.fitnessActivityId">
+                <a [routerLink]="['/fitness-activity', pics.fitnessActivityId]">{{pics.fitnessActivityId}}</a>
+            </div>
+        </dd>
+        <dt><span>Clock In</span></dt>
+        <dd>
+            <div *ngIf="pics.clockInId">
+                <a [routerLink]="['/clock-in', pics.clockInId]">{{pics.clockInId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'pics/'+ pics.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

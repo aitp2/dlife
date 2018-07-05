@@ -1,0 +1,142 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myFitnessActivityLabel">Create or edit a Fitness Activity</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!fitnessActivity.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="fitnessActivity.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_title">Title</label>
+            <input type="text" class="form-control" name="title" id="field_title"
+                [(ngModel)]="fitnessActivity.title" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.title?.dirty && editForm.controls.title?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.title?.errors?.maxlength">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_descrption">Descrption</label>
+            <input type="text" class="form-control" name="descrption" id="field_descrption"
+                [(ngModel)]="fitnessActivity.descrption" maxlength="1024"/>
+            <div [hidden]="!(editForm.controls.descrption?.dirty && editForm.controls.descrption?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.descrption?.errors?.maxlength">
+                   This field cannot be longer than 1024 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_wechatUserId">Wechat User Id</label>
+            <input type="text" class="form-control" name="wechatUserId" id="field_wechatUserId"
+                [(ngModel)]="fitnessActivity.wechatUserId" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.wechatUserId?.dirty && editForm.controls.wechatUserId?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.wechatUserId?.errors?.maxlength">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_nickName">Nick Name</label>
+            <input type="text" class="form-control" name="nickName" id="field_nickName"
+                [(ngModel)]="fitnessActivity.nickName" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.nickName?.dirty && editForm.controls.nickName?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.nickName?.errors?.maxlength">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_avatar">Avatar</label>
+            <input type="text" class="form-control" name="avatar" id="field_avatar"
+                [(ngModel)]="fitnessActivity.avatar" maxlength="1024"/>
+            <div [hidden]="!(editForm.controls.avatar?.dirty && editForm.controls.avatar?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.avatar?.errors?.maxlength">
+                   This field cannot be longer than 1024 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_project">Project</label>
+            <input type="text" class="form-control" name="project" id="field_project"
+                [(ngModel)]="fitnessActivity.project" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.project?.dirty && editForm.controls.project?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.project?.errors?.maxlength">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_companyRole">Company Role</label>
+            <input type="text" class="form-control" name="companyRole" id="field_companyRole"
+                [(ngModel)]="fitnessActivity.companyRole" maxlength="128"/>
+            <div [hidden]="!(editForm.controls.companyRole?.dirty && editForm.controls.companyRole?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.companyRole?.errors?.maxlength">
+                   This field cannot be longer than 128 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_signStartTime">Sign Start Time</label>
+            <div class="d-flex">
+                <input id="field_signStartTime" type="datetime-local" class="form-control" name="signStartTime" [(ngModel)]="fitnessActivity.signStartTime"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_signEndTime">Sign End Time</label>
+            <div class="d-flex">
+                <input id="field_signEndTime" type="datetime-local" class="form-control" name="signEndTime" [(ngModel)]="fitnessActivity.signEndTime"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_activityStartTime">Activity Start Time</label>
+            <div class="d-flex">
+                <input id="field_activityStartTime" type="datetime-local" class="form-control" name="activityStartTime" [(ngModel)]="fitnessActivity.activityStartTime"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_activityEndTime">Activity End Time</label>
+            <div class="d-flex">
+                <input id="field_activityEndTime" type="datetime-local" class="form-control" name="activityEndTime" [(ngModel)]="fitnessActivity.activityEndTime"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_commentCount">Comment Count</label>
+            <input type="number" class="form-control" name="commentCount" id="field_commentCount"
+                [(ngModel)]="fitnessActivity.commentCount" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_modifyTime">Modify Time</label>
+            <div class="d-flex">
+                <input id="field_modifyTime" type="datetime-local" class="form-control" name="modifyTime" [(ngModel)]="fitnessActivity.modifyTime"
+                />
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

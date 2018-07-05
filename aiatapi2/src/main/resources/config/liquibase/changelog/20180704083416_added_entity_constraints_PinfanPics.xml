@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity PinfanPics.
+    -->
+    <changeSet id="20180704083416-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="pin_fan_activity_id"
+                                 baseTableName="pinfan_pics"
+                                 constraintName="fk_pinfan_pics_pin_fan_activity_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="pin_fan_activity"/>
+
+    </changeSet>
+</databaseChangeLog>

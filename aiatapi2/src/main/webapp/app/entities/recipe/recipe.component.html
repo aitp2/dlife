@@ -1,0 +1,92 @@
+<div>
+    <h2>
+        <span>Recipes</span>
+        <button class="btn btn-primary float-right jh-create-entity create-recipe" [routerLink]="['/', { outlets: { popup: ['recipe-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span >
+            Create new Recipe
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="recipes">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="wechatUserId"><span>Wechat User Id</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="avatar"><span>Avatar</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nickName"><span>Nick Name</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="title"><span>Title</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="content"><span>Content</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="startTime"><span>Start Time</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="endTime"><span>End Time</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="price"><span>Price</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="num"><span>Num</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="status"><span>Status</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="publishVersion"><span>Publish Version</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="hot"><span>Hot</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="createTime"><span>Create Time</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="modifyTime"><span>Modify Time</span> <span class="fa fa-sort"></span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let recipe of recipes ;trackBy: trackId">
+                <td><a [routerLink]="['../recipe', recipe.id ]">{{recipe.id}}</a></td>
+                <td>{{recipe.wechatUserId}}</td>
+                <td>{{recipe.avatar}}</td>
+                <td>{{recipe.nickName}}</td>
+                <td>{{recipe.title}}</td>
+                <td>{{recipe.content}}</td>
+                <td>{{recipe.startTime | date:'medium'}}</td>
+                <td>{{recipe.endTime | date:'medium'}}</td>
+                <td>{{recipe.price}}</td>
+                <td>{{recipe.num}}</td>
+                <td>{{recipe.status}}</td>
+                <td>{{recipe.publishVersion}}</td>
+                <td>{{recipe.hot}}</td>
+                <td>{{recipe.createTime | date:'medium'}}</td>
+                <td>{{recipe.modifyTime | date:'medium'}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../recipe', recipe.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'recipe/'+ recipe.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'recipe/'+ recipe.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="recipes && recipes.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

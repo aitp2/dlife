@@ -1,0 +1,40 @@
+
+<div *ngIf="clockIn">
+    <h2><span>Clock In</span> {{clockIn.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Title</span></dt>
+        <dd>
+            <span>{{clockIn.title}}</span>
+        </dd>
+        <dt><span>Sign Note</span></dt>
+        <dd>
+            <span>{{clockIn.signNote}}</span>
+        </dd>
+        <dt><span>Punch Date Time</span></dt>
+        <dd>
+            <span>{{clockIn.punchDateTime | date:'medium'}}</span>
+        </dd>
+        <dt><span>Activity Participation</span></dt>
+        <dd>
+            <div *ngIf="clockIn.activityParticipationId">
+                <a [routerLink]="['/activity-participation', clockIn.activityParticipationId]">{{clockIn.activityParticipationId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'clock-in/'+ clockIn.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

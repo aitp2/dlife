@@ -1,0 +1,80 @@
+<div>
+    <h2>
+        <span>Activity Participations</span>
+        <button class="btn btn-primary float-right jh-create-entity create-activity-participation" [routerLink]="['/', { outlets: { popup: ['activity-participation-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span >
+            Create new Activity Participation
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="activityParticipations">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="wechatUserId"><span>Wechat User Id</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nickName"><span>Nick Name</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="avatar"><span>Avatar</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="project"><span>Project</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="participationTime"><span>Participation Time</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="activityId"><span>Activity</span> <span class="fa fa-sort"></span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let activityParticipation of activityParticipations ;trackBy: trackId">
+                <td><a [routerLink]="['../activity-participation', activityParticipation.id ]">{{activityParticipation.id}}</a></td>
+                <td>{{activityParticipation.wechatUserId}}</td>
+                <td>{{activityParticipation.nickName}}</td>
+                <td>{{activityParticipation.avatar}}</td>
+                <td>{{activityParticipation.project}}</td>
+                <td>{{activityParticipation.participationTime | date:'medium'}}</td>
+                <td>
+                    <div *ngIf="activityParticipation.activityId">
+                        <a [routerLink]="['../fitness-activity', activityParticipation.activityId  ]" >{{activityParticipation.activityId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../activity-participation', activityParticipation.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'activity-participation/'+ activityParticipation.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'activity-participation/'+ activityParticipation.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="activityParticipations && activityParticipations.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>
