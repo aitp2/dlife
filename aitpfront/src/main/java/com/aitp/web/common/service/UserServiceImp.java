@@ -24,7 +24,13 @@ public class UserServiceImp implements UserService{
         jsonObject.put("avatar",wechatUserDTO.getHeadimgurl());
         jsonObject.put("openId",wechatUserDTO.getOpenId());
         jsonObject.put("nickName",HttpUtil.baseEncoder(wechatUserDTO.getUserName()));
-//      jsonObject.put("sex",1);
+        if (wechatUserDTO.getSex().equals("1")){
+            jsonObject.put("sex",true);
+        }else if(wechatUserDTO.getSex().equals("2")){
+            jsonObject.put("sex",false);
+        }else{
+            jsonObject.put("sex","");
+        }
         String resultData=HttpUtil.doPostJson(apiPath+"/wechat-users",jsonObject);
         if(StringUtils.isNotBlank(resultData)){
             return JSONObject.parseObject(resultData);
