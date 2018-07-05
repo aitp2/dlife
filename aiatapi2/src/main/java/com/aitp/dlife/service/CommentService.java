@@ -1,8 +1,12 @@
 package com.aitp.dlife.service;
 
 import com.aitp.dlife.domain.Comment;
+import com.aitp.dlife.domain.FitnessActivity;
+import com.aitp.dlife.domain.PinFanActivity;
 import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.repository.CommentRepository;
+import com.aitp.dlife.repository.FitnessActivityRepository;
+import com.aitp.dlife.repository.PinFanActivityRepository;
 import com.aitp.dlife.service.dto.CommentDTO;
 import com.aitp.dlife.service.mapper.CommentMapper;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -27,9 +31,16 @@ public class CommentService {
 
     private final CommentMapper commentMapper;
 
-    public CommentService(CommentRepository commentRepository, CommentMapper commentMapper) {
+    private final FitnessActivityRepository fitnessActivityRepository;
+
+    private final PinFanActivityRepository pinFanActivityRepository;
+
+    public CommentService(CommentRepository commentRepository, CommentMapper commentMapper, FitnessActivityRepository fitnessActivityRepository, PinFanActivityRepository pinFanActivityRepository) {
         this.commentRepository = commentRepository;
         this.commentMapper = commentMapper;
+
+        this.fitnessActivityRepository = fitnessActivityRepository;
+        this.pinFanActivityRepository = pinFanActivityRepository;
     }
 
     /**
@@ -40,6 +51,16 @@ public class CommentService {
      */
     public CommentDTO save(CommentDTO commentDTO) {
         log.debug("Request to save Comment : {}", commentDTO);
+        if(CommentChannel.FIT.equals(commentDTO.getChannel()))
+        {
+            FitnessActivity fitnessActivity = fitnessActivityRepository.findOne(commentDTO.getObjectId());
+            fitnessActivity.setCommentCount(fitnessActivity.getCommentCount() +1);
+        }
+        if(CommentChannel.PIN.equals(commentDTO.getChannel()))
+        {
+            PinFanActivity pinFanActivity = pinFanActivityRepository.findOne(commentDTO.getObjectId());
+            pinFanActivity.setCommentCount(pinFanActivity.getCommentCount() +1);
+        }
         Comment comment = commentMapper.toEntity(commentDTO);
         comment = commentRepository.save(comment);
         return commentMapper.toDto(comment);

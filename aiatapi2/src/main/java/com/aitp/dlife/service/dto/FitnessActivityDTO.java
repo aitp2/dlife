@@ -49,6 +49,8 @@ public class FitnessActivityDTO implements Serializable {
 
     private Integer status;
 
+    private Integer commentCount;
+
     private Set<PicsDTO> images = new HashSet<>();
 
     public Long getId() {
@@ -210,5 +212,13 @@ public class FitnessActivityDTO implements Serializable {
             ", activityStartTime='" + getActivityStartTime() + "'" +
             ", activityEndTime='" + getActivityEndTime() + "'" +
             "}";
+    }
+
+    public Integer getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(Integer commentCount) {
+        this.commentCount = commentCount;
     }
 }

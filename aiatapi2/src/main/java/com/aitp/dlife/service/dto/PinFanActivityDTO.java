@@ -63,6 +63,8 @@ public class PinFanActivityDTO implements Serializable {
     @Size(max = 500)
     private String comment;
 
+    private Integer commentCount;
+
     public Integer getStatus() {
         return status;
     }
@@ -311,5 +313,13 @@ public class PinFanActivityDTO implements Serializable {
             ", comment='" + getComment() + "'" +
             ", status='" + getStatus() + "'" +
             "}";
+    }
+
+    public Integer getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(Integer commentCount) {
+        this.commentCount = commentCount;
     }
 }
