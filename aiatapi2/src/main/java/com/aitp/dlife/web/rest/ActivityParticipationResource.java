@@ -186,7 +186,7 @@ public class ActivityParticipationResource {
         }
         //resort
         List<ActivityParticipationDTO> result = activityParticipationService.findByActivity(activityId);
-        result.sort((b1, b2) -> b1.getClockinCount() > b2.getClockinCount() ?  -1 : 1);
+        result.sort((b1, b2) -> b1.getClockinCount() == b2.getClockinCount() ? 0 : (b1.getClockinCount() > b2.getClockinCount() ? -1 : 1));
         return result;
     }
 
