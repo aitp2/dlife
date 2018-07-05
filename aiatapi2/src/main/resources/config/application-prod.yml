@@ -28,7 +28,7 @@ spring:
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:mysql://rm-bp1ymf161p7o36y2lto.mysql.rds.aliyuncs.com:3306/aitprestapi?useUnicode=true&useSSL=false
-        username: root
+        username: transdb
         password: aiTP2018(]
         hikari:
             data-source-properties:
