@@ -92,7 +92,7 @@ public class ActivityParticipationResource {
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(activityParticipationDTO.getWechatUserId()));
         String sexString="";
-        if (null!=wechatUserDTO.isSex()){
+        if (null!=wechatUserDTO && null!=wechatUserDTO.isSex()){
             boolean sex = wechatUserDTO.isSex();
             if (sex) {
                 sexString = "male";
@@ -205,7 +205,7 @@ public class ActivityParticipationResource {
         FitnessActivityDTO dto = fitnessActivityService.findOne(activityId);
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(wechatUserId));
         String sexString="";
-        if (null!=wechatUserDTO.isSex()){
+        if (null!=wechatUserDTO && null!=wechatUserDTO.isSex()){
             boolean sex = wechatUserDTO.isSex();
             if (sex) {
                 sexString = "male";

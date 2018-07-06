@@ -78,7 +78,7 @@ public class AttendeeResource {
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(attendeeDTO.getWechatUserId()));
         String sexString="";
-        if (null!=wechatUserDTO.isSex()){
+        if (null!=wechatUserDTO && null!=wechatUserDTO.isSex()){
             boolean sex = wechatUserDTO.isSex();
             if (sex) {
                 sexString = "male";

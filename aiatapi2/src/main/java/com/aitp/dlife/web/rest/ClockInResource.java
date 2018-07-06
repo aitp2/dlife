@@ -116,7 +116,7 @@ public class ClockInResource {
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(clockInDTO.getWechatUserId()));
         String sexString="";
-        if (null!=wechatUserDTO.isSex()){
+        if (null!=wechatUserDTO && null!=wechatUserDTO.isSex()){
             boolean sex = wechatUserDTO.isSex();
             if (sex) {
                 sexString = "male";
