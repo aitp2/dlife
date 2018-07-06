@@ -77,12 +77,14 @@ public class AttendeeResource {
 
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(attendeeDTO.getWechatUserId()));
-        boolean sex = wechatUserDTO.isSex();
         String sexString="";
-        if (sex) {
-            sexString = "male";
-        }else{
-            sexString = "female";
+        if (null!=wechatUserDTO.isSex()){
+            boolean sex = wechatUserDTO.isSex();
+            if (sex) {
+                sexString = "male";
+            }else{
+                sexString = "female";
+            }
         }
         log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan",activityDTO.getId(),HttpUtil.baseEncoder(activityDTO.getActivitiyTile()),"attend",new Date(),wechatUserDTO.getNickName(),sexString);
         //log for markting end

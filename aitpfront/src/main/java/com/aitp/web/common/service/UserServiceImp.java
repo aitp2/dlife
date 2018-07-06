@@ -28,8 +28,6 @@ public class UserServiceImp implements UserService{
             jsonObject.put("sex",true);
         }else if(wechatUserDTO.getSex().equals("2")){
             jsonObject.put("sex",false);
-        }else{
-            jsonObject.put("sex","");
         }
         String resultData=HttpUtil.doPostJson(apiPath+"/wechat-users",jsonObject);
         if(StringUtils.isNotBlank(resultData)){

@@ -91,12 +91,14 @@ public class PinFanActivityResource {
 
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(pinFanActivityDTO.getWechatUserId()));
-        boolean sex = wechatUserDTO.isSex();
         String sexString="";
-        if (sex) {
-            sexString = "male";
-        }else{
-            sexString = "female";
+        if (null!=wechatUserDTO.isSex()){
+            boolean sex = wechatUserDTO.isSex();
+            if (sex) {
+                sexString = "male";
+            }else{
+                sexString = "female";
+            }
         }
         log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan","",HttpUtil.baseEncoder(pinFanActivityDTO.getActivitiyTile()),"createActivity",new Date(),wechatUserDTO.getNickName(),sexString);
         //log for markting end
@@ -200,12 +202,15 @@ public class PinFanActivityResource {
 
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(wechatUserId));
-        boolean sex = wechatUserDTO.isSex();
+
         String sexString="";
-        if (sex) {
-            sexString = "male";
-        }else{
-            sexString = "female";
+        if (null!=wechatUserDTO.isSex()){
+            boolean sex = wechatUserDTO.isSex();
+            if (sex) {
+                sexString = "male";
+            }else{
+                sexString = "female";
+            }
         }
         log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan","","","login",new Date(),wechatUserDTO.getNickName(),sexString);
         //log for markting end
@@ -279,12 +284,14 @@ public class PinFanActivityResource {
 
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(wechatUserId));
-        boolean sex = wechatUserDTO.isSex();
         String sexString="";
-        if (sex) {
-            sexString = "male";
-        }else{
-            sexString = "female";
+        if (null!=wechatUserDTO.isSex()){
+            boolean sex = wechatUserDTO.isSex();
+            if (sex) {
+                sexString = "male";
+            }else{
+                sexString = "female";
+            }
         }
         log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan",pinFanActivityDTO.getId(),HttpUtil.baseEncoder(pinFanActivityDTO.getActivitiyTile()),"PDP",new Date(),wechatUserDTO.getNickName(),sexString);
         //log for markting end
@@ -309,12 +316,14 @@ public class PinFanActivityResource {
     public ResponseEntity<Void> viewCreatePinFanActivity(@PathVariable String wechatUserId) {
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(wechatUserId));
-        boolean sex = wechatUserDTO.isSex();
         String sexString="";
-        if (sex) {
-            sexString = "male";
-        }else{
-            sexString = "female";
+        if (null!=wechatUserDTO.isSex()){
+            boolean sex = wechatUserDTO.isSex();
+            if (sex) {
+                sexString = "male";
+            }else{
+                sexString = "female";
+            }
         }
         log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan","","","createView",new Date(),wechatUserDTO.getNickName(),sexString);
         //log for markting end

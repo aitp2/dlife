@@ -96,12 +96,14 @@ public class FitnessActivityResource {
 
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(fitnessActivityDTO.getWechatUserId()));
-        boolean sex = wechatUserDTO.isSex();
         String sexString="";
-        if (sex) {
-            sexString = "male";
-        }else{
-            sexString = "female";
+        if (null!=wechatUserDTO.isSex()){
+            boolean sex = wechatUserDTO.isSex();
+            if (sex) {
+                sexString = "male";
+            }else{
+                sexString = "female";
+            }
         }
         log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit","",HttpUtil.baseEncoder(fitnessActivityDTO.getTitle()),"createActivity",new Date(),wechatUserDTO.getNickName(),sexString);
         //log for markting end
@@ -206,12 +208,14 @@ public class FitnessActivityResource {
     public ResponseEntity<Void> viewCreateFitnessActivity(@PathVariable String wechatUserId) {
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(wechatUserId));
-        boolean sex = wechatUserDTO.isSex();
         String sexString="";
-        if (sex) {
-            sexString = "male";
-        }else{
-            sexString = "female";
+        if (null!=wechatUserDTO.isSex()){
+            boolean sex = wechatUserDTO.isSex();
+            if (sex) {
+                sexString = "male";
+            }else{
+                sexString = "female";
+            }
         }
         log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit","","","createView",new Date(),wechatUserDTO.getNickName(),sexString);
         //log for markting end
