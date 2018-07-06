@@ -54,12 +54,12 @@ public class CommentService {
         if(CommentChannel.FIT.equals(commentDTO.getChannel()))
         {
             FitnessActivity fitnessActivity = fitnessActivityRepository.findOne(commentDTO.getObjectId());
-            fitnessActivity.setCommentCount(fitnessActivity.getCommentCount() +1);
+            fitnessActivity.setCommentCount(fitnessActivity.getCommentCount() == null? 1 : fitnessActivity.getCommentCount() +1);
         }
         if(CommentChannel.PIN.equals(commentDTO.getChannel()))
         {
             PinFanActivity pinFanActivity = pinFanActivityRepository.findOne(commentDTO.getObjectId());
-            pinFanActivity.setCommentCount(pinFanActivity.getCommentCount() +1);
+            pinFanActivity.setCommentCount(pinFanActivity.getCommentCount() == null? 1 : pinFanActivity.getCommentCount() + 1);
         }
         Comment comment = commentMapper.toEntity(commentDTO);
         comment = commentRepository.save(comment);
