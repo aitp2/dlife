@@ -130,7 +130,11 @@ public class FitnessActivityResource {
         if (fitnessActivityDTO.getId() == null) {
             return createFitnessActivity(fitnessActivityDTO);
         }
-
+        FitnessActivityDTO oldDto = fitnessActivityService.findOne(fitnessActivityDTO.getId());
+        if(null!=oldDto){
+            fitnessActivityDTO.setStatus(oldDto.getStatus());
+            fitnessActivityDTO.setCommentCount(oldDto.getCommentCount());
+        }
         Set<PicsDTO> imagesDTO = new HashSet<>();
         FitnessActivityDTO result = fitnessActivityService.save(fitnessActivityDTO);
         if (fitnessActivityDTO.getImages() != null && !fitnessActivityDTO.getImages().isEmpty()){

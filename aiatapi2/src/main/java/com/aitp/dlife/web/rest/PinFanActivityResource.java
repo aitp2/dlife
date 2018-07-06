@@ -125,6 +125,11 @@ public class PinFanActivityResource {
         if (pinFanActivityDTO.getId() == null) {
             return createPinFanActivity(pinFanActivityDTO);
         }
+        PinFanActivityDTO oldDto = pinFanActivityService.findOne(pinFanActivityDTO.getId());
+        if (null!=oldDto){
+            pinFanActivityDTO.setCommentCount(oldDto.getCommentCount());
+            pinFanActivityDTO.setStatus(oldDto.getStatus());
+        }
         PinFanActivityDTO result = pinFanActivityService.save(pinFanActivityDTO);
 
         //we need to compar image with the new image,
