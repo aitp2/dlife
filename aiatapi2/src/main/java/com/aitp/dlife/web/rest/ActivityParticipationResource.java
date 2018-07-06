@@ -85,8 +85,7 @@ public class ActivityParticipationResource {
         }
         activityParticipationDTO.setParticipationTime(DateUtil.getYMDDateString(new Date()));
 
-        FitnessActivity fitnessActivity = new FitnessActivity();
-        fitnessActivity.setId(activityParticipationDTO.getActivityId());
+        FitnessActivity fitnessActivity = fitnessActivityRepository.findOne(activityParticipationDTO.getActivityId());
         fitnessActivity.setModifyTime(Instant.now());
         fitnessActivityRepository.save(fitnessActivity);
 
