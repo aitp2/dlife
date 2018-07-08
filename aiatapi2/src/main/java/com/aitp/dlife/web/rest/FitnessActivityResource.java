@@ -135,6 +135,10 @@ public class FitnessActivityResource {
             fitnessActivityDTO.setStatus(oldDto.getStatus());
             fitnessActivityDTO.setCommentCount(oldDto.getCommentCount());
         }
+        Set<PicsDTO> oldImage = oldDto.getImages();
+        for (PicsDTO pics : oldImage){
+            picsService.delete(pics.getId());
+        }
         Set<PicsDTO> imagesDTO = new HashSet<>();
         FitnessActivityDTO result = fitnessActivityService.save(fitnessActivityDTO);
         if (fitnessActivityDTO.getImages() != null && !fitnessActivityDTO.getImages().isEmpty()){
