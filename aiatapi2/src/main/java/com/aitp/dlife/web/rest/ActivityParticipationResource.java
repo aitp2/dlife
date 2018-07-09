@@ -102,7 +102,7 @@ public class ActivityParticipationResource {
         }
         FitnessActivityDTO dto = fitnessActivityService.findOne(activityParticipationDTO.getActivityId());
 
-        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit",dto.getId(),HttpUtil.baseEncoder(dto.getTitle()),"attend",new Date(),wechatUserDTO.getNickName(),sexString);
+        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit",dto.getId(),HttpUtil.baseEncoder(dto.getTitle()),"attend",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
         //log for markting end
 
 
@@ -213,7 +213,7 @@ public class ActivityParticipationResource {
                 sexString = "female";
             }
         }
-        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit",dto.getId(),HttpUtil.baseEncoder(dto.getTitle()),"PDP",new Date(),wechatUserDTO.getNickName(),sexString);
+        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit",dto.getId(),HttpUtil.baseEncoder(dto.getTitle()),"PDP",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
         //log for markting end
 
         ActivityParticipationDTO result = activityParticipationService.getByUidAndActivityId(activityId,wechatUserId);

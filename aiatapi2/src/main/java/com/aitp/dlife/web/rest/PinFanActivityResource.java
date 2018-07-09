@@ -100,7 +100,7 @@ public class PinFanActivityResource {
                 sexString = "female";
             }
         }
-        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan","",HttpUtil.baseEncoder(pinFanActivityDTO.getActivitiyTile()),"createActivity",new Date(),wechatUserDTO.getNickName(),sexString);
+        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan","",HttpUtil.baseEncoder(pinFanActivityDTO.getActivitiyTile()),"createActivity",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
         //log for markting end
 
 
@@ -217,7 +217,7 @@ public class PinFanActivityResource {
                 sexString = "female";
             }
         }
-        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan","","","login",new Date(),wechatUserDTO.getNickName(),sexString);
+        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan","","","login",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
         //log for markting end
 
         Page<PinFanActivityDTO> page = pinFanActivityService.findAll(pageable);
@@ -298,7 +298,7 @@ public class PinFanActivityResource {
                 sexString = "female";
             }
         }
-        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan",pinFanActivityDTO.getId(),HttpUtil.baseEncoder(pinFanActivityDTO.getActivitiyTile()),"PDP",new Date(),wechatUserDTO.getNickName(),sexString);
+        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan",pinFanActivityDTO.getId(),HttpUtil.baseEncoder(pinFanActivityDTO.getActivitiyTile()),"PDP",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
         //log for markting end
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(pinFanActivityDTO));
     }
@@ -330,7 +330,7 @@ public class PinFanActivityResource {
                 sexString = "female";
             }
         }
-        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan","","","createView",new Date(),wechatUserDTO.getNickName(),sexString);
+        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan","","","createView",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
         //log for markting end
         return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wechatUserId)).build();
     }
