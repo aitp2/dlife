@@ -2,6 +2,7 @@ package com.aitp.dlife.web.rest;
 
 import com.aitp.dlife.service.WechatUserService;
 import com.aitp.dlife.service.dto.WechatUserDTO;
+import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.ClockinSummaryService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -156,7 +157,7 @@ public class ClockinSummaryResource {
                 sexString = "female";
             }
         }
-        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit","","","login",new Date(),wechatUserDTO.getNickName(),sexString);
+        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit","","","login",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
         //log for markting end
 
         if (null == wechatUserId) {

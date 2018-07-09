@@ -105,7 +105,7 @@ public class FitnessActivityResource {
                 sexString = "female";
             }
         }
-        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit","",HttpUtil.baseEncoder(fitnessActivityDTO.getTitle()),"createActivity",new Date(),wechatUserDTO.getNickName(),sexString);
+        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit","",HttpUtil.baseEncoder(fitnessActivityDTO.getTitle()),"createActivity",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
         //log for markting end
 
 
@@ -134,6 +134,10 @@ public class FitnessActivityResource {
         if(null!=oldDto){
             fitnessActivityDTO.setStatus(oldDto.getStatus());
             fitnessActivityDTO.setCommentCount(oldDto.getCommentCount());
+        }
+        Set<PicsDTO> oldImage = oldDto.getImages();
+        for (PicsDTO pics : oldImage){
+            picsService.delete(pics.getId());
         }
         Set<PicsDTO> imagesDTO = new HashSet<>();
         FitnessActivityDTO result = fitnessActivityService.save(fitnessActivityDTO);
@@ -221,7 +225,7 @@ public class FitnessActivityResource {
                 sexString = "female";
             }
         }
-        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit","","","createView",new Date(),wechatUserDTO.getNickName(),sexString);
+        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit","","","createView",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
         //log for markting end
         return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wechatUserId)).build();
     }
