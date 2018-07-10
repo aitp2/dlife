@@ -3,10 +3,7 @@ package com.aitp.web.common.service.utils;
 import java.security.DigestException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Sha1 {
     /**
@@ -88,15 +85,34 @@ public class Sha1 {
      */
     private static String splitParams(List<String> paramNames, Map<String, Object> maps) {
         StringBuilder paramStr = new StringBuilder();
+        int i=1;
         for (String paramName : paramNames) {
-            paramStr.append(paramName);
+            paramStr.append(paramName+"=");
             for (Map.Entry<String, Object> entry : maps.entrySet()) {
                 if (paramName.equals(entry.getKey())) {
                     paramStr.append(String.valueOf(entry.getValue()));
                 }
             }
+            if(i!=maps.size()){
+                paramStr.append("&");
+            }
+            i++;
         }
         return paramStr.toString();
+    }
+
+    public static void main(String[] args) {
+        Map<String,Object> maps = new HashMap<String,Object>();
+        maps.put("jsapi_ticket","sM4AOVdWfPE4DxkXGEs8VMCPGGVi4C3VM0P37wVUCFvkVAy_90u5h9nbSlYy3-Sl-HhTdfl2fzFy1AOcHKP7qg");
+        maps.put("noncestr","99d3379-1bc2-4905-a853-1789b7a0920c");
+        maps.put("timestamp","1531213399");
+        maps.put("url","http://newapi.aitpgroup.tech/login.html");
+
+        try {
+            System.out.println(Sha1.SHA1(maps));
+        } catch (DigestException e) {
+            e.printStackTrace();
+        }
     }
 
 }
