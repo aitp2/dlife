@@ -1,6 +1,7 @@
 package com.aitp.web.common.service.wechat;
 
 import com.aitp.web.common.service.beans.AuthInfo;
+import com.aitp.web.common.service.beans.Ticket;
 import com.aitp.web.common.service.beans.Token;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,31 @@ public class AuthClient {
     @Resource(name = "authToolNoCache")
     private AuthTool authTool;
 
+    /**
+     * 网页授权access_token
+     * @param authInfo
+     * @return
+     */
     public Token loadAccessToken(AuthInfo authInfo){
         return authTool.loadAccessToken(authInfo);
     }
+
+    /**
+     * 普通access_token
+     * @param authInfo
+     * @return
+     */
+    public Token loadToken(AuthInfo authInfo){
+        return authTool.loadToken(authInfo);
+    }
+
+    /**
+     * 获得jsapi_ticket
+     * @param authInfo
+     * @return
+     */
+    public Ticket loadTicket(AuthInfo authInfo){
+        return authTool.loadTicket(authInfo);
+    }
+
 }
