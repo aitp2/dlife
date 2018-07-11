@@ -10,6 +10,7 @@ import com.aitp.dlife.service.WechatUserService;
 import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.web.rest.util.HttpUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -137,19 +138,20 @@ public class FitnessActivityResource {
         List<PicsDTO> oldImages = picsService.findPicsByActivityId(fitnessActivityDTO.getId());
         if (!CollectionUtils.isEmpty(fitnessActivityDTO.getImages()))
         {
-
+            log.info("save  image");
             List<Long> oldIds = new ArrayList<>();
 
             for(PicsDTO newImage : fitnessActivityDTO.getImages())
             {
                 if(newImage.getId() == null)
                 {
+                    log.info("save new image");
                     newImage.setCreateTime(DateUtil.getYMDDateString(new Date()));
                     newImage.setFitnessActivityId(fitnessActivityDTO.getId());
                     picsService.save(newImage);
                     continue;
                 }
-
+                log.info("add old image");
                 oldIds.add(newImage.getId());
             }
 
@@ -157,12 +159,14 @@ public class FitnessActivityResource {
             {
                 if (!oldIds.contains(oldImage.getId()))
                 {
+                    log.info("delete old image");
                     picsService.delete(oldImage.getId());
                 }
             }
         }
         else
         {
+            log.info("delete image");
             for(PicsDTO oldImage : oldImages)
             {
                 picsService.delete(oldImage.getId());
