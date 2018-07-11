@@ -2,11 +2,7 @@ package com.aitp.dlife.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import javax.validation.Valid;
 
@@ -21,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -135,20 +132,42 @@ public class FitnessActivityResource {
             fitnessActivityDTO.setStatus(oldDto.getStatus());
             fitnessActivityDTO.setCommentCount(oldDto.getCommentCount());
         }
-        Set<PicsDTO> oldImage = oldDto.getImages();
-        for (PicsDTO pics : oldImage){
-            picsService.delete(pics.getId());
-        }
-        Set<PicsDTO> imagesDTO = new HashSet<>();
+
         FitnessActivityDTO result = fitnessActivityService.save(fitnessActivityDTO);
-        if (fitnessActivityDTO.getImages() != null && !fitnessActivityDTO.getImages().isEmpty()){
-            for(PicsDTO pics : fitnessActivityDTO.getImages()){
-                pics.setCreateTime(DateUtil.getYMDDateString(new Date()));
-                pics.setFitnessActivityId(result.getId());
-                imagesDTO.add(picsService.save(pics));
+        List<PicsDTO> oldImages = picsService.findPicsByActivityId(fitnessActivityDTO.getId());
+        if (!CollectionUtils.isEmpty(fitnessActivityDTO.getImages()))
+        {
+
+            List<Long> oldIds = new ArrayList<>();
+
+            for(PicsDTO newImage : fitnessActivityDTO.getImages())
+            {
+                if(newImage.getId() == null)
+                {
+                    newImage.setCreateTime(DateUtil.getYMDDateString(new Date()));
+                    newImage.setFitnessActivityId(fitnessActivityDTO.getId());
+                    picsService.save(newImage);
+                    continue;
+                }
+
+                oldIds.add(newImage.getId());
+            }
+
+            for(PicsDTO oldImage : oldImages)
+            {
+                if (!oldIds.contains(oldImage.getId()))
+                {
+                    picsService.delete(oldImage.getId());
+                }
             }
         }
-        result.setImages(imagesDTO);
+        else
+        {
+            for(PicsDTO oldImage : oldImages)
+            {
+                picsService.delete(oldImage.getId());
+            }
+        }
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, fitnessActivityDTO.getId().toString()))
             .body(result);
