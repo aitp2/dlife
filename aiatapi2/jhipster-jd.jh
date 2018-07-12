@@ -181,7 +181,9 @@ entity PinFanActivity{
     /** 活动状态 0-新建 1-完成 2-取消**/
     status Integer,
     /** 评论数量 */
-    commentCount Integer
+    commentCount Integer,
+	/** 阅读数量 */
+    readingCount Integer
 }
 /**
 拼饭活动参与信息
@@ -237,6 +239,8 @@ entity FitnessActivity{
     activityEndTime Instant,
     /** 评论数量 */
     commentCount Integer,
+	/** 阅读数量 */
+    readingCount Integer,
     modifyTime Instant  
 }
 /**
