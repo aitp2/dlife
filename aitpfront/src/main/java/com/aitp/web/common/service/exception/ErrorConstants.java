@@ -10,5 +10,6 @@ public final class ErrorConstants {
     public static final URI WECHAT_ERROR_TYPE = URI.create(PROBLEM_BASE_URL + "/wechat-error-type");
 
     private ErrorConstants() {
+    
     }
 }
