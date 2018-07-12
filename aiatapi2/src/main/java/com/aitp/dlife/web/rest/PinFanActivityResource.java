@@ -334,4 +334,35 @@ public class PinFanActivityResource {
         //log for markting end
         return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wechatUserId)).build();
     }
+    
+    /**
+     * PUT  /pin-fan-activities : Updates an existing pinFanActivity.
+     *
+     * @param pinFanActivityDTO the pinFanActivityDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated pinFanActivityDTO,
+     * or with status 400 (Bad Request) if the pinFanActivityDTO is not valid,
+     * or with status 500 (Internal Server Error) if the pinFanActivityDTO couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/pin-fan-activities/readingCount")
+    @Timed
+    public ResponseEntity<PinFanActivityDTO> updateReadingCount(Long id) throws URISyntaxException {
+		log.debug("REST request to update PinFanActivity : {}", id);
+		if (id == null) {
+			throw new BadRequestAlertException("ID is needed", ENTITY_NAME, "idexists");
+		}
+        PinFanActivityDTO pinfanActivityRecord = pinFanActivityService.findOne(id);
+        if (null == pinfanActivityRecord) {
+			throw new BadRequestAlertException("Can not find record by id", ENTITY_NAME, "notfound");
+		}
+        
+        pinfanActivityRecord.setReadingCount(
+        		pinfanActivityRecord.getReadingCount() != null ? pinfanActivityRecord.getReadingCount() + 1 : 1);
+        
+        PinFanActivityDTO result = pinFanActivityService.save(pinfanActivityRecord);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, id.toString()))
+            .body(result);
+    }
 }

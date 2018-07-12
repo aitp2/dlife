@@ -2,15 +2,15 @@ package com.aitp.dlife.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.Valid;
 
-import com.aitp.dlife.service.WechatUserService;
-import com.aitp.dlife.service.dto.WechatUserDTO;
-import com.aitp.dlife.web.rest.util.HttpUtil;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -30,12 +30,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aitp.dlife.service.FitnessActivityService;
 import com.aitp.dlife.service.PicsService;
-import com.aitp.dlife.service.dto.ClockinSummaryDTO;
+import com.aitp.dlife.service.WechatUserService;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.dto.PicsDTO;
+import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
+import com.aitp.dlife.web.rest.util.HttpUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import com.codahale.metrics.annotation.Timed;
 
@@ -252,5 +254,25 @@ public class FitnessActivityResource {
         //log for markting end
         return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wechatUserId)).build();
     }
+    
+    @PutMapping("/fitness-activities/readingCount")
+    @Timed
+	public ResponseEntity<FitnessActivityDTO> updateReadingCount(Long id) throws URISyntaxException {
+		log.debug("REST request to update FitnessActivity : {}", id);
+		if (id == null) {
+			throw new BadRequestAlertException("ID is needed", ENTITY_NAME, "idexists");
+		}
+		FitnessActivityDTO fitnessActivityRecord = fitnessActivityService.findOne(id);
+		if (null == fitnessActivityRecord) {
+			throw new BadRequestAlertException("Can not find record by id", ENTITY_NAME, "notfound");
+		}
+
+		fitnessActivityRecord.setReadingCount(
+				fitnessActivityRecord.getReadingCount() != null ? fitnessActivityRecord.getReadingCount() + 1 : 1);
+
+		FitnessActivityDTO result = fitnessActivityService.save(fitnessActivityRecord);
+
+		return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, id.toString())).body(result);
+	}
 
 }
