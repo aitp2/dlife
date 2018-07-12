@@ -1,95 +1,90 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import * as moment from 'moment';
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { map } from 'rxjs/operators';
 
-import { JhiDateUtils } from 'ng-jhipster';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IFitnessActivity } from 'app/shared/model/fitness-activity.model';
 
-import { FitnessActivity } from './fitness-activity.model';
-import { ResponseWrapper, createRequestOption } from '../../shared';
+type EntityResponseType = HttpResponse<IFitnessActivity>;
+type EntityArrayResponseType = HttpResponse<IFitnessActivity[]>;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class FitnessActivityService {
+  private resourceUrl = SERVER_API_URL + 'api/fitness-activities';
 
-    private resourceUrl =  SERVER_API_URL + 'api/fitness-activities';
+  constructor(private http: HttpClient) {}
 
-    constructor(private http: Http, private dateUtils: JhiDateUtils) { }
+  create(fitnessActivity: IFitnessActivity): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(fitnessActivity);
+    return this.http
+      .post<IFitnessActivity>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
 
-    create(fitnessActivity: FitnessActivity): Observable<FitnessActivity> {
-        const copy = this.convert(fitnessActivity);
-        return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
-    }
+  update(fitnessActivity: IFitnessActivity): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(fitnessActivity);
+    return this.http
+      .put<IFitnessActivity>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
 
-    update(fitnessActivity: FitnessActivity): Observable<FitnessActivity> {
-        const copy = this.convert(fitnessActivity);
-        return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
-    }
+  find(id: number): Observable<EntityResponseType> {
+    return this.http
+      .get<IFitnessActivity>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
 
-    find(id: number): Observable<FitnessActivity> {
-        return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
-    }
+  query(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<IFitnessActivity[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
 
-    query(req?: any): Observable<ResponseWrapper> {
-        const options = createRequestOption(req);
-        return this.http.get(this.resourceUrl, options)
-            .map((res: Response) => this.convertResponse(res));
-    }
+  delete(id: number): Observable<HttpResponse<any>> {
+    return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
 
-    delete(id: number): Observable<Response> {
-        return this.http.delete(`${this.resourceUrl}/${id}`);
-    }
+  private convertDateFromClient(fitnessActivity: IFitnessActivity): IFitnessActivity {
+    const copy: IFitnessActivity = Object.assign({}, fitnessActivity, {
+      signStartTime:
+        fitnessActivity.signStartTime != null && fitnessActivity.signStartTime.isValid() ? fitnessActivity.signStartTime.toJSON() : null,
+      signEndTime:
+        fitnessActivity.signEndTime != null && fitnessActivity.signEndTime.isValid() ? fitnessActivity.signEndTime.toJSON() : null,
+      activityStartTime:
+        fitnessActivity.activityStartTime != null && fitnessActivity.activityStartTime.isValid()
+          ? fitnessActivity.activityStartTime.toJSON()
+          : null,
+      activityEndTime:
+        fitnessActivity.activityEndTime != null && fitnessActivity.activityEndTime.isValid()
+          ? fitnessActivity.activityEndTime.toJSON()
+          : null,
+      modifyTime: fitnessActivity.modifyTime != null && fitnessActivity.modifyTime.isValid() ? fitnessActivity.modifyTime.toJSON() : null
+    });
+    return copy;
+  }
 
-    private convertResponse(res: Response): ResponseWrapper {
-        const jsonResponse = res.json();
-        const result = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            result.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return new ResponseWrapper(res.headers, result, res.status);
-    }
+  private convertDateFromServer(res: EntityResponseType): EntityResponseType {
+    res.body.signStartTime = res.body.signStartTime != null ? moment(res.body.signStartTime) : null;
+    res.body.signEndTime = res.body.signEndTime != null ? moment(res.body.signEndTime) : null;
+    res.body.activityStartTime = res.body.activityStartTime != null ? moment(res.body.activityStartTime) : null;
+    res.body.activityEndTime = res.body.activityEndTime != null ? moment(res.body.activityEndTime) : null;
+    res.body.modifyTime = res.body.modifyTime != null ? moment(res.body.modifyTime) : null;
+    return res;
+  }
 
-    /**
-     * Convert a returned JSON object to FitnessActivity.
-     */
-    private convertItemFromServer(json: any): FitnessActivity {
-        const entity: FitnessActivity = Object.assign(new FitnessActivity(), json);
-        entity.signStartTime = this.dateUtils
-            .convertDateTimeFromServer(json.signStartTime);
-        entity.signEndTime = this.dateUtils
-            .convertDateTimeFromServer(json.signEndTime);
-        entity.activityStartTime = this.dateUtils
-            .convertDateTimeFromServer(json.activityStartTime);
-        entity.activityEndTime = this.dateUtils
-            .convertDateTimeFromServer(json.activityEndTime);
-        entity.modifyTime = this.dateUtils
-            .convertDateTimeFromServer(json.modifyTime);
-        return entity;
-    }
-
-    /**
-     * Convert a FitnessActivity to a JSON which can be sent to the server.
-     */
-    private convert(fitnessActivity: FitnessActivity): FitnessActivity {
-        const copy: FitnessActivity = Object.assign({}, fitnessActivity);
-
-        copy.signStartTime = this.dateUtils.toDate(fitnessActivity.signStartTime);
-
-        copy.signEndTime = this.dateUtils.toDate(fitnessActivity.signEndTime);
-
-        copy.activityStartTime = this.dateUtils.toDate(fitnessActivity.activityStartTime);
-
-        copy.activityEndTime = this.dateUtils.toDate(fitnessActivity.activityEndTime);
-
-        copy.modifyTime = this.dateUtils.toDate(fitnessActivity.modifyTime);
-        return copy;
-    }
+  private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+    res.body.forEach((fitnessActivity: IFitnessActivity) => {
+      fitnessActivity.signStartTime = fitnessActivity.signStartTime != null ? moment(fitnessActivity.signStartTime) : null;
+      fitnessActivity.signEndTime = fitnessActivity.signEndTime != null ? moment(fitnessActivity.signEndTime) : null;
+      fitnessActivity.activityStartTime = fitnessActivity.activityStartTime != null ? moment(fitnessActivity.activityStartTime) : null;
+      fitnessActivity.activityEndTime = fitnessActivity.activityEndTime != null ? moment(fitnessActivity.activityEndTime) : null;
+      fitnessActivity.modifyTime = fitnessActivity.modifyTime != null ? moment(fitnessActivity.modifyTime) : null;
+    });
+    return res;
+  }
 }

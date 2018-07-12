@@ -1,53 +1,24 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager } from 'ng-jhipster';
 
-import { ClockIn } from './clock-in.model';
-import { ClockInService } from './clock-in.service';
+import { IClockIn } from 'app/shared/model/clock-in.model';
 
 @Component({
-    selector: 'jhi-clock-in-detail',
-    templateUrl: './clock-in-detail.component.html'
+  selector: 'jhi-clock-in-detail',
+  templateUrl: './clock-in-detail.component.html'
 })
-export class ClockInDetailComponent implements OnInit, OnDestroy {
+export class ClockInDetailComponent implements OnInit {
+  clockIn: IClockIn;
 
-    clockIn: ClockIn;
-    private subscription: Subscription;
-    private eventSubscriber: Subscription;
+  constructor(private activatedRoute: ActivatedRoute) {}
 
-    constructor(
-        private eventManager: JhiEventManager,
-        private clockInService: ClockInService,
-        private route: ActivatedRoute
-    ) {
-    }
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ clockIn }) => {
+      this.clockIn = clockIn;
+    });
+  }
 
-    ngOnInit() {
-        this.subscription = this.route.params.subscribe((params) => {
-            this.load(params['id']);
-        });
-        this.registerChangeInClockIns();
-    }
-
-    load(id) {
-        this.clockInService.find(id).subscribe((clockIn) => {
-            this.clockIn = clockIn;
-        });
-    }
-    previousState() {
-        window.history.back();
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.eventManager.destroy(this.eventSubscriber);
-    }
-
-    registerChangeInClockIns() {
-        this.eventSubscriber = this.eventManager.subscribe(
-            'clockInListModification',
-            (response) => this.load(this.clockIn.id)
-        );
-    }
+  previousState() {
+    window.history.back();
+  }
 }

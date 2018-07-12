@@ -1,64 +1,69 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { PinFanActivity } from './pin-fan-activity.model';
-import { PinFanActivityPopupService } from './pin-fan-activity-popup.service';
+import { IPinFanActivity } from 'app/shared/model/pin-fan-activity.model';
 import { PinFanActivityService } from './pin-fan-activity.service';
 
 @Component({
-    selector: 'jhi-pin-fan-activity-delete-dialog',
-    templateUrl: './pin-fan-activity-delete-dialog.component.html'
+  selector: 'jhi-pin-fan-activity-delete-dialog',
+  templateUrl: './pin-fan-activity-delete-dialog.component.html'
 })
 export class PinFanActivityDeleteDialogComponent {
+  pinFanActivity: IPinFanActivity;
 
-    pinFanActivity: PinFanActivity;
+  constructor(
+    private pinFanActivityService: PinFanActivityService,
+    public activeModal: NgbActiveModal,
+    private eventManager: JhiEventManager
+  ) {}
 
-    constructor(
-        private pinFanActivityService: PinFanActivityService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+  clear() {
+    this.activeModal.dismiss('cancel');
+  }
 
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
-
-    confirmDelete(id: number) {
-        this.pinFanActivityService.delete(id).subscribe((response) => {
-            this.eventManager.broadcast({
-                name: 'pinFanActivityListModification',
-                content: 'Deleted an pinFanActivity'
-            });
-            this.activeModal.dismiss(true);
-        });
-    }
+  confirmDelete(id: number) {
+    this.pinFanActivityService.delete(id).subscribe(response => {
+      this.eventManager.broadcast({
+        name: 'pinFanActivityListModification',
+        content: 'Deleted an pinFanActivity'
+      });
+      this.activeModal.dismiss(true);
+    });
+  }
 }
 
 @Component({
-    selector: 'jhi-pin-fan-activity-delete-popup',
-    template: ''
+  selector: 'jhi-pin-fan-activity-delete-popup',
+  template: ''
 })
 export class PinFanActivityDeletePopupComponent implements OnInit, OnDestroy {
+  private ngbModalRef: NgbModalRef;
 
-    routeSub: any;
+  constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
 
-    constructor(
-        private route: ActivatedRoute,
-        private pinFanActivityPopupService: PinFanActivityPopupService
-    ) {}
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ pinFanActivity }) => {
+      setTimeout(() => {
+        this.ngbModalRef = this.modalService.open(PinFanActivityDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+        this.ngbModalRef.componentInstance.pinFanActivity = pinFanActivity;
+        this.ngbModalRef.result.then(
+          result => {
+            this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+            this.ngbModalRef = null;
+          },
+          reason => {
+            this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+            this.ngbModalRef = null;
+          }
+        );
+      }, 0);
+    });
+  }
 
-    ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.pinFanActivityPopupService
-                .open(PinFanActivityDeleteDialogComponent as Component, params['id']);
-        });
-    }
-
-    ngOnDestroy() {
-        this.routeSub.unsubscribe();
-    }
+  ngOnDestroy() {
+    this.ngbModalRef = null;
+  }
 }

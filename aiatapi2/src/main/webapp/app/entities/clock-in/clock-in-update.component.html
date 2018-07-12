@@ -1,0 +1,65 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-clock-in-heading">Create or edit a Clock In</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!clockIn.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="clockIn.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_title" ngbTooltip="活动标题">Title</label>
+                    <input type="text" class="form-control" name="title" id="field_title"
+                        [(ngModel)]="clockIn.title" maxlength="128"/>
+                    <div [hidden]="!(editForm.controls.title?.dirty && editForm.controls.title?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.title?.errors?.maxlength">
+                        This field cannot be longer than 128 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_signNote" ngbTooltip="签到日记">Sign Note</label>
+                    <input type="text" class="form-control" name="signNote" id="field_signNote"
+                        [(ngModel)]="clockIn.signNote" maxlength="1024"/>
+                    <div [hidden]="!(editForm.controls.signNote?.dirty && editForm.controls.signNote?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.signNote?.errors?.maxlength">
+                        This field cannot be longer than 1024 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_punchDateTime" ngbTooltip="打卡时间">Punch Date Time</label>
+                    <div class="d-flex">
+                        <input id="field_punchDateTime" type="datetime-local" class="form-control" name="punchDateTime" [(ngModel)]="punchDateTime"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_activityId">Activity Id</label>
+                    <input type="number" class="form-control" name="activityId" id="field_activityId"
+                        [(ngModel)]="clockIn.activityId" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_activityParticipation">Activity Participation</label>
+                    <select class="form-control" id="field_activityParticipation" name="activityParticipation" [(ngModel)]="clockIn.activityParticipationId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="activityParticipationOption.id" *ngFor="let activityParticipationOption of activityparticipations; trackBy: trackActivityParticipationById">{{activityParticipationOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

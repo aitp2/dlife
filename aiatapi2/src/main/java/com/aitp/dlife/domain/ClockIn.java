@@ -1,6 +1,7 @@
 package com.aitp.dlife.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -50,11 +51,14 @@ public class ClockIn implements Serializable {
     @Column(name = "punch_date_time")
     private Instant punchDateTime;
 
+    @Column(name = "activity_id")
+    private Integer activityId;
+
     @OneToMany(mappedBy = "clockIn")
-    @JsonIgnore
     private Set<Pics> pics = new HashSet<>();
 
     @ManyToOne
+    @JsonIgnoreProperties("clockIns")
     private ActivityParticipation activityParticipation;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -103,6 +107,19 @@ public class ClockIn implements Serializable {
 
     public void setPunchDateTime(Instant punchDateTime) {
         this.punchDateTime = punchDateTime;
+    }
+
+    public Integer getActivityId() {
+        return activityId;
+    }
+
+    public ClockIn activityId(Integer activityId) {
+        this.activityId = activityId;
+        return this;
+    }
+
+    public void setActivityId(Integer activityId) {
+        this.activityId = activityId;
     }
 
     public Set<Pics> getPics() {
@@ -171,6 +188,7 @@ public class ClockIn implements Serializable {
             ", title='" + getTitle() + "'" +
             ", signNote='" + getSignNote() + "'" +
             ", punchDateTime='" + getPunchDateTime() + "'" +
+            ", activityId=" + getActivityId() +
             "}";
     }
 }
