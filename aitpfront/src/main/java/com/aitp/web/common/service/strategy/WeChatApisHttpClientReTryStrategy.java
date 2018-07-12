@@ -1,12 +1,17 @@
 package com.aitp.web.common.service.strategy;
 
+import java.io.IOException;
+
 import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
 import org.apache.http.client.ServiceUnavailableRetryStrategy;
 import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.EntityUtils;
 
 import com.aitp.web.common.service.beans.Response;
 import com.aitp.web.common.service.enums.WeChatErrCode;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 public class WeChatApisHttpClientReTryStrategy implements ServiceUnavailableRetryStrategy{
 
@@ -26,13 +31,18 @@ public class WeChatApisHttpClientReTryStrategy implements ServiceUnavailableRetr
 	@Override
 	public boolean retryRequest(HttpResponse response, int executionCount, HttpContext context) {
 		  Gson gson = new Gson();
-		  Response response2 = gson.fromJson(response.getEntity().toString(),Response.class);
+		  Response response2;
+		try {
+			response2 = gson.fromJson(EntityUtils.toString(response.getEntity(), "UTF-8"),Response.class);
+	
 			if (response2.getErrcode().equals(WeChatErrCode.minus_one.getCode()) && this.executionCount < executionCount) {
 				return true;
 			}
-			else{
-				return false;
-			}
+		} catch (JsonSyntaxException | ParseException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override

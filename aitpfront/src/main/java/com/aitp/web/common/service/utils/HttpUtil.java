@@ -54,16 +54,16 @@ public class HttpUtil {
 		LOGGER.info("-------------do post json data: url>>{} data>>>{}", urlStr, valueString);
 		String respContent = null;
 		try {
-			WeChatApisHttpClientReTryStrategy weChatApisHttpClientReTryStrategy = new WeChatApisHttpClientReTryStrategy.Builder()
-					.executionCount(3).retryInterval(5000).build();
-			HttpClient client = HttpClientBuilder.create().setRetryHandler((e, executionCount, contr) -> {
-				if (executionCount >= 3) {
-					return false;
-				}
-				return true;
-			}).setServiceUnavailableRetryStrategy(weChatApisHttpClientReTryStrategy)
-					.setConnectionManager(new PoolingHttpClientConnectionManager()).build();
-
+//			WeChatApisHttpClientReTryStrategy weChatApisHttpClientReTryStrategy = new WeChatApisHttpClientReTryStrategy.Builder()
+//					.executionCount(3).retryInterval(5000).build();
+//			HttpClient client = HttpClientBuilder.create().setRetryHandler((e, executionCount, contr) -> {
+//				if (executionCount >= 3) {
+//					return false;
+//				}
+//				return true;
+//			}).setServiceUnavailableRetryStrategy(weChatApisHttpClientReTryStrategy)
+//					.setConnectionManager(new PoolingHttpClientConnectionManager()).build();
+			HttpClient client = HttpClients.createDefault();
 			HttpPost httpPost = new HttpPost(urlStr);
 			StringEntity entity = new StringEntity(valueString, "utf-8");
 			entity.setContentEncoding("UTF-8");
@@ -71,7 +71,7 @@ public class HttpUtil {
 			httpPost.setEntity(entity);
 			HttpResponse resp = client.execute(httpPost);
 			LOGGER.info("Status Code:{}", resp.getStatusLine().getStatusCode());
-			if (resp.getStatusLine().getStatusCode() == 201) {
+			if (resp.getStatusLine().getStatusCode() == 201||resp.getStatusLine().getStatusCode() == 200) {
 				HttpEntity resultData = resp.getEntity();
 				respContent = EntityUtils.toString(resultData, "UTF-8");
 			}
