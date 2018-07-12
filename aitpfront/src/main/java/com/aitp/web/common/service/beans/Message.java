@@ -1,5 +1,6 @@
 package com.aitp.web.common.service.beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Message {
@@ -7,8 +8,6 @@ public class Message {
 	private String touser;
 	
 	private String template_id;
-	
-	private String url;
 	
 	private List<TempData> datas;
 
@@ -28,13 +27,6 @@ public class Message {
 		this.template_id = template_id;
 	}
 
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
 
 	public List<TempData> getDatas() {
 		return datas;
@@ -44,5 +36,11 @@ public class Message {
 		this.datas = datas;
 	}
 	
+	public void addTempData(TempData data){
+		if(datas==null){
+			datas = new ArrayList<>();
+		}
+		datas.add(data);
+	}
 	
 }

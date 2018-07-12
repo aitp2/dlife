@@ -11,7 +11,7 @@ public interface MessageSender {
 	 * @return
 	 * @throws InterruptedException
 	 */
-	public boolean sendMessage(Message message,String authToken) ;
+	public boolean sendMessage(Message message) ;
 	
 	
 	

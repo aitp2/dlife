@@ -2,12 +2,16 @@ package com.aitp.web.common.service.wechat;
 
 import java.text.MessageFormat;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import com.aitp.web.common.service.beans.AuthInfo;
 import com.aitp.web.common.service.beans.Message;
 import com.aitp.web.common.service.beans.MessageResponse;
 import com.aitp.web.common.service.beans.TempResponse;
+import com.aitp.web.common.service.beans.Token;
 import com.aitp.web.common.service.enums.WeChatErrCode;
 import com.aitp.web.common.service.exception.WechatException;
 import com.aitp.web.common.service.utils.HttpUtil;
@@ -25,18 +29,18 @@ public class MsessageSenderImp implements MessageSender{
 	
 	@Value("${wechat.messageTemp.id}")
 	private String tempId;
-	
+    @Autowired
+    private Environment env;
+    @Autowired
+    AuthClient authClient;
 	
 	public final static ThreadLocal<Integer> RETRY_LENGHT = new ThreadLocal<Integer>();
 	
 	
-	
-	
-	
 	@Override
-	public boolean sendMessage(Message message,String authToken)  {
+	public boolean sendMessage(Message message)  {
 		  Gson gson = new Gson();
-		  String url = MessageFormat.format(sendMessageUrl, authToken);
+		  String url = MessageFormat.format(sendMessageUrl, getAuthToken());
 		  String response = HttpUtil.doPostJson(url, message);
 		  MessageResponse response1 = gson.fromJson(response, MessageResponse.class);
 		 	WeChatErrCode weChatErrCode = WeChatErrCode.valueof(response1.getErrcode());
@@ -60,7 +64,13 @@ public class MsessageSenderImp implements MessageSender{
 		
 	}
 
-
-
+	private Token getAuthToken(){
+        AuthInfo authInfo=new AuthInfo();
+        authInfo.setAppid(env.getProperty("wechat_app_id"));
+        authInfo.setAppsecret(env.getProperty("wechat_app_secret"));
+        authInfo.setAccessTokenUrl(MessageFormat.format(env.getProperty("wechat_token_url"),authInfo.getAppid(),authInfo.getAppsecret()));
+        return authClient.loadToken(authInfo);
+	}
+	
 
 }
