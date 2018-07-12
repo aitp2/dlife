@@ -220,4 +220,11 @@ public class ClockInResource {
         log.debug("REST request to get Clockins : {}", wechatUserId,yearMonthDate);
         return clockInService.getClockinsByWechatUserIdAndDate(wechatUserId,yearMonthDate);
     }
+
+    @GetMapping("/clock-ins/getClockinsByActivityId")
+    @Timed
+    public List<ClockInDTO>  getClockinsByActivityId(String activityId) {
+        log.debug("REST request to get Clockins by activity id: {}", activityId);
+        return clockInService.getClockinsByActivityId(activityId);
+    }
 }
