@@ -7,6 +7,10 @@ public class ActivityMessageDTO {
     
     private String touser;
 
+    private String title;
+
+    private String action;
+
 	public String getAuthToken() {
 		return authToken;
 	}
@@ -27,7 +31,20 @@ public class ActivityMessageDTO {
 	public void setAuthToken(String authToken) {
 		this.authToken = authToken;
 	}
-	
-	
-	
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
 }

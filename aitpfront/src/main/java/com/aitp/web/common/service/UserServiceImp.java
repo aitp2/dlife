@@ -35,4 +35,13 @@ public class UserServiceImp implements UserService{
         }
         return null;
     }
+
+    @Override
+    public JSONObject getUserByWechatUserId(String apiPath, String wechatUserId) {
+        String userInfo = HttpUtil.doGetJson(apiPath+"/wechat-users/"+wechatUserId);
+        if(StringUtils.isNotBlank(userInfo)){
+            return JSONObject.parseObject(userInfo);
+        }
+        return null;
+    }
 }
