@@ -6,6 +6,7 @@ public class AuthInfo {
     private String accessTokenUrl;
     private String refreshTokenUrl;
     private String snsapiUserinfoUrl;
+    private String jsapiTicketUrl;
 
     public String getAppid() {
         return appid;
@@ -45,5 +46,13 @@ public class AuthInfo {
 
     public void setSnsapiUserinfoUrl(String snsapiUserinfoUrl) {
         this.snsapiUserinfoUrl = snsapiUserinfoUrl;
+    }
+
+    public String getJsapiTicketUrl() {
+        return jsapiTicketUrl;
+    }
+
+    public void setJsapiTicketUrl(String jsapiTicketUrl) {
+        this.jsapiTicketUrl = jsapiTicketUrl;
     }
 }

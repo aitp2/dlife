@@ -10,6 +10,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -87,5 +92,24 @@ public class PicsService {
     public void deleteByClockInId(Long clockInId) {
         log.debug("Request to delete all of the pics which is related to the ClockIn by the clockIn id : {}", clockInId);
         picsRepository.findPicsByClockInId(clockInId).stream().forEach(entry -> delete(entry.getId()));
+    }
+
+    /**
+     * Get  pinfanPics by activityId.
+     *
+     * @param activityId the id of the activityId
+     * @return the entity
+     */
+    @Transactional(readOnly = true)
+    public List<PicsDTO> findPicsByActivityId(Long activityId) {
+        log.debug("Request to get PicsDTO : {}", activityId);
+        List<Pics> Pics = picsRepository.findByActivityId(activityId);
+        final List<PicsDTO> result = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(Pics)){
+            for (Pics pic: Pics) {
+                result.add(picsMapper.toDto(pic));
+            }
+        }
+        return result;
     }
 }
