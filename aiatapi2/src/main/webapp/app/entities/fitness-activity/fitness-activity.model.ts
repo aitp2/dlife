@@ -16,7 +16,6 @@ export class FitnessActivity implements BaseEntity {
         public activityEndTime?: any,
         public commentCount?: number,
         public modifyTime?: any,
-        public readingCount?: number,
         public activityParticipations?: BaseEntity[],
         public images?: BaseEntity[],
     ) {

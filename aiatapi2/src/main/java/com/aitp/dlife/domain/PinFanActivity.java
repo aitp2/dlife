@@ -179,9 +179,6 @@ public class PinFanActivity implements Serializable {
     @Column(name = "comment_count")
     private Integer commentCount;
 
-    @Column(name = "reading_count")
-    private Integer readingCount;
-
     @OneToMany(mappedBy = "pinFanActivity")
     @JsonIgnore
     private Set<Attendee> attendees = new HashSet<>();
@@ -459,19 +456,6 @@ public class PinFanActivity implements Serializable {
         this.commentCount = commentCount;
     }
 
-    public Integer getReadingCount() {
-        return readingCount;
-    }
-
-    public PinFanActivity readingCount(Integer readingCount) {
-        this.readingCount = readingCount;
-        return this;
-    }
-
-    public void setReadingCount(Integer readingCount) {
-        this.readingCount = readingCount;
-    }
-
     public Set<Attendee> getAttendees() {
         return attendees;
     }
@@ -567,7 +551,6 @@ public class PinFanActivity implements Serializable {
             ", comment='" + getComment() + "'" +
             ", status=" + getStatus() +
             ", commentCount=" + getCommentCount() +
-            ", readingCount=" + getReadingCount() +
             "}";
     }
 }

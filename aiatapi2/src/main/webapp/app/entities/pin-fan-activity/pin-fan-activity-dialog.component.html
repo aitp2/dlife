@@ -13,7 +13,7 @@
                    [(ngModel)]="pinFanActivity.id" readonly />
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_wechatUserId" ngbTooltip="发布者id">Wechat User Id</label>
+            <label class="form-control-label" for="field_wechatUserId">Wechat User Id</label>
             <input type="text" class="form-control" name="wechatUserId" id="field_wechatUserId"
                 [(ngModel)]="pinFanActivity.wechatUserId" maxlength="128"/>
             <div [hidden]="!(editForm.controls.wechatUserId?.dirty && editForm.controls.wechatUserId?.invalid)">
@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_avatar" ngbTooltip="头像">Avatar</label>
+            <label class="form-control-label" for="field_avatar">Avatar</label>
             <input type="text" class="form-control" name="avatar" id="field_avatar"
                 [(ngModel)]="pinFanActivity.avatar" maxlength="1024"/>
             <div [hidden]="!(editForm.controls.avatar?.dirty && editForm.controls.avatar?.invalid)">
@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_nickName" ngbTooltip="昵称">Nick Name</label>
+            <label class="form-control-label" for="field_nickName">Nick Name</label>
             <input type="text" class="form-control" name="nickName" id="field_nickName"
                 [(ngModel)]="pinFanActivity.nickName" maxlength="128"/>
             <div [hidden]="!(editForm.controls.nickName?.dirty && editForm.controls.nickName?.invalid)">
@@ -46,12 +46,12 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_activitiyType" ngbTooltip="活动类型">Activitiy Type</label>
+            <label class="form-control-label" for="field_activitiyType">Activitiy Type</label>
             <input type="number" class="form-control" name="activitiyType" id="field_activitiyType"
                 [(ngModel)]="pinFanActivity.activitiyType" />
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_activitiyTile" ngbTooltip="活动名称">Activitiy Tile</label>
+            <label class="form-control-label" for="field_activitiyTile">Activitiy Tile</label>
             <input type="text" class="form-control" name="activitiyTile" id="field_activitiyTile"
                 [(ngModel)]="pinFanActivity.activitiyTile" maxlength="128"/>
             <div [hidden]="!(editForm.controls.activitiyTile?.dirty && editForm.controls.activitiyTile?.invalid)">
@@ -62,12 +62,12 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_budget" ngbTooltip="人均预算">Budget</label>
+            <label class="form-control-label" for="field_budget">Budget</label>
             <input type="number" class="form-control" name="budget" id="field_budget"
                 [(ngModel)]="pinFanActivity.budget" />
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_activitiyAddre" ngbTooltip="活动地址">Activitiy Addre</label>
+            <label class="form-control-label" for="field_activitiyAddre">Activitiy Addre</label>
             <input type="text" class="form-control" name="activitiyAddre" id="field_activitiyAddre"
                 [(ngModel)]="pinFanActivity.activitiyAddre" maxlength="1024"/>
             <div [hidden]="!(editForm.controls.activitiyAddre?.dirty && editForm.controls.activitiyAddre?.invalid)">
@@ -78,7 +78,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_descrption" ngbTooltip="活动描述">Descrption</label>
+            <label class="form-control-label" for="field_descrption">Descrption</label>
             <input type="text" class="form-control" name="descrption" id="field_descrption"
                 [(ngModel)]="pinFanActivity.descrption" maxlength="1024"/>
             <div [hidden]="!(editForm.controls.descrption?.dirty && editForm.controls.descrption?.invalid)">
@@ -89,7 +89,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_organizeUser" ngbTooltip="组织者">Organize User</label>
+            <label class="form-control-label" for="field_organizeUser">Organize User</label>
             <input type="text" class="form-control" name="organizeUser" id="field_organizeUser"
                 [(ngModel)]="pinFanActivity.organizeUser" maxlength="128"/>
             <div [hidden]="!(editForm.controls.organizeUser?.dirty && editForm.controls.organizeUser?.invalid)">
@@ -100,7 +100,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_coverPicture" ngbTooltip="封面图">Cover Picture</label>
+            <label class="form-control-label" for="field_coverPicture">Cover Picture</label>
             <input type="text" class="form-control" name="coverPicture" id="field_coverPicture"
                 [(ngModel)]="pinFanActivity.coverPicture" maxlength="128"/>
             <div [hidden]="!(editForm.controls.coverPicture?.dirty && editForm.controls.coverPicture?.invalid)">
@@ -111,21 +111,21 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_appointDatetime" ngbTooltip="约定时间">Appoint Datetime</label>
+            <label class="form-control-label" for="field_appointDatetime">Appoint Datetime</label>
             <div class="d-flex">
                 <input id="field_appointDatetime" type="datetime-local" class="form-control" name="appointDatetime" [(ngModel)]="pinFanActivity.appointDatetime"
                 />
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_appointEndDatetime" ngbTooltip="约定结束时间">Appoint End Datetime</label>
+            <label class="form-control-label" for="field_appointEndDatetime">Appoint End Datetime</label>
             <div class="d-flex">
                 <input id="field_appointEndDatetime" type="datetime-local" class="form-control" name="appointEndDatetime" [(ngModel)]="pinFanActivity.appointEndDatetime"
                 />
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_salerUrl" ngbTooltip="商家URL">Saler Url</label>
+            <label class="form-control-label" for="field_salerUrl">Saler Url</label>
             <input type="text" class="form-control" name="salerUrl" id="field_salerUrl"
                 [(ngModel)]="pinFanActivity.salerUrl" maxlength="1024"/>
             <div [hidden]="!(editForm.controls.salerUrl?.dirty && editForm.controls.salerUrl?.invalid)">
@@ -136,17 +136,17 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_lowerLimit" ngbTooltip="最少参与者">Lower Limit</label>
+            <label class="form-control-label" for="field_lowerLimit">Lower Limit</label>
             <input type="number" class="form-control" name="lowerLimit" id="field_lowerLimit"
                 [(ngModel)]="pinFanActivity.lowerLimit" />
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_upperLimit" ngbTooltip="最多参与者">Upper Limit</label>
+            <label class="form-control-label" for="field_upperLimit">Upper Limit</label>
             <input type="number" class="form-control" name="upperLimit" id="field_upperLimit"
                 [(ngModel)]="pinFanActivity.upperLimit" />
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_payType" ngbTooltip="支付类型">Pay Type</label>
+            <label class="form-control-label" for="field_payType">Pay Type</label>
             <input type="text" class="form-control" name="payType" id="field_payType"
                 [(ngModel)]="pinFanActivity.payType" maxlength="32"/>
             <div [hidden]="!(editForm.controls.payType?.dirty && editForm.controls.payType?.invalid)">
@@ -157,14 +157,14 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_deadline" ngbTooltip="截至日期">Deadline</label>
+            <label class="form-control-label" for="field_deadline">Deadline</label>
             <div class="d-flex">
                 <input id="field_deadline" type="datetime-local" class="form-control" name="deadline" [(ngModel)]="pinFanActivity.deadline"
                 />
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_comment" ngbTooltip="备注">Comment</label>
+            <label class="form-control-label" for="field_comment">Comment</label>
             <input type="text" class="form-control" name="comment" id="field_comment"
                 [(ngModel)]="pinFanActivity.comment" maxlength="500"/>
             <div [hidden]="!(editForm.controls.comment?.dirty && editForm.controls.comment?.invalid)">
@@ -175,19 +175,14 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_status" ngbTooltip="活动状态 0-新建 1-完成 2-取消">Status</label>
+            <label class="form-control-label" for="field_status">Status</label>
             <input type="number" class="form-control" name="status" id="field_status"
                 [(ngModel)]="pinFanActivity.status" />
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_commentCount" ngbTooltip="评论数量">Comment Count</label>
+            <label class="form-control-label" for="field_commentCount">Comment Count</label>
             <input type="number" class="form-control" name="commentCount" id="field_commentCount"
                 [(ngModel)]="pinFanActivity.commentCount" />
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" for="field_readingCount">Reading Count</label>
-            <input type="number" class="form-control" name="readingCount" id="field_readingCount"
-                [(ngModel)]="pinFanActivity.readingCount" />
         </div>
 
     </div>

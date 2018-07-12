@@ -1,70 +1,82 @@
 /* tslint:disable max-line-length */
-import { TestBed, getTestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { TestBed, async } from '@angular/core/testing';
+import { MockBackend } from '@angular/http/testing';
+import { ConnectionBackend, RequestOptions, BaseRequestOptions, Http, Response, ResponseOptions } from '@angular/http';
 import { JhiDateUtils } from 'ng-jhipster';
 
 import { PinFanActivityService } from '../../../../../../main/webapp/app/entities/pin-fan-activity/pin-fan-activity.service';
+import { PinFanActivity } from '../../../../../../main/webapp/app/entities/pin-fan-activity/pin-fan-activity.model';
 import { SERVER_API_URL } from '../../../../../../main/webapp/app/app.constants';
 
 describe('Service Tests', () => {
 
     describe('PinFanActivity Service', () => {
-        let injector: TestBed;
         let service: PinFanActivityService;
-        let httpMock: HttpTestingController;
 
-        beforeEach(() => {
+        beforeEach(async(() => {
             TestBed.configureTestingModule({
-                imports: [
-                    HttpClientTestingModule
-                ],
                 providers: [
+                    {
+                        provide: ConnectionBackend,
+                        useClass: MockBackend
+                    },
+                    {
+                        provide: RequestOptions,
+                        useClass: BaseRequestOptions
+                    },
+                    Http,
                     JhiDateUtils,
                     PinFanActivityService
                 ]
             });
-            injector = getTestBed();
-            service = injector.get(PinFanActivityService);
-            httpMock = injector.get(HttpTestingController);
-        });
+
+            service = TestBed.get(PinFanActivityService);
+
+            this.backend = TestBed.get(ConnectionBackend) as MockBackend;
+            this.backend.connections.subscribe((connection: any) => {
+                this.lastConnection = connection;
+            });
+        }));
 
         describe('Service methods', () => {
             it('should call correct URL', () => {
                 service.find(123).subscribe(() => {});
 
-                const req  = httpMock.expectOne({ method: 'GET' });
+                expect(this.lastConnection).toBeDefined();
 
                 const resourceUrl = SERVER_API_URL + 'api/pin-fan-activities';
-                expect(req.request.url).toEqual(resourceUrl + '/' + 123);
+                expect(this.lastConnection.request.url).toEqual(resourceUrl + '/' + 123);
             });
             it('should return PinFanActivity', () => {
 
-                service.find(123).subscribe((received) => {
-                    expect(received.body.id).toEqual(123);
+                let entity: PinFanActivity;
+                service.find(123).subscribe((_entity: PinFanActivity) => {
+                    entity = _entity;
                 });
 
-                const req = httpMock.expectOne({ method: 'GET' });
-                req.flush({id: 123});
+                this.lastConnection.mockRespond(new Response(new ResponseOptions({
+                    body: JSON.stringify({id: 123}),
+                })));
+
+                expect(entity).toBeDefined();
+                expect(entity.id).toEqual(123);
             });
 
             it('should propagate not found response', () => {
 
+                let error: any;
                 service.find(123).subscribe(null, (_error: any) => {
-                    expect(_error.status).toEqual(404);
+                    error = _error;
                 });
 
-                const req  = httpMock.expectOne({ method: 'GET' });
-                req.flush('Invalid request parameters', {
-                    status: 404, statusText: 'Bad Request'
-                });
+                this.lastConnection.mockError(new Response(new ResponseOptions({
+                    status: 404,
+                })));
 
+                expect(error).toBeDefined();
+                expect(error.status).toEqual(404);
             });
         });
-
-        afterEach(() => {
-            httpMock.verify();
-        });
-
     });
 
 });

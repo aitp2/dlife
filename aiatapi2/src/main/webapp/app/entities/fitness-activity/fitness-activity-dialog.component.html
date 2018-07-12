@@ -13,7 +13,7 @@
                    [(ngModel)]="fitnessActivity.id" readonly />
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_title" ngbTooltip="活动标题">Title</label>
+            <label class="form-control-label" for="field_title">Title</label>
             <input type="text" class="form-control" name="title" id="field_title"
                 [(ngModel)]="fitnessActivity.title" maxlength="128"/>
             <div [hidden]="!(editForm.controls.title?.dirty && editForm.controls.title?.invalid)">
@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_descrption" ngbTooltip="活动描述">Descrption</label>
+            <label class="form-control-label" for="field_descrption">Descrption</label>
             <input type="text" class="form-control" name="descrption" id="field_descrption"
                 [(ngModel)]="fitnessActivity.descrption" maxlength="1024"/>
             <div [hidden]="!(editForm.controls.descrption?.dirty && editForm.controls.descrption?.invalid)">
@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_wechatUserId" ngbTooltip="用户id 创建人">Wechat User Id</label>
+            <label class="form-control-label" for="field_wechatUserId">Wechat User Id</label>
             <input type="text" class="form-control" name="wechatUserId" id="field_wechatUserId"
                 [(ngModel)]="fitnessActivity.wechatUserId" maxlength="128"/>
             <div [hidden]="!(editForm.controls.wechatUserId?.dirty && editForm.controls.wechatUserId?.invalid)">
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_nickName" ngbTooltip="昵称">Nick Name</label>
+            <label class="form-control-label" for="field_nickName">Nick Name</label>
             <input type="text" class="form-control" name="nickName" id="field_nickName"
                 [(ngModel)]="fitnessActivity.nickName" maxlength="128"/>
             <div [hidden]="!(editForm.controls.nickName?.dirty && editForm.controls.nickName?.invalid)">
@@ -57,7 +57,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_avatar" ngbTooltip="头像">Avatar</label>
+            <label class="form-control-label" for="field_avatar">Avatar</label>
             <input type="text" class="form-control" name="avatar" id="field_avatar"
                 [(ngModel)]="fitnessActivity.avatar" maxlength="1024"/>
             <div [hidden]="!(editForm.controls.avatar?.dirty && editForm.controls.avatar?.invalid)">
@@ -68,7 +68,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_project" ngbTooltip="项目名称">Project</label>
+            <label class="form-control-label" for="field_project">Project</label>
             <input type="text" class="form-control" name="project" id="field_project"
                 [(ngModel)]="fitnessActivity.project" maxlength="128"/>
             <div [hidden]="!(editForm.controls.project?.dirty && editForm.controls.project?.invalid)">
@@ -79,7 +79,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_companyRole" ngbTooltip="角色">Company Role</label>
+            <label class="form-control-label" for="field_companyRole">Company Role</label>
             <input type="text" class="form-control" name="companyRole" id="field_companyRole"
                 [(ngModel)]="fitnessActivity.companyRole" maxlength="128"/>
             <div [hidden]="!(editForm.controls.companyRole?.dirty && editForm.controls.companyRole?.invalid)">
@@ -90,35 +90,35 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_signStartTime" ngbTooltip="报名开始时间">Sign Start Time</label>
+            <label class="form-control-label" for="field_signStartTime">Sign Start Time</label>
             <div class="d-flex">
                 <input id="field_signStartTime" type="datetime-local" class="form-control" name="signStartTime" [(ngModel)]="fitnessActivity.signStartTime"
                 />
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_signEndTime" ngbTooltip="报名截至时间">Sign End Time</label>
+            <label class="form-control-label" for="field_signEndTime">Sign End Time</label>
             <div class="d-flex">
                 <input id="field_signEndTime" type="datetime-local" class="form-control" name="signEndTime" [(ngModel)]="fitnessActivity.signEndTime"
                 />
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_activityStartTime" ngbTooltip="开始时间">Activity Start Time</label>
+            <label class="form-control-label" for="field_activityStartTime">Activity Start Time</label>
             <div class="d-flex">
                 <input id="field_activityStartTime" type="datetime-local" class="form-control" name="activityStartTime" [(ngModel)]="fitnessActivity.activityStartTime"
                 />
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_activityEndTime" ngbTooltip="结束时间">Activity End Time</label>
+            <label class="form-control-label" for="field_activityEndTime">Activity End Time</label>
             <div class="d-flex">
                 <input id="field_activityEndTime" type="datetime-local" class="form-control" name="activityEndTime" [(ngModel)]="fitnessActivity.activityEndTime"
                 />
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_commentCount" ngbTooltip="评论数量">Comment Count</label>
+            <label class="form-control-label" for="field_commentCount">Comment Count</label>
             <input type="number" class="form-control" name="commentCount" id="field_commentCount"
                 [(ngModel)]="fitnessActivity.commentCount" />
         </div>
@@ -128,11 +128,6 @@
                 <input id="field_modifyTime" type="datetime-local" class="form-control" name="modifyTime" [(ngModel)]="fitnessActivity.modifyTime"
                 />
             </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" for="field_readingCount">Reading Count</label>
-            <input type="number" class="form-control" name="readingCount" id="field_readingCount"
-                [(ngModel)]="fitnessActivity.readingCount" />
         </div>
 
     </div>

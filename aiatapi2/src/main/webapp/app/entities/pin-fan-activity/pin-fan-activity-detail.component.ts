@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs/Subscription';
 import { JhiEventManager } from 'ng-jhipster';
 
@@ -32,10 +31,9 @@ export class PinFanActivityDetailComponent implements OnInit, OnDestroy {
     }
 
     load(id) {
-        this.pinFanActivityService.find(id)
-            .subscribe((pinFanActivityResponse: HttpResponse<PinFanActivity>) => {
-                this.pinFanActivity = pinFanActivityResponse.body;
-            });
+        this.pinFanActivityService.find(id).subscribe((pinFanActivity) => {
+            this.pinFanActivity = pinFanActivity;
+        });
     }
     previousState() {
         window.history.back();

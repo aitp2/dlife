@@ -1,79 +1,78 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { SERVER_API_URL } from '../../app.constants';
 
 import { JhiDateUtils } from 'ng-jhipster';
 
 import { FitnessActivity } from './fitness-activity.model';
-import { createRequestOption } from '../../shared';
-
-export type EntityResponseType = HttpResponse<FitnessActivity>;
+import { ResponseWrapper, createRequestOption } from '../../shared';
 
 @Injectable()
 export class FitnessActivityService {
 
     private resourceUrl =  SERVER_API_URL + 'api/fitness-activities';
 
-    constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
+    constructor(private http: Http, private dateUtils: JhiDateUtils) { }
 
-    create(fitnessActivity: FitnessActivity): Observable<EntityResponseType> {
+    create(fitnessActivity: FitnessActivity): Observable<FitnessActivity> {
         const copy = this.convert(fitnessActivity);
-        return this.http.post<FitnessActivity>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
+        return this.http.post(this.resourceUrl, copy).map((res: Response) => {
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
+        });
     }
 
-    update(fitnessActivity: FitnessActivity): Observable<EntityResponseType> {
+    update(fitnessActivity: FitnessActivity): Observable<FitnessActivity> {
         const copy = this.convert(fitnessActivity);
-        return this.http.put<FitnessActivity>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
+        return this.http.put(this.resourceUrl, copy).map((res: Response) => {
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
+        });
     }
 
-    find(id: number): Observable<EntityResponseType> {
-        return this.http.get<FitnessActivity>(`${this.resourceUrl}/${id}`, { observe: 'response'})
-            .map((res: EntityResponseType) => this.convertResponse(res));
+    find(id: number): Observable<FitnessActivity> {
+        return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
+        });
     }
 
-    query(req?: any): Observable<HttpResponse<FitnessActivity[]>> {
+    query(req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
-        return this.http.get<FitnessActivity[]>(this.resourceUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<FitnessActivity[]>) => this.convertArrayResponse(res));
+        return this.http.get(this.resourceUrl, options)
+            .map((res: Response) => this.convertResponse(res));
     }
 
-    delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
+    delete(id: number): Observable<Response> {
+        return this.http.delete(`${this.resourceUrl}/${id}`);
     }
 
-    private convertResponse(res: EntityResponseType): EntityResponseType {
-        const body: FitnessActivity = this.convertItemFromServer(res.body);
-        return res.clone({body});
-    }
-
-    private convertArrayResponse(res: HttpResponse<FitnessActivity[]>): HttpResponse<FitnessActivity[]> {
-        const jsonResponse: FitnessActivity[] = res.body;
-        const body: FitnessActivity[] = [];
+    private convertResponse(res: Response): ResponseWrapper {
+        const jsonResponse = res.json();
+        const result = [];
         for (let i = 0; i < jsonResponse.length; i++) {
-            body.push(this.convertItemFromServer(jsonResponse[i]));
+            result.push(this.convertItemFromServer(jsonResponse[i]));
         }
-        return res.clone({body});
+        return new ResponseWrapper(res.headers, result, res.status);
     }
 
     /**
      * Convert a returned JSON object to FitnessActivity.
      */
-    private convertItemFromServer(fitnessActivity: FitnessActivity): FitnessActivity {
-        const copy: FitnessActivity = Object.assign({}, fitnessActivity);
-        copy.signStartTime = this.dateUtils
-            .convertDateTimeFromServer(fitnessActivity.signStartTime);
-        copy.signEndTime = this.dateUtils
-            .convertDateTimeFromServer(fitnessActivity.signEndTime);
-        copy.activityStartTime = this.dateUtils
-            .convertDateTimeFromServer(fitnessActivity.activityStartTime);
-        copy.activityEndTime = this.dateUtils
-            .convertDateTimeFromServer(fitnessActivity.activityEndTime);
-        copy.modifyTime = this.dateUtils
-            .convertDateTimeFromServer(fitnessActivity.modifyTime);
-        return copy;
+    private convertItemFromServer(json: any): FitnessActivity {
+        const entity: FitnessActivity = Object.assign(new FitnessActivity(), json);
+        entity.signStartTime = this.dateUtils
+            .convertDateTimeFromServer(json.signStartTime);
+        entity.signEndTime = this.dateUtils
+            .convertDateTimeFromServer(json.signEndTime);
+        entity.activityStartTime = this.dateUtils
+            .convertDateTimeFromServer(json.activityStartTime);
+        entity.activityEndTime = this.dateUtils
+            .convertDateTimeFromServer(json.activityEndTime);
+        entity.modifyTime = this.dateUtils
+            .convertDateTimeFromServer(json.modifyTime);
+        return entity;
     }
 
     /**
