@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
+@RequestMapping("/fitness")
 public class FitnessController {
 
     Logger logger = LoggerFactory.getLogger(FitnessController.class);
