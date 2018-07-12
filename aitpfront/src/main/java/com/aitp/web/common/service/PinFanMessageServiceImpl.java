@@ -54,7 +54,7 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
                 JSONObject userData = userService.getUserByWechatUserId(restApiPath,attendeeDTO.getWechatUserId());
                 if(null!= userData){
                     ActivityMessageDTO messageDTO = new ActivityMessageDTO();
-                    messageDTO.setAction("已被发起人取消");
+                    messageDTO.setAction("小邀约已被发起人取消");
                     messageDTO.setTitle(dto.getActivitiyTile());
                     messageDTO.setTouser(userData.getString("openId"));
                     messageService.SendMessage(messageDTO);
