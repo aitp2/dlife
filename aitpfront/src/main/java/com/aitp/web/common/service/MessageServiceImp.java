@@ -23,8 +23,8 @@ public class MessageServiceImp implements MessageService{
 		Message message = new Message();
 		message.setTouser(messageDto.getTouser());
 		message.setTemplate_id(templateID);
-		message.addTempData(new TempData("title", messageDto.getTitle()));
-		message.addTempData(new TempData("action",messageDto.getAction()));
+		message.addTempData("title",new TempData(messageDto.getTitle(),"#173177"));
+		message.addTempData("action",new TempData(messageDto.getAction(),"#FF0000"));
 		messageSender.sendMessage(message);
 		return false;
 		
