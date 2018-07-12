@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
+@RequestMapping("/pinfan")
 public class PinFanController {
 
     Logger logger = LoggerFactory.getLogger(PinFanController.class);

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
+@RequestMapping("/fitness")
 public class FitnessController {
 
     Logger logger = LoggerFactory.getLogger(FitnessController.class);
@@ -19,7 +20,7 @@ public class FitnessController {
     @Autowired
     private FitnessMessageService fitnessMessageService;
 
-    @RequestMapping("/sendPinFanMessage")
+    @RequestMapping("/sendFitnessMessage")
     public String sendFitnessMessage(@RequestParam("id") String id, @RequestParam("state") String state){
         if (StringUtils.isNotBlank(id)&&StringUtils.isNotBlank(state)){
             if ("update".equals(state.toLowerCase())){
