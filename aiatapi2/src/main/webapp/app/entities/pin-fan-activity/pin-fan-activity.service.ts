@@ -1,87 +1,80 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import * as moment from 'moment';
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { map } from 'rxjs/operators';
 
-import { JhiDateUtils } from 'ng-jhipster';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IPinFanActivity } from 'app/shared/model/pin-fan-activity.model';
 
-import { PinFanActivity } from './pin-fan-activity.model';
-import { ResponseWrapper, createRequestOption } from '../../shared';
+type EntityResponseType = HttpResponse<IPinFanActivity>;
+type EntityArrayResponseType = HttpResponse<IPinFanActivity[]>;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PinFanActivityService {
+  private resourceUrl = SERVER_API_URL + 'api/pin-fan-activities';
 
-    private resourceUrl =  SERVER_API_URL + 'api/pin-fan-activities';
+  constructor(private http: HttpClient) {}
 
-    constructor(private http: Http, private dateUtils: JhiDateUtils) { }
+  create(pinFanActivity: IPinFanActivity): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(pinFanActivity);
+    return this.http
+      .post<IPinFanActivity>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
 
-    create(pinFanActivity: PinFanActivity): Observable<PinFanActivity> {
-        const copy = this.convert(pinFanActivity);
-        return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
-    }
+  update(pinFanActivity: IPinFanActivity): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(pinFanActivity);
+    return this.http
+      .put<IPinFanActivity>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
 
-    update(pinFanActivity: PinFanActivity): Observable<PinFanActivity> {
-        const copy = this.convert(pinFanActivity);
-        return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
-    }
+  find(id: number): Observable<EntityResponseType> {
+    return this.http
+      .get<IPinFanActivity>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
 
-    find(id: number): Observable<PinFanActivity> {
-        return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
-    }
+  query(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<IPinFanActivity[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
 
-    query(req?: any): Observable<ResponseWrapper> {
-        const options = createRequestOption(req);
-        return this.http.get(this.resourceUrl, options)
-            .map((res: Response) => this.convertResponse(res));
-    }
+  delete(id: number): Observable<HttpResponse<any>> {
+    return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
 
-    delete(id: number): Observable<Response> {
-        return this.http.delete(`${this.resourceUrl}/${id}`);
-    }
+  private convertDateFromClient(pinFanActivity: IPinFanActivity): IPinFanActivity {
+    const copy: IPinFanActivity = Object.assign({}, pinFanActivity, {
+      appointDatetime:
+        pinFanActivity.appointDatetime != null && pinFanActivity.appointDatetime.isValid() ? pinFanActivity.appointDatetime.toJSON() : null,
+      appointEndDatetime:
+        pinFanActivity.appointEndDatetime != null && pinFanActivity.appointEndDatetime.isValid()
+          ? pinFanActivity.appointEndDatetime.toJSON()
+          : null,
+      deadline: pinFanActivity.deadline != null && pinFanActivity.deadline.isValid() ? pinFanActivity.deadline.toJSON() : null
+    });
+    return copy;
+  }
 
-    private convertResponse(res: Response): ResponseWrapper {
-        const jsonResponse = res.json();
-        const result = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            result.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return new ResponseWrapper(res.headers, result, res.status);
-    }
+  private convertDateFromServer(res: EntityResponseType): EntityResponseType {
+    res.body.appointDatetime = res.body.appointDatetime != null ? moment(res.body.appointDatetime) : null;
+    res.body.appointEndDatetime = res.body.appointEndDatetime != null ? moment(res.body.appointEndDatetime) : null;
+    res.body.deadline = res.body.deadline != null ? moment(res.body.deadline) : null;
+    return res;
+  }
 
-    /**
-     * Convert a returned JSON object to PinFanActivity.
-     */
-    private convertItemFromServer(json: any): PinFanActivity {
-        const entity: PinFanActivity = Object.assign(new PinFanActivity(), json);
-        entity.appointDatetime = this.dateUtils
-            .convertDateTimeFromServer(json.appointDatetime);
-        entity.appointEndDatetime = this.dateUtils
-            .convertDateTimeFromServer(json.appointEndDatetime);
-        entity.deadline = this.dateUtils
-            .convertDateTimeFromServer(json.deadline);
-        return entity;
-    }
-
-    /**
-     * Convert a PinFanActivity to a JSON which can be sent to the server.
-     */
-    private convert(pinFanActivity: PinFanActivity): PinFanActivity {
-        const copy: PinFanActivity = Object.assign({}, pinFanActivity);
-
-        copy.appointDatetime = this.dateUtils.toDate(pinFanActivity.appointDatetime);
-
-        copy.appointEndDatetime = this.dateUtils.toDate(pinFanActivity.appointEndDatetime);
-
-        copy.deadline = this.dateUtils.toDate(pinFanActivity.deadline);
-        return copy;
-    }
+  private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+    res.body.forEach((pinFanActivity: IPinFanActivity) => {
+      pinFanActivity.appointDatetime = pinFanActivity.appointDatetime != null ? moment(pinFanActivity.appointDatetime) : null;
+      pinFanActivity.appointEndDatetime = pinFanActivity.appointEndDatetime != null ? moment(pinFanActivity.appointEndDatetime) : null;
+      pinFanActivity.deadline = pinFanActivity.deadline != null ? moment(pinFanActivity.deadline) : null;
+    });
+    return res;
+  }
 }

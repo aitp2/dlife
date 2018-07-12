@@ -71,7 +71,7 @@ public class PinFanActivity implements Serializable {
      * 人均预算
      */
     @ApiModelProperty(value = "人均预算")
-    @Column(name = "budget", precision=10, scale=2)
+    @Column(name = "budget", precision = 10, scale = 2)
     private BigDecimal budget;
 
     /**
@@ -179,12 +179,13 @@ public class PinFanActivity implements Serializable {
     @Column(name = "comment_count")
     private Integer commentCount;
 
+    @Column(name = "reading_count")
+    private Integer readingCount;
+
     @OneToMany(mappedBy = "pinFanActivity")
-    @JsonIgnore
     private Set<Attendee> attendees = new HashSet<>();
 
     @OneToMany(mappedBy = "pinFanActivity")
-    @JsonIgnore
     private Set<PinfanPics> pinfanPics = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -456,6 +457,19 @@ public class PinFanActivity implements Serializable {
         this.commentCount = commentCount;
     }
 
+    public Integer getReadingCount() {
+        return readingCount;
+    }
+
+    public PinFanActivity readingCount(Integer readingCount) {
+        this.readingCount = readingCount;
+        return this;
+    }
+
+    public void setReadingCount(Integer readingCount) {
+        this.readingCount = readingCount;
+    }
+
     public Set<Attendee> getAttendees() {
         return attendees;
     }
@@ -551,6 +565,7 @@ public class PinFanActivity implements Serializable {
             ", comment='" + getComment() + "'" +
             ", status=" + getStatus() +
             ", commentCount=" + getCommentCount() +
+            ", readingCount=" + getReadingCount() +
             "}";
     }
 }

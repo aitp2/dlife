@@ -158,13 +158,18 @@
             "fieldName": "commentCount",
             "javadoc": "评论数量",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "readingCount",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180704083414",
-    "javadoc": "拼饭活动",
-    "entityTableName": "pin_fan_activity",
     "dto": "mapstruct",
-    "pagination": "pagination",
+    "searchEngine": false,
     "service": "serviceClass",
-    "jpaMetamodelFiltering": false
+    "entityTableName": "pin_fan_activity",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pagination",
+    "javadoc": "拼饭活动"
 }

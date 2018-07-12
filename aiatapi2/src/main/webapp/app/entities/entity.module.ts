@@ -18,27 +18,27 @@ import { AitpapiClockinSummaryModule } from './clockin-summary/clockin-summary.m
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
-    imports: [
-        AitpapiWechatUserModule,
-        AitpapiFollowModule,
-        AitpapiCommentModule,
-        AitpapiCommentPicModule,
-        AitpapiRecipeModule,
-        AitpapiImageModule,
-        AitpapiRecipeOrderModule,
-        AitpapiPinFanActivityModule,
-        AitpapiAttendeeModule,
-        AitpapiPinfanPicsModule,
-        AitpapiFitnessActivityModule,
-        AitpapiActivityParticipationModule,
-        AitpapiClockInModule,
-        AitpapiPicsModule,
-        AitpapiClockinSummaryModule,
-        /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
-    ],
-    declarations: [],
-    entryComponents: [],
-    providers: [],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [
+    AitpapiWechatUserModule,
+    AitpapiFollowModule,
+    AitpapiCommentModule,
+    AitpapiCommentPicModule,
+    AitpapiRecipeModule,
+    AitpapiImageModule,
+    AitpapiRecipeOrderModule,
+    AitpapiPinFanActivityModule,
+    AitpapiAttendeeModule,
+    AitpapiPinfanPicsModule,
+    AitpapiFitnessActivityModule,
+    AitpapiActivityParticipationModule,
+    AitpapiClockInModule,
+    AitpapiPicsModule,
+    AitpapiClockinSummaryModule
+    /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
+  ],
+  declarations: [],
+  entryComponents: [],
+  providers: [],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AitpapiEntityModule {}

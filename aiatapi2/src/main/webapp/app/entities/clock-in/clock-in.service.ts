@@ -1,79 +1,70 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import * as moment from 'moment';
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { map } from 'rxjs/operators';
 
-import { JhiDateUtils } from 'ng-jhipster';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IClockIn } from 'app/shared/model/clock-in.model';
 
-import { ClockIn } from './clock-in.model';
-import { ResponseWrapper, createRequestOption } from '../../shared';
+type EntityResponseType = HttpResponse<IClockIn>;
+type EntityArrayResponseType = HttpResponse<IClockIn[]>;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ClockInService {
+  private resourceUrl = SERVER_API_URL + 'api/clock-ins';
 
-    private resourceUrl =  SERVER_API_URL + 'api/clock-ins';
+  constructor(private http: HttpClient) {}
 
-    constructor(private http: Http, private dateUtils: JhiDateUtils) { }
+  create(clockIn: IClockIn): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(clockIn);
+    return this.http
+      .post<IClockIn>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
 
-    create(clockIn: ClockIn): Observable<ClockIn> {
-        const copy = this.convert(clockIn);
-        return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
-    }
+  update(clockIn: IClockIn): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(clockIn);
+    return this.http
+      .put<IClockIn>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
 
-    update(clockIn: ClockIn): Observable<ClockIn> {
-        const copy = this.convert(clockIn);
-        return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
-    }
+  find(id: number): Observable<EntityResponseType> {
+    return this.http
+      .get<IClockIn>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
 
-    find(id: number): Observable<ClockIn> {
-        return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
-    }
+  query(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<IClockIn[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
 
-    query(req?: any): Observable<ResponseWrapper> {
-        const options = createRequestOption(req);
-        return this.http.get(this.resourceUrl, options)
-            .map((res: Response) => this.convertResponse(res));
-    }
+  delete(id: number): Observable<HttpResponse<any>> {
+    return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
 
-    delete(id: number): Observable<Response> {
-        return this.http.delete(`${this.resourceUrl}/${id}`);
-    }
+  private convertDateFromClient(clockIn: IClockIn): IClockIn {
+    const copy: IClockIn = Object.assign({}, clockIn, {
+      punchDateTime: clockIn.punchDateTime != null && clockIn.punchDateTime.isValid() ? clockIn.punchDateTime.toJSON() : null
+    });
+    return copy;
+  }
 
-    private convertResponse(res: Response): ResponseWrapper {
-        const jsonResponse = res.json();
-        const result = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            result.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return new ResponseWrapper(res.headers, result, res.status);
-    }
+  private convertDateFromServer(res: EntityResponseType): EntityResponseType {
+    res.body.punchDateTime = res.body.punchDateTime != null ? moment(res.body.punchDateTime) : null;
+    return res;
+  }
 
-    /**
-     * Convert a returned JSON object to ClockIn.
-     */
-    private convertItemFromServer(json: any): ClockIn {
-        const entity: ClockIn = Object.assign(new ClockIn(), json);
-        entity.punchDateTime = this.dateUtils
-            .convertDateTimeFromServer(json.punchDateTime);
-        return entity;
-    }
-
-    /**
-     * Convert a ClockIn to a JSON which can be sent to the server.
-     */
-    private convert(clockIn: ClockIn): ClockIn {
-        const copy: ClockIn = Object.assign({}, clockIn);
-
-        copy.punchDateTime = this.dateUtils.toDate(clockIn.punchDateTime);
-        return copy;
-    }
+  private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+    res.body.forEach((clockIn: IClockIn) => {
+      clockIn.punchDateTime = clockIn.punchDateTime != null ? moment(clockIn.punchDateTime) : null;
+    });
+    return res;
+  }
 }

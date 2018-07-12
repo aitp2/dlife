@@ -1,64 +1,69 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { FitnessActivity } from './fitness-activity.model';
-import { FitnessActivityPopupService } from './fitness-activity-popup.service';
+import { IFitnessActivity } from 'app/shared/model/fitness-activity.model';
 import { FitnessActivityService } from './fitness-activity.service';
 
 @Component({
-    selector: 'jhi-fitness-activity-delete-dialog',
-    templateUrl: './fitness-activity-delete-dialog.component.html'
+  selector: 'jhi-fitness-activity-delete-dialog',
+  templateUrl: './fitness-activity-delete-dialog.component.html'
 })
 export class FitnessActivityDeleteDialogComponent {
+  fitnessActivity: IFitnessActivity;
 
-    fitnessActivity: FitnessActivity;
+  constructor(
+    private fitnessActivityService: FitnessActivityService,
+    public activeModal: NgbActiveModal,
+    private eventManager: JhiEventManager
+  ) {}
 
-    constructor(
-        private fitnessActivityService: FitnessActivityService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+  clear() {
+    this.activeModal.dismiss('cancel');
+  }
 
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
-
-    confirmDelete(id: number) {
-        this.fitnessActivityService.delete(id).subscribe((response) => {
-            this.eventManager.broadcast({
-                name: 'fitnessActivityListModification',
-                content: 'Deleted an fitnessActivity'
-            });
-            this.activeModal.dismiss(true);
-        });
-    }
+  confirmDelete(id: number) {
+    this.fitnessActivityService.delete(id).subscribe(response => {
+      this.eventManager.broadcast({
+        name: 'fitnessActivityListModification',
+        content: 'Deleted an fitnessActivity'
+      });
+      this.activeModal.dismiss(true);
+    });
+  }
 }
 
 @Component({
-    selector: 'jhi-fitness-activity-delete-popup',
-    template: ''
+  selector: 'jhi-fitness-activity-delete-popup',
+  template: ''
 })
 export class FitnessActivityDeletePopupComponent implements OnInit, OnDestroy {
+  private ngbModalRef: NgbModalRef;
 
-    routeSub: any;
+  constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
 
-    constructor(
-        private route: ActivatedRoute,
-        private fitnessActivityPopupService: FitnessActivityPopupService
-    ) {}
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ fitnessActivity }) => {
+      setTimeout(() => {
+        this.ngbModalRef = this.modalService.open(FitnessActivityDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+        this.ngbModalRef.componentInstance.fitnessActivity = fitnessActivity;
+        this.ngbModalRef.result.then(
+          result => {
+            this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+            this.ngbModalRef = null;
+          },
+          reason => {
+            this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+            this.ngbModalRef = null;
+          }
+        );
+      }, 0);
+    });
+  }
 
-    ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.fitnessActivityPopupService
-                .open(FitnessActivityDeleteDialogComponent as Component, params['id']);
-        });
-    }
-
-    ngOnDestroy() {
-        this.routeSub.unsubscribe();
-    }
+  ngOnDestroy() {
+    this.ngbModalRef = null;
+  }
 }

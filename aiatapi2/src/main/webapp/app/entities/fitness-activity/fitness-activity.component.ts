@@ -1,120 +1,132 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
-import { FitnessActivity } from './fitness-activity.model';
+import { IFitnessActivity } from 'app/shared/model/fitness-activity.model';
+import { Principal } from 'app/core';
+
+import { ITEMS_PER_PAGE } from 'app/shared';
 import { FitnessActivityService } from './fitness-activity.service';
-import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 
 @Component({
-    selector: 'jhi-fitness-activity',
-    templateUrl: './fitness-activity.component.html'
+  selector: 'jhi-fitness-activity',
+  templateUrl: './fitness-activity.component.html'
 })
 export class FitnessActivityComponent implements OnInit, OnDestroy {
+  currentAccount: any;
+  fitnessActivities: IFitnessActivity[];
+  error: any;
+  success: any;
+  eventSubscriber: Subscription;
+  routeData: any;
+  links: any;
+  totalItems: any;
+  queryCount: any;
+  itemsPerPage: any;
+  page: any;
+  predicate: any;
+  previousPage: any;
+  reverse: any;
 
-currentAccount: any;
-    fitnessActivities: FitnessActivity[];
-    error: any;
-    success: any;
-    eventSubscriber: Subscription;
-    routeData: any;
-    links: any;
-    totalItems: any;
-    queryCount: any;
-    itemsPerPage: any;
-    page: any;
-    predicate: any;
-    previousPage: any;
-    reverse: any;
+  constructor(
+    private fitnessActivityService: FitnessActivityService,
+    private parseLinks: JhiParseLinks,
+    private jhiAlertService: JhiAlertService,
+    private principal: Principal,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private eventManager: JhiEventManager
+  ) {
+    this.itemsPerPage = ITEMS_PER_PAGE;
+    this.routeData = this.activatedRoute.data.subscribe(data => {
+      this.page = data.pagingParams.page;
+      this.previousPage = data.pagingParams.page;
+      this.reverse = data.pagingParams.ascending;
+      this.predicate = data.pagingParams.predicate;
+    });
+  }
 
-    constructor(
-        private fitnessActivityService: FitnessActivityService,
-        private parseLinks: JhiParseLinks,
-        private jhiAlertService: JhiAlertService,
-        private principal: Principal,
-        private activatedRoute: ActivatedRoute,
-        private router: Router,
-        private eventManager: JhiEventManager
-    ) {
-        this.itemsPerPage = ITEMS_PER_PAGE;
-        this.routeData = this.activatedRoute.data.subscribe((data) => {
-            this.page = data.pagingParams.page;
-            this.previousPage = data.pagingParams.page;
-            this.reverse = data.pagingParams.ascending;
-            this.predicate = data.pagingParams.predicate;
-        });
-    }
+  loadAll() {
+    this.fitnessActivityService
+      .query({
+        page: this.page - 1,
+        size: this.itemsPerPage,
+        sort: this.sort()
+      })
+      .subscribe(
+        (res: HttpResponse<IFitnessActivity[]>) => this.paginateFitnessActivities(res.body, res.headers),
+        (res: HttpErrorResponse) => this.onError(res.message)
+      );
+  }
 
-    loadAll() {
-        this.fitnessActivityService.query({
-            page: this.page - 1,
-            size: this.itemsPerPage,
-            sort: this.sort()}).subscribe(
-            (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-            (res: ResponseWrapper) => this.onError(res.json)
-        );
+  loadPage(page: number) {
+    if (page !== this.previousPage) {
+      this.previousPage = page;
+      this.transition();
     }
-    loadPage(page: number) {
-        if (page !== this.previousPage) {
-            this.previousPage = page;
-            this.transition();
-        }
-    }
-    transition() {
-        this.router.navigate(['/fitness-activity'], {queryParams:
-            {
-                page: this.page,
-                size: this.itemsPerPage,
-                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-            }
-        });
-        this.loadAll();
-    }
+  }
 
-    clear() {
-        this.page = 0;
-        this.router.navigate(['/fitness-activity', {
-            page: this.page,
-            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-        }]);
-        this.loadAll();
-    }
-    ngOnInit() {
-        this.loadAll();
-        this.principal.identity().then((account) => {
-            this.currentAccount = account;
-        });
-        this.registerChangeInFitnessActivities();
-    }
+  transition() {
+    this.router.navigate(['/fitness-activity'], {
+      queryParams: {
+        page: this.page,
+        size: this.itemsPerPage,
+        sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+      }
+    });
+    this.loadAll();
+  }
 
-    ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
-    }
+  clear() {
+    this.page = 0;
+    this.router.navigate([
+      '/fitness-activity',
+      {
+        page: this.page,
+        sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+      }
+    ]);
+    this.loadAll();
+  }
 
-    trackId(index: number, item: FitnessActivity) {
-        return item.id;
-    }
-    registerChangeInFitnessActivities() {
-        this.eventSubscriber = this.eventManager.subscribe('fitnessActivityListModification', (response) => this.loadAll());
-    }
+  ngOnInit() {
+    this.loadAll();
+    this.principal.identity().then(account => {
+      this.currentAccount = account;
+    });
+    this.registerChangeInFitnessActivities();
+  }
 
-    sort() {
-        const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
-        if (this.predicate !== 'id') {
-            result.push('id');
-        }
-        return result;
-    }
+  ngOnDestroy() {
+    this.eventManager.destroy(this.eventSubscriber);
+  }
 
-    private onSuccess(data, headers) {
-        this.links = this.parseLinks.parse(headers.get('link'));
-        this.totalItems = headers.get('X-Total-Count');
-        this.queryCount = this.totalItems;
-        // this.page = pagingParams.page;
-        this.fitnessActivities = data;
+  trackId(index: number, item: IFitnessActivity) {
+    return item.id;
+  }
+
+  registerChangeInFitnessActivities() {
+    this.eventSubscriber = this.eventManager.subscribe('fitnessActivityListModification', response => this.loadAll());
+  }
+
+  sort() {
+    const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
+    if (this.predicate !== 'id') {
+      result.push('id');
     }
-    private onError(error) {
-        this.jhiAlertService.error(error.message, null, null);
-    }
+    return result;
+  }
+
+  private paginateFitnessActivities(data: IFitnessActivity[], headers: HttpHeaders) {
+    this.links = this.parseLinks.parse(headers.get('link'));
+    this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
+    this.queryCount = this.totalItems;
+    this.fitnessActivities = data;
+  }
+
+  private onError(errorMessage: string) {
+    this.jhiAlertService.error(errorMessage, null, null);
+  }
 }
