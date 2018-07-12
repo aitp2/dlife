@@ -4,57 +4,61 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span>Title</span></dt>
+        <dt><span ngbTooltip="活动标题">Title</span></dt>
         <dd>
             <span>{{fitnessActivity.title}}</span>
         </dd>
-        <dt><span>Descrption</span></dt>
+        <dt><span ngbTooltip="活动描述">Descrption</span></dt>
         <dd>
             <span>{{fitnessActivity.descrption}}</span>
         </dd>
-        <dt><span>Wechat User Id</span></dt>
+        <dt><span ngbTooltip="用户id 创建人">Wechat User Id</span></dt>
         <dd>
             <span>{{fitnessActivity.wechatUserId}}</span>
         </dd>
-        <dt><span>Nick Name</span></dt>
+        <dt><span ngbTooltip="昵称">Nick Name</span></dt>
         <dd>
             <span>{{fitnessActivity.nickName}}</span>
         </dd>
-        <dt><span>Avatar</span></dt>
+        <dt><span ngbTooltip="头像">Avatar</span></dt>
         <dd>
             <span>{{fitnessActivity.avatar}}</span>
         </dd>
-        <dt><span>Project</span></dt>
+        <dt><span ngbTooltip="项目名称">Project</span></dt>
         <dd>
             <span>{{fitnessActivity.project}}</span>
         </dd>
-        <dt><span>Company Role</span></dt>
+        <dt><span ngbTooltip="角色">Company Role</span></dt>
         <dd>
             <span>{{fitnessActivity.companyRole}}</span>
         </dd>
-        <dt><span>Sign Start Time</span></dt>
+        <dt><span ngbTooltip="报名开始时间">Sign Start Time</span></dt>
         <dd>
             <span>{{fitnessActivity.signStartTime | date:'medium'}}</span>
         </dd>
-        <dt><span>Sign End Time</span></dt>
+        <dt><span ngbTooltip="报名截至时间">Sign End Time</span></dt>
         <dd>
             <span>{{fitnessActivity.signEndTime | date:'medium'}}</span>
         </dd>
-        <dt><span>Activity Start Time</span></dt>
+        <dt><span ngbTooltip="开始时间">Activity Start Time</span></dt>
         <dd>
             <span>{{fitnessActivity.activityStartTime | date:'medium'}}</span>
         </dd>
-        <dt><span>Activity End Time</span></dt>
+        <dt><span ngbTooltip="结束时间">Activity End Time</span></dt>
         <dd>
             <span>{{fitnessActivity.activityEndTime | date:'medium'}}</span>
         </dd>
-        <dt><span>Comment Count</span></dt>
+        <dt><span ngbTooltip="评论数量">Comment Count</span></dt>
         <dd>
             <span>{{fitnessActivity.commentCount}}</span>
         </dd>
         <dt><span>Modify Time</span></dt>
         <dd>
             <span>{{fitnessActivity.modifyTime | date:'medium'}}</span>
+        </dd>
+        <dt><span>Reading Count</span></dt>
+        <dd>
+            <span>{{fitnessActivity.readingCount}}</span>
         </dd>
     </dl>
 

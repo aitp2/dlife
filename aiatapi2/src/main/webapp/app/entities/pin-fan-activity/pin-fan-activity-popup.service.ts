@@ -1,6 +1,7 @@
 import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { HttpResponse } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { PinFanActivity } from './pin-fan-activity.model';
 import { PinFanActivityService } from './pin-fan-activity.service';
@@ -27,16 +28,18 @@ export class PinFanActivityPopupService {
             }
 
             if (id) {
-                this.pinFanActivityService.find(id).subscribe((pinFanActivity) => {
-                    pinFanActivity.appointDatetime = this.datePipe
-                        .transform(pinFanActivity.appointDatetime, 'yyyy-MM-ddTHH:mm:ss');
-                    pinFanActivity.appointEndDatetime = this.datePipe
-                        .transform(pinFanActivity.appointEndDatetime, 'yyyy-MM-ddTHH:mm:ss');
-                    pinFanActivity.deadline = this.datePipe
-                        .transform(pinFanActivity.deadline, 'yyyy-MM-ddTHH:mm:ss');
-                    this.ngbModalRef = this.pinFanActivityModalRef(component, pinFanActivity);
-                    resolve(this.ngbModalRef);
-                });
+                this.pinFanActivityService.find(id)
+                    .subscribe((pinFanActivityResponse: HttpResponse<PinFanActivity>) => {
+                        const pinFanActivity: PinFanActivity = pinFanActivityResponse.body;
+                        pinFanActivity.appointDatetime = this.datePipe
+                            .transform(pinFanActivity.appointDatetime, 'yyyy-MM-ddTHH:mm:ss');
+                        pinFanActivity.appointEndDatetime = this.datePipe
+                            .transform(pinFanActivity.appointEndDatetime, 'yyyy-MM-ddTHH:mm:ss');
+                        pinFanActivity.deadline = this.datePipe
+                            .transform(pinFanActivity.deadline, 'yyyy-MM-ddTHH:mm:ss');
+                        this.ngbModalRef = this.pinFanActivityModalRef(component, pinFanActivity);
+                        resolve(this.ngbModalRef);
+                    });
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
                 setTimeout(() => {

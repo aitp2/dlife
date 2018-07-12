@@ -23,6 +23,7 @@ export class PinFanActivity implements BaseEntity {
         public comment?: string,
         public status?: number,
         public commentCount?: number,
+        public readingCount?: number,
         public attendees?: BaseEntity[],
         public pinfanPics?: BaseEntity[],
     ) {

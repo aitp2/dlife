@@ -1,6 +1,7 @@
 import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { HttpResponse } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { FitnessActivity } from './fitness-activity.model';
 import { FitnessActivityService } from './fitness-activity.service';
@@ -27,20 +28,22 @@ export class FitnessActivityPopupService {
             }
 
             if (id) {
-                this.fitnessActivityService.find(id).subscribe((fitnessActivity) => {
-                    fitnessActivity.signStartTime = this.datePipe
-                        .transform(fitnessActivity.signStartTime, 'yyyy-MM-ddTHH:mm:ss');
-                    fitnessActivity.signEndTime = this.datePipe
-                        .transform(fitnessActivity.signEndTime, 'yyyy-MM-ddTHH:mm:ss');
-                    fitnessActivity.activityStartTime = this.datePipe
-                        .transform(fitnessActivity.activityStartTime, 'yyyy-MM-ddTHH:mm:ss');
-                    fitnessActivity.activityEndTime = this.datePipe
-                        .transform(fitnessActivity.activityEndTime, 'yyyy-MM-ddTHH:mm:ss');
-                    fitnessActivity.modifyTime = this.datePipe
-                        .transform(fitnessActivity.modifyTime, 'yyyy-MM-ddTHH:mm:ss');
-                    this.ngbModalRef = this.fitnessActivityModalRef(component, fitnessActivity);
-                    resolve(this.ngbModalRef);
-                });
+                this.fitnessActivityService.find(id)
+                    .subscribe((fitnessActivityResponse: HttpResponse<FitnessActivity>) => {
+                        const fitnessActivity: FitnessActivity = fitnessActivityResponse.body;
+                        fitnessActivity.signStartTime = this.datePipe
+                            .transform(fitnessActivity.signStartTime, 'yyyy-MM-ddTHH:mm:ss');
+                        fitnessActivity.signEndTime = this.datePipe
+                            .transform(fitnessActivity.signEndTime, 'yyyy-MM-ddTHH:mm:ss');
+                        fitnessActivity.activityStartTime = this.datePipe
+                            .transform(fitnessActivity.activityStartTime, 'yyyy-MM-ddTHH:mm:ss');
+                        fitnessActivity.activityEndTime = this.datePipe
+                            .transform(fitnessActivity.activityEndTime, 'yyyy-MM-ddTHH:mm:ss');
+                        fitnessActivity.modifyTime = this.datePipe
+                            .transform(fitnessActivity.modifyTime, 'yyyy-MM-ddTHH:mm:ss');
+                        this.ngbModalRef = this.fitnessActivityModalRef(component, fitnessActivity);
+                        resolve(this.ngbModalRef);
+                    });
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
                 setTimeout(() => {

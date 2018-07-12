@@ -74,6 +74,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="reading_count" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="fitness_activity" columnName="sign_start_time" columnDataType="datetime"/>

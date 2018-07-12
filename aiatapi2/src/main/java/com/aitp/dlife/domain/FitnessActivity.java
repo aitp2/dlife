@@ -121,6 +121,9 @@ public class FitnessActivity implements Serializable {
     @Column(name = "modify_time")
     private Instant modifyTime;
 
+    @Column(name = "reading_count")
+    private Integer readingCount;
+
     @OneToMany(mappedBy = "activity")
     @JsonIgnore
     private Set<ActivityParticipation> activityParticipations = new HashSet<>();
@@ -307,6 +310,19 @@ public class FitnessActivity implements Serializable {
         this.modifyTime = modifyTime;
     }
 
+    public Integer getReadingCount() {
+        return readingCount;
+    }
+
+    public FitnessActivity readingCount(Integer readingCount) {
+        this.readingCount = readingCount;
+        return this;
+    }
+
+    public void setReadingCount(Integer readingCount) {
+        this.readingCount = readingCount;
+    }
+
     public Set<ActivityParticipation> getActivityParticipations() {
         return activityParticipations;
     }
@@ -395,6 +411,7 @@ public class FitnessActivity implements Serializable {
             ", activityEndTime='" + getActivityEndTime() + "'" +
             ", commentCount=" + getCommentCount() +
             ", modifyTime='" + getModifyTime() + "'" +
+            ", readingCount=" + getReadingCount() +
             "}";
     }
 }
