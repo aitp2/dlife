@@ -138,6 +138,12 @@ public class ClockInService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+    public List<ClockInDTO> getClockinsByActivityId(String activityId) {
+        return clockInRepository.getClockinsByActivityId(activityId).stream()
+            .map(clockInMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
     public boolean isClockIn(String wechatUserId,Long activityParticipationId)
     {
         String today = DateUtil.getYYMMDDDateString(new Date());
