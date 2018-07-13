@@ -64,6 +64,8 @@ public class PinFanActivityDTO implements Serializable {
     private String comment;
 
     private Integer commentCount;
+    
+    private Integer readingCount;
 
     public Integer getStatus() {
         return status;
@@ -266,9 +268,17 @@ public class PinFanActivityDTO implements Serializable {
     public void setComment(String comment) {
         this.comment = comment;
     }
+    
 
+    public Integer getReadingCount() {
+		return readingCount;
+	}
 
-    @Override
+	public void setReadingCount(Integer readingCount) {
+		this.readingCount = readingCount;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

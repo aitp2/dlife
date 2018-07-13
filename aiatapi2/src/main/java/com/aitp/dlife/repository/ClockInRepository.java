@@ -51,5 +51,15 @@ public interface ClockInRepository extends JpaRepository<ClockIn, Long> {
         ,nativeQuery = true)
     List<ClockIn> getClockinsByWechatUserIdAndDateAndActivityId(@Param("wechatUserId")String wechatUserId,@Param("activityParticipationId")Long activityParticipationId,@Param("yearMonthDate")String yearMonthDate);
 
+    @Query(value = "SELECT * FROM clock_in "
+        + " LEFT JOIN activity_participation "
+        + " on 	clock_in.activity_participation_id = activity_participation.id "
+        + " LEFT JOIN fitness_activity "
+        + " on 	activity_participation.activity_id = fitness_activity.id "
+        + " where "
+        + "  fitness_activity.id =:activityId "
+        + " ORDER BY clock_in.punch_date_time DESC "
+        ,nativeQuery = true)
+    List<ClockIn> getClockinsByActivityId(@Param("activityId")String activityId);
 
 }

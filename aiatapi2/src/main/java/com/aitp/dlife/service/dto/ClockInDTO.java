@@ -20,7 +20,7 @@ public class ClockInDTO implements Serializable {
 
     @Size(max = 64)
     private String title;
-    
+
     private String wechatUserId;
 
     @Size(max = 1024)
@@ -29,8 +29,12 @@ public class ClockInDTO implements Serializable {
     private String punchDateTime;
 
     private Long activityParticipationId;
-    
+
     private Set<PicsDTO> pics = new HashSet<>();
+
+    private String nickName;
+
+    private String avatar;
 
     public Long getId() {
         return id;
@@ -72,7 +76,7 @@ public class ClockInDTO implements Serializable {
     public void setActivityParticipationId(Long activityParticipationId) {
         this.activityParticipationId = activityParticipationId;
     }
-    
+
 
     public Set<PicsDTO> getPics() {
 		return pics;
@@ -81,10 +85,24 @@ public class ClockInDTO implements Serializable {
 	public void setPics(Set<PicsDTO> pics) {
 		this.pics = pics;
 	}
-	
-	
 
-	public String getWechatUserId() {
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getWechatUserId() {
 		return wechatUserId;
 	}
 
