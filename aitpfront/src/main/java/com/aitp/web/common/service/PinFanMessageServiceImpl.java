@@ -7,6 +7,8 @@ import com.aitp.web.common.service.utils.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PinFanMessageServiceImpl implements PinFanMessageService{
 
+    Logger logger = LoggerFactory.getLogger(PinFanMessageServiceImpl.class);
 
     @Autowired
     private Environment env;
@@ -36,7 +39,10 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
                     messageDTO.setAction("已被发起人修改");
                     messageDTO.setTitle(dto.getActivitiyTile());
                     messageDTO.setTouser(userData.getString("openId"));
-                    messageService.SendMessage(messageDTO);
+                    boolean flag = messageService.SendMessage(messageDTO);
+                    if (!flag){
+                        logger.debug("send message to {} failed",userData.getString("nickName"));
+                    }
                 }
             }
             return true;
@@ -57,7 +63,33 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
                     messageDTO.setAction("小邀约已被发起人取消");
                     messageDTO.setTitle(dto.getActivitiyTile());
                     messageDTO.setTouser(userData.getString("openId"));
+                    boolean flag = messageService.SendMessage(messageDTO);
+                    if (!flag){
+                        logger.debug("send message to {} failed",userData.getString("nickName"));
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean sendRemindMessage(PinFanActivityMessageDTO dto) {
+        if (null!=dto.getAttendees()){
+            for (AttendeeDTO attendeeDTO:dto.getAttendees()) {
+                final String restApiPath=env.getProperty("rest_api_url");
+                JSONObject userData = userService.getUserByWechatUserId(restApiPath,attendeeDTO.getWechatUserId());
+                if(null!= userData){
+                    ActivityMessageDTO messageDTO = new ActivityMessageDTO();
+                    messageDTO.setAction("小邀约明天即将开始");
+                    messageDTO.setTitle(dto.getActivitiyTile());
+                    messageDTO.setTouser(userData.getString("openId"));
                     messageService.SendMessage(messageDTO);
+                    boolean flag = messageService.SendMessage(messageDTO);
+                    if (!flag){
+                        logger.debug("send message to {} failed",userData.getString("nickName"));
+                    }
                 }
             }
             return true;
@@ -76,6 +108,4 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
         }
         return pinFanActivityMessageDTO;
     }
-
-
 }
