@@ -3,7 +3,7 @@ package com.aitp.web.common.service.beans;
 public class MessageResponse extends Response{
 
 	
-	private Integer msgid;
+	private Long msgid;
 	
 
 	public Integer getErrcode() {
@@ -22,11 +22,11 @@ public class MessageResponse extends Response{
 		this.errmsg = errmsg;
 	}
 
-	public Integer getMsgid() {
+	public Long getMsgid() {
 		return msgid;
 	}
 
-	public void setMsgid(Integer msgid) {
+	public void setMsgid(Long msgid) {
 		this.msgid = msgid;
 	}
 

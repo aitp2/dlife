@@ -1,7 +1,7 @@
 package com.aitp.web.common.service.beans;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Message {
 
@@ -9,7 +9,7 @@ public class Message {
 	
 	private String template_id;
 	
-	private List<TempData> datas;
+	private Map<String,TempData> data;
 
 	public String getTouser() {
 		return touser;
@@ -28,19 +28,21 @@ public class Message {
 	}
 
 
-	public List<TempData> getDatas() {
-		return datas;
+	
+	
+	public Map<String, TempData> getData() {
+		return data;
 	}
 
-	public void setDatas(List<TempData> datas) {
-		this.datas = datas;
+	public void setData(Map<String, TempData> data) {
+		this.data = data;
 	}
-	
-	public void addTempData(TempData data){
-		if(datas==null){
-			datas = new ArrayList<>();
+
+	public void addTempData(String key,TempData d){
+		if(data==null){
+			data = new HashMap<String,TempData>();
 		}
-		datas.add(data);
+		data.put(key, d);
 	}
 	
 }

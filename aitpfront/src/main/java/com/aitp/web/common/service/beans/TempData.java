@@ -2,33 +2,34 @@ package com.aitp.web.common.service.beans;
 
 public class TempData {
 
-	private String Key;
+	private String color;
 	
-	private String Value;
+	private String value;
 
 	
-	public TempData(String key, String value) {
+	
+	
+	public TempData(String value, String color) {
 		super();
-		Key = key;
-		Value = value;
+		this.color = color;
+		this.value = value;
 	}
 
-	public String getKey() {
-		return Key;
+	public String getColor() {
+		return color;
 	}
 
-	public void setKey(String key) {
-		Key = key;
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 	public String getValue() {
-		return Value;
+		return value;
 	}
 
 	public void setValue(String value) {
-		Value = value;
+		this.value = value;
 	}
-	
 	
 	
 }

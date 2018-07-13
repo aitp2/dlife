@@ -40,7 +40,7 @@ public class MsessageSenderImp implements MessageSender{
 	@Override
 	public boolean sendMessage(Message message)  {
 		  Gson gson = new Gson();
-		  String url = MessageFormat.format(sendMessageUrl, getAuthToken());
+		  String url = MessageFormat.format(sendMessageUrl, getAuthToken().getAccess_token());
 		  String response = HttpUtil.doPostJson(url, message);
 		  MessageResponse response1 = gson.fromJson(response, MessageResponse.class);
 		 	WeChatErrCode weChatErrCode = WeChatErrCode.valueof(response1.getErrcode());

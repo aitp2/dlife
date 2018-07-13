@@ -50,6 +50,8 @@ public class FitnessActivityDTO implements Serializable {
     private Integer status;
 
     private Integer commentCount;
+    
+    private Integer readingCount;
 
     private Set<PicsDTO> images = new HashSet<>();
 
@@ -174,8 +176,16 @@ public class FitnessActivityDTO implements Serializable {
     public void setStatus(Integer status) {
         this.status = status;
     }
+    
+    public Integer getReadingCount() {
+		return readingCount;
+	}
 
-    @Override
+	public void setReadingCount(Integer readingCount) {
+		this.readingCount = readingCount;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
