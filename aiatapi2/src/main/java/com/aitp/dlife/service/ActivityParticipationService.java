@@ -1,12 +1,9 @@
 package com.aitp.dlife.service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.h2.util.New;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -68,8 +65,8 @@ public class ActivityParticipationService {
     }
 
     
-    public List<ActivityParticipationDTO> findTodayClockActivityParticipation(List<Long> ids,String date,Boolean isClock){
-    if(isClock){
+    public List<ActivityParticipationDTO> findTodayClockActivityParticipation(List<Long> ids,String date,String isClock){
+    if(isClock.equals(1)){
     	return activityParticipationRepository.findClockParticipation(ids, date+" 00:00:00", date+" 23:59:59").stream().map(activityParticipationMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }else{
     	return activityParticipationRepository.findNonClockParticipation(ids, date+" 00:00:00", date+" 23:59:59").stream().map(activityParticipationMapper::toDto).collect(Collectors.toCollection(LinkedList::new));

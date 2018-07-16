@@ -30,7 +30,7 @@ public class ActivityParticipationServiceImpl implements ActivityParticipationSe
 	        SimpleDateFormat simpleDateFormat =new SimpleDateFormat("yyyy-MM-dd");
 	        StringBuffer url =  new StringBuffer().append(restApiPath).append("/fitness-activities/getNonClock?clockinDate=");
 	        url.append(simpleDateFormat.format(new Date()));
-	        url.append("&isClock=false");
+	        url.append("&isClockIn=a");
 	        String fitnessInfo = HttpUtil.doGetJson(url.toString());
 	        if (StringUtils.isNotBlank(fitnessInfo)){
 	            Gson gson = new Gson();

@@ -171,6 +171,36 @@ public class ActivityParticipationResource {
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}
 
+	
+
+	/**
+	 * GET /activity-participations : get all the activityParticipations.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @return the ResponseEntity with status 200 (OK) and the list of
+	 *         activityParticipations in body
+	 */
+	@PostMapping("/activity-participations/getNonClock")
+	@Timed
+	public List<ActivityParticipationDTO> getAllActivityParticipations(
+			@RequestParam String isClockIn,
+			 @RequestParam  String clockinDate) {
+		log.debug("REST request to get a page of ActivityParticipations");
+		List<FitnessActivityDTO> faActivityDTOs = fitnessActivityService.getActivitiesByState(Status.IN_PROGRESS.getValue());
+		List<Long> ids = new ArrayList<>();
+		List<ActivityParticipationDTO> activityParticipationDTOs= new ArrayList<>();
+		for (FitnessActivityDTO fitnessActivityDTO : faActivityDTOs) {
+			 activityParticipationDTOs.addAll(fitnessActivityDTO.getActivityParticipations());
+			 ids.addAll(fitnessActivityDTO.getActivityParticipations().stream().map(ActivityParticipationDTO::getId).collect(Collectors.toList()));
+		}
+		List<ActivityParticipationDTO> nonclockActivityParticipationDTO  =  activityParticipationService.findTodayClockActivityParticipation(ids,clockinDate,isClockIn);
+		activityParticipationDTOs.stream().filter(i-> nonclockActivityParticipationDTO.contains(i)).collect(Collectors.toList());
+		return nonclockActivityParticipationDTO;
+	}
+	
+	
+	
 	/**
 	 * GET /activity-participations/:id : get the "id" activityParticipation.
 	 *
@@ -186,6 +216,8 @@ public class ActivityParticipationResource {
 		ActivityParticipationDTO activityParticipationDTO = activityParticipationService.findOne(id);
 		return ResponseUtil.wrapOrNotFound(Optional.ofNullable(activityParticipationDTO));
 	}
+
+	
 
 	/**
 	 * DELETE /activity-participations/:id : delete the "id"
@@ -217,31 +249,6 @@ public class ActivityParticipationResource {
 		return result;
 	}
 
-	/**
-	 * GET /activity-participations : get all the activityParticipations.
-	 *
-	 * @param pageable
-	 *            the pagination information
-	 * @return the ResponseEntity with status 200 (OK) and the list of
-	 *         activityParticipations in body
-	 */
-	@GetMapping("/activity-participations/getNonClock")
-	@Timed
-	public List<ActivityParticipationDTO> getAllActivityParticipations(Pageable pageable,
-			@RequestParam Boolean isClockIn,
-			@Valid @RequestParam @Pattern(regexp = "(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)$") String clockinDate) {
-		log.debug("REST request to get a page of ActivityParticipations");
-		List<FitnessActivityDTO> faActivityDTOs = fitnessActivityService.getActivitiesByState(Status.IN_PROGRESS.getValue());
-		List<Long> ids = new ArrayList<>();
-		List<ActivityParticipationDTO> activityParticipationDTOs= new ArrayList<>();
-		for (FitnessActivityDTO fitnessActivityDTO : faActivityDTOs) {
-			 activityParticipationDTOs.addAll(fitnessActivityDTO.getActivityParticipations());
-			 ids.addAll(fitnessActivityDTO.getActivityParticipations().stream().map(ActivityParticipationDTO::getId).collect(Collectors.toList()));
-		}
-		List<ActivityParticipationDTO> nonclockActivityParticipationDTO  =  activityParticipationService.findTodayClockActivityParticipation(ids,clockinDate,isClockIn);
-		activityParticipationDTOs.stream().filter(i-> nonclockActivityParticipationDTO.contains(i)).collect(Collectors.toList());
-		return nonclockActivityParticipationDTO;
-	}
 
 	
 	@GetMapping("/activity-participations/{wechatUserId}/{activityId}")
