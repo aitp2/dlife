@@ -11,6 +11,9 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
+import com.aitp.dlife.service.WechatUserService;
+import com.aitp.dlife.service.dto.WechatUserDTO;
+import com.aitp.dlife.web.rest.util.HttpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -114,6 +117,9 @@ public class FitnessActivityResource {
             .body(result);
     }
 
+    
+    
+    
     /**
      * PUT  /fitness-activities : Updates an existing fitnessActivity.
      *

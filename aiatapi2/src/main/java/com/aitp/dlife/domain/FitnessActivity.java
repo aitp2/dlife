@@ -12,7 +12,6 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
-
 /**
  * 健身活动信息
  */
@@ -129,6 +128,9 @@ public class FitnessActivity implements Serializable {
 
     @OneToMany(mappedBy = "fitnessActivity")
     private Set<Pics> images = new HashSet<>();
+    
+    @OneToMany
+    private Set<ClockIn> clockIns;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {

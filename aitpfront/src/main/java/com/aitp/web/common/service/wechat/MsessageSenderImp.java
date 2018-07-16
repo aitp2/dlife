@@ -4,7 +4,6 @@ import java.text.MessageFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.aitp.web.common.service.beans.AuthInfo;
@@ -29,8 +28,19 @@ public class MsessageSenderImp implements MessageSender{
 	
 	@Value("${wechat.messageTemp.id}")
 	private String tempId;
-    @Autowired
-    private Environment env;
+  
+	@Value("${wechat_app_id}")
+	private String wechatAppId;
+  
+	@Value("${wechat_app_secret}")
+	private String wechatAppSecret;
+	
+	
+	@Value("${wechat_token_url}")
+	private String wechatTokenUrl;
+	
+  
+	
     @Autowired
     AuthClient authClient;
 	
@@ -66,9 +76,9 @@ public class MsessageSenderImp implements MessageSender{
 
 	private Token getAuthToken(){
         AuthInfo authInfo=new AuthInfo();
-        authInfo.setAppid(env.getProperty("wechat_app_id"));
-        authInfo.setAppsecret(env.getProperty("wechat_app_secret"));
-        authInfo.setAccessTokenUrl(MessageFormat.format(env.getProperty("wechat_token_url"),authInfo.getAppid(),authInfo.getAppsecret()));
+        authInfo.setAppid(wechatAppId);
+        authInfo.setAppsecret(wechatAppSecret);
+        authInfo.setAccessTokenUrl(MessageFormat.format(wechatTokenUrl,authInfo.getAppid(),authInfo.getAppsecret()));
         return authClient.loadToken(authInfo);
 	}
 	

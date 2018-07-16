@@ -15,6 +15,7 @@ public interface ActivityParticipationMapper extends EntityMapper<ActivityPartic
     @Mapping(source = "activity.id", target = "activityId")
     @Mapping(target = "participationTime", expression = "java(InstantMapper.toDateString(activityParticipation.getParticipationTime()))")
     @Mapping(target = "clockinCount", expression = "java(activityParticipation.getClockIns() == null ? 0 : activityParticipation.getClockIns().size())")
+    @Mapping(source = "activity.title", target = "activityTitle")
     ActivityParticipationDTO toDto(ActivityParticipation activityParticipation);
 
     @Mapping(target = "clockIns", ignore = true)
@@ -24,8 +25,7 @@ public interface ActivityParticipationMapper extends EntityMapper<ActivityPartic
 
     default ActivityParticipation fromId(Long id) {
         if (id == null) {
-            return null;
-        }
+            return null;        }
         ActivityParticipation activityParticipation = new ActivityParticipation();
         activityParticipation.setId(id);
         return activityParticipation;

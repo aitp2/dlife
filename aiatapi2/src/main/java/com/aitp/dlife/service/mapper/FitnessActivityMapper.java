@@ -9,7 +9,7 @@ import com.aitp.dlife.service.dto.FitnessActivityDTO;
 /**
  * Mapper for the entity FitnessActivity and its DTO FitnessActivityDTO.
  */
-@Mapper(componentModel = "spring", uses = { InstantMapper.class })
+@Mapper(componentModel = "spring", uses = { InstantMapper.class,ActivityParticipationMapper.class })
 public interface FitnessActivityMapper extends EntityMapper<FitnessActivityDTO, FitnessActivity> {
 
 	// @Mapping(source = "images", target = "images")
@@ -17,7 +17,8 @@ public interface FitnessActivityMapper extends EntityMapper<FitnessActivityDTO, 
 	@Mapping(target = "signEndTime", expression = "java(InstantMapper.toDateString(fitnessActivity.getSignEndTime()))")
 	@Mapping(target = "activityStartTime", expression = "java(InstantMapper.toDateString(fitnessActivity.getActivityStartTime()))")
 	@Mapping(target = "activityEndTime", expression = "java(InstantMapper.toDateString(fitnessActivity.getActivityEndTime()))")
-	 @Mapping(target = "attendCount", expression = "java(fitnessActivity.getActivityParticipations() == null ? 0 : fitnessActivity.getActivityParticipations().size())")
+	@Mapping(target = "attendCount", expression = "java(fitnessActivity.getActivityParticipations() == null ? 0 : fitnessActivity.getActivityParticipations().size())")
+	@Mapping(source="activityParticipations",target ="activityParticipations")
 	FitnessActivityDTO toDto(FitnessActivity fitnessActivity);
 
 	@Mapping(target = "activityParticipations", ignore = true)
@@ -36,4 +37,6 @@ public interface FitnessActivityMapper extends EntityMapper<FitnessActivityDTO, 
 		fitnessActivity.setId(id);
 		return fitnessActivity;
 	}
+	
+	
 }

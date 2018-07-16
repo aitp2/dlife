@@ -32,6 +32,8 @@ public interface ClockInRepository extends JpaRepository<ClockIn, Long> {
 			,nativeQuery = true)
 	List<String> findClockinsDateByWechatUserIdAndMonth(@Param("wechatUserId")String wechatUserId,@Param("yearMonth")String yearMonth);
 
+
+	
 	@Query(value = "SELECT * FROM clock_in "
 			+ " LEFT JOIN activity_participation "
 			+ " on 	clock_in.activity_participation_id = activity_participation.id "
