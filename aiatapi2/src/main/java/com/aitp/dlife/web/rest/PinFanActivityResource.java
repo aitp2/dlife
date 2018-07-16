@@ -1,13 +1,10 @@
 package com.aitp.dlife.web.rest;
 
-import com.aitp.dlife.domain.Attendee;
-import com.aitp.dlife.domain.PinfanPics;
 import com.aitp.dlife.service.PinfanPicsService;
 import com.aitp.dlife.service.WechatUserService;
 import com.aitp.dlife.service.dto.AttendeeDTO;
 import com.aitp.dlife.service.dto.PinfanPicsDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
-import com.aitp.dlife.service.mapper.PinfanPicsMapper;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.aitp.dlife.web.rest.util.HttpUtil;
 import com.codahale.metrics.annotation.Timed;
@@ -334,7 +331,7 @@ public class PinFanActivityResource {
         //log for markting end
         return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wechatUserId)).build();
     }
-    
+
     /**
      * PUT  /pin-fan-activities : Updates an existing pinFanActivity.
      *
@@ -355,14 +352,21 @@ public class PinFanActivityResource {
         if (null == pinfanActivityRecord) {
 			throw new BadRequestAlertException("Can not find record by id", ENTITY_NAME, "notfound");
 		}
-        
+
         pinfanActivityRecord.setReadingCount(
         		pinfanActivityRecord.getReadingCount() != null ? pinfanActivityRecord.getReadingCount() + 1 : 1);
-        
+
         PinFanActivityDTO result = pinFanActivityService.save(pinfanActivityRecord);
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, id.toString()))
             .body(result);
+    }
+
+    @GetMapping("/pin-fan-activities/getActivityForTomorrow")
+    @Timed
+    public List<PinFanActivityDTO> getActivityByStartTime(){
+        log.debug("REST request to get PinFanActivity for tomorrow");
+        return pinFanActivityService.getPinFanActivityForTomorrow();
     }
 }

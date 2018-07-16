@@ -23,4 +23,11 @@ public interface PinFanActivityRepository extends JpaRepository<PinFanActivity, 
 
     List<PinFanActivity> findAllByIdIn(Set<Long> ids);
 
+    @Query(value = "SELECT * FROM pin_fan_activity "
+        + " where "
+        + "  DATE_FORMAT(pin_fan_activity.appoint_datetime,'%Y-%m-%d %T')>=:startTime"
+        + " and DATE_FORMAT(pin_fan_activity.appoint_datetime,'%Y-%m-%d %T') <:endTime"
+        ,nativeQuery = true)
+    List<PinFanActivity> getPinFanActivitiesByStartTime(@Param("startTime")String startTime,@Param("endTime")String endTime);
+
 }

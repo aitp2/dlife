@@ -14,7 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -159,4 +161,25 @@ public class PinFanActivityService {
         log.debug("Request to delete PinFanActivity : {}", id);
         pinFanActivityRepository.delete(id);
     }
+
+    public List<PinFanActivityDTO> getPinFanActivityForTomorrow(){
+        List<PinFanActivity> all = pinFanActivityRepository.getPinFanActivitiesByStartTime(getTimeString(1),getTimeString(2));
+        return all.stream().map(pinFanActivityMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    private String getTimeString(int days){
+        Date date=new Date();
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.add(calendar.DATE,days);
+        calendar.set(Calendar.HOUR,0);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND,0);
+        calendar.set(Calendar.MILLISECOND,0);
+        date=calendar.getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return formatter.format(date);
+    }
+
 }
