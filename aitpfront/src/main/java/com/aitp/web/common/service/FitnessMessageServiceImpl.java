@@ -64,7 +64,7 @@ public class FitnessMessageServiceImpl implements FitnessMessageService{
     public List<ActivityParticipationDTO> getActivityParticipationByActivityIdFromAPI(String id){
         final String restApiPath=env.getProperty("rest_api_url");
         List<ActivityParticipationDTO> dtos = new ArrayList<>();
-        String participationInfo = HttpUtil.doGetJson(restApiPath+"/activity-participations/getParticipationsByActivityId/"+id);
+        String participationInfo = HttpUtil.doGetJson(restApiPath+"/activity-participations/getParticipationsByActivityId?activityId="+id);
         if (StringUtils.isNotBlank(participationInfo)){
             Type listType = new TypeToken<ArrayList<ActivityParticipationDTO>>(){}.getType();
             Gson gson = new Gson();
