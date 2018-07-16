@@ -9,21 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PagesController {
     Logger logger = LoggerFactory.getLogger(PagesController.class);
 
-    @RequestMapping("/pages/fit/index.html")
+    @RequestMapping(value = {"/pages/fit/index.html","/pages/fit/index.html/*","/pages/fit/index.html/*/*"})
     public String fitIndex(){
         return "pages/fit/index";
     }
-    @RequestMapping("/pages/fit/index.html/*")
-    public String otherFitIndex(){
-        return "pages/fit/index";
-    }
 
-    @RequestMapping("/pages/pin/index.html")
+    @RequestMapping(value = {"/pages/pin/index.html","/pages/pin/index.html/*","/pages/pin/index.html/*/*"})
     public String pinIndex(){
-        return "pages/pin/index";
-    }
-    @RequestMapping("/pages/pin/index.html/*")
-    public String otherPinIndex(){
         return "pages/pin/index";
     }
 
