@@ -11,19 +11,20 @@ public class PagesController {
 
     @RequestMapping("/pages/fit/index.html")
     public String fitIndex(){
-        return "/pages/fit/index";
+        return "pages/fit/index";
     }
     @RequestMapping("/pages/fit/index.html/*")
     public String otherFitIndex(){
-        return "/pages/fit/index";
+        return "pages/fit/index";
     }
 
     @RequestMapping("/pages/pin/index.html")
     public String pinIndex(){
-        return "/pages/pin/index";
+        return "pages/pin/index";
     }
     @RequestMapping("/pages/pin/index.html/*")
     public String otherPinIndex(){
-        return "/pages/pin/index";
+        return "pages/pin/index";
     }
+
 }
