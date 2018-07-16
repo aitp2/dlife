@@ -20,7 +20,7 @@ public class PagesController {
 
     @RequestMapping("/pages/pin/index.html")
     public String pinIndex(){
-        return "/pages/fit/index";
+        return "/pages/pin/index";
     }
     @RequestMapping("/pages/pin/index.html/*")
     public String otherPinIndex(){
