@@ -134,6 +134,13 @@ public class UserResource {
             HeaderUtil.createAlert("userManagement.updated", userDTO.getLogin()));
     }
 
+    
+    
+    
+
+    
+
+    
     /**
      * GET /users : get all users.
      *

@@ -11,7 +11,12 @@ import java.util.Objects;
  */
 public class ActivityParticipationDTO implements Serializable {
 
-    private Long id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
 
     @Size(max = 128)
     private String wechatUserId;
@@ -19,6 +24,9 @@ public class ActivityParticipationDTO implements Serializable {
     @Size(max = 128)
     private String nickName;
 
+    @Size(max=128)
+    private String activityTitle;
+    
     @Size(max = 1024)
     private String avatar;
 
@@ -91,7 +99,17 @@ public class ActivityParticipationDTO implements Serializable {
     }
 
 
-    public Integer getClockinCount() {
+    
+    
+    public String getActivityTitle() {
+		return activityTitle;
+	}
+
+	public void setActivityTitle(String activityTitle) {
+		this.activityTitle = activityTitle;
+	}
+
+	public Integer getClockinCount() {
 		return clockinCount;
 	}
 
@@ -128,15 +146,13 @@ public class ActivityParticipationDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "ActivityParticipationDTO{" +
-            "id=" + getId() +
-            ", wechatUserId='" + getWechatUserId() + "'" +
-            ", nickName='" + getNickName() + "'" +
-            ", avatar='" + getAvatar() + "'" +
-            ", project='" + getProject() + "'" +
-            ", participationTime='" + getParticipationTime() + "'" +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "ActivityParticipationDTO [id=" + id + ", wechatUserId=" + wechatUserId + ", nickName=" + nickName
+				+ ", activityTitle=" + activityTitle + ", avatar=" + avatar + ", project=" + project
+				+ ", participationTime=" + participationTime + ", activityId=" + activityId + ", clockinCount="
+				+ clockinCount + ", attendStatus=" + attendStatus + "]";
+	}
+
+ 
 }

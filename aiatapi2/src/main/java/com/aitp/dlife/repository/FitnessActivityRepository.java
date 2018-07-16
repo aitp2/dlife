@@ -22,4 +22,13 @@ public interface FitnessActivityRepository extends JpaRepository<FitnessActivity
 			+ " where activity_participation.wechat_user_id =:wechatUserId",nativeQuery = true)
 	List<FitnessActivity> findActivitiesByWechatUserId(@Param("wechatUserId")String wechatUserId);
 
+	@Query(value = "select * from fitness_activity LEFT JOIN activity_participation ON fitness_activity.id = activity_participation.activity_id  where activity_start_time <=:nowData",nativeQuery = true)
+	List<FitnessActivity> findOpend(@Param("nowData")String nowData);
+	
+	@Query(value = "select * from fitness_activity LEFT JOIN activity_participation ON fitness_activity.id = activity_participation.activity_id  where activity_start_time >:nowData and activity_end_time <:nowData",nativeQuery = true)
+	List<FitnessActivity> findInProgress(@Param("nowData")String nowData);
+
+	@Query(value = "select * from fitness_activity LEFT JOIN activity_participation ON fitness_activity.id = activity_participation.activity_id  where activity_end_time >:nowData",nativeQuery = true)
+	List<FitnessActivity> findEnd(@Param("nowData")String nowData);
+	
 }

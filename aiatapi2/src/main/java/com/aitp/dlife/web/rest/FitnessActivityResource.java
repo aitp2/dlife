@@ -117,6 +117,9 @@ public class FitnessActivityResource {
             .body(result);
     }
 
+    
+    
+    
     /**
      * PUT  /fitness-activities : Updates an existing fitnessActivity.
      *

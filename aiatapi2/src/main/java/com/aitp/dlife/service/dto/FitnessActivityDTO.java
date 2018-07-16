@@ -3,9 +3,11 @@ package com.aitp.dlife.service.dto;
 
 import javax.validation.constraints.*;
 
+import com.aitp.dlife.service.enums.Status;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 
@@ -49,6 +51,8 @@ public class FitnessActivityDTO implements Serializable {
 
     private Integer status;
 
+    private Set<ActivityParticipationDTO> activityParticipations;
+    
     private Integer commentCount;
     
     private Integer readingCount;
@@ -155,6 +159,17 @@ public class FitnessActivityDTO implements Serializable {
 
 	public Integer getAttendCount() {
 		return attendCount;
+	}
+	
+	
+
+
+	public Set<ActivityParticipationDTO> getActivityParticipations() {
+		return activityParticipations;
+	}
+
+	public void setActivityParticipations(Set<ActivityParticipationDTO> activityParticipations) {
+		this.activityParticipations = activityParticipations;
 	}
 
 	public void setAttendCount(Integer attendCount) {

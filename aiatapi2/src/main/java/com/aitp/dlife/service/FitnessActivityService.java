@@ -2,10 +2,13 @@ package com.aitp.dlife.service;
 
 import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.repository.FitnessActivityRepository;
-import com.aitp.dlife.service.dto.ClockinSummaryDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
+import com.aitp.dlife.service.enums.Status;
 import com.aitp.dlife.service.mapper.FitnessActivityMapper;
+import com.aitp.dlife.web.rest.errors.CustomParameterizedException;
 
+
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 import java.util.LinkedList;
@@ -94,6 +97,28 @@ public class FitnessActivityService {
 	}
 
 
+	/**
+	 * According to state query
+	 * @param status
+	 * @return
+	 */
+	public List<FitnessActivityDTO> getActivitiesByState(Integer state){
+		 Date nowDate = new Date();
+		 SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		  String nowDateString =   sdf.format(nowDate);
+		 switch (Status.prease(state)) {
+		case OPEND:
+			return fitnessActivityMapper.toDto(fitnessActivityRepository.findOpend(nowDateString));
+		case IN_PROGRESS:
+			return fitnessActivityMapper.toDto(fitnessActivityRepository.findInProgress(nowDateString));
+		case END:
+			return fitnessActivityMapper.toDto(fitnessActivityRepository.findEnd(nowDateString));
+		default:
+			throw new CustomParameterizedException("not have the status "+state+" code.","status");
+		}
+		
+	}
+	
 	public void ActivityStatus(FitnessActivityDTO fitnessActivityDTO){
         Instant now = Instant.now();
         FitnessActivity fitnessActivity = fitnessActivityMapper.toEntity(fitnessActivityDTO);

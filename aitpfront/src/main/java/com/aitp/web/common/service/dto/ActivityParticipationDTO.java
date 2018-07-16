@@ -5,8 +5,19 @@ public class ActivityParticipationDTO {
     private Long id;
 
     private String wechatUserId;
+    
+    private String title;
+    
 
-    public Long getId() {
+    public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Long getId() {
         return id;
     }
 
