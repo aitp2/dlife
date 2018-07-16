@@ -22,6 +22,7 @@ public class PinFanController {
 
     @RequestMapping("/sendPinFanMessage")
     public String sendPinFanMessage(@RequestParam("id") String id, @RequestParam("state") String state){
+        logger.info("request to send pinfan message for activity id:{} and status: {}",id,state);
         if (StringUtils.isNotBlank(id)&&StringUtils.isNotBlank(state)){
             if ("update".equals(state.toLowerCase())){
                 pinFanMessageService.sendUpdateMessage(id);
