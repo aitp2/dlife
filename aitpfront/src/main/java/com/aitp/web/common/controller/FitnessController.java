@@ -22,6 +22,7 @@ public class FitnessController {
 
     @RequestMapping("/sendFitnessMessage")
     public String sendFitnessMessage(@RequestParam("id") String id, @RequestParam("state") String state){
+        logger.info("request to send fitness message for activity id:{} and status: {}",id,state);
         if (StringUtils.isNotBlank(id)&&StringUtils.isNotBlank(state)){
             if ("update".equals(state.toLowerCase())){
                 fitnessMessageService.sendUpdateMessage(id);

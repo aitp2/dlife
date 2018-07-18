@@ -43,7 +43,7 @@ public class AuthToolNoCache implements AuthTool{
                 token.setErrmsg(jsonObject.getString("errmsg"));
             }else{
                 token.setAccess_token(jsonObject.getString("access_token"));
-                token.setRefresh_token(jsonObject.getString("expires_in"));
+                token.setExpires_in(jsonObject.getString("expires_in"));
             }
         }
         return token;
