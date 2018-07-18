@@ -3,6 +3,7 @@ package com.aitp.web.common.service;
 import com.aitp.web.common.service.dto.ActivityMessageDTO;
 import com.aitp.web.common.service.dto.AttendeeDTO;
 import com.aitp.web.common.service.dto.PinFanActivityMessageDTO;
+import com.aitp.web.common.service.dto.WechatMessageData;
 import com.aitp.web.common.service.utils.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
@@ -12,6 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class PinFanMessageServiceImpl implements PinFanMessageService{
@@ -31,7 +35,7 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
     public boolean sendUpdateMessage(String id) {
         PinFanActivityMessageDTO dto = getActivityByIdFromAPI(id);
         if (null!=dto.getAttendees()){
-            for (AttendeeDTO attendeeDTO:dto.getAttendees()) {
+            /*for (AttendeeDTO attendeeDTO:dto.getAttendees()) {
                 final String restApiPath=env.getProperty("rest_api_url");
                 JSONObject userData = userService.getUserByWechatUserId(restApiPath,attendeeDTO.getWechatUserId());
                 if(null!= userData){
@@ -44,7 +48,7 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
                         logger.debug("send message to {} failed",userData.getString("nickName"));
                     }
                 }
-            }
+            }*/
             return true;
         }
 
@@ -60,8 +64,19 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
                 JSONObject userData = userService.getUserByWechatUserId(restApiPath,attendeeDTO.getWechatUserId());
                 if(null!= userData){
                     ActivityMessageDTO messageDTO = new ActivityMessageDTO();
-                    messageDTO.setAction("小邀约已被发起人取消");
-                    messageDTO.setTitle(dto.getActivitiyTile());
+                    List<WechatMessageData> data = new ArrayList<>();
+                    StringBuffer contex = new StringBuffer();
+                    contex.append("您所报名的小邀约").append(dto.getActivitiyTile()).append("已被取消");
+                    WechatMessageData data1 = new WechatMessageData("first",contex.toString(),"#FFFFFF");
+                    WechatMessageData data2 = new WechatMessageData("keyword1",dto.getActivitiyTile(),"#FFFFFF");
+                    WechatMessageData data3 = new WechatMessageData("keyword2",dto.getAppointDatetime(),"#FFFFFF");
+                    WechatMessageData data4 = new WechatMessageData("keyword3",dto.getActivitiyAddre(),"#FFFFFF");
+                    WechatMessageData data5 = new WechatMessageData("remark","请注意查看活动最新动态","#FFFFFF");
+                    data.add(data1);
+                    data.add(data2);
+                    data.add(data3);
+                    data.add(data4);
+                    data.add(data5);
                     messageDTO.setTouser(userData.getString("openId"));
                     boolean flag = messageService.SendMessage(messageDTO);
                     if (!flag){
@@ -77,7 +92,7 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
     @Override
     public boolean sendRemindMessage(PinFanActivityMessageDTO dto) {
         if (null!=dto.getAttendees()){
-            for (AttendeeDTO attendeeDTO:dto.getAttendees()) {
+/*            for (AttendeeDTO attendeeDTO:dto.getAttendees()) {
                 final String restApiPath=env.getProperty("rest_api_url");
                 JSONObject userData = userService.getUserByWechatUserId(restApiPath,attendeeDTO.getWechatUserId());
                 if(null!= userData){
@@ -91,7 +106,7 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
                         logger.debug("send message to {} failed",userData.getString("nickName"));
                     }
                 }
-            }
+            }*/
             return true;
         }
         return false;

@@ -9,6 +9,26 @@ public class PinFanActivityMessageDTO {
 
     private String activitiyTile;
 
+    private String activitiyAddre;
+
+    private String appointDatetime;
+
+    public String getActivitiyAddre() {
+        return activitiyAddre;
+    }
+
+    public void setActivitiyAddre(String activitiyAddre) {
+        this.activitiyAddre = activitiyAddre;
+    }
+
+    public String getAppointDatetime() {
+        return appointDatetime;
+    }
+
+    public void setAppointDatetime(String appointDatetime) {
+        this.appointDatetime = appointDatetime;
+    }
+
     private Set<AttendeeDTO> attendees = new HashSet<>();
 
     public String getId() {
