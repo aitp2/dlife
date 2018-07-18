@@ -1,6 +1,8 @@
 package com.aitp.web.common.job;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,10 @@ public class FitnessRemindJob {
 
 	@Value("${rest_api_url}")
 	private String restApiUrl;
+	
+
+	@Value("${wechat.messageTemp.Clock.id}")
+	private String clockTempId;
 
 	@Autowired
 	private UserService userService;
@@ -37,16 +43,24 @@ public class FitnessRemindJob {
 		for (ActivityParticipationDTO activityParticipationDTO : activityList) {
 			ActivityMessageDTO activityMessageDTO = new ActivityMessageDTO();
 			JSONObject userData =  userService.getUserByWechatUserId(restApiUrl, activityParticipationDTO.getWechatUserId());
-			activityMessageDTO.setTouser(userData.getString("openId"));
-			StringBuffer context = new StringBuffer();
-			activityMessageDTO.addMessageData(new WechatMessageData("first", "您报名的", "#FFFFFF"));
-			activityMessageDTO.setTitle(activityParticipationDTO.getActivityTitle());
-			activityMessageDTO.setAction("小目标今天还未打卡！");
+			buildMessage(activityParticipationDTO,activityMessageDTO,userData.getString("openId"));
 			messageService.SendMessage(activityMessageDTO);
 		}
 	}
 	
-	
+    private void buildMessage(ActivityParticipationDTO activityParticipationDTO,ActivityMessageDTO activityMessageDTO,String openId){
+    	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    	activityMessageDTO.setTouser(openId);
+		StringBuffer context = new StringBuffer();
+		context.append("您所报名的");
+		context.append(activityParticipationDTO.getActivityTitle());
+		context.append("小目标还没有打卡，请尽快打卡哦！");
+		activityMessageDTO.setTemplateID(clockTempId);
+		activityMessageDTO.addMessageData(new WechatMessageData("first", context.toString(), "#FFFFFF"));
+		activityMessageDTO.addMessageData(new WechatMessageData("keyword1", activityParticipationDTO.getNickName(), "#FFFFFF"));
+		activityMessageDTO.addMessageData(new WechatMessageData("keyword2", simpleDateFormat.format(new Date()), "#170000"));
+		activityMessageDTO.addMessageData(new WechatMessageData("keyword3", "未打卡", "#FFFFFF"));
+    } 
 	
 	
 }

@@ -1,7 +1,6 @@
 package com.aitp.web.common.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.aitp.web.common.service.beans.Message;
@@ -16,14 +15,12 @@ public class MessageServiceImp implements MessageService{
 	@Autowired
 	private MessageSender messageSender;
 
-	@Value("${wechat.messageTemp.id}")
-	private String templateID;
 	
 	@Override
 	public boolean SendMessage(ActivityMessageDTO messageDto) {
 		Message message = new Message();
 		message.setTouser(messageDto.getTouser());
-		message.setTemplate_id(templateID);
+		message.setTemplate_id(messageDto.getTemplateID());
 		for (WechatMessageData messageData : messageDto.getWechatMessageDatas()) {
 			message.addTempData(messageData.getKeyName(),new TempData(messageData.getValue(),messageData.getColor()));
 		}
