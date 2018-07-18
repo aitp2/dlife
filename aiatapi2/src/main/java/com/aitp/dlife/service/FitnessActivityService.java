@@ -108,11 +108,11 @@ public class FitnessActivityService {
 		  String nowDateString =   sdf.format(nowDate);
 		 switch (Status.prease(state)) {
 		case OPEND:
-			return fitnessActivityMapper.toDto(fitnessActivityRepository.findOpend(nowDateString));
+			return fitnessActivityRepository.findOpend(nowDateString).stream().map(fitnessActivityMapper::toDto).collect(Collectors.toList());
 		case IN_PROGRESS:
-			return fitnessActivityMapper.toDto(fitnessActivityRepository.findInProgress(nowDateString));
+			return fitnessActivityRepository.findInProgress(nowDateString).stream().map(fitnessActivityMapper::toDto).collect(Collectors.toList());
 		case END:
-			return fitnessActivityMapper.toDto(fitnessActivityRepository.findEnd(nowDateString));
+			return fitnessActivityRepository.findEnd(nowDateString).stream().map(fitnessActivityMapper::toDto).collect(Collectors.toList());
 		default:
 			throw new CustomParameterizedException("not have the status "+state+" code.","status");
 		}

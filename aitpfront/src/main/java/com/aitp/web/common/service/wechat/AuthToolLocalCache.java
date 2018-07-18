@@ -26,19 +26,15 @@ public class AuthToolLocalCache implements AuthTool{
 
     @Override
     public Token loadAccessToken(AuthInfo authInfo) {
-        Token token=(Token) Cache.get(ACCESS_TOKEN_KEY);
-        if(token==null){
-            token=new Token();
-            String tokenInfo = HttpUtil.doGetJson(authInfo.getAccessTokenUrl());
-            if(StringUtils.isNotBlank(tokenInfo)){
-                JSONObject jsonObject = JSONObject.parseObject(tokenInfo);
-                token.setAccess_token(jsonObject.getString("access_token"));
-                token.setRefresh_token(jsonObject.getString("refresh_token"));
-                token.setExpires_in(jsonObject.getString("expires_in"));
-                token.setOpenid(jsonObject.getString("openid"));
-                token.setScope(jsonObject.getString("scope"));
-                Cache.put(ACCESS_TOKEN_KEY,token,Long.valueOf(token.getExpires_in())*1000);
-            }
+        Token token=new Token();
+        String tokenInfo = HttpUtil.doGetJson(authInfo.getAccessTokenUrl());
+        if(StringUtils.isNotBlank(tokenInfo)){
+            JSONObject jsonObject = JSONObject.parseObject(tokenInfo);
+            token.setAccess_token(jsonObject.getString("access_token"));
+            token.setRefresh_token(jsonObject.getString("refresh_token"));
+            token.setExpires_in(jsonObject.getString("expires_in"));
+            token.setOpenid(jsonObject.getString("openid"));
+            token.setScope(jsonObject.getString("scope"));
         }
         return token;
     }

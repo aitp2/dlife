@@ -28,9 +28,9 @@ public class ActivityParticipationServiceImpl implements ActivityParticipationSe
 		   final String restApiPath=env.getProperty("rest_api_url");
 		   List<ActivityParticipationDTO> activityParticipationDTOs = new ArrayList<ActivityParticipationDTO>();
 	        SimpleDateFormat simpleDateFormat =new SimpleDateFormat("yyyy-MM-dd");
-	        StringBuffer url =  new StringBuffer().append(restApiPath).append("/fitness-activities/getNonClock?clockinDate=");
+	        StringBuffer url =  new StringBuffer().append(restApiPath).append("/activity-participations/getNonClock?clockinDate=");
 	        url.append(simpleDateFormat.format(new Date()));
-	        url.append("&isClockIn=a");
+	        url.append("&isClockIn=1");
 	        String fitnessInfo = HttpUtil.doGetJson(url.toString());
 	        if (StringUtils.isNotBlank(fitnessInfo)){
 	            Gson gson = new Gson();
