@@ -8,6 +8,16 @@ public class WechatMessageData {
 	
 	private String color;
 
+	
+	
+	
+	public WechatMessageData(String keyName, String value, String color) {
+		super();
+		this.keyName = keyName;
+		this.value = value;
+		this.color = color;
+	}
+
 	public String getKeyName() {
 		return keyName;
 	}

@@ -13,6 +13,7 @@ import com.aitp.web.common.service.MessageService;
 import com.aitp.web.common.service.UserService;
 import com.aitp.web.common.service.dto.ActivityMessageDTO;
 import com.aitp.web.common.service.dto.ActivityParticipationDTO;
+import com.aitp.web.common.service.dto.WechatMessageData;
 import com.alibaba.fastjson.JSONObject;
 
 @Component
@@ -37,6 +38,8 @@ public class FitnessRemindJob {
 			ActivityMessageDTO activityMessageDTO = new ActivityMessageDTO();
 			JSONObject userData =  userService.getUserByWechatUserId(restApiUrl, activityParticipationDTO.getWechatUserId());
 			activityMessageDTO.setTouser(userData.getString("openId"));
+			StringBuffer context = new StringBuffer();
+			activityMessageDTO.addMessageData(new WechatMessageData("first", "您报名的", "#FFFFFF"));
 			activityMessageDTO.setTitle(activityParticipationDTO.getActivityTitle());
 			activityMessageDTO.setAction("小目标今天还未打卡！");
 			messageService.SendMessage(activityMessageDTO);
