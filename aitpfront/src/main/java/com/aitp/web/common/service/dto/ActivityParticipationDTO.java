@@ -8,7 +8,8 @@ public class ActivityParticipationDTO {
     
     private String activityTitle;
     
-
+    private String nickName;
+    
   
 
 	public String getActivityTitle() {

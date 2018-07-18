@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.aitp.web.common.service.beans.Message;
 import com.aitp.web.common.service.beans.TempData;
 import com.aitp.web.common.service.dto.ActivityMessageDTO;
+import com.aitp.web.common.service.dto.WechatMessageData;
 import com.aitp.web.common.service.wechat.MessageSender;
 
 @Service
@@ -23,8 +24,9 @@ public class MessageServiceImp implements MessageService{
 		Message message = new Message();
 		message.setTouser(messageDto.getTouser());
 		message.setTemplate_id(templateID);
-		message.addTempData("title",new TempData(messageDto.getTitle(),"#173177"));
-		message.addTempData("action",new TempData(messageDto.getAction(),"#FF0000"));
+		for (WechatMessageData messageData : messageDto.getWechatMessageDatas()) {
+			message.addTempData(messageData.getKeyName(),new TempData(messageData.getValue(),messageData.getColor()));
+		}
 		messageSender.sendMessage(message);
 		return false;
 		
