@@ -30,7 +30,7 @@ public class FitnessMessageServiceImpl implements FitnessMessageService{
 
     @Override
     public boolean sendUpdateMessage(String id) {
-        FitnessMessageDTO dto = getFitnessByIdFromAPI(id);
+        /*FitnessMessageDTO dto = getFitnessByIdFromAPI(id);
         if (null!=dto.getTitle()){
             List<ActivityParticipationDTO> dtos  = getActivityParticipationByActivityIdFromAPI(id);
             for (ActivityParticipationDTO activityParticipationDTO:dtos) {
@@ -45,7 +45,7 @@ public class FitnessMessageServiceImpl implements FitnessMessageService{
                 }
             }
             return true;
-        }
+        }*/
 
         return false;
     }
