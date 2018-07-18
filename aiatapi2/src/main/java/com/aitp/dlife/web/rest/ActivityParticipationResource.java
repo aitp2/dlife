@@ -181,7 +181,7 @@ public class ActivityParticipationResource {
 	 * @return the ResponseEntity with status 200 (OK) and the list of
 	 *         activityParticipations in body
 	 */
-	@PostMapping("/activity-participations/getNonClock")
+	@GetMapping("/activity-participations/getNonClock")
 	@Timed
 	public List<ActivityParticipationDTO> getAllActivityParticipations(
 			@RequestParam String isClockIn,
@@ -195,8 +195,8 @@ public class ActivityParticipationResource {
 			 ids.addAll(fitnessActivityDTO.getActivityParticipations().stream().map(ActivityParticipationDTO::getId).collect(Collectors.toList()));
 		}
 		List<ActivityParticipationDTO> nonclockActivityParticipationDTO  =  activityParticipationService.findTodayClockActivityParticipation(ids,clockinDate,isClockIn);
-		activityParticipationDTOs.stream().filter(i-> nonclockActivityParticipationDTO.contains(i)).collect(Collectors.toList());
-		return nonclockActivityParticipationDTO;
+		List<ActivityParticipationDTO> nonclockActivityParticipationDTOa = activityParticipationDTOs.stream().filter(i-> nonclockActivityParticipationDTO.contains(i)).collect(Collectors.toList());
+		return nonclockActivityParticipationDTOa;
 	}
 	
 	

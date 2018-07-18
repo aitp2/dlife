@@ -44,7 +44,7 @@ public class MsessageSenderImp implements MessageSender{
     @Autowired
     AuthClient authClient;
 	
-	public final static ThreadLocal<Integer> RETRY_LENGHT = new ThreadLocal<Integer>();
+	public final static ThreadLocal<String> AUTH_TOKEN = new ThreadLocal<String>();
 	
 	
 	@Override
@@ -71,7 +71,6 @@ public class MsessageSenderImp implements MessageSender{
 		  String response = HttpUtil.doPostJson(url, jsonObject);
 		  TempResponse repsonse = gson.fromJson(response, TempResponse.class);
 		return repsonse.getTemplate_id();
-		
 	}
 
 	private Token getAuthToken(){

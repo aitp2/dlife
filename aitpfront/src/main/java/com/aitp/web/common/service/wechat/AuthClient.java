@@ -12,7 +12,7 @@ public class AuthClient {
      * 采用策略设计模式
      * 目前的实现方案是无缓存方案，后期如果使用了全局缓存，可替换为有缓存的实现类即可
      */
-    @Resource(name = "authToolNoCache")
+    @Resource(name = "authToolLocalCache")
     private AuthTool authTool;
 
     /**

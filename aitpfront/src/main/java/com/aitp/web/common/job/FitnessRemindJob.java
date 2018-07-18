@@ -18,7 +18,7 @@ import com.alibaba.fastjson.JSONObject;
 @Component
 public class FitnessRemindJob {
 
-	@Value("rest_api_url")
+	@Value("${rest_api_url}")
 	private String restApiUrl;
 
 	@Autowired
@@ -37,7 +37,7 @@ public class FitnessRemindJob {
 			ActivityMessageDTO activityMessageDTO = new ActivityMessageDTO();
 			JSONObject userData =  userService.getUserByWechatUserId(restApiUrl, activityParticipationDTO.getWechatUserId());
 			activityMessageDTO.setTouser(userData.getString("openId"));
-			activityMessageDTO.setTitle(activityParticipationDTO.getTitle());
+			activityMessageDTO.setTitle(activityParticipationDTO.getActivityTitle());
 			activityMessageDTO.setAction("小目标今天还未打卡！");
 			messageService.SendMessage(activityMessageDTO);
 		}
