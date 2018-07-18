@@ -59,7 +59,7 @@ public class FitnessRemindJob {
 		activityMessageDTO.setTemplateID(clockTempId);
 		activityMessageDTO.addMessageData(new WechatMessageData("first", context.toString(), "#000000"));
 		activityMessageDTO.addMessageData(new WechatMessageData("keyword1", HttpUtil.baseDecoder(activityParticipationDTO.getNickName()), "#000000"));
-		activityMessageDTO.addMessageData(new WechatMessageData("keyword2", simpleDateFormat.format(new Date()), "#170000"));
+		activityMessageDTO.addMessageData(new WechatMessageData("keyword2", simpleDateFormat.format(new Date()), "#A4D3EE"));
 		activityMessageDTO.addMessageData(new WechatMessageData("keyword3", "未打卡", "#000000"));
     } 
 	
