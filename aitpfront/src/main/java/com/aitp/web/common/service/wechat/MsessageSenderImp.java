@@ -26,9 +26,6 @@ public class MsessageSenderImp implements MessageSender{
 	@Value("${wechat.messageTemp.getCodeUrl}")
 	private String  getCodeUrl;
 	
-	@Value("${wechat.messageTemp.id}")
-	private String tempId;
-  
 	@Value("${wechat_app_id}")
 	private String wechatAppId;
   
@@ -63,15 +60,15 @@ public class MsessageSenderImp implements MessageSender{
 	}
 	
 	
-	public String getTempId(String tempCode,String authToken){
-		Gson gson = new Gson();
-		String url = MessageFormat.format(getCodeUrl, authToken);
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("template_id_short", tempId);
-		  String response = HttpUtil.doPostJson(url, jsonObject);
-		  TempResponse repsonse = gson.fromJson(response, TempResponse.class);
-		return repsonse.getTemplate_id();
-	}
+//	public String getTempId(String tempCode,String authToken){
+//		Gson gson = new Gson();
+//		String url = MessageFormat.format(getCodeUrl, authToken);
+//		JSONObject jsonObject = new JSONObject();
+//		jsonObject.put("template_id_short", tempId);
+//		  String response = HttpUtil.doPostJson(url, jsonObject);
+//		  TempResponse repsonse = gson.fromJson(response, TempResponse.class);
+//		return repsonse.getTemplate_id();
+//	}
 
 	private Token getAuthToken(){
         AuthInfo authInfo=new AuthInfo();
