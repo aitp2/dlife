@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,9 @@ import java.util.List;
 public class PinFanMessageServiceImpl implements PinFanMessageService{
 
     Logger logger = LoggerFactory.getLogger(PinFanMessageServiceImpl.class);
+
+    @Value("${wechat.messageTemp.Cancel.id}")
+    private String cancelTempId;
 
     @Autowired
     private Environment env;
@@ -78,6 +82,7 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
                     data.add(data4);
                     data.add(data5);
                     messageDTO.setTouser(userData.getString("openId"));
+                    messageDTO.setTemplateID(cancelTempId);
                     boolean flag = messageService.SendMessage(messageDTO);
                     if (!flag){
                         logger.debug("send message to {} failed",userData.getString("nickName"));
