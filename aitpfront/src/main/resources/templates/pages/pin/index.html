@@ -10,6 +10,11 @@
   <body>
     <div id="app"></div>
     <script>
+      if(!sessionStorage.getItem('originUrl')){
+        sessionStorage.setItem('originUrl', location.href)
+      }
+    </script>
+    <script>
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
@@ -18,5 +23,5 @@
       s.parentNode.insertBefore(hm, s);
     })();
     </script>
-  <script type="text/javascript" src="/js/common.10918.js"></script><script type="text/javascript" src="/js/pin.10918.js"></script></body>
+  <script type="text/javascript" src="/js/common.720f9.js"></script><script type="text/javascript" src="/js/pin.720f9.js"></script></body>
 </html>
