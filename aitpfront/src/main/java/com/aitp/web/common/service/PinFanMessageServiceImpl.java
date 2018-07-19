@@ -25,12 +25,15 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
 
     Logger logger = LoggerFactory.getLogger(PinFanMessageServiceImpl.class);
 
-    @Value("${wechat.messageTemp.Cancel.id}")
+    @Value("${wechat.messageTemp.cancel.id}")
     private String cancelTempId;
 
-    @Value("${wechat.messageTemp.Remind.id}")
+    @Value("${wechat.messageTemp.remind.id}")
     private String remindTempId;
 
+    @Value("${wechat.messageTemp.update.id}")
+    private String updateTempId;
+    
     @Autowired
     private Environment env;
 
@@ -45,15 +48,18 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
         PinFanActivityMessageDTO dto = getActivityByIdFromAPI(id);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (null!=dto.getAttendees()){
-             (AttendeeDTO attendeeDTO:dto.getAttendees()) {
+            for(AttendeeDTO attendeeDTO:dto.getAttendees()) {
                 final String restApiPath=env.getProperty("rest_api_url");
                 JSONObject userData = userService.getUserByWechatUserId(restApiPath,attendeeDTO.getWechatUserId());
                 if(null!= userData){
                     ActivityMessageDTO messageDTO = new ActivityMessageDTO();
+                    messageDTO.setTemplateID(updateTempId);
                     messageDTO.addMessageData(new WechatMessageData("first", "你报名的小邀约已经被修改！", "#000000"));
-                    messageDTO.addMessageData(new WechatMessageData("keyword1",HttpUtil.baseDecoder(userData.getString("nikeName")) ,"#000000"));
-                    messageDTO.addMessageData(new WechatMessageData("keyword2", simpleDateFormat.format(new Date()), #000000));
+                    messageDTO.addMessageData(new WechatMessageData("keyword1",dto.getActivitiyTile(),"#000000"));
+                    messageDTO.addMessageData(new WechatMessageData("keyword2", simpleDateFormat.format(new Date()), "#A4D3EE"));
+                    messageDTO.addMessageData(new WechatMessageData("remark", "", "#000000"));
                     messageDTO.setTouser(userData.getString("openId"));
+                    
                     boolean flag = messageService.SendMessage(messageDTO);
                     if (!flag){
                         logger.debug("send message to {} failed",userData.getString("nickName"));
@@ -62,7 +68,6 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
             }
             return true;
         }
-
         return false;
     }
 

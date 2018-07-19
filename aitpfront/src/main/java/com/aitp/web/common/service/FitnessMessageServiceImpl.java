@@ -8,11 +8,14 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -30,7 +33,8 @@ public class FitnessMessageServiceImpl implements FitnessMessageService{
 
     @Override
     public boolean sendUpdateMessage(String id) {
-        /*FitnessMessageDTO dto = getFitnessByIdFromAPI(id);
+        FitnessMessageDTO dto = getFitnessByIdFromAPI(id);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (null!=dto.getTitle()){
             List<ActivityParticipationDTO> dtos  = getActivityParticipationByActivityIdFromAPI(id);
             for (ActivityParticipationDTO activityParticipationDTO:dtos) {
@@ -38,14 +42,17 @@ public class FitnessMessageServiceImpl implements FitnessMessageService{
                 JSONObject userData = userService.getUserByWechatUserId(restApiPath,activityParticipationDTO.getWechatUserId());
                 if(null!= userData){
                     ActivityMessageDTO messageDTO = new ActivityMessageDTO();
-                    messageDTO.setAction("小目标已被发起人修改");
-                    messageDTO.setTitle(dto.getTitle());
+                    messageDTO.setTemplateID(env.getProperty("wechat.messageTemp.update.id"));
+                    messageDTO.addMessageData(new WechatMessageData("first", "你报名的小目标已经被修改！", "#000000"));
+                    messageDTO.addMessageData(new WechatMessageData("keyword1",dto.getTitle() ,"#000000"));
+                    messageDTO.addMessageData(new WechatMessageData("keyword2", simpleDateFormat.format(new Date()), "#A4D3EE"));
+                    messageDTO.addMessageData(new WechatMessageData("remark", "", "#000000"));
                     messageDTO.setTouser(userData.getString("openId"));
                     messageService.SendMessage(messageDTO);
                 }
             }
             return true;
-        }*/
+        }
 
         return false;
     }

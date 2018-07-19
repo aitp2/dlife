@@ -26,7 +26,7 @@ public class FitnessRemindJob {
 	private String restApiUrl;
 	
 
-	@Value("${wechat.messageTemp.Clock.id}")
+	@Value("${wechat.messageTemp.clock.id}")
 	private String clockTempId;
 
 	@Autowired
