@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -38,21 +40,23 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
     @Override
     public boolean sendUpdateMessage(String id) {
         PinFanActivityMessageDTO dto = getActivityByIdFromAPI(id);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (null!=dto.getAttendees()){
-            /*for (AttendeeDTO attendeeDTO:dto.getAttendees()) {
+             (AttendeeDTO attendeeDTO:dto.getAttendees()) {
                 final String restApiPath=env.getProperty("rest_api_url");
                 JSONObject userData = userService.getUserByWechatUserId(restApiPath,attendeeDTO.getWechatUserId());
                 if(null!= userData){
                     ActivityMessageDTO messageDTO = new ActivityMessageDTO();
-                    messageDTO.setAction("已被发起人修改");
-                    messageDTO.setTitle(dto.getActivitiyTile());
+                    messageDTO.addMessageData(new WechatMessageData("first", "你报名的小邀约已经被修改！", "#000000"));
+                    messageDTO.addMessageData(new WechatMessageData("keyword1",HttpUtil.baseDecoder(userData.getString("nikeName")) ,"#000000"));
+                    messageDTO.addMessageData(new WechatMessageData("keyword2", simpleDateFormat.format(new Date()), #000000));
                     messageDTO.setTouser(userData.getString("openId"));
                     boolean flag = messageService.SendMessage(messageDTO);
                     if (!flag){
                         logger.debug("send message to {} failed",userData.getString("nickName"));
                     }
                 }
-            }*/
+            }
             return true;
         }
 
