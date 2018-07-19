@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -23,9 +25,15 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
 
     Logger logger = LoggerFactory.getLogger(PinFanMessageServiceImpl.class);
 
-    @Value("${wechat.messageTemp.Cancel.id}")
+    @Value("${wechat.messageTemp.cancel.id}")
     private String cancelTempId;
 
+    @Value("${wechat.messageTemp.remind.id}")
+    private String remindTempId;
+
+    @Value("${wechat.messageTemp.update.id}")
+    private String updateTempId;
+    
     @Autowired
     private Environment env;
 
@@ -38,24 +46,28 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
     @Override
     public boolean sendUpdateMessage(String id) {
         PinFanActivityMessageDTO dto = getActivityByIdFromAPI(id);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (null!=dto.getAttendees()){
-            /*for (AttendeeDTO attendeeDTO:dto.getAttendees()) {
+            for(AttendeeDTO attendeeDTO:dto.getAttendees()) {
                 final String restApiPath=env.getProperty("rest_api_url");
                 JSONObject userData = userService.getUserByWechatUserId(restApiPath,attendeeDTO.getWechatUserId());
                 if(null!= userData){
                     ActivityMessageDTO messageDTO = new ActivityMessageDTO();
-                    messageDTO.setAction("已被发起人修改");
-                    messageDTO.setTitle(dto.getActivitiyTile());
+                    messageDTO.setTemplateID(updateTempId);
+                    messageDTO.addMessageData(new WechatMessageData("first", "你报名的小邀约已经被修改！", "#000000"));
+                    messageDTO.addMessageData(new WechatMessageData("keyword1",dto.getActivitiyTile(),"#000000"));
+                    messageDTO.addMessageData(new WechatMessageData("keyword2", simpleDateFormat.format(new Date()), "#A4D3EE"));
+                    messageDTO.addMessageData(new WechatMessageData("remark", "", "#000000"));
                     messageDTO.setTouser(userData.getString("openId"));
+                    
                     boolean flag = messageService.SendMessage(messageDTO);
                     if (!flag){
                         logger.debug("send message to {} failed",userData.getString("nickName"));
                     }
                 }
-            }*/
+            }
             return true;
         }
-
         return false;
     }
 
@@ -98,21 +110,36 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
     @Override
     public boolean sendRemindMessage(PinFanActivityMessageDTO dto) {
         if (null!=dto.getAttendees()){
-/*            for (AttendeeDTO attendeeDTO:dto.getAttendees()) {
+            for (AttendeeDTO attendeeDTO:dto.getAttendees()) {
                 final String restApiPath=env.getProperty("rest_api_url");
                 JSONObject userData = userService.getUserByWechatUserId(restApiPath,attendeeDTO.getWechatUserId());
                 if(null!= userData){
                     ActivityMessageDTO messageDTO = new ActivityMessageDTO();
-                    messageDTO.setAction("小邀约明天即将开始");
-                    messageDTO.setTitle(dto.getActivitiyTile());
+                    List<WechatMessageData> data = new ArrayList<>();
+                    StringBuffer contex = new StringBuffer();
+                    contex.append("您所报名的小邀约").append(dto.getActivitiyTile()).append("即将明天开始");
+                    WechatMessageData data1 = new WechatMessageData("first",contex.toString(),"#000000");
+                    WechatMessageData data2 = new WechatMessageData("keyword1",dto.getActivitiyTile(),"#FF7F24");
+                    WechatMessageData data3 = new WechatMessageData("keyword3",dto.getAppointDatetime(),"#000000");
+                    WechatMessageData data4 = new WechatMessageData("keyword2",dto.getActivitiyAddre(),"#000000");
+                    WechatMessageData data5 = new WechatMessageData("keyword4",HttpUtil.baseDecoder(userData.getString("nickName")),"#000000");
+                    WechatMessageData data6 = new WechatMessageData("remark","请注意查看活动最新动态","#000000");
+                    data.add(data1);
+                    data.add(data2);
+                    data.add(data3);
+                    data.add(data4);
+                    data.add(data5);
+                    data.add(data6);
+                    messageDTO.setWechatMessageDatas(data);
                     messageDTO.setTouser(userData.getString("openId"));
+                    messageDTO.setTemplateID(remindTempId);
                     messageService.SendMessage(messageDTO);
                     boolean flag = messageService.SendMessage(messageDTO);
                     if (!flag){
-                        logger.debug("send message to {} failed",userData.getString("nickName"));
+                        logger.debug("send message to {} failed",HttpUtil.baseDecoder(userData.getString("nickName")));
                     }
                 }
-            }*/
+            }
             return true;
         }
         return false;
