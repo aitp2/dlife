@@ -133,7 +133,6 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
                     messageDTO.setWechatMessageDatas(data);
                     messageDTO.setTouser(userData.getString("openId"));
                     messageDTO.setTemplateID(remindTempId);
-                    messageService.SendMessage(messageDTO);
                     boolean flag = messageService.SendMessage(messageDTO);
                     if (!flag){
                         logger.debug("send message to {} failed",HttpUtil.baseDecoder(userData.getString("nickName")));
