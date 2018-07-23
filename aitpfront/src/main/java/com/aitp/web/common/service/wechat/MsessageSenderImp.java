@@ -41,7 +41,7 @@ public class MsessageSenderImp implements MessageSender{
     @Autowired
     AuthClient authClient;
 	
-	public final static ThreadLocal<String> AUTH_TOKEN = new ThreadLocal<String>();
+	public final static ThreadLocal<Integer> CALL_SIZE = new ThreadLocal<Integer>();
 	
 	
 	@Override
@@ -55,7 +55,7 @@ public class MsessageSenderImp implements MessageSender{
 				case zero:	
 					  return true;
 				 default:
-					throw new WechatException(response1.getErrcode(),response1.getErrmsg());
+					 return false;
 				}
 	}
 	
