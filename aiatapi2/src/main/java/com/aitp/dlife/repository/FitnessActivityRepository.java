@@ -1,6 +1,7 @@
 package com.aitp.dlife.repository;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,13 +21,13 @@ public interface FitnessActivityRepository extends JpaRepository<FitnessActivity
 
 	@Query(value = "select * from fitness_activity LEFT JOIN activity_participation ON fitness_activity.id = activity_participation.activity_id "
 			+ " where activity_participation.wechat_user_id =:wechatUserId",nativeQuery = true)
-	List<FitnessActivity> findActivitiesByWechatUserId(@Param("wechatUserId")String wechatUserId);
+	Set<FitnessActivity> findActivitiesByWechatUserId(@Param("wechatUserId")String wechatUserId);
 
 	@Query(value = "select * from fitness_activity LEFT JOIN activity_participation ON fitness_activity.id = activity_participation.activity_id  where activity_start_time >=:nowData",nativeQuery = true)
-	List<FitnessActivity> findOpend(@Param("nowData")String nowData);
+	Set<FitnessActivity> findOpend(@Param("nowData")String nowData);
 	
 	@Query(value = "select * from fitness_activity LEFT JOIN activity_participation ON fitness_activity.id = activity_participation.activity_id  where activity_start_time <:nowData and activity_end_time >:nowData",nativeQuery = true)
-	List<FitnessActivity> findInProgress(@Param("nowData")String nowData);
+	Set<FitnessActivity> findInProgress(@Param("nowData")String nowData);
 
 	@Query(value = "select * from fitness_activity LEFT JOIN activity_participation ON fitness_activity.id = activity_participation.activity_id  where activity_end_time <:nowData",nativeQuery = true)
 	List<FitnessActivity> findEnd(@Param("nowData")String nowData);
