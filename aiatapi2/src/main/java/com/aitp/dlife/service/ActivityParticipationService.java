@@ -65,8 +65,8 @@ public class ActivityParticipationService {
     }
 
     
-    public List<ActivityParticipationDTO> findTodayClockActivityParticipation(List<Long> ids,String date,String isClock){
-    if(isClock.equals(1)){
+    public List<ActivityParticipationDTO> findTodayClockActivityParticipation(List<Long> ids,String date,Long isClock){
+    if(isClock.equals(1L)){
     	return activityParticipationRepository.findClockParticipation(ids, date+" 00:00:00", date+" 23:59:59").stream().map(activityParticipationMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }else{
     	return activityParticipationRepository.findNonClockParticipation(ids, date+" 00:00:00", date+" 23:59:59").stream().map(activityParticipationMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
