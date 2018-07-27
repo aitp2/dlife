@@ -184,7 +184,7 @@ public class ActivityParticipationResource {
 	@GetMapping("/activity-participations/getNonClock")
 	@Timed
 	public List<ActivityParticipationDTO> getAllActivityParticipations(
-			@RequestParam String isClockIn,
+			@RequestParam Long isClockIn,
 			 @RequestParam  String clockinDate) {
 		log.debug("REST request to get a page of ActivityParticipations");
 		List<FitnessActivityDTO> faActivityDTOs = fitnessActivityService.getActivitiesByState(Status.IN_PROGRESS.getValue());
@@ -195,6 +195,7 @@ public class ActivityParticipationResource {
 			 ids.addAll(fitnessActivityDTO.getActivityParticipations().stream().map(ActivityParticipationDTO::getId).collect(Collectors.toList()));
 		}
 		List<ActivityParticipationDTO> nonclockActivityParticipationDTO  =  activityParticipationService.findTodayClockActivityParticipation(ids,clockinDate,isClockIn);
+		System.out.println(nonclockActivityParticipationDTO.toString());
 		List<ActivityParticipationDTO> nonclockActivityParticipationDTOa = activityParticipationDTOs.stream().filter(i-> nonclockActivityParticipationDTO.contains(i)).collect(Collectors.toList());
 		return nonclockActivityParticipationDTOa;
 	}
