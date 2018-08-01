@@ -3,12 +3,17 @@ package com.aitp.dlife.web.rest;
 import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.service.CommentPicService;
 import com.aitp.dlife.service.dto.CommentPicDTO;
+import com.aitp.dlife.service.dto.PinFanActivityDTO;
+import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.repository.CommentRepository;
 import com.aitp.dlife.repository.FitnessActivityRepository;
+import com.aitp.dlife.repository.PinFanActivityRepository;
 import com.aitp.dlife.service.CommentService;
+import com.aitp.dlife.service.PinFanActivityService;
+import com.aitp.dlife.service.WechatUserService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
@@ -32,8 +37,6 @@ import java.net.URISyntaxException;
 import java.util.*;
 
 import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
 
 
 /**
@@ -52,12 +55,17 @@ public class CommentResource {
     private final CommentPicService commentPicService;
 
     private final FitnessActivityRepository fitnessActivityRepository;
+    
+    private final PinFanActivityService pinFanActivityService;
 
+    private final WechatUserService wechatUserService;
 
-    public CommentResource(CommentService commentService,CommentPicService commentPicService,FitnessActivityRepository fitnessActivityRepository) {
+    public CommentResource(CommentService commentService,CommentPicService commentPicService,FitnessActivityRepository fitnessActivityRepository,PinFanActivityService pinFanActivityService,WechatUserService wechatUserService) {
         this.commentService = commentService;
         this.commentPicService=commentPicService;
         this.fitnessActivityRepository = fitnessActivityRepository;
+        this.pinFanActivityService = pinFanActivityService;
+        this.wechatUserService = wechatUserService;
     }
 
     /**
@@ -74,7 +82,7 @@ public class CommentResource {
         if (commentDTO.getId() != null) {
             throw new BadRequestAlertException("A new comment cannot already have an ID", ENTITY_NAME, "idexists");
         }
-
+        
         commentDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
         commentDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
 
@@ -92,13 +100,21 @@ public class CommentResource {
             }
             result.setCommentPics(picDTOS);
         }
-
+        WechatUserDTO  wechatUserDto = wechatUserService.findOne(Long.valueOf(commentDTO.getWechatUserId()));
         if (null!=commentDTO.getChannel()&&commentDTO.getChannel().equals(CommentChannel.FIT)){
         	FitnessActivity fitnessActivity = fitnessActivityRepository.findOne(commentDTO.getObjectId());
             fitnessActivity.setModifyTime(Instant.now());
             fitnessActivityRepository.save(fitnessActivity);
+            log.info("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}",commentDTO.getChannel(),fitnessActivity.getId(),fitnessActivity.getTitle(),"createUser",DateUtil.getYMDDateString(new Date()),commentDTO.getNickName(),wechatUserDto.isSex()==true?"female":"male");
+            }
+        else{
+        	PinFanActivityDTO pinfanActivity =  pinFanActivityService.findOne(commentDTO.getObjectId());
+        	  log.info("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}",commentDTO.getChannel(),pinfanActivity.getId(),pinfanActivity.getActivitiyTile(),"addComment",DateUtil.getYMDDateString(new Date()),commentDTO.getNickName(),wechatUserDto.isSex()==true?"female":"male");
+              
         }
-
+      
+        
+        
         return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
