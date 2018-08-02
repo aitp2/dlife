@@ -475,10 +475,10 @@
                     <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
                     <diffChangeLogFile>src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                     <driver>com.mysql.jdbc.Driver</driver>
-                    <url>jdbc:mysql://localhost:3306/aitpapi</url>
-                    <defaultSchemaName>aitpapi</defaultSchemaName>
-                    <username>root</username>
-                    <password></password>
+                     <url>jdbc:mysql://rm-bp1ymf161p7o36y2lto.mysql.rds.aliyuncs.com:3306/aitpnewapi?useSSL=false</url>
+                    <defaultSchemaName>aitpnewapi</defaultSchemaName>
+                    <username>transdb</username>
+                    <password>aiTP2018(]</password>
                     <referenceUrl>hibernate:spring:com.aitp.dlife.domain?dialect=org.hibernate.dialect.MySQL5InnoDBDialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                     <verbose>true</verbose>
                     <logging>debug</logging>

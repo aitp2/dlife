@@ -27,9 +27,9 @@ spring:
             enabled: false
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3306/aitpapi?useUnicode=true&characterEncoding=utf8&useSSL=false
-        username: root
-        password:
+        url: jdbc:mysql://rm-bp1ymf161p7o36y2l.mysql.rds.aliyuncs.com:3306/aitprestprod?useSSL=false
+        username: aitprestprod
+        password: aitp_api_prod
         hikari:
             data-source-properties:
                 cachePrepStmts: true
@@ -92,6 +92,13 @@ jhipster:
         version: V_1_1 # To use HTTP/2 you will need SSL support (see above the "server.ssl" configuration)
         cache: # Used by the CachingHttpHeadersFilter
             timeToLiveInDays: 1461
+    cors:
+        allowed-origins: "*"
+        allowed-methods: "*"
+        allowed-headers: "*"
+        exposed-headers: "Authorization,Link,X-Total-Count"
+        allow-credentials: true
+        max-age: 1800
     security:
         authentication:
             jwt:

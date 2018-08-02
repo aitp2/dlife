@@ -3,7 +3,7 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-
+	<!--
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180802115448_added_entity_WechatUser.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180802115449_added_entity_Follow.xml" relativeToChangelogFile="false"/>
@@ -24,7 +24,9 @@
     <include file="config/liquibase/changelog/20180802115504_added_entity_ClockinSummary.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180802115505_added_entity_Question.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180802115506_added_entity_QuestionPic.xml" relativeToChangelogFile="false"/>
+	-->
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+	<!--
     <include file="config/liquibase/changelog/20180802115451_added_entity_constraints_CommentPic.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180802115453_added_entity_constraints_Message.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180802115455_added_entity_constraints_Image.xml" relativeToChangelogFile="false"/>
@@ -35,5 +37,9 @@
     <include file="config/liquibase/changelog/20180802115502_added_entity_constraints_ClockIn.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180802115503_added_entity_constraints_Pics.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180802115506_added_entity_constraints_QuestionPic.xml" relativeToChangelogFile="false"/>
+	-->
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+	<!--
+	<include file="config/liquibase/changelog/20180802123341_changelog.xml" relativeToChangelogFile="false"/>
+	-->
 </databaseChangeLog>
