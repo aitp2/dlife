@@ -1,0 +1,92 @@
+<div>
+    <h2 id="page-heading">
+        <span>Wechat Users</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-wechat-user" [routerLink]="['/wechat-user/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create new Wechat User
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="wechatUsers">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="openId"><span>Open Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="wechatCode"><span>Wechat Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="userName"><span>User Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="nickName"><span>Nick Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="avatar"><span>Avatar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="mobileNum"><span>Mobile Num</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="project"><span>Project</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="seat"><span>Seat</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="introduce"><span>Introduce</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="sex"><span>Sex</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="companyRole"><span>Company Role</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="cookFlag"><span>Cook Flag</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="intesting"><span>Intesting</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="skill"><span>Skill</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="createTime"><span>Create Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="modifyTime"><span>Modify Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let wechatUser of wechatUsers ;trackBy: trackId">
+                <td><a [routerLink]="['/wechat-user', wechatUser.id, 'view' ]">{{wechatUser.id}}</a></td>
+                <td>{{wechatUser.openId}}</td>
+                <td>{{wechatUser.wechatCode}}</td>
+                <td>{{wechatUser.userName}}</td>
+                <td>{{wechatUser.nickName}}</td>
+                <td>{{wechatUser.avatar}}</td>
+                <td>{{wechatUser.mobileNum}}</td>
+                <td>{{wechatUser.project}}</td>
+                <td>{{wechatUser.seat}}</td>
+                <td>{{wechatUser.introduce}}</td>
+                <td>{{wechatUser.sex}}</td>
+                <td>{{wechatUser.companyRole}}</td>
+                <td>{{wechatUser.cookFlag}}</td>
+                <td>{{wechatUser.intesting}}</td>
+                <td>{{wechatUser.skill}}</td>
+                <td>{{wechatUser.createTime | date:'medium'}}</td>
+                <td>{{wechatUser.modifyTime | date:'medium'}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/wechat-user', wechatUser.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/wechat-user', wechatUser.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'wechat-user/'+ wechatUser.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="wechatUsers && wechatUsers.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

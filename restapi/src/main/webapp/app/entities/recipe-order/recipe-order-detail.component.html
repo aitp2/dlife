@@ -1,0 +1,57 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="recipeOrder">
+            <h2><span>Recipe Order</span> {{recipeOrder.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Wechat User Id</span></dt>
+                <dd>
+                    <span>{{recipeOrder.wechatUserId}}</span>
+                </dd>
+                <dt><span ngbTooltip="头像">Avatar</span></dt>
+                <dd>
+                    <span>{{recipeOrder.avatar}}</span>
+                </dd>
+                <dt><span ngbTooltip="昵称">Nick Name</span></dt>
+                <dd>
+                    <span>{{recipeOrder.nickName}}</span>
+                </dd>
+                <dt><span>Recipe Version</span></dt>
+                <dd>
+                    <span>{{recipeOrder.recipeVersion}}</span>
+                </dd>
+                <dt><span>Price</span></dt>
+                <dd>
+                    <span>{{recipeOrder.price}}</span>
+                </dd>
+                <dt><span>Create Time</span></dt>
+                <dd>
+                    <span>{{recipeOrder.createTime}}</span>
+                </dd>
+                <dt><span>Modify Time</span></dt>
+                <dd>
+                    <span>{{recipeOrder.modifyTime}}</span>
+                </dd>
+                <dt><span>Recipe</span></dt>
+                <dd>
+                    <div *ngIf="recipeOrder.recipeId">
+                        <a [routerLink]="['/recipe', recipeOrder.recipeId, 'view']">{{recipeOrder.recipeId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/recipe-order', recipeOrder.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

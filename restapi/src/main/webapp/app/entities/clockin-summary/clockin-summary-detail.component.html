@@ -1,0 +1,43 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="clockinSummary">
+            <h2><span>Clockin Summary</span> {{clockinSummary.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span ngbTooltip="用户id">Wechat User Id</span></dt>
+                <dd>
+                    <span>{{clockinSummary.wechatUserId}}</span>
+                </dd>
+                <dt><span ngbTooltip="总打卡天数">Totally Count</span></dt>
+                <dd>
+                    <span>{{clockinSummary.totallyCount}}</span>
+                </dd>
+                <dt><span ngbTooltip="周打卡天数">Weekly Count</span></dt>
+                <dd>
+                    <span>{{clockinSummary.weeklyCount}}</span>
+                </dd>
+                <dt><span ngbTooltip="连续打卡天数">Serial Count</span></dt>
+                <dd>
+                    <span>{{clockinSummary.serialCount}}</span>
+                </dd>
+                <dt><span ngbTooltip="最新打卡时间">Last Clock In Time</span></dt>
+                <dd>
+                    <span>{{clockinSummary.lastClockInTime}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/clockin-summary', clockinSummary.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

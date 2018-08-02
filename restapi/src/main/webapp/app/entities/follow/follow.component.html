@@ -1,0 +1,76 @@
+<div>
+    <h2 id="page-heading">
+        <span>Follows</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-follow" [routerLink]="['/follow/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create new Follow
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="follows">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="followUserId"><span>Follow User Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="followUserNickname"><span>Follow User Nickname</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="followUseravatar"><span>Follow Useravatar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="followedUserId"><span>Followed User Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="followedUserNickname"><span>Followed User Nickname</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="followedUseravatar"><span>Followed Useravatar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="createTime"><span>Create Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="modifyTime"><span>Modify Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let follow of follows ;trackBy: trackId">
+                <td><a [routerLink]="['/follow', follow.id, 'view' ]">{{follow.id}}</a></td>
+                <td>{{follow.followUserId}}</td>
+                <td>{{follow.followUserNickname}}</td>
+                <td>{{follow.followUseravatar}}</td>
+                <td>{{follow.followedUserId}}</td>
+                <td>{{follow.followedUserNickname}}</td>
+                <td>{{follow.followedUseravatar}}</td>
+                <td>{{follow.createTime | date:'medium'}}</td>
+                <td>{{follow.modifyTime | date:'medium'}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/follow', follow.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/follow', follow.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'follow/'+ follow.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="follows && follows.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

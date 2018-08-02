@@ -1,0 +1,623 @@
+// JDL definition for application 'aitpapi' generated with command 'jhipster export-jdl'
+
+/**
+ * 用户信息
+ */
+entity WechatUser (wechat_user) {
+  /**
+   * 微信openid
+   */
+  openId String maxlength(255) required,
+  /**
+   * 微信号
+   */
+  wechatCode String maxlength(128),
+  /**
+   * 用户名
+   */
+  userName String maxlength(128),
+  /**
+   * 昵称
+   */
+  nickName String maxlength(128),
+  /**
+   * 头像
+   */
+  avatar String maxlength(1024),
+  /**
+   * 手机号码
+   */
+  mobileNum String maxlength(128),
+  /**
+   * 项目名称
+   */
+  project String maxlength(128),
+  /**
+   * 座位号
+   */
+  seat String maxlength(128),
+  /**
+   * 个人简介
+   */
+  introduce String maxlength(1024),
+  /**
+   * 性别
+   * 值为1时是男性，值为2时是女性，值为0时是未知
+   */
+  sex Integer max(2),
+  /**
+   * 角色
+   */
+  companyRole String maxlength(255),
+  /**
+   * 厨师标志
+   * 值为1时是厨师，值为0时不是厨师
+   */
+  cookFlag Integer max(2),
+  /**
+   * 兴趣
+   */
+  intesting String maxlength(1024),
+  /**
+   * 擅长
+   */
+  skill String maxlength(1024),
+  /**
+   * 创建时间
+   */
+  createTime Instant,
+  /**
+   * 修改时间
+   */
+  modifyTime Instant
+}
+/**
+ * 关注记录信息
+ */
+entity Follow (follow) {
+  followUserId String,
+  followUserNickname String maxlength(128),
+  followUseravatar String maxlength(1024),
+  followedUserId String,
+  followedUserNickname String maxlength(128),
+  followedUseravatar String maxlength(1024),
+  createTime Instant,
+  modifyTime Instant
+}
+/**
+ * 评论信息
+ */
+entity Comment (comment) {
+  /**
+   * 上一级评论id
+   */
+  parentId Long,
+  /**
+   * 评论对象id
+   */
+  objectId Long,
+  /**
+   * 评论渠道
+   */
+  channel CommentChannel,
+  /**
+   * 发布者id
+   */
+  wechatUserId String maxlength(128),
+  /**
+   * 头像
+   */
+  avatar String maxlength(1024),
+  /**
+   * 昵称
+   */
+  nickName String maxlength(128),
+  /**
+   * 评论内容
+   */
+  content String maxlength(1024),
+  /**
+   * 评价级别 1
+   */
+  rating1 Integer,
+  /**
+   * 评价级别 2
+   */
+  rating2 Integer,
+  /**
+   * 评价级别 3
+   */
+  rating3 Integer,
+  createTime Instant,
+  modifyTime Instant
+}
+/**
+ * 评论图片
+ */
+entity CommentPic (comment_pic) {
+  /**
+   * 图片路径
+   */
+  ossPath String maxlength(255),
+  createTime Instant
+}
+
+/**
+ * 事件消息
+ */
+ entity EventMessage(event_message){
+ /**
+   * 触发人id
+   */
+  wechatUserId String maxlength(128),
+   /**
+   * 触发人头像
+   */
+  avatar String maxlength(1024),
+   /**
+   * 触发人昵称
+   */
+  nickName String maxlength(128),
+   /**
+   * 事件类型
+   */
+  type EventType,
+  /**
+   * 事件渠道
+   */
+  channel EventChannel,
+  /**
+   * 触发对象id
+   */
+  objectId Long,
+  /**
+   * 触发对象标题
+   */
+  objectTitle String maxlength(256),
+  /**
+   * 触发时间
+   */
+  createTime Instant 
+ }
+ 
+ entity Message(message){
+  /**
+   * 接收人id
+   */
+  wechatUserId String maxlength(128),
+  /**
+   * 是否读取
+   */
+  read Boolean  
+ }
+
+/**
+ * 菜谱信息
+ */
+entity Recipe (recipe) {
+  /**
+   * 发布者id
+   */
+  wechatUserId String maxlength(128),
+  /**
+   * 头像
+   */
+  avatar String maxlength(1024),
+  /**
+   * 昵称
+   */
+  nickName String maxlength(128),
+  title String maxlength(255),
+  content String,
+  startTime Instant,
+  endTime Instant,
+  price Double,
+  num Integer max(9),
+  status Integer max(2),
+  publishVersion Integer max(9),
+  hot Integer max(9),
+  createTime Instant,
+  modifyTime Instant
+}
+/**
+ * 菜谱图片信息
+ */
+entity Image (image) {
+  /**
+   * 图片路径
+   */
+  ossPath String maxlength(255),
+  createTime Instant
+}
+/**
+ * 菜谱订单
+ */
+entity RecipeOrder (recipe_order) {
+  wechatUserId String maxlength(128),
+  /**
+   * 头像
+   */
+  avatar String maxlength(1024),
+  /**
+   * 昵称
+   */
+  nickName String maxlength(128),
+  recipeVersion Integer max(9),
+  price Double,
+  createTime Instant,
+  modifyTime Instant
+}
+/**
+ * 拼饭活动
+ */
+entity PinFanActivity (pin_fan_activity) {
+  /**
+   * 发布者id
+   */
+  wechatUserId String maxlength(128),
+  /**
+   * 头像
+   */
+  avatar String maxlength(1024),
+  /**
+   * 昵称
+   */
+  nickName String maxlength(128),
+  /**
+   * 活动类型
+   */
+  activitiyType Integer,
+  /**
+   * 活动名称
+   */
+  activitiyTile String maxlength(128),
+  /**
+   * 人均预算
+   */
+  budget BigDecimal,
+  /**
+   * 活动地址
+   */
+  activitiyAddre String maxlength(1024),
+  /**
+   * 活动描述
+   */
+  descrption String maxlength(1024),
+  /**
+   * 组织者
+   */
+  organizeUser String maxlength(128),
+  /**
+   * 封面图
+   */
+  coverPicture String maxlength(128),
+  /**
+   * 约定时间
+   */
+  appointDatetime Instant,
+  /**
+   * 约定结束时间
+   */
+  appointEndDatetime Instant,
+  /**
+   * 商家URL
+   */
+  salerUrl String maxlength(1024),
+  /**
+   * 最少参与者
+   */
+  lowerLimit Integer,
+  /**
+   * 最多参与者
+   */
+  upperLimit Integer,
+  /**
+   * 支付类型
+   */
+  payType String maxlength(32),
+  /**
+   * 截至日期
+   */
+  deadline Instant,
+  /**
+   * 备注
+   */
+  comment String maxlength(500),
+  /**
+   * 活动状态 0-新建 1-完成 2-取消
+   */
+  status Integer,
+  /**
+   * 评论数量
+   */
+  commentCount Integer,
+  /**
+   * 浏览量
+   */
+  readingCount Integer,
+  /**
+   * 最新评论/参与时间
+   */
+  modifyTime Instant,
+}
+/**
+ * 拼饭活动参与信息
+ */
+entity Attendee (attendee) {
+  /**
+   * 参与人ID
+   */
+  wechatUserId String maxlength(128),
+  /**
+   * 参与者昵称
+   */
+  nickName String maxlength(128),
+  /**
+   * 参与者头像
+   */
+  avatar String maxlength(1024),
+  /**
+   * 参与时间
+   */
+  participationTime Instant,
+  /**
+   * 活动名称
+   */
+  activitiyTile String maxlength(128)
+}
+/**
+ * 拼饭活动图片信息
+ */
+entity PinfanPics (pinfan_pics) {
+  /**
+   * 图片路径
+   */
+  ossPath String maxlength(255),
+  createTime Instant
+}
+/**
+ * 健身活动信息
+ */
+entity FitnessActivity (fitness_activity) {
+  /**
+   * 活动标题
+   */
+  title String maxlength(128),
+  /**
+   * 活动描述
+   */
+  descrption String maxlength(1024),
+  /**
+   * 用户id 创建人
+   */
+  wechatUserId String maxlength(128),
+  /**
+   * 昵称
+   */
+  nickName String maxlength(128),
+  /**
+   * 头像
+   */
+  avatar String maxlength(1024),
+  /**
+   * 项目名称
+   */
+  project String maxlength(128),
+  /**
+   * 角色
+   */
+  companyRole String maxlength(128),
+  /**
+   * 报名开始时间
+   */
+  signStartTime Instant,
+  /**
+   * 报名截至时间
+   */
+  signEndTime Instant,
+  /**
+   * 开始时间
+   */
+  activityStartTime Instant,
+  /**
+   * 结束时间
+   */
+  activityEndTime Instant,
+  /**
+   * 评论数量
+   */
+  commentCount Integer,
+  modifyTime Instant,
+  readingCount Integer
+}
+/**
+ * 健身活动参与信息
+ */
+entity ActivityParticipation (activity_participation) {
+  /**
+   * 参与人ID
+   */
+  wechatUserId String maxlength(128),
+  /**
+   * 参与者昵称
+   */
+  nickName String maxlength(128),
+  /**
+   * 参与者头像
+   */
+  avatar String maxlength(1024),
+  /**
+   * 项目名称
+   */
+  project String maxlength(128),
+  /**
+   * 参与时间
+   */
+  participationTime Instant,
+   /**
+   * 总共加入天数
+   */
+  totalParticipateDays Integer,
+  /**
+   * 总共打卡天数
+   */
+  totalClockinDays Integer,
+  /**
+   * 当前连续天数
+   */
+  currentContinueDays Integer,
+  /**
+   * 最长连续天数
+   */
+  longestContinueDays Integer,
+  /**
+   * 最新打卡时间
+   */
+  latestClockinTime Instant,
+}
+/**
+ * 打卡信息
+ */
+entity ClockIn (clock_in) {
+  /**
+   * 活动标题
+   */
+  title String maxlength(128),
+  /**
+   * 签到日记
+   */
+  signNote String maxlength(1024),
+  /**
+   * 打卡时间
+   */
+  punchDateTime Instant,
+   /**
+   * 活动id
+   */
+  activityId Integer
+}
+/**
+ * 健身图片信息
+ */
+entity Pics (pics) {
+/**
+   * 图片路径
+   */
+  ossPath String maxlength(255),
+  /**
+   * 创建时间
+   */
+  createTime Instant
+}
+/**
+ * 打卡汇总表
+ */
+entity ClockinSummary (clockin_summary) {
+  /**
+   * 用户id
+   */
+  wechatUserId String maxlength(128),
+  /**
+   * 总打卡天数
+   */
+  totallyCount Integer,
+  /**
+   * 周打卡天数
+   */
+  weeklyCount Integer,
+  /**
+   * 连续打卡天数
+   */
+  serialCount Integer,
+  /**
+   * 最新打卡时间
+   */
+  lastClockInTime Instant
+}
+
+entity Question(question){
+ /**
+   *提问人ID
+   */
+  wechatUserId String maxlength(128),
+  /**
+   * 提问人昵称
+   */
+  nickName String maxlength(128),
+  /**
+   * 提问人头像
+   */
+  avatar String maxlength(1024),
+  /**
+   * 问题标题
+   */
+  title String maxlength(256),
+  /**
+   * 问题描述
+   */
+  description String maxlength(1024),
+  /**
+   * 提问时间
+   */
+  createTime Instant,
+  /**
+   * 回答数
+   */
+  answerCount Integer,
+  /**
+   * 浏览数
+   */
+  readingCount Integer
+}
+entity QuestionPic(question_pic){
+  /**
+   * 图片路径
+   */
+  ossPath String maxlength(255),
+  /**
+   * 创建时间
+   */
+  createTime Instant
+}
+
+enum CommentChannel {
+  COOK,
+  FIT,
+  PIN,
+  FAQS
+}
+
+enum EventType{
+ CREATE,
+ ATTEND, 
+ QUIT, 
+ CANCEL,
+ UPDATE,
+ COMMENT,
+ CLOCKIN
+}
+
+enum EventChannel{
+ FITNESS,
+ PINFAN,
+ FAQS
+}
+
+relationship OneToMany {
+  Comment{commentPic} to CommentPic{comment},
+  Recipe{image} to Image{recipe},
+  Recipe{recipeOrder} to RecipeOrder{recipe},
+  PinFanActivity{attendees} to Attendee{pinFanActivity},
+  PinFanActivity{pinfanPics} to PinfanPics{pinFanActivity},
+  FitnessActivity{activityParticipation} to ActivityParticipation{fitnessActivity},
+  ActivityParticipation{clockIn} to ClockIn{activityParticipation},
+  FitnessActivity{pics} to Pics{fitnessActivity},
+  ClockIn{pics} to Pics{clockIn},
+  EventMessage{messages} to Message{eventMessage},
+  Question{questionPic} to QuestionPic{question}
+}
+
+paginate * with infinite-scroll
+paginate * with pagination
+service * with serviceClass
+dto * with mapstruct

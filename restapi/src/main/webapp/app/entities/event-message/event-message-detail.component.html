@@ -1,0 +1,55 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="eventMessage">
+            <h2><span>Event Message</span> {{eventMessage.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span ngbTooltip="触发人id">Wechat User Id</span></dt>
+                <dd>
+                    <span>{{eventMessage.wechatUserId}}</span>
+                </dd>
+                <dt><span ngbTooltip="触发人头像">Avatar</span></dt>
+                <dd>
+                    <span>{{eventMessage.avatar}}</span>
+                </dd>
+                <dt><span ngbTooltip="触发人昵称">Nick Name</span></dt>
+                <dd>
+                    <span>{{eventMessage.nickName}}</span>
+                </dd>
+                <dt><span ngbTooltip="事件类型">Type</span></dt>
+                <dd>
+                    <span>{{eventMessage.type}}</span>
+                </dd>
+                <dt><span ngbTooltip="事件渠道">Channel</span></dt>
+                <dd>
+                    <span>{{eventMessage.channel}}</span>
+                </dd>
+                <dt><span ngbTooltip="触发对象id">Object Id</span></dt>
+                <dd>
+                    <span>{{eventMessage.objectId}}</span>
+                </dd>
+                <dt><span ngbTooltip="触发对象标题">Object Title</span></dt>
+                <dd>
+                    <span>{{eventMessage.objectTitle}}</span>
+                </dd>
+                <dt><span ngbTooltip="触发时间">Create Time</span></dt>
+                <dd>
+                    <span>{{eventMessage.createTime}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/event-message', eventMessage.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

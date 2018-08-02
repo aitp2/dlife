@@ -1,0 +1,69 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="activityParticipation">
+            <h2><span>Activity Participation</span> {{activityParticipation.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span ngbTooltip="参与人ID">Wechat User Id</span></dt>
+                <dd>
+                    <span>{{activityParticipation.wechatUserId}}</span>
+                </dd>
+                <dt><span ngbTooltip="参与者昵称">Nick Name</span></dt>
+                <dd>
+                    <span>{{activityParticipation.nickName}}</span>
+                </dd>
+                <dt><span ngbTooltip="参与者头像">Avatar</span></dt>
+                <dd>
+                    <span>{{activityParticipation.avatar}}</span>
+                </dd>
+                <dt><span ngbTooltip="项目名称">Project</span></dt>
+                <dd>
+                    <span>{{activityParticipation.project}}</span>
+                </dd>
+                <dt><span ngbTooltip="参与时间">Participation Time</span></dt>
+                <dd>
+                    <span>{{activityParticipation.participationTime}}</span>
+                </dd>
+                <dt><span ngbTooltip="总共加入天数">Total Participate Days</span></dt>
+                <dd>
+                    <span>{{activityParticipation.totalParticipateDays}}</span>
+                </dd>
+                <dt><span ngbTooltip="总共打卡天数">Total Clockin Days</span></dt>
+                <dd>
+                    <span>{{activityParticipation.totalClockinDays}}</span>
+                </dd>
+                <dt><span ngbTooltip="当前连续天数">Current Continue Days</span></dt>
+                <dd>
+                    <span>{{activityParticipation.currentContinueDays}}</span>
+                </dd>
+                <dt><span ngbTooltip="最长连续天数">Longest Continue Days</span></dt>
+                <dd>
+                    <span>{{activityParticipation.longestContinueDays}}</span>
+                </dd>
+                <dt><span ngbTooltip="最新打卡时间">Latest Clockin Time</span></dt>
+                <dd>
+                    <span>{{activityParticipation.latestClockinTime}}</span>
+                </dd>
+                <dt><span>Fitness Activity</span></dt>
+                <dd>
+                    <div *ngIf="activityParticipation.fitnessActivityId">
+                        <a [routerLink]="['/fitness-activity', activityParticipation.fitnessActivityId, 'view']">{{activityParticipation.fitnessActivityId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/activity-participation', activityParticipation.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

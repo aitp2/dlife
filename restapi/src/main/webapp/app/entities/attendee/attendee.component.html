@@ -1,0 +1,76 @@
+<div>
+    <h2 id="page-heading">
+        <span>Attendees</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-attendee" [routerLink]="['/attendee/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create new Attendee
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="attendees">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="wechatUserId"><span>Wechat User Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="nickName"><span>Nick Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="avatar"><span>Avatar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="participationTime"><span>Participation Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="activitiyTile"><span>Activitiy Tile</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="pinFanActivityId"><span>Pin Fan Activity</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let attendee of attendees ;trackBy: trackId">
+                <td><a [routerLink]="['/attendee', attendee.id, 'view' ]">{{attendee.id}}</a></td>
+                <td>{{attendee.wechatUserId}}</td>
+                <td>{{attendee.nickName}}</td>
+                <td>{{attendee.avatar}}</td>
+                <td>{{attendee.participationTime | date:'medium'}}</td>
+                <td>{{attendee.activitiyTile}}</td>
+                <td>
+                    <div *ngIf="attendee.pinFanActivityId">
+                        <a [routerLink]="['../pin-fan-activity', attendee.pinFanActivityId , 'view' ]" >{{attendee.pinFanActivityId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/attendee', attendee.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/attendee', attendee.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'attendee/'+ attendee.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="attendees && attendees.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

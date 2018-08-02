@@ -1,0 +1,81 @@
+{
+    "name": "EventMessage",
+    "fields": [
+        {
+            "fieldName": "wechatUserId",
+            "javadoc": "触发人id",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "avatar",
+            "javadoc": "触发人头像",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 1024
+        },
+        {
+            "fieldName": "nickName",
+            "javadoc": "触发人昵称",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "type",
+            "javadoc": "事件类型",
+            "fieldType": "EventType",
+            "fieldValues": "CREATE,ATTEND,QUIT,CANCEL,UPDATE,COMMENT,CLOCKIN"
+        },
+        {
+            "fieldName": "channel",
+            "javadoc": "事件渠道",
+            "fieldType": "EventChannel",
+            "fieldValues": "FITNESS,PINFAN,FAQS"
+        },
+        {
+            "fieldName": "objectId",
+            "javadoc": "触发对象id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "objectTitle",
+            "javadoc": "触发对象标题",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 256
+        },
+        {
+            "fieldName": "createTime",
+            "javadoc": "触发时间",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "messages",
+            "otherEntityName": "message",
+            "otherEntityRelationshipName": "eventMessage"
+        }
+    ],
+    "changelogDate": "20180802115452",
+    "javadoc": "事件消息",
+    "entityTableName": "event_message",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

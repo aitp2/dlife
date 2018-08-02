@@ -1,0 +1,111 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="pinFanActivity">
+            <h2><span>Pin Fan Activity</span> {{pinFanActivity.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span ngbTooltip="发布者id">Wechat User Id</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.wechatUserId}}</span>
+                </dd>
+                <dt><span ngbTooltip="头像">Avatar</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.avatar}}</span>
+                </dd>
+                <dt><span ngbTooltip="昵称">Nick Name</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.nickName}}</span>
+                </dd>
+                <dt><span ngbTooltip="活动类型">Activitiy Type</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.activitiyType}}</span>
+                </dd>
+                <dt><span ngbTooltip="活动名称">Activitiy Tile</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.activitiyTile}}</span>
+                </dd>
+                <dt><span ngbTooltip="人均预算">Budget</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.budget}}</span>
+                </dd>
+                <dt><span ngbTooltip="活动地址">Activitiy Addre</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.activitiyAddre}}</span>
+                </dd>
+                <dt><span ngbTooltip="活动描述">Descrption</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.descrption}}</span>
+                </dd>
+                <dt><span ngbTooltip="组织者">Organize User</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.organizeUser}}</span>
+                </dd>
+                <dt><span ngbTooltip="封面图">Cover Picture</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.coverPicture}}</span>
+                </dd>
+                <dt><span ngbTooltip="约定时间">Appoint Datetime</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.appointDatetime}}</span>
+                </dd>
+                <dt><span ngbTooltip="约定结束时间">Appoint End Datetime</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.appointEndDatetime}}</span>
+                </dd>
+                <dt><span ngbTooltip="商家URL">Saler Url</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.salerUrl}}</span>
+                </dd>
+                <dt><span ngbTooltip="最少参与者">Lower Limit</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.lowerLimit}}</span>
+                </dd>
+                <dt><span ngbTooltip="最多参与者">Upper Limit</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.upperLimit}}</span>
+                </dd>
+                <dt><span ngbTooltip="支付类型">Pay Type</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.payType}}</span>
+                </dd>
+                <dt><span ngbTooltip="截至日期">Deadline</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.deadline}}</span>
+                </dd>
+                <dt><span ngbTooltip="备注">Comment</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.comment}}</span>
+                </dd>
+                <dt><span ngbTooltip="活动状态 0-新建 1-完成 2-取消">Status</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.status}}</span>
+                </dd>
+                <dt><span ngbTooltip="评论数量">Comment Count</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.commentCount}}</span>
+                </dd>
+                <dt><span ngbTooltip="浏览量">Reading Count</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.readingCount}}</span>
+                </dd>
+                <dt><span ngbTooltip="最新评论/参与时间">Modify Time</span></dt>
+                <dd>
+                    <span>{{pinFanActivity.modifyTime}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/pin-fan-activity', pinFanActivity.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

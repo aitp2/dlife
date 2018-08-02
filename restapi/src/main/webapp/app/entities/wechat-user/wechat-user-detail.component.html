@@ -1,0 +1,89 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="wechatUser">
+            <h2><span>Wechat User</span> {{wechatUser.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span ngbTooltip="微信openid">Open Id</span></dt>
+                <dd>
+                    <span>{{wechatUser.openId}}</span>
+                </dd>
+                <dt><span ngbTooltip="微信号">Wechat Code</span></dt>
+                <dd>
+                    <span>{{wechatUser.wechatCode}}</span>
+                </dd>
+                <dt><span ngbTooltip="用户名">User Name</span></dt>
+                <dd>
+                    <span>{{wechatUser.userName}}</span>
+                </dd>
+                <dt><span ngbTooltip="昵称">Nick Name</span></dt>
+                <dd>
+                    <span>{{wechatUser.nickName}}</span>
+                </dd>
+                <dt><span ngbTooltip="头像">Avatar</span></dt>
+                <dd>
+                    <span>{{wechatUser.avatar}}</span>
+                </dd>
+                <dt><span ngbTooltip="手机号码">Mobile Num</span></dt>
+                <dd>
+                    <span>{{wechatUser.mobileNum}}</span>
+                </dd>
+                <dt><span ngbTooltip="项目名称">Project</span></dt>
+                <dd>
+                    <span>{{wechatUser.project}}</span>
+                </dd>
+                <dt><span ngbTooltip="座位号">Seat</span></dt>
+                <dd>
+                    <span>{{wechatUser.seat}}</span>
+                </dd>
+                <dt><span ngbTooltip="个人简介">Introduce</span></dt>
+                <dd>
+                    <span>{{wechatUser.introduce}}</span>
+                </dd>
+                <dt><span ngbTooltip="性别
+值为1时是男性，值为2时是女性，值为0时是未知">Sex</span></dt>
+                <dd>
+                    <span>{{wechatUser.sex}}</span>
+                </dd>
+                <dt><span ngbTooltip="角色">Company Role</span></dt>
+                <dd>
+                    <span>{{wechatUser.companyRole}}</span>
+                </dd>
+                <dt><span ngbTooltip="厨师标志
+值为1时是厨师，值为0时不是厨师">Cook Flag</span></dt>
+                <dd>
+                    <span>{{wechatUser.cookFlag}}</span>
+                </dd>
+                <dt><span ngbTooltip="兴趣">Intesting</span></dt>
+                <dd>
+                    <span>{{wechatUser.intesting}}</span>
+                </dd>
+                <dt><span ngbTooltip="擅长">Skill</span></dt>
+                <dd>
+                    <span>{{wechatUser.skill}}</span>
+                </dd>
+                <dt><span ngbTooltip="创建时间">Create Time</span></dt>
+                <dd>
+                    <span>{{wechatUser.createTime}}</span>
+                </dd>
+                <dt><span ngbTooltip="修改时间">Modify Time</span></dt>
+                <dd>
+                    <span>{{wechatUser.modifyTime}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/wechat-user', wechatUser.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

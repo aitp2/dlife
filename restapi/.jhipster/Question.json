@@ -1,0 +1,82 @@
+{
+    "name": "Question",
+    "fields": [
+        {
+            "fieldName": "wechatUserId",
+            "javadoc": "提问人ID",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "nickName",
+            "javadoc": "提问人昵称",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "avatar",
+            "javadoc": "提问人头像",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 1024
+        },
+        {
+            "fieldName": "title",
+            "javadoc": "问题标题",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 256
+        },
+        {
+            "fieldName": "description",
+            "javadoc": "问题描述",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 1024
+        },
+        {
+            "fieldName": "createTime",
+            "javadoc": "提问时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "answerCount",
+            "javadoc": "回答数",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "readingCount",
+            "javadoc": "浏览数",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "questionPic",
+            "otherEntityName": "questionPic",
+            "otherEntityRelationshipName": "question"
+        }
+    ],
+    "changelogDate": "20180802115505",
+    "entityTableName": "question",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
