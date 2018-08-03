@@ -32,10 +32,10 @@ public class PinFanActivityDTO implements Serializable {
 
     private BigDecimal budget;
 
-    @Size(max = 2048)
+    @Size(max = 1024)
     private String activitiyAddre;
 
-    @Size(max = 128)
+    @Size(max = 1024)
     private String descrption;
 
     @Size(max = 128)

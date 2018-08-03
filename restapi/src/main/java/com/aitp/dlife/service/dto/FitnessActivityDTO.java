@@ -3,7 +3,6 @@ package com.aitp.dlife.service.dto;
 
 import javax.validation.constraints.*;
 
-import com.aitp.dlife.service.enums.Status;
 
 import java.io.Serializable;
 import java.util.HashSet;

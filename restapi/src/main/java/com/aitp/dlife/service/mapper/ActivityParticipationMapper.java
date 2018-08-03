@@ -12,14 +12,14 @@ import com.aitp.dlife.service.dto.ActivityParticipationDTO;
 @Mapper(componentModel = "spring", uses = {FitnessActivityMapper.class})
 public interface ActivityParticipationMapper extends EntityMapper<ActivityParticipationDTO, ActivityParticipation> {
 
-    @Mapping(source = "activity.id", target = "activityId")
+    @Mapping(source = "fitnessActivity.id", target = "activityId")
     @Mapping(target = "participationTime", expression = "java(InstantMapper.toDateString(activityParticipation.getParticipationTime()))")
     @Mapping(target = "clockinCount", expression = "java(activityParticipation.getClockIns() == null ? 0 : activityParticipation.getClockIns().size())")
-    @Mapping(source = "activity.title", target = "activityTitle")
+    @Mapping(source = "fitnessActivity.title", target = "activityTitle")
     ActivityParticipationDTO toDto(ActivityParticipation activityParticipation);
 
     @Mapping(target = "clockIns", ignore = true)
-    @Mapping(source = "activityId", target = "activity")
+    @Mapping(source = "activityId", target = "fitnessActivity")
     @Mapping(target = "participationTime", expression = "java(InstantMapper.fromString(activityParticipationDTO.getParticipationTime()))")
     ActivityParticipation toEntity(ActivityParticipationDTO activityParticipationDTO);
 
