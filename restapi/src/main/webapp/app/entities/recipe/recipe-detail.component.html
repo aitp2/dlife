@@ -1,0 +1,79 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="recipe">
+            <h2><span>Recipe</span> {{recipe.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span ngbTooltip="发布者id">Wechat User Id</span></dt>
+                <dd>
+                    <span>{{recipe.wechatUserId}}</span>
+                </dd>
+                <dt><span ngbTooltip="头像">Avatar</span></dt>
+                <dd>
+                    <span>{{recipe.avatar}}</span>
+                </dd>
+                <dt><span ngbTooltip="昵称">Nick Name</span></dt>
+                <dd>
+                    <span>{{recipe.nickName}}</span>
+                </dd>
+                <dt><span>Title</span></dt>
+                <dd>
+                    <span>{{recipe.title}}</span>
+                </dd>
+                <dt><span>Content</span></dt>
+                <dd>
+                    <span>{{recipe.content}}</span>
+                </dd>
+                <dt><span>Start Time</span></dt>
+                <dd>
+                    <span>{{recipe.startTime}}</span>
+                </dd>
+                <dt><span>End Time</span></dt>
+                <dd>
+                    <span>{{recipe.endTime}}</span>
+                </dd>
+                <dt><span>Price</span></dt>
+                <dd>
+                    <span>{{recipe.price}}</span>
+                </dd>
+                <dt><span>Num</span></dt>
+                <dd>
+                    <span>{{recipe.num}}</span>
+                </dd>
+                <dt><span>Status</span></dt>
+                <dd>
+                    <span>{{recipe.status}}</span>
+                </dd>
+                <dt><span>Publish Version</span></dt>
+                <dd>
+                    <span>{{recipe.publishVersion}}</span>
+                </dd>
+                <dt><span>Hot</span></dt>
+                <dd>
+                    <span>{{recipe.hot}}</span>
+                </dd>
+                <dt><span>Create Time</span></dt>
+                <dd>
+                    <span>{{recipe.createTime}}</span>
+                </dd>
+                <dt><span>Modify Time</span></dt>
+                <dd>
+                    <span>{{recipe.modifyTime}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/recipe', recipe.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

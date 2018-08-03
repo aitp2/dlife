@@ -1,0 +1,125 @@
+{
+    "name": "FitnessActivity",
+    "fields": [
+        {
+            "fieldName": "title",
+            "javadoc": "活动标题",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "descrption",
+            "javadoc": "活动描述",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 1024
+        },
+        {
+            "fieldName": "wechatUserId",
+            "javadoc": "用户id 创建人",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "nickName",
+            "javadoc": "昵称",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "avatar",
+            "javadoc": "头像",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 1024
+        },
+        {
+            "fieldName": "project",
+            "javadoc": "项目名称",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "companyRole",
+            "javadoc": "角色",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "signStartTime",
+            "javadoc": "报名开始时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "signEndTime",
+            "javadoc": "报名截至时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "activityStartTime",
+            "javadoc": "开始时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "activityEndTime",
+            "javadoc": "结束时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "commentCount",
+            "javadoc": "评论数量",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "modifyTime",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "readingCount",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "activityParticipation",
+            "otherEntityName": "activityParticipation",
+            "otherEntityRelationshipName": "fitnessActivity"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "pics",
+            "otherEntityName": "pics",
+            "otherEntityRelationshipName": "fitnessActivity"
+        }
+    ],
+    "changelogDate": "20180802115500",
+    "javadoc": "健身活动信息",
+    "entityTableName": "fitness_activity",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

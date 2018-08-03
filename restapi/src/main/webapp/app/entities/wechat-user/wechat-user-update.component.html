@@ -1,0 +1,206 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-wechat-user-heading">Create or edit a Wechat User</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!wechatUser.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="wechatUser.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_openId" ngbTooltip="微信openid">Open Id</label>
+                    <input type="text" class="form-control" name="openId" id="field_openId"
+                        [(ngModel)]="wechatUser.openId" required maxlength="255"/>
+                    <div [hidden]="!(editForm.controls.openId?.dirty && editForm.controls.openId?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.openId?.errors?.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.openId?.errors?.maxlength">
+                        This field cannot be longer than 255 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_wechatCode" ngbTooltip="微信号">Wechat Code</label>
+                    <input type="text" class="form-control" name="wechatCode" id="field_wechatCode"
+                        [(ngModel)]="wechatUser.wechatCode" maxlength="128"/>
+                    <div [hidden]="!(editForm.controls.wechatCode?.dirty && editForm.controls.wechatCode?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.wechatCode?.errors?.maxlength">
+                        This field cannot be longer than 128 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_userName" ngbTooltip="用户名">User Name</label>
+                    <input type="text" class="form-control" name="userName" id="field_userName"
+                        [(ngModel)]="wechatUser.userName" maxlength="128"/>
+                    <div [hidden]="!(editForm.controls.userName?.dirty && editForm.controls.userName?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.userName?.errors?.maxlength">
+                        This field cannot be longer than 128 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_nickName" ngbTooltip="昵称">Nick Name</label>
+                    <input type="text" class="form-control" name="nickName" id="field_nickName"
+                        [(ngModel)]="wechatUser.nickName" maxlength="128"/>
+                    <div [hidden]="!(editForm.controls.nickName?.dirty && editForm.controls.nickName?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.nickName?.errors?.maxlength">
+                        This field cannot be longer than 128 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_avatar" ngbTooltip="头像">Avatar</label>
+                    <input type="text" class="form-control" name="avatar" id="field_avatar"
+                        [(ngModel)]="wechatUser.avatar" maxlength="1024"/>
+                    <div [hidden]="!(editForm.controls.avatar?.dirty && editForm.controls.avatar?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.avatar?.errors?.maxlength">
+                        This field cannot be longer than 1024 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_mobileNum" ngbTooltip="手机号码">Mobile Num</label>
+                    <input type="text" class="form-control" name="mobileNum" id="field_mobileNum"
+                        [(ngModel)]="wechatUser.mobileNum" maxlength="128"/>
+                    <div [hidden]="!(editForm.controls.mobileNum?.dirty && editForm.controls.mobileNum?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.mobileNum?.errors?.maxlength">
+                        This field cannot be longer than 128 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_project" ngbTooltip="项目名称">Project</label>
+                    <input type="text" class="form-control" name="project" id="field_project"
+                        [(ngModel)]="wechatUser.project" maxlength="128"/>
+                    <div [hidden]="!(editForm.controls.project?.dirty && editForm.controls.project?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.project?.errors?.maxlength">
+                        This field cannot be longer than 128 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_seat" ngbTooltip="座位号">Seat</label>
+                    <input type="text" class="form-control" name="seat" id="field_seat"
+                        [(ngModel)]="wechatUser.seat" maxlength="128"/>
+                    <div [hidden]="!(editForm.controls.seat?.dirty && editForm.controls.seat?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.seat?.errors?.maxlength">
+                        This field cannot be longer than 128 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_introduce" ngbTooltip="个人简介">Introduce</label>
+                    <input type="text" class="form-control" name="introduce" id="field_introduce"
+                        [(ngModel)]="wechatUser.introduce" maxlength="1024"/>
+                    <div [hidden]="!(editForm.controls.introduce?.dirty && editForm.controls.introduce?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.introduce?.errors?.maxlength">
+                        This field cannot be longer than 1024 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_sex" ngbTooltip="性别
+值为1时是男性，值为2时是女性，值为0时是未知">Sex</label>
+                    <input type="number" class="form-control" name="sex" id="field_sex"
+                        [(ngModel)]="wechatUser.sex" max="2" jhiMax="2"/>
+                    <div [hidden]="!(editForm.controls.sex?.dirty && editForm.controls.sex?.invalid)">
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.sex?.errors?.max">
+                            This field cannot be more than 2.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.sex?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_companyRole" ngbTooltip="角色">Company Role</label>
+                    <input type="text" class="form-control" name="companyRole" id="field_companyRole"
+                        [(ngModel)]="wechatUser.companyRole" maxlength="255"/>
+                    <div [hidden]="!(editForm.controls.companyRole?.dirty && editForm.controls.companyRole?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.companyRole?.errors?.maxlength">
+                        This field cannot be longer than 255 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_cookFlag" ngbTooltip="厨师标志
+值为1时是厨师，值为0时不是厨师">Cook Flag</label>
+                    <input type="number" class="form-control" name="cookFlag" id="field_cookFlag"
+                        [(ngModel)]="wechatUser.cookFlag" max="2" jhiMax="2"/>
+                    <div [hidden]="!(editForm.controls.cookFlag?.dirty && editForm.controls.cookFlag?.invalid)">
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.cookFlag?.errors?.max">
+                            This field cannot be more than 2.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.cookFlag?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_intesting" ngbTooltip="兴趣">Intesting</label>
+                    <input type="text" class="form-control" name="intesting" id="field_intesting"
+                        [(ngModel)]="wechatUser.intesting" maxlength="1024"/>
+                    <div [hidden]="!(editForm.controls.intesting?.dirty && editForm.controls.intesting?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.intesting?.errors?.maxlength">
+                        This field cannot be longer than 1024 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_skill" ngbTooltip="擅长">Skill</label>
+                    <input type="text" class="form-control" name="skill" id="field_skill"
+                        [(ngModel)]="wechatUser.skill" maxlength="1024"/>
+                    <div [hidden]="!(editForm.controls.skill?.dirty && editForm.controls.skill?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.skill?.errors?.maxlength">
+                        This field cannot be longer than 1024 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_createTime" ngbTooltip="创建时间">Create Time</label>
+                    <div class="d-flex">
+                        <input id="field_createTime" type="datetime-local" class="form-control" name="createTime" [(ngModel)]="createTime"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_modifyTime" ngbTooltip="修改时间">Modify Time</label>
+                    <div class="d-flex">
+                        <input id="field_modifyTime" type="datetime-local" class="form-control" name="modifyTime" [(ngModel)]="modifyTime"
+                        />
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

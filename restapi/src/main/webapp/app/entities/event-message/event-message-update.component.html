@@ -1,0 +1,100 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-event-message-heading">Create or edit a Event Message</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!eventMessage.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="eventMessage.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_wechatUserId" ngbTooltip="触发人id">Wechat User Id</label>
+                    <input type="text" class="form-control" name="wechatUserId" id="field_wechatUserId"
+                        [(ngModel)]="eventMessage.wechatUserId" maxlength="128"/>
+                    <div [hidden]="!(editForm.controls.wechatUserId?.dirty && editForm.controls.wechatUserId?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.wechatUserId?.errors?.maxlength">
+                        This field cannot be longer than 128 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_avatar" ngbTooltip="触发人头像">Avatar</label>
+                    <input type="text" class="form-control" name="avatar" id="field_avatar"
+                        [(ngModel)]="eventMessage.avatar" maxlength="1024"/>
+                    <div [hidden]="!(editForm.controls.avatar?.dirty && editForm.controls.avatar?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.avatar?.errors?.maxlength">
+                        This field cannot be longer than 1024 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_nickName" ngbTooltip="触发人昵称">Nick Name</label>
+                    <input type="text" class="form-control" name="nickName" id="field_nickName"
+                        [(ngModel)]="eventMessage.nickName" maxlength="128"/>
+                    <div [hidden]="!(editForm.controls.nickName?.dirty && editForm.controls.nickName?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.nickName?.errors?.maxlength">
+                        This field cannot be longer than 128 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_type" ngbTooltip="事件类型">Type</label>
+                    <select class="form-control" name="type" [(ngModel)]="eventMessage.type" id="field_type" >
+                        <option value="CREATE">CREATE</option>
+                        <option value="ATTEND">ATTEND</option>
+                        <option value="QUIT">QUIT</option>
+                        <option value="CANCEL">CANCEL</option>
+                        <option value="UPDATE">UPDATE</option>
+                        <option value="COMMENT">COMMENT</option>
+                        <option value="CLOCKIN">CLOCKIN</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_channel" ngbTooltip="事件渠道">Channel</label>
+                    <select class="form-control" name="channel" [(ngModel)]="eventMessage.channel" id="field_channel" >
+                        <option value="FITNESS">FITNESS</option>
+                        <option value="PINFAN">PINFAN</option>
+                        <option value="FAQS">FAQS</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_objectId" ngbTooltip="触发对象id">Object Id</label>
+                    <input type="number" class="form-control" name="objectId" id="field_objectId"
+                        [(ngModel)]="eventMessage.objectId" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_objectTitle" ngbTooltip="触发对象标题">Object Title</label>
+                    <input type="text" class="form-control" name="objectTitle" id="field_objectTitle"
+                        [(ngModel)]="eventMessage.objectTitle" maxlength="256"/>
+                    <div [hidden]="!(editForm.controls.objectTitle?.dirty && editForm.controls.objectTitle?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.objectTitle?.errors?.maxlength">
+                        This field cannot be longer than 256 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_createTime" ngbTooltip="触发时间">Create Time</label>
+                    <div class="d-flex">
+                        <input id="field_createTime" type="datetime-local" class="form-control" name="createTime" [(ngModel)]="createTime"
+                        />
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

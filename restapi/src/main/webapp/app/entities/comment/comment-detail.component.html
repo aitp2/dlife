@@ -1,0 +1,71 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="comment">
+            <h2><span>Comment</span> {{comment.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span ngbTooltip="上一级评论id">Parent Id</span></dt>
+                <dd>
+                    <span>{{comment.parentId}}</span>
+                </dd>
+                <dt><span ngbTooltip="评论对象id">Object Id</span></dt>
+                <dd>
+                    <span>{{comment.objectId}}</span>
+                </dd>
+                <dt><span ngbTooltip="评论渠道">Channel</span></dt>
+                <dd>
+                    <span>{{comment.channel}}</span>
+                </dd>
+                <dt><span ngbTooltip="发布者id">Wechat User Id</span></dt>
+                <dd>
+                    <span>{{comment.wechatUserId}}</span>
+                </dd>
+                <dt><span ngbTooltip="头像">Avatar</span></dt>
+                <dd>
+                    <span>{{comment.avatar}}</span>
+                </dd>
+                <dt><span ngbTooltip="昵称">Nick Name</span></dt>
+                <dd>
+                    <span>{{comment.nickName}}</span>
+                </dd>
+                <dt><span ngbTooltip="评论内容">Content</span></dt>
+                <dd>
+                    <span>{{comment.content}}</span>
+                </dd>
+                <dt><span ngbTooltip="评价级别 1">Rating 1</span></dt>
+                <dd>
+                    <span>{{comment.rating1}}</span>
+                </dd>
+                <dt><span ngbTooltip="评价级别 2">Rating 2</span></dt>
+                <dd>
+                    <span>{{comment.rating2}}</span>
+                </dd>
+                <dt><span ngbTooltip="评价级别 3">Rating 3</span></dt>
+                <dd>
+                    <span>{{comment.rating3}}</span>
+                </dd>
+                <dt><span>Create Time</span></dt>
+                <dd>
+                    <span>{{comment.createTime}}</span>
+                </dd>
+                <dt><span>Modify Time</span></dt>
+                <dd>
+                    <span>{{comment.modifyTime}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/comment', comment.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

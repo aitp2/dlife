@@ -1,0 +1,106 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="l.mao (generated)" id="1533213245790-1">
+        <createTable tableName="event_message">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="event_messagePK"/>
+            </column>
+            <column name="avatar" type="VARCHAR(1024)"/>
+            <column name="channel" type="VARCHAR(255)"/>
+            <column name="create_time" type="TINYBLOB"/>
+            <column name="nick_name" type="VARCHAR(128)"/>
+            <column name="object_id" type="BIGINT"/>
+            <column name="object_title" type="VARCHAR(256)"/>
+            <column name="jhi_type" type="VARCHAR(255)"/>
+            <column name="wechat_user_id" type="VARCHAR(128)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533213245790-2">
+        <createTable tableName="message">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="messagePK"/>
+            </column>
+            <column name="jhi_read" type="BIT"/>
+            <column name="wechat_user_id" type="VARCHAR(128)"/>
+            <column name="event_message_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533213245790-3">
+        <createTable tableName="question">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="questionPK"/>
+            </column>
+            <column name="answer_count" type="INT"/>
+            <column name="avatar" type="VARCHAR(1024)"/>
+            <column name="create_time" type="TINYBLOB"/>
+            <column name="description" type="VARCHAR(1024)"/>
+            <column name="nick_name" type="VARCHAR(128)"/>
+            <column name="reading_count" type="INT"/>
+            <column name="title" type="VARCHAR(256)"/>
+            <column name="wechat_user_id" type="VARCHAR(128)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533213245790-4">
+        <createTable tableName="question_pic">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="question_picPK"/>
+            </column>
+            <column name="create_time" type="TINYBLOB"/>
+            <column name="oss_path" type="VARCHAR(255)"/>
+            <column name="question_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533213245790-5">
+        <addColumn tableName="activity_participation">
+            <column name="current_continue_days" type="integer"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533213245790-6">
+        <addColumn tableName="activity_participation">
+            <column name="fitness_activity_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533213245790-7">
+        <addColumn tableName="activity_participation">
+            <column name="latest_clockin_time" type="tinyblob"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533213245790-8">
+        <addColumn tableName="activity_participation">
+            <column name="longest_continue_days" type="integer"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533213245790-9">
+        <addColumn tableName="pin_fan_activity">
+            <column name="modify_time" type="tinyblob"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533213245790-10">
+        <addColumn tableName="activity_participation">
+            <column name="total_clockin_days" type="integer"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533213245790-11">
+        <addColumn tableName="activity_participation">
+            <column name="total_participate_days" type="integer"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533213245790-12">
+        <addForeignKeyConstraint baseColumnNames="question_id" baseTableName="question_pic" constraintName="FK4qf8wg49oewkbdcmtwyq3jd2g" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="question"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533213245790-13">
+        <addForeignKeyConstraint baseColumnNames="event_message_id" baseTableName="message" constraintName="FK6xpi0jh6ajg0rdtjsu9synn38" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="event_message"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533213245790-14">
+        <addForeignKeyConstraint baseColumnNames="fitness_activity_id" baseTableName="activity_participation" constraintName="FKs15oho6oyku4i4pdheuoh2yuf" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="fitness_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533213245790-15">
+        <dropForeignKeyConstraint baseTableName="activity_participation" constraintName="fk_activity_participation_activity_id"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533213245790-16">
+        <dropColumn columnName="activity_id" tableName="activity_participation"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533213245790-17">
+        <addNotNullConstraint columnDataType="varchar(60)" columnName="password_hash" tableName="jhi_user"/>
+    </changeSet>
+</databaseChangeLog>

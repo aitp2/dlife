@@ -1,0 +1,92 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-follow-heading">Create or edit a Follow</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!follow.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="follow.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_followUserId">Follow User Id</label>
+                    <input type="text" class="form-control" name="followUserId" id="field_followUserId"
+                        [(ngModel)]="follow.followUserId" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_followUserNickname">Follow User Nickname</label>
+                    <input type="text" class="form-control" name="followUserNickname" id="field_followUserNickname"
+                        [(ngModel)]="follow.followUserNickname" maxlength="128"/>
+                    <div [hidden]="!(editForm.controls.followUserNickname?.dirty && editForm.controls.followUserNickname?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.followUserNickname?.errors?.maxlength">
+                        This field cannot be longer than 128 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_followUseravatar">Follow Useravatar</label>
+                    <input type="text" class="form-control" name="followUseravatar" id="field_followUseravatar"
+                        [(ngModel)]="follow.followUseravatar" maxlength="1024"/>
+                    <div [hidden]="!(editForm.controls.followUseravatar?.dirty && editForm.controls.followUseravatar?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.followUseravatar?.errors?.maxlength">
+                        This field cannot be longer than 1024 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_followedUserId">Followed User Id</label>
+                    <input type="text" class="form-control" name="followedUserId" id="field_followedUserId"
+                        [(ngModel)]="follow.followedUserId" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_followedUserNickname">Followed User Nickname</label>
+                    <input type="text" class="form-control" name="followedUserNickname" id="field_followedUserNickname"
+                        [(ngModel)]="follow.followedUserNickname" maxlength="128"/>
+                    <div [hidden]="!(editForm.controls.followedUserNickname?.dirty && editForm.controls.followedUserNickname?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.followedUserNickname?.errors?.maxlength">
+                        This field cannot be longer than 128 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_followedUseravatar">Followed Useravatar</label>
+                    <input type="text" class="form-control" name="followedUseravatar" id="field_followedUseravatar"
+                        [(ngModel)]="follow.followedUseravatar" maxlength="1024"/>
+                    <div [hidden]="!(editForm.controls.followedUseravatar?.dirty && editForm.controls.followedUseravatar?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.followedUseravatar?.errors?.maxlength">
+                        This field cannot be longer than 1024 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_createTime">Create Time</label>
+                    <div class="d-flex">
+                        <input id="field_createTime" type="datetime-local" class="form-control" name="createTime" [(ngModel)]="createTime"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_modifyTime">Modify Time</label>
+                    <div class="d-flex">
+                        <input id="field_modifyTime" type="datetime-local" class="form-control" name="modifyTime" [(ngModel)]="modifyTime"
+                        />
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

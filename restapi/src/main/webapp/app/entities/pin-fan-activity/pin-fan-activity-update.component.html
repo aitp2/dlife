@@ -1,0 +1,208 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-pin-fan-activity-heading">Create or edit a Pin Fan Activity</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!pinFanActivity.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="pinFanActivity.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_wechatUserId" ngbTooltip="发布者id">Wechat User Id</label>
+                    <input type="text" class="form-control" name="wechatUserId" id="field_wechatUserId"
+                        [(ngModel)]="pinFanActivity.wechatUserId" maxlength="128"/>
+                    <div [hidden]="!(editForm.controls.wechatUserId?.dirty && editForm.controls.wechatUserId?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.wechatUserId?.errors?.maxlength">
+                        This field cannot be longer than 128 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_avatar" ngbTooltip="头像">Avatar</label>
+                    <input type="text" class="form-control" name="avatar" id="field_avatar"
+                        [(ngModel)]="pinFanActivity.avatar" maxlength="1024"/>
+                    <div [hidden]="!(editForm.controls.avatar?.dirty && editForm.controls.avatar?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.avatar?.errors?.maxlength">
+                        This field cannot be longer than 1024 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_nickName" ngbTooltip="昵称">Nick Name</label>
+                    <input type="text" class="form-control" name="nickName" id="field_nickName"
+                        [(ngModel)]="pinFanActivity.nickName" maxlength="128"/>
+                    <div [hidden]="!(editForm.controls.nickName?.dirty && editForm.controls.nickName?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.nickName?.errors?.maxlength">
+                        This field cannot be longer than 128 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_activitiyType" ngbTooltip="活动类型">Activitiy Type</label>
+                    <input type="number" class="form-control" name="activitiyType" id="field_activitiyType"
+                        [(ngModel)]="pinFanActivity.activitiyType" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_activitiyTile" ngbTooltip="活动名称">Activitiy Tile</label>
+                    <input type="text" class="form-control" name="activitiyTile" id="field_activitiyTile"
+                        [(ngModel)]="pinFanActivity.activitiyTile" maxlength="128"/>
+                    <div [hidden]="!(editForm.controls.activitiyTile?.dirty && editForm.controls.activitiyTile?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.activitiyTile?.errors?.maxlength">
+                        This field cannot be longer than 128 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_budget" ngbTooltip="人均预算">Budget</label>
+                    <input type="number" class="form-control" name="budget" id="field_budget"
+                        [(ngModel)]="pinFanActivity.budget" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_activitiyAddre" ngbTooltip="活动地址">Activitiy Addre</label>
+                    <input type="text" class="form-control" name="activitiyAddre" id="field_activitiyAddre"
+                        [(ngModel)]="pinFanActivity.activitiyAddre" maxlength="1024"/>
+                    <div [hidden]="!(editForm.controls.activitiyAddre?.dirty && editForm.controls.activitiyAddre?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.activitiyAddre?.errors?.maxlength">
+                        This field cannot be longer than 1024 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_descrption" ngbTooltip="活动描述">Descrption</label>
+                    <input type="text" class="form-control" name="descrption" id="field_descrption"
+                        [(ngModel)]="pinFanActivity.descrption" maxlength="1024"/>
+                    <div [hidden]="!(editForm.controls.descrption?.dirty && editForm.controls.descrption?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.descrption?.errors?.maxlength">
+                        This field cannot be longer than 1024 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_organizeUser" ngbTooltip="组织者">Organize User</label>
+                    <input type="text" class="form-control" name="organizeUser" id="field_organizeUser"
+                        [(ngModel)]="pinFanActivity.organizeUser" maxlength="128"/>
+                    <div [hidden]="!(editForm.controls.organizeUser?.dirty && editForm.controls.organizeUser?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.organizeUser?.errors?.maxlength">
+                        This field cannot be longer than 128 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_coverPicture" ngbTooltip="封面图">Cover Picture</label>
+                    <input type="text" class="form-control" name="coverPicture" id="field_coverPicture"
+                        [(ngModel)]="pinFanActivity.coverPicture" maxlength="128"/>
+                    <div [hidden]="!(editForm.controls.coverPicture?.dirty && editForm.controls.coverPicture?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.coverPicture?.errors?.maxlength">
+                        This field cannot be longer than 128 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_appointDatetime" ngbTooltip="约定时间">Appoint Datetime</label>
+                    <div class="d-flex">
+                        <input id="field_appointDatetime" type="datetime-local" class="form-control" name="appointDatetime" [(ngModel)]="appointDatetime"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_appointEndDatetime" ngbTooltip="约定结束时间">Appoint End Datetime</label>
+                    <div class="d-flex">
+                        <input id="field_appointEndDatetime" type="datetime-local" class="form-control" name="appointEndDatetime" [(ngModel)]="appointEndDatetime"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_salerUrl" ngbTooltip="商家URL">Saler Url</label>
+                    <input type="text" class="form-control" name="salerUrl" id="field_salerUrl"
+                        [(ngModel)]="pinFanActivity.salerUrl" maxlength="1024"/>
+                    <div [hidden]="!(editForm.controls.salerUrl?.dirty && editForm.controls.salerUrl?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.salerUrl?.errors?.maxlength">
+                        This field cannot be longer than 1024 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_lowerLimit" ngbTooltip="最少参与者">Lower Limit</label>
+                    <input type="number" class="form-control" name="lowerLimit" id="field_lowerLimit"
+                        [(ngModel)]="pinFanActivity.lowerLimit" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_upperLimit" ngbTooltip="最多参与者">Upper Limit</label>
+                    <input type="number" class="form-control" name="upperLimit" id="field_upperLimit"
+                        [(ngModel)]="pinFanActivity.upperLimit" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_payType" ngbTooltip="支付类型">Pay Type</label>
+                    <input type="text" class="form-control" name="payType" id="field_payType"
+                        [(ngModel)]="pinFanActivity.payType" maxlength="32"/>
+                    <div [hidden]="!(editForm.controls.payType?.dirty && editForm.controls.payType?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.payType?.errors?.maxlength">
+                        This field cannot be longer than 32 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_deadline" ngbTooltip="截至日期">Deadline</label>
+                    <div class="d-flex">
+                        <input id="field_deadline" type="datetime-local" class="form-control" name="deadline" [(ngModel)]="deadline"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_comment" ngbTooltip="备注">Comment</label>
+                    <input type="text" class="form-control" name="comment" id="field_comment"
+                        [(ngModel)]="pinFanActivity.comment" maxlength="500"/>
+                    <div [hidden]="!(editForm.controls.comment?.dirty && editForm.controls.comment?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.comment?.errors?.maxlength">
+                        This field cannot be longer than 500 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_status" ngbTooltip="活动状态 0-新建 1-完成 2-取消">Status</label>
+                    <input type="number" class="form-control" name="status" id="field_status"
+                        [(ngModel)]="pinFanActivity.status" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_commentCount" ngbTooltip="评论数量">Comment Count</label>
+                    <input type="number" class="form-control" name="commentCount" id="field_commentCount"
+                        [(ngModel)]="pinFanActivity.commentCount" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_readingCount" ngbTooltip="浏览量">Reading Count</label>
+                    <input type="number" class="form-control" name="readingCount" id="field_readingCount"
+                        [(ngModel)]="pinFanActivity.readingCount" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_modifyTime" ngbTooltip="最新评论/参与时间">Modify Time</label>
+                    <div class="d-flex">
+                        <input id="field_modifyTime" type="datetime-local" class="form-control" name="modifyTime" [(ngModel)]="modifyTime"
+                        />
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

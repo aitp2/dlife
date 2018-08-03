@@ -1,0 +1,88 @@
+<div>
+    <h2 id="page-heading">
+        <span>Recipes</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-recipe" [routerLink]="['/recipe/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create new Recipe
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="recipes">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="wechatUserId"><span>Wechat User Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="avatar"><span>Avatar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="nickName"><span>Nick Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="title"><span>Title</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="content"><span>Content</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="startTime"><span>Start Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="endTime"><span>End Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="price"><span>Price</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="num"><span>Num</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="status"><span>Status</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="publishVersion"><span>Publish Version</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="hot"><span>Hot</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="createTime"><span>Create Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="modifyTime"><span>Modify Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let recipe of recipes ;trackBy: trackId">
+                <td><a [routerLink]="['/recipe', recipe.id, 'view' ]">{{recipe.id}}</a></td>
+                <td>{{recipe.wechatUserId}}</td>
+                <td>{{recipe.avatar}}</td>
+                <td>{{recipe.nickName}}</td>
+                <td>{{recipe.title}}</td>
+                <td>{{recipe.content}}</td>
+                <td>{{recipe.startTime | date:'medium'}}</td>
+                <td>{{recipe.endTime | date:'medium'}}</td>
+                <td>{{recipe.price}}</td>
+                <td>{{recipe.num}}</td>
+                <td>{{recipe.status}}</td>
+                <td>{{recipe.publishVersion}}</td>
+                <td>{{recipe.hot}}</td>
+                <td>{{recipe.createTime | date:'medium'}}</td>
+                <td>{{recipe.modifyTime | date:'medium'}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/recipe', recipe.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/recipe', recipe.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'recipe/'+ recipe.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="recipes && recipes.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,88 @@
+<div>
+    <h2 id="page-heading">
+        <span>Fitness Activities</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-fitness-activity" [routerLink]="['/fitness-activity/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create new Fitness Activity
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="fitnessActivities">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="title"><span>Title</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="descrption"><span>Descrption</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="wechatUserId"><span>Wechat User Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="nickName"><span>Nick Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="avatar"><span>Avatar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="project"><span>Project</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="companyRole"><span>Company Role</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="signStartTime"><span>Sign Start Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="signEndTime"><span>Sign End Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="activityStartTime"><span>Activity Start Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="activityEndTime"><span>Activity End Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="commentCount"><span>Comment Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="modifyTime"><span>Modify Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="readingCount"><span>Reading Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let fitnessActivity of fitnessActivities ;trackBy: trackId">
+                <td><a [routerLink]="['/fitness-activity', fitnessActivity.id, 'view' ]">{{fitnessActivity.id}}</a></td>
+                <td>{{fitnessActivity.title}}</td>
+                <td>{{fitnessActivity.descrption}}</td>
+                <td>{{fitnessActivity.wechatUserId}}</td>
+                <td>{{fitnessActivity.nickName}}</td>
+                <td>{{fitnessActivity.avatar}}</td>
+                <td>{{fitnessActivity.project}}</td>
+                <td>{{fitnessActivity.companyRole}}</td>
+                <td>{{fitnessActivity.signStartTime | date:'medium'}}</td>
+                <td>{{fitnessActivity.signEndTime | date:'medium'}}</td>
+                <td>{{fitnessActivity.activityStartTime | date:'medium'}}</td>
+                <td>{{fitnessActivity.activityEndTime | date:'medium'}}</td>
+                <td>{{fitnessActivity.commentCount}}</td>
+                <td>{{fitnessActivity.modifyTime | date:'medium'}}</td>
+                <td>{{fitnessActivity.readingCount}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/fitness-activity', fitnessActivity.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/fitness-activity', fitnessActivity.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'fitness-activity/'+ fitnessActivity.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="fitnessActivities && fitnessActivities.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

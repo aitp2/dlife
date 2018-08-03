@@ -1,0 +1,36 @@
+{
+    "name": "PinfanPics",
+    "fields": [
+        {
+            "fieldName": "ossPath",
+            "javadoc": "图片路径",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 255
+        },
+        {
+            "fieldName": "createTime",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "pinFanActivity",
+            "otherEntityName": "pinFanActivity",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180802115459",
+    "javadoc": "拼饭活动图片信息",
+    "entityTableName": "pinfan_pics",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,104 @@
+<div>
+    <h2 id="page-heading">
+        <span>Pin Fan Activities</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-pin-fan-activity" [routerLink]="['/pin-fan-activity/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create new Pin Fan Activity
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="pinFanActivities">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="wechatUserId"><span>Wechat User Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="avatar"><span>Avatar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="nickName"><span>Nick Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="activitiyType"><span>Activitiy Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="activitiyTile"><span>Activitiy Tile</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="budget"><span>Budget</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="activitiyAddre"><span>Activitiy Addre</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="descrption"><span>Descrption</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="organizeUser"><span>Organize User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="coverPicture"><span>Cover Picture</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="appointDatetime"><span>Appoint Datetime</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="appointEndDatetime"><span>Appoint End Datetime</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="salerUrl"><span>Saler Url</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="lowerLimit"><span>Lower Limit</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="upperLimit"><span>Upper Limit</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="payType"><span>Pay Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="deadline"><span>Deadline</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="comment"><span>Comment</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="status"><span>Status</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="commentCount"><span>Comment Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="readingCount"><span>Reading Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="modifyTime"><span>Modify Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let pinFanActivity of pinFanActivities ;trackBy: trackId">
+                <td><a [routerLink]="['/pin-fan-activity', pinFanActivity.id, 'view' ]">{{pinFanActivity.id}}</a></td>
+                <td>{{pinFanActivity.wechatUserId}}</td>
+                <td>{{pinFanActivity.avatar}}</td>
+                <td>{{pinFanActivity.nickName}}</td>
+                <td>{{pinFanActivity.activitiyType}}</td>
+                <td>{{pinFanActivity.activitiyTile}}</td>
+                <td>{{pinFanActivity.budget}}</td>
+                <td>{{pinFanActivity.activitiyAddre}}</td>
+                <td>{{pinFanActivity.descrption}}</td>
+                <td>{{pinFanActivity.organizeUser}}</td>
+                <td>{{pinFanActivity.coverPicture}}</td>
+                <td>{{pinFanActivity.appointDatetime | date:'medium'}}</td>
+                <td>{{pinFanActivity.appointEndDatetime | date:'medium'}}</td>
+                <td>{{pinFanActivity.salerUrl}}</td>
+                <td>{{pinFanActivity.lowerLimit}}</td>
+                <td>{{pinFanActivity.upperLimit}}</td>
+                <td>{{pinFanActivity.payType}}</td>
+                <td>{{pinFanActivity.deadline | date:'medium'}}</td>
+                <td>{{pinFanActivity.comment}}</td>
+                <td>{{pinFanActivity.status}}</td>
+                <td>{{pinFanActivity.commentCount}}</td>
+                <td>{{pinFanActivity.readingCount}}</td>
+                <td>{{pinFanActivity.modifyTime | date:'medium'}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/pin-fan-activity', pinFanActivity.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/pin-fan-activity', pinFanActivity.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'pin-fan-activity/'+ pinFanActivity.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="pinFanActivities && pinFanActivities.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

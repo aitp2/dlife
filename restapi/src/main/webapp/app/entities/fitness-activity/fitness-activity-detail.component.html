@@ -1,0 +1,79 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="fitnessActivity">
+            <h2><span>Fitness Activity</span> {{fitnessActivity.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span ngbTooltip="活动标题">Title</span></dt>
+                <dd>
+                    <span>{{fitnessActivity.title}}</span>
+                </dd>
+                <dt><span ngbTooltip="活动描述">Descrption</span></dt>
+                <dd>
+                    <span>{{fitnessActivity.descrption}}</span>
+                </dd>
+                <dt><span ngbTooltip="用户id 创建人">Wechat User Id</span></dt>
+                <dd>
+                    <span>{{fitnessActivity.wechatUserId}}</span>
+                </dd>
+                <dt><span ngbTooltip="昵称">Nick Name</span></dt>
+                <dd>
+                    <span>{{fitnessActivity.nickName}}</span>
+                </dd>
+                <dt><span ngbTooltip="头像">Avatar</span></dt>
+                <dd>
+                    <span>{{fitnessActivity.avatar}}</span>
+                </dd>
+                <dt><span ngbTooltip="项目名称">Project</span></dt>
+                <dd>
+                    <span>{{fitnessActivity.project}}</span>
+                </dd>
+                <dt><span ngbTooltip="角色">Company Role</span></dt>
+                <dd>
+                    <span>{{fitnessActivity.companyRole}}</span>
+                </dd>
+                <dt><span ngbTooltip="报名开始时间">Sign Start Time</span></dt>
+                <dd>
+                    <span>{{fitnessActivity.signStartTime}}</span>
+                </dd>
+                <dt><span ngbTooltip="报名截至时间">Sign End Time</span></dt>
+                <dd>
+                    <span>{{fitnessActivity.signEndTime}}</span>
+                </dd>
+                <dt><span ngbTooltip="开始时间">Activity Start Time</span></dt>
+                <dd>
+                    <span>{{fitnessActivity.activityStartTime}}</span>
+                </dd>
+                <dt><span ngbTooltip="结束时间">Activity End Time</span></dt>
+                <dd>
+                    <span>{{fitnessActivity.activityEndTime}}</span>
+                </dd>
+                <dt><span ngbTooltip="评论数量">Comment Count</span></dt>
+                <dd>
+                    <span>{{fitnessActivity.commentCount}}</span>
+                </dd>
+                <dt><span>Modify Time</span></dt>
+                <dd>
+                    <span>{{fitnessActivity.modifyTime}}</span>
+                </dd>
+                <dt><span>Reading Count</span></dt>
+                <dd>
+                    <span>{{fitnessActivity.readingCount}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/fitness-activity', fitnessActivity.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+{
+    "name": "Message",
+    "fields": [
+        {
+            "fieldName": "wechatUserId",
+            "javadoc": "接收人id",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "read",
+            "javadoc": "是否读取",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "eventMessage",
+            "otherEntityName": "eventMessage",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180802115453",
+    "entityTableName": "message",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,55 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="question">
+            <h2><span>Question</span> {{question.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span ngbTooltip="提问人ID">Wechat User Id</span></dt>
+                <dd>
+                    <span>{{question.wechatUserId}}</span>
+                </dd>
+                <dt><span ngbTooltip="提问人昵称">Nick Name</span></dt>
+                <dd>
+                    <span>{{question.nickName}}</span>
+                </dd>
+                <dt><span ngbTooltip="提问人头像">Avatar</span></dt>
+                <dd>
+                    <span>{{question.avatar}}</span>
+                </dd>
+                <dt><span ngbTooltip="问题标题">Title</span></dt>
+                <dd>
+                    <span>{{question.title}}</span>
+                </dd>
+                <dt><span ngbTooltip="问题描述">Description</span></dt>
+                <dd>
+                    <span>{{question.description}}</span>
+                </dd>
+                <dt><span ngbTooltip="提问时间">Create Time</span></dt>
+                <dd>
+                    <span>{{question.createTime}}</span>
+                </dd>
+                <dt><span ngbTooltip="回答数">Answer Count</span></dt>
+                <dd>
+                    <span>{{question.answerCount}}</span>
+                </dd>
+                <dt><span ngbTooltip="浏览数">Reading Count</span></dt>
+                <dd>
+                    <span>{{question.readingCount}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/question', question.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

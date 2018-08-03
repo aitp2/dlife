@@ -1,0 +1,183 @@
+{
+    "name": "PinFanActivity",
+    "fields": [
+        {
+            "fieldName": "wechatUserId",
+            "javadoc": "发布者id",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "avatar",
+            "javadoc": "头像",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 1024
+        },
+        {
+            "fieldName": "nickName",
+            "javadoc": "昵称",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "activitiyType",
+            "javadoc": "活动类型",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "activitiyTile",
+            "javadoc": "活动名称",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "budget",
+            "javadoc": "人均预算",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "activitiyAddre",
+            "javadoc": "活动地址",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 1024
+        },
+        {
+            "fieldName": "descrption",
+            "javadoc": "活动描述",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 1024
+        },
+        {
+            "fieldName": "organizeUser",
+            "javadoc": "组织者",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "coverPicture",
+            "javadoc": "封面图",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "appointDatetime",
+            "javadoc": "约定时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "appointEndDatetime",
+            "javadoc": "约定结束时间",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "salerUrl",
+            "javadoc": "商家URL",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 1024
+        },
+        {
+            "fieldName": "lowerLimit",
+            "javadoc": "最少参与者",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "upperLimit",
+            "javadoc": "最多参与者",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "payType",
+            "javadoc": "支付类型",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 32
+        },
+        {
+            "fieldName": "deadline",
+            "javadoc": "截至日期",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "comment",
+            "javadoc": "备注",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 500
+        },
+        {
+            "fieldName": "status",
+            "javadoc": "活动状态 0-新建 1-完成 2-取消",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "commentCount",
+            "javadoc": "评论数量",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "readingCount",
+            "javadoc": "浏览量",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "modifyTime",
+            "javadoc": "最新评论/参与时间",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "attendees",
+            "otherEntityName": "attendee",
+            "otherEntityRelationshipName": "pinFanActivity"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "pinfanPics",
+            "otherEntityName": "pinfanPics",
+            "otherEntityRelationshipName": "pinFanActivity"
+        }
+    ],
+    "changelogDate": "20180802115457",
+    "javadoc": "拼饭活动",
+    "entityTableName": "pin_fan_activity",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

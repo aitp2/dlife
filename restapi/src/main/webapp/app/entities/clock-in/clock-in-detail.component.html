@@ -1,0 +1,45 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="clockIn">
+            <h2><span>Clock In</span> {{clockIn.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span ngbTooltip="活动标题">Title</span></dt>
+                <dd>
+                    <span>{{clockIn.title}}</span>
+                </dd>
+                <dt><span ngbTooltip="签到日记">Sign Note</span></dt>
+                <dd>
+                    <span>{{clockIn.signNote}}</span>
+                </dd>
+                <dt><span ngbTooltip="打卡时间">Punch Date Time</span></dt>
+                <dd>
+                    <span>{{clockIn.punchDateTime}}</span>
+                </dd>
+                <dt><span ngbTooltip="活动id">Activity Id</span></dt>
+                <dd>
+                    <span>{{clockIn.activityId}}</span>
+                </dd>
+                <dt><span>Activity Participation</span></dt>
+                <dd>
+                    <div *ngIf="clockIn.activityParticipationId">
+                        <a [routerLink]="['/activity-participation', clockIn.activityParticipationId, 'view']">{{clockIn.activityParticipationId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/clock-in', clockIn.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

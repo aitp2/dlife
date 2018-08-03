@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="autoIncrement" value="true"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added the entity ActivityParticipation.
+    -->
+    <changeSet id="20180802115501-1" author="jhipster">
+        <createTable tableName="activity_participation" remarks="健身活动参与信息">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="wechat_user_id" type="varchar(128)" remarks="参与人ID">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="nick_name" type="varchar(128)" remarks="参与者昵称">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="avatar" type="varchar(1024)" remarks="参与者头像">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="project" type="varchar(128)" remarks="项目名称">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="participation_time" type="datetime" remarks="参与时间">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="total_participate_days" type="integer" remarks="总共加入天数">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="total_clockin_days" type="integer" remarks="总共打卡天数">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="current_continue_days" type="integer" remarks="当前连续天数">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="longest_continue_days" type="integer" remarks="最长连续天数">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="latest_clockin_time" type="datetime" remarks="最新打卡时间">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="fitness_activity_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+        </createTable>
+        <dropDefaultValue tableName="activity_participation" columnName="participation_time" columnDataType="datetime"/>
+        <dropDefaultValue tableName="activity_participation" columnName="latest_clockin_time" columnDataType="datetime"/>
+        
+    </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+</databaseChangeLog>

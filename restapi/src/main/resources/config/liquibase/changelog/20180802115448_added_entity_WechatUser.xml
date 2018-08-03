@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="autoIncrement" value="true"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added the entity WechatUser.
+    -->
+    <changeSet id="20180802115448-1" author="jhipster">
+        <createTable tableName="wechat_user" remarks="用户信息">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="open_id" type="varchar(255)" remarks="微信openid">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="wechat_code" type="varchar(128)" remarks="微信号">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="user_name" type="varchar(128)" remarks="用户名">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="nick_name" type="varchar(128)" remarks="昵称">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="avatar" type="varchar(1024)" remarks="头像">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="mobile_num" type="varchar(128)" remarks="手机号码">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="project" type="varchar(128)" remarks="项目名称">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="seat" type="varchar(128)" remarks="座位号">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="introduce" type="varchar(1024)" remarks="个人简介">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="sex" type="integer" remarks="性别 值为1时是男性，值为2时是女性，值为0时是未知">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="company_role" type="varchar(255)" remarks="角色">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="cook_flag" type="integer" remarks="厨师标志 值为1时是厨师，值为0时不是厨师">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="intesting" type="varchar(1024)" remarks="兴趣">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="skill" type="varchar(1024)" remarks="擅长">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="create_time" type="datetime" remarks="创建时间">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="modify_time" type="datetime" remarks="修改时间">
+                <constraints nullable="true" />
+            </column>
+
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+        </createTable>
+        <dropDefaultValue tableName="wechat_user" columnName="create_time" columnDataType="datetime"/>
+        <dropDefaultValue tableName="wechat_user" columnName="modify_time" columnDataType="datetime"/>
+        
+    </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+</databaseChangeLog>

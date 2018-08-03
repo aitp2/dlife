@@ -1,0 +1,36 @@
+{
+    "name": "Image",
+    "fields": [
+        {
+            "fieldName": "ossPath",
+            "javadoc": "图片路径",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 255
+        },
+        {
+            "fieldName": "createTime",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "recipe",
+            "otherEntityName": "recipe",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180802115455",
+    "javadoc": "菜谱图片信息",
+    "entityTableName": "image",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

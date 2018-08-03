@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="autoIncrement" value="true"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added the entity FitnessActivity.
+    -->
+    <changeSet id="20180802115500-1" author="jhipster">
+        <createTable tableName="fitness_activity" remarks="健身活动信息">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="varchar(128)" remarks="活动标题">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="descrption" type="varchar(1024)" remarks="活动描述">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="wechat_user_id" type="varchar(128)" remarks="用户id 创建人">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="nick_name" type="varchar(128)" remarks="昵称">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="avatar" type="varchar(1024)" remarks="头像">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="project" type="varchar(128)" remarks="项目名称">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="company_role" type="varchar(128)" remarks="角色">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="sign_start_time" type="datetime" remarks="报名开始时间">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="sign_end_time" type="datetime" remarks="报名截至时间">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="activity_start_time" type="datetime" remarks="开始时间">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="activity_end_time" type="datetime" remarks="结束时间">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="comment_count" type="integer" remarks="评论数量">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="modify_time" type="datetime">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="reading_count" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+        </createTable>
+        <dropDefaultValue tableName="fitness_activity" columnName="sign_start_time" columnDataType="datetime"/>
+        <dropDefaultValue tableName="fitness_activity" columnName="sign_end_time" columnDataType="datetime"/>
+        <dropDefaultValue tableName="fitness_activity" columnName="activity_start_time" columnDataType="datetime"/>
+        <dropDefaultValue tableName="fitness_activity" columnName="activity_end_time" columnDataType="datetime"/>
+        <dropDefaultValue tableName="fitness_activity" columnName="modify_time" columnDataType="datetime"/>
+        
+    </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+</databaseChangeLog>

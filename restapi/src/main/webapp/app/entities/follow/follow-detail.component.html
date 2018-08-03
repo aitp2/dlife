@@ -1,0 +1,55 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="follow">
+            <h2><span>Follow</span> {{follow.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Follow User Id</span></dt>
+                <dd>
+                    <span>{{follow.followUserId}}</span>
+                </dd>
+                <dt><span>Follow User Nickname</span></dt>
+                <dd>
+                    <span>{{follow.followUserNickname}}</span>
+                </dd>
+                <dt><span>Follow Useravatar</span></dt>
+                <dd>
+                    <span>{{follow.followUseravatar}}</span>
+                </dd>
+                <dt><span>Followed User Id</span></dt>
+                <dd>
+                    <span>{{follow.followedUserId}}</span>
+                </dd>
+                <dt><span>Followed User Nickname</span></dt>
+                <dd>
+                    <span>{{follow.followedUserNickname}}</span>
+                </dd>
+                <dt><span>Followed Useravatar</span></dt>
+                <dd>
+                    <span>{{follow.followedUseravatar}}</span>
+                </dd>
+                <dt><span>Create Time</span></dt>
+                <dd>
+                    <span>{{follow.createTime}}</span>
+                </dd>
+                <dt><span>Modify Time</span></dt>
+                <dd>
+                    <span>{{follow.modifyTime}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/follow', follow.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
