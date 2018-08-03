@@ -1,5 +1,6 @@
 package com.aitp.dlife.service.dto;
 
+
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -21,7 +22,7 @@ public class ClockinSummaryDTO implements Serializable {
 
     private Integer serialCount;
 
-    private Instant lastClockInTime;
+    private String lastClockInTime;
 
     public Long getId() {
         return id;
@@ -63,15 +64,16 @@ public class ClockinSummaryDTO implements Serializable {
         this.serialCount = serialCount;
     }
 
-    public Instant getLastClockInTime() {
-        return lastClockInTime;
-    }
 
-    public void setLastClockInTime(Instant lastClockInTime) {
-        this.lastClockInTime = lastClockInTime;
-    }
+    public String getLastClockInTime() {
+		return lastClockInTime;
+	}
 
-    @Override
+	public void setLastClockInTime(String lastClockInTime) {
+		this.lastClockInTime = lastClockInTime;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -81,7 +83,7 @@ public class ClockinSummaryDTO implements Serializable {
         }
 
         ClockinSummaryDTO clockinSummaryDTO = (ClockinSummaryDTO) o;
-        if (clockinSummaryDTO.getId() == null || getId() == null) {
+        if(clockinSummaryDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), clockinSummaryDTO.getId());

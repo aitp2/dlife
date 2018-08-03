@@ -1,9 +1,12 @@
 package com.aitp.dlife.service.dto;
 
-import java.time.Instant;
+
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -29,10 +32,10 @@ public class PinFanActivityDTO implements Serializable {
 
     private BigDecimal budget;
 
-    @Size(max = 1024)
+    @Size(max = 2048)
     private String activitiyAddre;
 
-    @Size(max = 1024)
+    @Size(max = 128)
     private String descrption;
 
     @Size(max = 128)
@@ -41,9 +44,9 @@ public class PinFanActivityDTO implements Serializable {
     @Size(max = 128)
     private String coverPicture;
 
-    private Instant appointDatetime;
+    private String appointDatetime;
 
-    private Instant appointEndDatetime;
+    private String appointEndDatetime;
 
     @Size(max = 1024)
     private String salerUrl;
@@ -55,18 +58,64 @@ public class PinFanActivityDTO implements Serializable {
     @Size(max = 32)
     private String payType;
 
-    private Instant deadline;
+    private String deadline;
 
     @Size(max = 500)
     private String comment;
 
-    private Integer status;
-
     private Integer commentCount;
-
+    
     private Integer readingCount;
 
-    private Instant modifyTime;
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    private Integer status;
+
+    public boolean isAttended() {
+        return attended;
+    }
+
+    public void setAttended(boolean attended) {
+        this.attended = attended;
+    }
+
+    private boolean attended = false;
+
+    private Set<AttendeeDTO> attendees = new HashSet<>();
+
+    private Set<PinfanPicsDTO> pinfanPics = new HashSet<>();
+
+    private Set<RatesDTO> rates = new HashSet<>();
+
+    public Set<AttendeeDTO> getAttendees() {
+        return attendees;
+    }
+
+    public void setAttendees(Set<AttendeeDTO> attendees) {
+        this.attendees = attendees;
+    }
+
+    public Set<PinfanPicsDTO> getPinfanPics() {
+        return pinfanPics;
+    }
+
+    public void setPinfanPics(Set<PinfanPicsDTO> pinfanPics) {
+        this.pinfanPics = pinfanPics;
+    }
+
+    public Set<RatesDTO> getRates() {
+        return rates;
+    }
+
+    public void setRates(Set<RatesDTO> rates) {
+        this.rates = rates;
+    }
 
     public Long getId() {
         return id;
@@ -156,19 +205,19 @@ public class PinFanActivityDTO implements Serializable {
         this.coverPicture = coverPicture;
     }
 
-    public Instant getAppointDatetime() {
+    public String getAppointDatetime() {
         return appointDatetime;
     }
 
-    public void setAppointDatetime(Instant appointDatetime) {
+    public void setAppointDatetime(String appointDatetime) {
         this.appointDatetime = appointDatetime;
     }
 
-    public Instant getAppointEndDatetime() {
+    public String getAppointEndDatetime() {
         return appointEndDatetime;
     }
 
-    public void setAppointEndDatetime(Instant appointEndDatetime) {
+    public void setAppointEndDatetime(String appointEndDatetime) {
         this.appointEndDatetime = appointEndDatetime;
     }
 
@@ -204,11 +253,11 @@ public class PinFanActivityDTO implements Serializable {
         this.payType = payType;
     }
 
-    public Instant getDeadline() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Instant deadline) {
+    public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
 
@@ -219,40 +268,17 @@ public class PinFanActivityDTO implements Serializable {
     public void setComment(String comment) {
         this.comment = comment;
     }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Integer getCommentCount() {
-        return commentCount;
-    }
-
-    public void setCommentCount(Integer commentCount) {
-        this.commentCount = commentCount;
-    }
+    
 
     public Integer getReadingCount() {
-        return readingCount;
-    }
+		return readingCount;
+	}
 
-    public void setReadingCount(Integer readingCount) {
-        this.readingCount = readingCount;
-    }
+	public void setReadingCount(Integer readingCount) {
+		this.readingCount = readingCount;
+	}
 
-    public Instant getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(Instant modifyTime) {
-        this.modifyTime = modifyTime;
-    }
-
-    @Override
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -262,7 +288,7 @@ public class PinFanActivityDTO implements Serializable {
         }
 
         PinFanActivityDTO pinFanActivityDTO = (PinFanActivityDTO) o;
-        if (pinFanActivityDTO.getId() == null || getId() == null) {
+        if(pinFanActivityDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), pinFanActivityDTO.getId());
@@ -295,10 +321,15 @@ public class PinFanActivityDTO implements Serializable {
             ", payType='" + getPayType() + "'" +
             ", deadline='" + getDeadline() + "'" +
             ", comment='" + getComment() + "'" +
-            ", status=" + getStatus() +
-            ", commentCount=" + getCommentCount() +
-            ", readingCount=" + getReadingCount() +
-            ", modifyTime='" + getModifyTime() + "'" +
+            ", status='" + getStatus() + "'" +
             "}";
+    }
+
+    public Integer getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(Integer commentCount) {
+        this.commentCount = commentCount;
     }
 }

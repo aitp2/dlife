@@ -1,8 +1,11 @@
 package com.aitp.dlife.service.dto;
 
+
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 import com.aitp.dlife.domain.enumeration.CommentChannel;
 
@@ -37,9 +40,11 @@ public class CommentDTO implements Serializable {
 
     private Integer rating3;
 
-    private Instant createTime;
+    private String createTime;
 
-    private Instant modifyTime;
+    private String modifyTime;
+
+    private Set<CommentPicDTO> commentPics = new HashSet<>();;
 
     public Long getId() {
         return id;
@@ -129,20 +134,28 @@ public class CommentDTO implements Serializable {
         this.rating3 = rating3;
     }
 
-    public Instant getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Instant createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Instant getModifyTime() {
+    public String getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(Instant modifyTime) {
+    public void setModifyTime(String modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public Set<CommentPicDTO> getCommentPics() {
+        return commentPics;
+    }
+
+    public void setCommentPics(Set<CommentPicDTO> commentPics) {
+        this.commentPics = commentPics;
     }
 
     @Override
@@ -155,7 +168,7 @@ public class CommentDTO implements Serializable {
         }
 
         CommentDTO commentDTO = (CommentDTO) o;
-        if (commentDTO.getId() == null || getId() == null) {
+        if(commentDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), commentDTO.getId());

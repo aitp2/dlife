@@ -1,8 +1,11 @@
 package com.aitp.dlife.service.dto;
 
+
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -15,9 +18,11 @@ public class PinfanPicsDTO implements Serializable {
     @Size(max = 255)
     private String ossPath;
 
-    private Instant createTime;
+    private String createTime;
 
     private Long pinFanActivityId;
+
+    private Long rateId;
 
     public Long getId() {
         return id;
@@ -35,11 +40,11 @@ public class PinfanPicsDTO implements Serializable {
         this.ossPath = ossPath;
     }
 
-    public Instant getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Instant createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -49,6 +54,14 @@ public class PinfanPicsDTO implements Serializable {
 
     public void setPinFanActivityId(Long pinFanActivityId) {
         this.pinFanActivityId = pinFanActivityId;
+    }
+
+    public Long getRateId() {
+        return rateId;
+    }
+
+    public void setRateId(Long ratesId) {
+        this.rateId = ratesId;
     }
 
     @Override
@@ -61,7 +74,7 @@ public class PinfanPicsDTO implements Serializable {
         }
 
         PinfanPicsDTO pinfanPicsDTO = (PinfanPicsDTO) o;
-        if (pinfanPicsDTO.getId() == null || getId() == null) {
+        if(pinfanPicsDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), pinfanPicsDTO.getId());
@@ -78,7 +91,6 @@ public class PinfanPicsDTO implements Serializable {
             "id=" + getId() +
             ", ossPath='" + getOssPath() + "'" +
             ", createTime='" + getCreateTime() + "'" +
-            ", pinFanActivity=" + getPinFanActivityId() +
             "}";
     }
 }
