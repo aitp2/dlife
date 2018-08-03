@@ -6,14 +6,16 @@ import com.aitp.dlife.service.dto.PinfanPicsDTO;
 import com.aitp.dlife.service.mapper.PinfanPicsMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-import java.util.Optional;
 /**
  * Service Implementation for managing PinfanPics.
  */
@@ -58,7 +60,6 @@ public class PinfanPicsService {
             .map(pinfanPicsMapper::toDto);
     }
 
-
     /**
      * Get one pinfanPics by id.
      *
@@ -66,10 +67,30 @@ public class PinfanPicsService {
      * @return the entity
      */
     @Transactional(readOnly = true)
-    public Optional<PinfanPicsDTO> findOne(Long id) {
+    public PinfanPicsDTO findOne(Long id) {
         log.debug("Request to get PinfanPics : {}", id);
-        return pinfanPicsRepository.findById(id)
-            .map(pinfanPicsMapper::toDto);
+        PinfanPics pinfanPics = pinfanPicsRepository.findOne(id);
+        return pinfanPicsMapper.toDto(pinfanPics);
+    }
+
+
+    /**
+     * Get  pinfanPics by activityId.
+     *
+     * @param activityId the id of the activityId
+     * @return the entity
+     */
+    @Transactional(readOnly = true)
+    public List<PinfanPicsDTO> findPicsByActivityId(Long activityId) {
+        log.debug("Request to get PinfanPics : {}", activityId);
+        List<PinfanPics> pinfanPics = pinfanPicsRepository.findByActivityId(activityId);
+        final List<PinfanPicsDTO> result = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(pinfanPics)){
+            for (PinfanPics pic: pinfanPics) {
+                result.add(pinfanPicsMapper.toDto(pic));
+            }
+        }
+        return result;
     }
 
     /**
@@ -79,6 +100,6 @@ public class PinfanPicsService {
      */
     public void delete(Long id) {
         log.debug("Request to delete PinfanPics : {}", id);
-        pinfanPicsRepository.deleteById(id);
+        pinfanPicsRepository.delete(id);
     }
 }

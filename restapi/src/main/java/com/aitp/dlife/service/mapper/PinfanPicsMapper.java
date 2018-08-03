@@ -8,13 +8,15 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity PinfanPics and its DTO PinfanPicsDTO.
  */
-@Mapper(componentModel = "spring", uses = {PinFanActivityMapper.class})
+@Mapper(componentModel = "spring", uses = {PinFanActivityMapper.class,InstantMapper.class})
 public interface PinfanPicsMapper extends EntityMapper<PinfanPicsDTO, PinfanPics> {
 
     @Mapping(source = "pinFanActivity.id", target = "pinFanActivityId")
+    @Mapping(target = "createTime",expression = "java(InstantMapper.toDateString(pinfanPics.getCreateTime()))")
     PinfanPicsDTO toDto(PinfanPics pinfanPics);
 
     @Mapping(source = "pinFanActivityId", target = "pinFanActivity")
+    @Mapping(target = "createTime",expression = "java(InstantMapper.fromString(pinfanPicsDTO.getCreateTime()))")
     PinfanPics toEntity(PinfanPicsDTO pinfanPicsDTO);
 
     default PinfanPics fromId(Long id) {
