@@ -124,7 +124,7 @@ public class RecipeService {
     @Transactional(readOnly = true)
     public RecipeDTO findOne(Long id) {
         log.debug("Request to get Recipe : {}", id);
-        Recipe recipe = recipeRepository.findOne(id);
+        Recipe recipe = recipeRepository.findById(id).get();
 
         if(recipe!=null){
             if(!Hibernate.isInitialized(recipe.getImages())){
@@ -146,7 +146,7 @@ public class RecipeService {
     @Transactional(readOnly = true)
     public RecipeDTO findOne(Long id, String currentUserId) {
         log.debug("Request to get Recipe : {}", id);
-        Recipe recipe = recipeRepository.findOne(id);
+        Recipe recipe = recipeRepository.findById(id).get();
 
         if(recipe!=null){
             if(!Hibernate.isInitialized(recipe.getImages())){
@@ -168,7 +168,7 @@ public class RecipeService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Recipe : {}", id);
-        recipeRepository.delete(id);
+        recipeRepository.deleteById(id);
     }
 
     /**

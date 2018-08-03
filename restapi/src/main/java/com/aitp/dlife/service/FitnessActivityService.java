@@ -76,7 +76,7 @@ public class FitnessActivityService {
     @Transactional(readOnly = true)
     public FitnessActivityDTO findOne(Long id) {
         log.debug("Request to get FitnessActivity : {}", id);
-        FitnessActivity fitnessActivity = fitnessActivityRepository.findOne(id);
+        FitnessActivity fitnessActivity = fitnessActivityRepository.findById(id).get();
         return fitnessActivityMapper.toDto(fitnessActivity);
     }
 
@@ -87,7 +87,7 @@ public class FitnessActivityService {
      */
     public void delete(Long id) {
         log.debug("Request to delete FitnessActivity : {}", id);
-        fitnessActivityRepository.delete(id);
+        fitnessActivityRepository.deleteById(id);
     }
 
 	public List<FitnessActivityDTO> getActivitiesByWechatUserId(String wechatUserId) {
@@ -116,9 +116,9 @@ public class FitnessActivityService {
 		default:
 			throw new CustomParameterizedException("not have the status "+state+" code.","status");
 		}
-		
+
 	}
-	
+
 	public void ActivityStatus(FitnessActivityDTO fitnessActivityDTO){
         Instant now = Instant.now();
         FitnessActivity fitnessActivity = fitnessActivityMapper.toEntity(fitnessActivityDTO);

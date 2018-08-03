@@ -69,7 +69,7 @@ public class PinfanPicsService {
     @Transactional(readOnly = true)
     public PinfanPicsDTO findOne(Long id) {
         log.debug("Request to get PinfanPics : {}", id);
-        PinfanPics pinfanPics = pinfanPicsRepository.findOne(id);
+        PinfanPics pinfanPics = pinfanPicsRepository.findById(id).get();
         return pinfanPicsMapper.toDto(pinfanPics);
     }
 
@@ -100,6 +100,6 @@ public class PinfanPicsService {
      */
     public void delete(Long id) {
         log.debug("Request to delete PinfanPics : {}", id);
-        pinfanPicsRepository.delete(id);
+        pinfanPicsRepository.deleteById(id);
     }
 }

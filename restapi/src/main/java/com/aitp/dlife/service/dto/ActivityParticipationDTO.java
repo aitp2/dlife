@@ -12,7 +12,7 @@ import java.util.Objects;
 public class ActivityParticipationDTO implements Serializable {
 
     /**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -26,7 +26,7 @@ public class ActivityParticipationDTO implements Serializable {
 
     @Size(max=128)
     private String activityTitle;
-    
+
     @Size(max = 1024)
     private String avatar;
 
@@ -34,6 +34,16 @@ public class ActivityParticipationDTO implements Serializable {
     private String project;
 
     private String participationTime;
+
+    private Integer totalParticipateDays;
+
+    private Integer totalClockinDays;
+
+    private Integer currentContinueDays;
+
+    private Integer longestContinueDays;
+
+    private String latestClockinTime;
 
     private Long activityId;
 
@@ -98,9 +108,46 @@ public class ActivityParticipationDTO implements Serializable {
         this.activityId = fitnessActivityId;
     }
 
+    public Integer getTotalParticipateDays() {
+        return totalParticipateDays;
+    }
 
-    
-    
+    public void setTotalParticipateDays(Integer totalParticipateDays) {
+        this.totalParticipateDays = totalParticipateDays;
+    }
+
+    public Integer getTotalClockinDays() {
+        return totalClockinDays;
+    }
+
+    public void setTotalClockinDays(Integer totalClockinDays) {
+        this.totalClockinDays = totalClockinDays;
+    }
+
+    public Integer getCurrentContinueDays() {
+        return currentContinueDays;
+    }
+
+    public void setCurrentContinueDays(Integer currentContinueDays) {
+        this.currentContinueDays = currentContinueDays;
+    }
+
+    public Integer getLongestContinueDays() {
+        return longestContinueDays;
+    }
+
+    public void setLongestContinueDays(Integer longestContinueDays) {
+        this.longestContinueDays = longestContinueDays;
+    }
+
+    public String getLatestClockinTime() {
+        return latestClockinTime;
+    }
+
+    public void setLatestClockinTime(String latestClockinTime) {
+        this.latestClockinTime = latestClockinTime;
+    }
+
     public String getActivityTitle() {
 		return activityTitle;
 	}
@@ -154,5 +201,5 @@ public class ActivityParticipationDTO implements Serializable {
 				+ clockinCount + ", attendStatus=" + attendStatus + "]";
 	}
 
- 
+
 }

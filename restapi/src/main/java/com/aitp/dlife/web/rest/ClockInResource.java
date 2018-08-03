@@ -124,7 +124,7 @@ public class ClockInResource {
                 sexString = "female";
             }
         }
-        ActivityParticipationDTO participationDTO = activityParticipationService.findOne(clockInDTO.getActivityParticipationId());
+        ActivityParticipationDTO participationDTO = activityParticipationService.findOne(clockInDTO.getActivityParticipationId()).get();
         FitnessActivityDTO dto = fitnessActivityService.findOne(participationDTO.getActivityId());
         log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit",dto.getId(),HttpUtil.baseEncoder(dto.getTitle()),"clock-in",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
         //log for markting end

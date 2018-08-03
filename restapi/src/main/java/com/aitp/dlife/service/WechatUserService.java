@@ -65,7 +65,7 @@ public class WechatUserService {
     @Transactional(readOnly = true)
     public WechatUserDTO findOne(Long id) {
         log.debug("Request to get WechatUser : {}", id);
-        WechatUser wechatUser = wechatUserRepository.findOne(id);
+        WechatUser wechatUser = wechatUserRepository.findById(id).get();
         return wechatUserMapper.toDto(wechatUser);
     }
 
@@ -76,9 +76,9 @@ public class WechatUserService {
      */
     public void delete(Long id) {
         log.debug("Request to delete WechatUser : {}", id);
-        wechatUserRepository.delete(id);
+        wechatUserRepository.deleteById(id);
     }
-    
+
     public WechatUserDTO findByOpenId(String openId) {
         log.debug("Request to findByOpenId : {}", openId);
         WechatUser wechatUser = wechatUserRepository.findByOpenId(openId);

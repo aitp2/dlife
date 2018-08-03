@@ -65,7 +65,7 @@ public class CommentPicService {
     @Transactional(readOnly = true)
     public CommentPicDTO findOne(Long id) {
         log.debug("Request to get CommentPic : {}", id);
-        CommentPic commentPic = commentPicRepository.findOne(id);
+        CommentPic commentPic = commentPicRepository.findById(id).get();
         return commentPicMapper.toDto(commentPic);
     }
 
@@ -76,6 +76,6 @@ public class CommentPicService {
      */
     public void delete(Long id) {
         log.debug("Request to delete CommentPic : {}", id);
-        commentPicRepository.delete(id);
+        commentPicRepository.deleteById(id);
     }
 }

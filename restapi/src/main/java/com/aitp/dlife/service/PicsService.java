@@ -70,7 +70,7 @@ public class PicsService {
     @Transactional(readOnly = true)
     public PicsDTO findOne(Long id) {
         log.debug("Request to get Pics : {}", id);
-        Pics pics = picsRepository.findOne(id);
+        Pics pics = picsRepository.findById(id).get();
         return picsMapper.toDto(pics);
     }
 
@@ -81,7 +81,7 @@ public class PicsService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Pics : {}", id);
-        picsRepository.delete(id);
+        picsRepository.deleteById(id);
     }
 
     /**

@@ -53,12 +53,12 @@ public class CommentService {
         log.debug("Request to save Comment : {}", commentDTO);
         if(CommentChannel.FIT.equals(commentDTO.getChannel()))
         {
-            FitnessActivity fitnessActivity = fitnessActivityRepository.findOne(commentDTO.getObjectId());
+            FitnessActivity fitnessActivity = fitnessActivityRepository.findById(commentDTO.getObjectId()).get();
             fitnessActivity.setCommentCount(fitnessActivity.getCommentCount() == null? 1 : fitnessActivity.getCommentCount() +1);
         }
         if(CommentChannel.PIN.equals(commentDTO.getChannel()))
         {
-            PinFanActivity pinFanActivity = pinFanActivityRepository.findOne(commentDTO.getObjectId());
+            PinFanActivity pinFanActivity = pinFanActivityRepository.findById(commentDTO.getObjectId()).get();
             pinFanActivity.setCommentCount(pinFanActivity.getCommentCount() == null? 1 : pinFanActivity.getCommentCount() + 1);
         }
         Comment comment = commentMapper.toEntity(commentDTO);
@@ -107,7 +107,7 @@ public class CommentService {
     @Transactional(readOnly = true)
     public CommentDTO findOne(Long id) {
         log.debug("Request to get Comment : {}", id);
-        Comment comment = commentRepository.findOne(id);
+        Comment comment = commentRepository.findById(id).get();
         return commentMapper.toDto(comment);
     }
 
@@ -118,6 +118,6 @@ public class CommentService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Comment : {}", id);
-        commentRepository.delete(id);
+        commentRepository.deleteById(id);
     }
 }

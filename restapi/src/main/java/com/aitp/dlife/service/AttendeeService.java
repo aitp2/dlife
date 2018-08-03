@@ -65,7 +65,7 @@ public class AttendeeService {
     @Transactional(readOnly = true)
     public AttendeeDTO findOne(Long id) {
         log.debug("Request to get Attendee : {}", id);
-        Attendee attendee = attendeeRepository.findOne(id);
+        Attendee attendee = attendeeRepository.findById(id).get();
         return attendeeMapper.toDto(attendee);
     }
 
@@ -76,6 +76,6 @@ public class AttendeeService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Attendee : {}", id);
-        attendeeRepository.delete(id);
+        attendeeRepository.deleteById(id);
     }
 }

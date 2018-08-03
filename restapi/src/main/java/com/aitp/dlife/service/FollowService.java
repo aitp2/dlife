@@ -66,7 +66,7 @@ public class FollowService {
     @Transactional(readOnly = true)
     public FollowDTO findOne(Long id) {
         log.debug("Request to get Follow : {}", id);
-        Follow follow = followRepository.findOne(id);
+        Follow follow = followRepository.findById(id).get();
         return followMapper.toDto(follow);
     }
 
@@ -77,9 +77,9 @@ public class FollowService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Follow : {}", id);
-        followRepository.delete(id);
+        followRepository.deleteById(id);
     }
-    
+
     /**
      * findAllByFollowUserId
      * @param pageable
@@ -88,9 +88,9 @@ public class FollowService {
      */
     public Page<FollowDTO> findAllByFollowUserId(Pageable pageable, String wechatUserId) {
     	return followRepository.findAllByFollowUserId(pageable,wechatUserId).map(followMapper::toDto);
-		
+
 	}
-    
+
     /**
      * findAllByFollowedUserId
      * @param pageable

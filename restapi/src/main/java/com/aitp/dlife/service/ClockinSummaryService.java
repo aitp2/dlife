@@ -70,7 +70,7 @@ public class ClockinSummaryService {
     @Transactional(readOnly = true)
     public ClockinSummaryDTO findOne(Long id) {
         log.debug("Request to get ClockinSummary : {}", id);
-        ClockinSummary clockinSummary = clockinSummaryRepository.findOne(id);
+        ClockinSummary clockinSummary = clockinSummaryRepository.findById(id).get();
         return clockinSummaryMapper.toDto(clockinSummary);
     }
 
@@ -81,12 +81,12 @@ public class ClockinSummaryService {
      */
     public void delete(Long id) {
         log.debug("Request to delete ClockinSummary : {}", id);
-        clockinSummaryRepository.delete(id);
+        clockinSummaryRepository.deleteById(id);
     }
-    
+
     /**
      * Get one clockinSummary by wechatUserId.
-     * 
+     *
      * @param wechatUserId
      * @return
      */

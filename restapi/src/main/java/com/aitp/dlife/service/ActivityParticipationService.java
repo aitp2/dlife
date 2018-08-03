@@ -15,6 +15,7 @@ import com.aitp.dlife.domain.ActivityParticipation;
 import com.aitp.dlife.repository.ActivityParticipationRepository;
 import com.aitp.dlife.service.dto.ActivityParticipationDTO;
 import com.aitp.dlife.service.mapper.ActivityParticipationMapper;
+import java.util.Optional;
 
 
 /**
@@ -64,14 +65,14 @@ public class ActivityParticipationService {
             .map(activityParticipationMapper::toDto);
     }
 
-    
+
     public List<ActivityParticipationDTO> findTodayClockActivityParticipation(List<Long> ids,String date,Long isClock){
     if(isClock.equals(1L)){
     	return activityParticipationRepository.findClockParticipation(ids, date+" 00:00:00", date+" 23:59:59").stream().map(activityParticipationMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }else{
     	return activityParticipationRepository.findNonClockParticipation(ids, date+" 00:00:00", date+" 23:59:59").stream().map(activityParticipationMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
-    	
+
     }
     /**
      * Get one activityParticipation by id.
@@ -80,14 +81,14 @@ public class ActivityParticipationService {
      * @return the entity
      */
     @Transactional(readOnly = true)
-    public ActivityParticipationDTO findOne(Long id) {
+    public Optional<ActivityParticipationDTO> findOne(Long id) {
         log.debug("Request to get ActivityParticipation : {}", id);
-        ActivityParticipation activityParticipation = activityParticipationRepository.findOne(id);
-        return activityParticipationMapper.toDto(activityParticipation);
+        return activityParticipationRepository.findById(id)
+            .map(activityParticipationMapper::toDto);
     }
 
-   
-    
+
+
     /**
      * Delete the activityParticipation by id.
      *
@@ -98,7 +99,7 @@ public class ActivityParticipationService {
 
         // before we remove the repository, we need to remove the related ClockIn data
         clockInService.deleteByActivityParticipationId(id);
-        activityParticipationRepository.delete(id);
+        activityParticipationRepository.deleteById(id);
     }
 
 	public List<ActivityParticipationDTO> findByActivity(Long activityId) {

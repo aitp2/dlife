@@ -76,7 +76,7 @@ public class ClockInService {
     @Transactional(readOnly = true)
     public ClockInDTO findOne(Long id) {
         log.debug("Request to get ClockIn : {}", id);
-        ClockIn clockIn = clockInRepository.findOne(id);
+        ClockIn clockIn = clockInRepository.findById(id).get();
         return clockInMapper.toDto(clockIn);
     }
 
@@ -87,7 +87,7 @@ public class ClockInService {
      */
     public void delete(Long id) {
         log.debug("Request to delete ClockIn : {}", id);
-        clockInRepository.delete(id);
+        clockInRepository.deleteById(id);
     }
 
     /**

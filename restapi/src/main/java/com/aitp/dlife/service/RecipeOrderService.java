@@ -76,7 +76,7 @@ public class RecipeOrderService {
     @Transactional(readOnly = true)
     public RecipeOrderDTO findOne(Long id) {
         log.debug("Request to get RecipeOrder : {}", id);
-        RecipeOrder recipeOrder = recipeOrderRepository.findOne(id);
+        RecipeOrder recipeOrder = recipeOrderRepository.findById(id).get();
         return recipeOrderMapper.toDto(recipeOrder);
     }
 
@@ -87,7 +87,7 @@ public class RecipeOrderService {
      */
     public void delete(Long id) {
         log.debug("Request to delete RecipeOrder : {}", id);
-        recipeOrderRepository.delete(id);
+        recipeOrderRepository.deleteById(id);
     }
 
     /**
@@ -99,7 +99,7 @@ public class RecipeOrderService {
     public Page<RecipeOrderDTO> findAllByWechatUserId(Pageable pageable,String wechatUserId) {
     	Page<RecipeOrderDTO> page_return = recipeOrderRepository.findAllByWechatUserId(pageable,wechatUserId).map(recipeOrderMapper::toDto);
     	for(RecipeOrderDTO recipeOrderDTO:page_return.getContent()) {
-    		Recipe recipe = recipeRepository.findOne(recipeOrderDTO.getRecipeId());
+    		Recipe recipe = recipeRepository.findById(recipeOrderDTO.getRecipeId()).get();
 //    		List<Image> listimage = imageRepository.findByRecipeId(recipeOrderDTO.getRecipeId());
 //    		if(listimage.size() > 0) {
 //    			recipeOrderDTO.setImageURL(listimage.get(0).getOssPath());

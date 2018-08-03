@@ -63,7 +63,7 @@ public class ActivityParticipationResource {
 
 	private final FitnessActivityRepository fitnessActivityRepository;
 
-	
+
 	private final WechatUserService wechatUserService;
 
 	private final FitnessActivityService fitnessActivityService;
@@ -99,7 +99,7 @@ public class ActivityParticipationResource {
 		}
 		activityParticipationDTO.setParticipationTime(DateUtil.getYMDDateString(new Date()));
 
-		FitnessActivity fitnessActivity = fitnessActivityRepository.findOne(activityParticipationDTO.getActivityId());
+		FitnessActivity fitnessActivity = fitnessActivityRepository.findById(activityParticipationDTO.getActivityId()).get();
 		fitnessActivity.setModifyTime(Instant.now());
 		fitnessActivityRepository.save(fitnessActivity);
 
@@ -171,7 +171,7 @@ public class ActivityParticipationResource {
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}
 
-	
+
 
 	/**
 	 * GET /activity-participations : get all the activityParticipations.
@@ -199,9 +199,9 @@ public class ActivityParticipationResource {
 		List<ActivityParticipationDTO> nonclockActivityParticipationDTOa = activityParticipationDTOs.stream().filter(i-> nonclockActivityParticipationDTO.contains(i)).collect(Collectors.toList());
 		return nonclockActivityParticipationDTOa;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * GET /activity-participations/:id : get the "id" activityParticipation.
 	 *
@@ -214,11 +214,11 @@ public class ActivityParticipationResource {
 	@Timed
 	public ResponseEntity<ActivityParticipationDTO> getActivityParticipation(@PathVariable Long id) {
 		log.debug("REST request to get ActivityParticipation : {}", id);
-		ActivityParticipationDTO activityParticipationDTO = activityParticipationService.findOne(id);
-		return ResponseUtil.wrapOrNotFound(Optional.ofNullable(activityParticipationDTO));
+        Optional<ActivityParticipationDTO> activityParticipationDTO = activityParticipationService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(activityParticipationDTO);
 	}
 
-	
+
 
 	/**
 	 * DELETE /activity-participations/:id : delete the "id"
@@ -251,7 +251,7 @@ public class ActivityParticipationResource {
 	}
 
 
-	
+
 	@GetMapping("/activity-participations/{wechatUserId}/{activityId}")
 	@Timed
 	public ResponseEntity<ActivityParticipationDTO> getSignUpInfo(@PathVariable String wechatUserId,

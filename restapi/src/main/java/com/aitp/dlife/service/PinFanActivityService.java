@@ -130,7 +130,7 @@ public class PinFanActivityService {
     @Transactional(readOnly = true)
     public PinFanActivityDTO findOne(Long id) {
         log.debug("Request to get PinFanActivity : {}", id);
-        PinFanActivity pinFanActivity = pinFanActivityRepository.findOne(id);
+        PinFanActivity pinFanActivity = pinFanActivityRepository.findById(id).get();
         if(pinFanActivity.getAppointEndDatetime() != null &&
             (new Date().toInstant()).compareTo(pinFanActivity.getAppointEndDatetime()) >= 0
             &&0==pinFanActivity.getStatus()){
@@ -159,7 +159,7 @@ public class PinFanActivityService {
      */
     public void delete(Long id) {
         log.debug("Request to delete PinFanActivity : {}", id);
-        pinFanActivityRepository.delete(id);
+        pinFanActivityRepository.deleteById(id);
     }
 
     public List<PinFanActivityDTO> getPinFanActivityForTomorrow(){
