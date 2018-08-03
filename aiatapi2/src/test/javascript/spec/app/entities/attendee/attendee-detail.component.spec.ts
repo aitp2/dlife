@@ -1,51 +1,40 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 import { AitpapiTestModule } from '../../../test.module';
-import { AttendeeDetailComponent } from '../../../../../../main/webapp/app/entities/attendee/attendee-detail.component';
-import { AttendeeService } from '../../../../../../main/webapp/app/entities/attendee/attendee.service';
-import { Attendee } from '../../../../../../main/webapp/app/entities/attendee/attendee.model';
+import { AttendeeDetailComponent } from 'app/entities/attendee/attendee-detail.component';
+import { Attendee } from 'app/shared/model/attendee.model';
 
 describe('Component Tests', () => {
-
     describe('Attendee Management Detail Component', () => {
         let comp: AttendeeDetailComponent;
         let fixture: ComponentFixture<AttendeeDetailComponent>;
-        let service: AttendeeService;
+        const route = ({ data: of({ attendee: new Attendee(123) }) } as any) as ActivatedRoute;
 
-        beforeEach(async(() => {
+        beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [AitpapiTestModule],
                 declarations: [AttendeeDetailComponent],
-                providers: [
-                    AttendeeService
-                ]
+                providers: [{ provide: ActivatedRoute, useValue: route }]
             })
-            .overrideTemplate(AttendeeDetailComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
+                .overrideTemplate(AttendeeDetailComponent, '')
+                .compileComponents();
             fixture = TestBed.createComponent(AttendeeDetailComponent);
             comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(AttendeeService);
         });
 
         describe('OnInit', () => {
             it('Should call load all on init', () => {
                 // GIVEN
 
-                spyOn(service, 'find').and.returnValue(Observable.of(new Attendee(123)));
-
                 // WHEN
                 comp.ngOnInit();
 
                 // THEN
-                expect(service.find).toHaveBeenCalledWith(123);
-                expect(comp.attendee).toEqual(jasmine.objectContaining({id: 123}));
+                expect(comp.attendee).toEqual(jasmine.objectContaining({ id: 123 }));
             });
         });
     });
-
 });

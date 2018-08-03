@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { Follow } from './follow.model';
-import { FollowPopupService } from './follow-popup.service';
+import { IFollow } from 'app/shared/model/follow.model';
 import { FollowService } from './follow.service';
 
 @Component({
@@ -13,22 +12,16 @@ import { FollowService } from './follow.service';
     templateUrl: './follow-delete-dialog.component.html'
 })
 export class FollowDeleteDialogComponent {
+    follow: IFollow;
 
-    follow: Follow;
-
-    constructor(
-        private followService: FollowService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+    constructor(private followService: FollowService, public activeModal: NgbActiveModal, private eventManager: JhiEventManager) {}
 
     clear() {
         this.activeModal.dismiss('cancel');
     }
 
     confirmDelete(id: number) {
-        this.followService.delete(id).subscribe((response) => {
+        this.followService.delete(id).subscribe(response => {
             this.eventManager.broadcast({
                 name: 'followListModification',
                 content: 'Deleted an follow'
@@ -43,22 +36,30 @@ export class FollowDeleteDialogComponent {
     template: ''
 })
 export class FollowDeletePopupComponent implements OnInit, OnDestroy {
+    private ngbModalRef: NgbModalRef;
 
-    routeSub: any;
-
-    constructor(
-        private route: ActivatedRoute,
-        private followPopupService: FollowPopupService
-    ) {}
+    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.followPopupService
-                .open(FollowDeleteDialogComponent as Component, params['id']);
+        this.activatedRoute.data.subscribe(({ follow }) => {
+            setTimeout(() => {
+                this.ngbModalRef = this.modalService.open(FollowDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+                this.ngbModalRef.componentInstance.follow = follow;
+                this.ngbModalRef.result.then(
+                    result => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    },
+                    reason => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    }
+                );
+            }, 0);
         });
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        this.ngbModalRef = null;
     }
 }

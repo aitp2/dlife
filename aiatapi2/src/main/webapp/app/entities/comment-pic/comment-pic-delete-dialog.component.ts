@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { CommentPic } from './comment-pic.model';
-import { CommentPicPopupService } from './comment-pic-popup.service';
+import { ICommentPic } from 'app/shared/model/comment-pic.model';
 import { CommentPicService } from './comment-pic.service';
 
 @Component({
@@ -13,22 +12,16 @@ import { CommentPicService } from './comment-pic.service';
     templateUrl: './comment-pic-delete-dialog.component.html'
 })
 export class CommentPicDeleteDialogComponent {
+    commentPic: ICommentPic;
 
-    commentPic: CommentPic;
-
-    constructor(
-        private commentPicService: CommentPicService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+    constructor(private commentPicService: CommentPicService, public activeModal: NgbActiveModal, private eventManager: JhiEventManager) {}
 
     clear() {
         this.activeModal.dismiss('cancel');
     }
 
     confirmDelete(id: number) {
-        this.commentPicService.delete(id).subscribe((response) => {
+        this.commentPicService.delete(id).subscribe(response => {
             this.eventManager.broadcast({
                 name: 'commentPicListModification',
                 content: 'Deleted an commentPic'
@@ -43,22 +36,30 @@ export class CommentPicDeleteDialogComponent {
     template: ''
 })
 export class CommentPicDeletePopupComponent implements OnInit, OnDestroy {
+    private ngbModalRef: NgbModalRef;
 
-    routeSub: any;
-
-    constructor(
-        private route: ActivatedRoute,
-        private commentPicPopupService: CommentPicPopupService
-    ) {}
+    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.commentPicPopupService
-                .open(CommentPicDeleteDialogComponent as Component, params['id']);
+        this.activatedRoute.data.subscribe(({ commentPic }) => {
+            setTimeout(() => {
+                this.ngbModalRef = this.modalService.open(CommentPicDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+                this.ngbModalRef.componentInstance.commentPic = commentPic;
+                this.ngbModalRef.result.then(
+                    result => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    },
+                    reason => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    }
+                );
+            }, 0);
         });
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        this.ngbModalRef = null;
     }
 }

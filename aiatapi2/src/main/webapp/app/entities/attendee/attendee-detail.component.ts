@@ -1,53 +1,24 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager } from 'ng-jhipster';
 
-import { Attendee } from './attendee.model';
-import { AttendeeService } from './attendee.service';
+import { IAttendee } from 'app/shared/model/attendee.model';
 
 @Component({
     selector: 'jhi-attendee-detail',
     templateUrl: './attendee-detail.component.html'
 })
-export class AttendeeDetailComponent implements OnInit, OnDestroy {
+export class AttendeeDetailComponent implements OnInit {
+    attendee: IAttendee;
 
-    attendee: Attendee;
-    private subscription: Subscription;
-    private eventSubscriber: Subscription;
-
-    constructor(
-        private eventManager: JhiEventManager,
-        private attendeeService: AttendeeService,
-        private route: ActivatedRoute
-    ) {
-    }
+    constructor(private activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe((params) => {
-            this.load(params['id']);
-        });
-        this.registerChangeInAttendees();
-    }
-
-    load(id) {
-        this.attendeeService.find(id).subscribe((attendee) => {
+        this.activatedRoute.data.subscribe(({ attendee }) => {
             this.attendee = attendee;
         });
     }
+
     previousState() {
         window.history.back();
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.eventManager.destroy(this.eventSubscriber);
-    }
-
-    registerChangeInAttendees() {
-        this.eventSubscriber = this.eventManager.subscribe(
-            'attendeeListModification',
-            (response) => this.load(this.attendee.id)
-        );
     }
 }

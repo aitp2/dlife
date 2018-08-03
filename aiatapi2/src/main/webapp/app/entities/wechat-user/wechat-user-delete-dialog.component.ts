@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { WechatUser } from './wechat-user.model';
-import { WechatUserPopupService } from './wechat-user-popup.service';
+import { IWechatUser } from 'app/shared/model/wechat-user.model';
 import { WechatUserService } from './wechat-user.service';
 
 @Component({
@@ -13,22 +12,16 @@ import { WechatUserService } from './wechat-user.service';
     templateUrl: './wechat-user-delete-dialog.component.html'
 })
 export class WechatUserDeleteDialogComponent {
+    wechatUser: IWechatUser;
 
-    wechatUser: WechatUser;
-
-    constructor(
-        private wechatUserService: WechatUserService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+    constructor(private wechatUserService: WechatUserService, public activeModal: NgbActiveModal, private eventManager: JhiEventManager) {}
 
     clear() {
         this.activeModal.dismiss('cancel');
     }
 
     confirmDelete(id: number) {
-        this.wechatUserService.delete(id).subscribe((response) => {
+        this.wechatUserService.delete(id).subscribe(response => {
             this.eventManager.broadcast({
                 name: 'wechatUserListModification',
                 content: 'Deleted an wechatUser'
@@ -43,22 +36,30 @@ export class WechatUserDeleteDialogComponent {
     template: ''
 })
 export class WechatUserDeletePopupComponent implements OnInit, OnDestroy {
+    private ngbModalRef: NgbModalRef;
 
-    routeSub: any;
-
-    constructor(
-        private route: ActivatedRoute,
-        private wechatUserPopupService: WechatUserPopupService
-    ) {}
+    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.wechatUserPopupService
-                .open(WechatUserDeleteDialogComponent as Component, params['id']);
+        this.activatedRoute.data.subscribe(({ wechatUser }) => {
+            setTimeout(() => {
+                this.ngbModalRef = this.modalService.open(WechatUserDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+                this.ngbModalRef.componentInstance.wechatUser = wechatUser;
+                this.ngbModalRef.result.then(
+                    result => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    },
+                    reason => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    }
+                );
+            }, 0);
         });
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        this.ngbModalRef = null;
     }
 }

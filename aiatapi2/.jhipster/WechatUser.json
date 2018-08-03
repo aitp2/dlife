@@ -1,6 +1,5 @@
 {
-    "fluentMethods": true,
-    "relationships": [],
+    "name": "WechatUser",
     "fields": [
         {
             "fieldName": "openId",
@@ -86,8 +85,12 @@
         },
         {
             "fieldName": "sex",
-            "javadoc": "性别",
-            "fieldType": "Boolean"
+            "javadoc": "性别\n值为1时是男性，值为2时是女性，值为0时是未知",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "max"
+            ],
+            "fieldValidateRulesMax": 2
         },
         {
             "fieldName": "companyRole",
@@ -100,8 +103,12 @@
         },
         {
             "fieldName": "cookFlag",
-            "javadoc": "厨师标志",
-            "fieldType": "Boolean"
+            "javadoc": "厨师标志\n值为1时是厨师，值为0时不是厨师",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "max"
+            ],
+            "fieldValidateRulesMax": 2
         },
         {
             "fieldName": "intesting",
@@ -132,11 +139,15 @@
             "fieldType": "Instant"
         }
     ],
-    "changelogDate": "20180704083407",
+    "relationships": [],
+    "changelogDate": "20180802115448",
     "javadoc": "用户信息",
     "entityTableName": "wechat_user",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
-    "jpaMetamodelFiltering": false
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

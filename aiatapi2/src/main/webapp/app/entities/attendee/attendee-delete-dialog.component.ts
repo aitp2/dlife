@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { Attendee } from './attendee.model';
-import { AttendeePopupService } from './attendee-popup.service';
+import { IAttendee } from 'app/shared/model/attendee.model';
 import { AttendeeService } from './attendee.service';
 
 @Component({
@@ -13,22 +12,16 @@ import { AttendeeService } from './attendee.service';
     templateUrl: './attendee-delete-dialog.component.html'
 })
 export class AttendeeDeleteDialogComponent {
+    attendee: IAttendee;
 
-    attendee: Attendee;
-
-    constructor(
-        private attendeeService: AttendeeService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+    constructor(private attendeeService: AttendeeService, public activeModal: NgbActiveModal, private eventManager: JhiEventManager) {}
 
     clear() {
         this.activeModal.dismiss('cancel');
     }
 
     confirmDelete(id: number) {
-        this.attendeeService.delete(id).subscribe((response) => {
+        this.attendeeService.delete(id).subscribe(response => {
             this.eventManager.broadcast({
                 name: 'attendeeListModification',
                 content: 'Deleted an attendee'
@@ -43,22 +36,30 @@ export class AttendeeDeleteDialogComponent {
     template: ''
 })
 export class AttendeeDeletePopupComponent implements OnInit, OnDestroy {
+    private ngbModalRef: NgbModalRef;
 
-    routeSub: any;
-
-    constructor(
-        private route: ActivatedRoute,
-        private attendeePopupService: AttendeePopupService
-    ) {}
+    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.attendeePopupService
-                .open(AttendeeDeleteDialogComponent as Component, params['id']);
+        this.activatedRoute.data.subscribe(({ attendee }) => {
+            setTimeout(() => {
+                this.ngbModalRef = this.modalService.open(AttendeeDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+                this.ngbModalRef.componentInstance.attendee = attendee;
+                this.ngbModalRef.result.then(
+                    result => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    },
+                    reason => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    }
+                );
+            }, 0);
         });
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        this.ngbModalRef = null;
     }
 }

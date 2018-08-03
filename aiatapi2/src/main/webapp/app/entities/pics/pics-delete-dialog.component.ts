@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { Pics } from './pics.model';
-import { PicsPopupService } from './pics-popup.service';
+import { IPics } from 'app/shared/model/pics.model';
 import { PicsService } from './pics.service';
 
 @Component({
@@ -13,22 +12,16 @@ import { PicsService } from './pics.service';
     templateUrl: './pics-delete-dialog.component.html'
 })
 export class PicsDeleteDialogComponent {
+    pics: IPics;
 
-    pics: Pics;
-
-    constructor(
-        private picsService: PicsService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+    constructor(private picsService: PicsService, public activeModal: NgbActiveModal, private eventManager: JhiEventManager) {}
 
     clear() {
         this.activeModal.dismiss('cancel');
     }
 
     confirmDelete(id: number) {
-        this.picsService.delete(id).subscribe((response) => {
+        this.picsService.delete(id).subscribe(response => {
             this.eventManager.broadcast({
                 name: 'picsListModification',
                 content: 'Deleted an pics'
@@ -43,22 +36,30 @@ export class PicsDeleteDialogComponent {
     template: ''
 })
 export class PicsDeletePopupComponent implements OnInit, OnDestroy {
+    private ngbModalRef: NgbModalRef;
 
-    routeSub: any;
-
-    constructor(
-        private route: ActivatedRoute,
-        private picsPopupService: PicsPopupService
-    ) {}
+    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.picsPopupService
-                .open(PicsDeleteDialogComponent as Component, params['id']);
+        this.activatedRoute.data.subscribe(({ pics }) => {
+            setTimeout(() => {
+                this.ngbModalRef = this.modalService.open(PicsDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+                this.ngbModalRef.componentInstance.pics = pics;
+                this.ngbModalRef.result.then(
+                    result => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    },
+                    reason => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    }
+                );
+            }, 0);
         });
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        this.ngbModalRef = null;
     }
 }

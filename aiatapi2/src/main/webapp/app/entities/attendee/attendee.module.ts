@@ -1,51 +1,29 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AitpapiSharedModule } from '../../shared';
+import { AitpapiSharedModule } from 'app/shared';
 import {
-    AttendeeService,
-    AttendeePopupService,
     AttendeeComponent,
     AttendeeDetailComponent,
-    AttendeeDialogComponent,
-    AttendeePopupComponent,
+    AttendeeUpdateComponent,
     AttendeeDeletePopupComponent,
     AttendeeDeleteDialogComponent,
     attendeeRoute,
-    attendeePopupRoute,
-    AttendeeResolvePagingParams,
+    attendeePopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...attendeeRoute,
-    ...attendeePopupRoute,
-];
+const ENTITY_STATES = [...attendeeRoute, ...attendeePopupRoute];
 
 @NgModule({
-    imports: [
-        AitpapiSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
+    imports: [AitpapiSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [
         AttendeeComponent,
         AttendeeDetailComponent,
-        AttendeeDialogComponent,
+        AttendeeUpdateComponent,
         AttendeeDeleteDialogComponent,
-        AttendeePopupComponent,
-        AttendeeDeletePopupComponent,
+        AttendeeDeletePopupComponent
     ],
-    entryComponents: [
-        AttendeeComponent,
-        AttendeeDialogComponent,
-        AttendeePopupComponent,
-        AttendeeDeleteDialogComponent,
-        AttendeeDeletePopupComponent,
-    ],
-    providers: [
-        AttendeeService,
-        AttendeePopupService,
-        AttendeeResolvePagingParams,
-    ],
+    entryComponents: [AttendeeComponent, AttendeeUpdateComponent, AttendeeDeleteDialogComponent, AttendeeDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AitpapiAttendeeModule {}

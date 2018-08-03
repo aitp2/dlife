@@ -1,5 +1,6 @@
 package com.aitp.dlife.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -36,6 +37,7 @@ public class PinfanPics implements Serializable {
     private Instant createTime;
 
     @ManyToOne
+    @JsonIgnoreProperties("pinfanPics")
     private PinFanActivity pinFanActivity;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

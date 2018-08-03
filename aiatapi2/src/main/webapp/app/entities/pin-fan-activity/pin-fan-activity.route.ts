@@ -15,81 +15,81 @@ import { IPinFanActivity } from 'app/shared/model/pin-fan-activity.model';
 
 @Injectable({ providedIn: 'root' })
 export class PinFanActivityResolve implements Resolve<IPinFanActivity> {
-  constructor(private service: PinFanActivityService) {}
+    constructor(private service: PinFanActivityService) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const id = route.params['id'] ? route.params['id'] : null;
-    if (id) {
-      return this.service.find(id).pipe(map((pinFanActivity: HttpResponse<PinFanActivity>) => pinFanActivity.body));
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        const id = route.params['id'] ? route.params['id'] : null;
+        if (id) {
+            return this.service.find(id).pipe(map((pinFanActivity: HttpResponse<PinFanActivity>) => pinFanActivity.body));
+        }
+        return of(new PinFanActivity());
     }
-    return of(new PinFanActivity());
-  }
 }
 
 export const pinFanActivityRoute: Routes = [
-  {
-    path: 'pin-fan-activity',
-    component: PinFanActivityComponent,
-    resolve: {
-      pagingParams: JhiResolvePagingParams
+    {
+        path: 'pin-fan-activity',
+        component: PinFanActivityComponent,
+        resolve: {
+            pagingParams: JhiResolvePagingParams
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            defaultSort: 'id,asc',
+            pageTitle: 'PinFanActivities'
+        },
+        canActivate: [UserRouteAccessService]
     },
-    data: {
-      authorities: ['ROLE_USER'],
-      defaultSort: 'id,asc',
-      pageTitle: 'PinFanActivities'
+    {
+        path: 'pin-fan-activity/:id/view',
+        component: PinFanActivityDetailComponent,
+        resolve: {
+            pinFanActivity: PinFanActivityResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'PinFanActivities'
+        },
+        canActivate: [UserRouteAccessService]
     },
-    canActivate: [UserRouteAccessService]
-  },
-  {
-    path: 'pin-fan-activity/:id/view',
-    component: PinFanActivityDetailComponent,
-    resolve: {
-      pinFanActivity: PinFanActivityResolve
+    {
+        path: 'pin-fan-activity/new',
+        component: PinFanActivityUpdateComponent,
+        resolve: {
+            pinFanActivity: PinFanActivityResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'PinFanActivities'
+        },
+        canActivate: [UserRouteAccessService]
     },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'PinFanActivities'
-    },
-    canActivate: [UserRouteAccessService]
-  },
-  {
-    path: 'pin-fan-activity/new',
-    component: PinFanActivityUpdateComponent,
-    resolve: {
-      pinFanActivity: PinFanActivityResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'PinFanActivities'
-    },
-    canActivate: [UserRouteAccessService]
-  },
-  {
-    path: 'pin-fan-activity/:id/edit',
-    component: PinFanActivityUpdateComponent,
-    resolve: {
-      pinFanActivity: PinFanActivityResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'PinFanActivities'
-    },
-    canActivate: [UserRouteAccessService]
-  }
+    {
+        path: 'pin-fan-activity/:id/edit',
+        component: PinFanActivityUpdateComponent,
+        resolve: {
+            pinFanActivity: PinFanActivityResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'PinFanActivities'
+        },
+        canActivate: [UserRouteAccessService]
+    }
 ];
 
 export const pinFanActivityPopupRoute: Routes = [
-  {
-    path: 'pin-fan-activity/:id/delete',
-    component: PinFanActivityDeletePopupComponent,
-    resolve: {
-      pinFanActivity: PinFanActivityResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'PinFanActivities'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  }
+    {
+        path: 'pin-fan-activity/:id/delete',
+        component: PinFanActivityDeletePopupComponent,
+        resolve: {
+            pinFanActivity: PinFanActivityResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'PinFanActivities'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    }
 ];

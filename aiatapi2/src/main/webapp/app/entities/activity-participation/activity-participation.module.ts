@@ -1,50 +1,33 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AitpapiSharedModule } from '../../shared';
+import { AitpapiSharedModule } from 'app/shared';
 import {
-    ActivityParticipationService,
-    ActivityParticipationPopupService,
     ActivityParticipationComponent,
     ActivityParticipationDetailComponent,
-    ActivityParticipationDialogComponent,
-    ActivityParticipationPopupComponent,
+    ActivityParticipationUpdateComponent,
     ActivityParticipationDeletePopupComponent,
     ActivityParticipationDeleteDialogComponent,
     activityParticipationRoute,
-    activityParticipationPopupRoute,
-    ActivityParticipationResolvePagingParams,
+    activityParticipationPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...activityParticipationRoute,
-    ...activityParticipationPopupRoute,
-];
+const ENTITY_STATES = [...activityParticipationRoute, ...activityParticipationPopupRoute];
 
 @NgModule({
-    imports: [
-        AitpapiSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
+    imports: [AitpapiSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [
         ActivityParticipationComponent,
         ActivityParticipationDetailComponent,
-        ActivityParticipationDialogComponent,
+        ActivityParticipationUpdateComponent,
         ActivityParticipationDeleteDialogComponent,
-        ActivityParticipationPopupComponent,
-        ActivityParticipationDeletePopupComponent,
+        ActivityParticipationDeletePopupComponent
     ],
     entryComponents: [
         ActivityParticipationComponent,
-        ActivityParticipationDialogComponent,
-        ActivityParticipationPopupComponent,
+        ActivityParticipationUpdateComponent,
         ActivityParticipationDeleteDialogComponent,
-        ActivityParticipationDeletePopupComponent,
-    ],
-    providers: [
-        ActivityParticipationService,
-        ActivityParticipationPopupService,
-        ActivityParticipationResolvePagingParams,
+        ActivityParticipationDeletePopupComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

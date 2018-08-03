@@ -1,51 +1,29 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AitpapiSharedModule } from '../../shared';
+import { AitpapiSharedModule } from 'app/shared';
 import {
-    WechatUserService,
-    WechatUserPopupService,
     WechatUserComponent,
     WechatUserDetailComponent,
-    WechatUserDialogComponent,
-    WechatUserPopupComponent,
+    WechatUserUpdateComponent,
     WechatUserDeletePopupComponent,
     WechatUserDeleteDialogComponent,
     wechatUserRoute,
-    wechatUserPopupRoute,
-    WechatUserResolvePagingParams,
+    wechatUserPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...wechatUserRoute,
-    ...wechatUserPopupRoute,
-];
+const ENTITY_STATES = [...wechatUserRoute, ...wechatUserPopupRoute];
 
 @NgModule({
-    imports: [
-        AitpapiSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
+    imports: [AitpapiSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [
         WechatUserComponent,
         WechatUserDetailComponent,
-        WechatUserDialogComponent,
+        WechatUserUpdateComponent,
         WechatUserDeleteDialogComponent,
-        WechatUserPopupComponent,
-        WechatUserDeletePopupComponent,
+        WechatUserDeletePopupComponent
     ],
-    entryComponents: [
-        WechatUserComponent,
-        WechatUserDialogComponent,
-        WechatUserPopupComponent,
-        WechatUserDeleteDialogComponent,
-        WechatUserDeletePopupComponent,
-    ],
-    providers: [
-        WechatUserService,
-        WechatUserPopupService,
-        WechatUserResolvePagingParams,
-    ],
+    entryComponents: [WechatUserComponent, WechatUserUpdateComponent, WechatUserDeleteDialogComponent, WechatUserDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AitpapiWechatUserModule {}

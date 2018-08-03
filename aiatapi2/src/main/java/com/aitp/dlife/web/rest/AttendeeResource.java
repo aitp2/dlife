@@ -1,11 +1,5 @@
 package com.aitp.dlife.web.rest;
 
-import com.aitp.dlife.service.PinFanActivityService;
-import com.aitp.dlife.service.WechatUserService;
-import com.aitp.dlife.service.dto.PinFanActivityDTO;
-import com.aitp.dlife.service.dto.WechatUserDTO;
-import com.aitp.dlife.web.rest.util.DateUtil;
-import com.aitp.dlife.web.rest.util.HttpUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.AttendeeService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -13,7 +7,6 @@ import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import com.aitp.dlife.service.dto.AttendeeDTO;
 import io.github.jhipster.web.util.ResponseUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -27,7 +20,6 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,13 +35,9 @@ public class AttendeeResource {
     private static final String ENTITY_NAME = "attendee";
 
     private final AttendeeService attendeeService;
-    private final PinFanActivityService pinFanActivityService;
-    private final WechatUserService wechatUserService;
 
-    public AttendeeResource(AttendeeService attendeeService,PinFanActivityService pinFanActivityService,WechatUserService wechatUserService) {
+    public AttendeeResource(AttendeeService attendeeService) {
         this.attendeeService = attendeeService;
-        this.pinFanActivityService=pinFanActivityService;
-        this.wechatUserService=wechatUserService;
     }
 
     /**
@@ -61,36 +49,15 @@ public class AttendeeResource {
      */
     @PostMapping("/attendees")
     @Timed
-    public ResponseEntity createAttendee(@Valid @RequestBody AttendeeDTO attendeeDTO) throws URISyntaxException {
+    public ResponseEntity<AttendeeDTO> createAttendee(@Valid @RequestBody AttendeeDTO attendeeDTO) throws URISyntaxException {
         log.debug("REST request to save Attendee : {}", attendeeDTO);
         if (attendeeDTO.getId() != null) {
             throw new BadRequestAlertException("A new attendee cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        if(StringUtils.isEmpty(attendeeDTO.getParticipationTime())){
-            attendeeDTO.setParticipationTime(DateUtil.getYMDDateString(new Date()));
-        }
-        PinFanActivityDTO activityDTO = pinFanActivityService.findOne(attendeeDTO.getPinFanActivityId());
-        if(activityDTO.getAttendees()!=null && activityDTO.getUpperLimit() != null && activityDTO.getAttendees().size()>=activityDTO.getUpperLimit()){
-            throw new BadRequestAlertException("活动人数已达上限", ENTITY_NAME, "活动人数已达上限");
-        }
         AttendeeDTO result = attendeeService.save(attendeeDTO);
-
-        //log for markting start
-        WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(attendeeDTO.getWechatUserId()));
-        String sexString="";
-        if (null!=wechatUserDTO && null!=wechatUserDTO.isSex()){
-            boolean sex = wechatUserDTO.isSex();
-            if (sex) {
-                sexString = "male";
-            }else{
-                sexString = "female";
-            }
-        }
-        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan",activityDTO.getId(),HttpUtil.baseEncoder(activityDTO.getActivitiyTile()),"attend",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
-        //log for markting end
-
-
-        return ResponseEntity.ok().body(result);
+        return ResponseEntity.created(new URI("/api/attendees/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -107,7 +74,7 @@ public class AttendeeResource {
     public ResponseEntity<AttendeeDTO> updateAttendee(@Valid @RequestBody AttendeeDTO attendeeDTO) throws URISyntaxException {
         log.debug("REST request to update Attendee : {}", attendeeDTO);
         if (attendeeDTO.getId() == null) {
-            return createAttendee(attendeeDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         AttendeeDTO result = attendeeService.save(attendeeDTO);
         return ResponseEntity.ok()
@@ -140,8 +107,8 @@ public class AttendeeResource {
     @Timed
     public ResponseEntity<AttendeeDTO> getAttendee(@PathVariable Long id) {
         log.debug("REST request to get Attendee : {}", id);
-        AttendeeDTO attendeeDTO = attendeeService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(attendeeDTO));
+        Optional<AttendeeDTO> attendeeDTO = attendeeService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(attendeeDTO);
     }
 
     /**

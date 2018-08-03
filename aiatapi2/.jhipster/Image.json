@@ -1,13 +1,5 @@
 {
-    "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "recipe",
-            "otherEntityName": "recipe",
-            "otherEntityField": "id"
-        }
-    ],
+    "name": "Image",
     "fields": [
         {
             "fieldName": "ossPath",
@@ -23,11 +15,22 @@
             "fieldType": "Instant"
         }
     ],
-    "changelogDate": "20180704083412",
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "recipe",
+            "otherEntityName": "recipe",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180802115455",
     "javadoc": "菜谱图片信息",
     "entityTableName": "image",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
-    "jpaMetamodelFiltering": false
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

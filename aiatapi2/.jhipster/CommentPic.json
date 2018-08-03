@@ -1,13 +1,5 @@
 {
-    "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "comment",
-            "otherEntityName": "comment",
-            "otherEntityField": "id"
-        }
-    ],
+    "name": "CommentPic",
     "fields": [
         {
             "fieldName": "ossPath",
@@ -23,11 +15,22 @@
             "fieldType": "Instant"
         }
     ],
-    "changelogDate": "20180704083410",
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "comment",
+            "otherEntityName": "comment",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180802115451",
     "javadoc": "评论图片",
     "entityTableName": "comment_pic",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
-    "jpaMetamodelFiltering": false
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

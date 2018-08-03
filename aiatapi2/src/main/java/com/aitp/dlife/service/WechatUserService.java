@@ -6,12 +6,14 @@ import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.service.mapper.WechatUserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.Optional;
 /**
  * Service Implementation for managing WechatUser.
  */
@@ -56,6 +58,7 @@ public class WechatUserService {
             .map(wechatUserMapper::toDto);
     }
 
+
     /**
      * Get one wechatUser by id.
      *
@@ -63,10 +66,10 @@ public class WechatUserService {
      * @return the entity
      */
     @Transactional(readOnly = true)
-    public WechatUserDTO findOne(Long id) {
+    public Optional<WechatUserDTO> findOne(Long id) {
         log.debug("Request to get WechatUser : {}", id);
-        WechatUser wechatUser = wechatUserRepository.findOne(id);
-        return wechatUserMapper.toDto(wechatUser);
+        return wechatUserRepository.findById(id)
+            .map(wechatUserMapper::toDto);
     }
 
     /**
@@ -76,12 +79,6 @@ public class WechatUserService {
      */
     public void delete(Long id) {
         log.debug("Request to delete WechatUser : {}", id);
-        wechatUserRepository.delete(id);
-    }
-    
-    public WechatUserDTO findByOpenId(String openId) {
-        log.debug("Request to findByOpenId : {}", openId);
-        WechatUser wechatUser = wechatUserRepository.findByOpenId(openId);
-        return wechatUserMapper.toDto(wechatUser);
+        wechatUserRepository.deleteById(id);
     }
 }

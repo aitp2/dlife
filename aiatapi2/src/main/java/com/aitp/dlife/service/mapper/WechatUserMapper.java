@@ -11,13 +11,7 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {})
 public interface WechatUserMapper extends EntityMapper<WechatUserDTO, WechatUser> {
 
-    @Mapping(target = "createTime",expression = "java(InstantMapper.toDateString(wechatUser.getCreateTime()))")
-    @Mapping(target = "modifyTime",expression = "java(InstantMapper.toDateString(wechatUser.getModifyTime()))")
-    WechatUserDTO toDto(WechatUser wechatUser);
 
-    @Mapping(target = "createTime",expression = "java(InstantMapper.fromString(wechatUserDTO.getCreateTime()))")
-    @Mapping(target = "modifyTime",expression = "java(InstantMapper.fromString(wechatUserDTO.getModifyTime()))")
-    WechatUser toEntity(WechatUserDTO wechatUserDTO);
 
     default WechatUser fromId(Long id) {
         if (id == null) {

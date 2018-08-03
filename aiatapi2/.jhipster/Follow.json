@@ -1,6 +1,5 @@
 {
-    "fluentMethods": true,
-    "relationships": [],
+    "name": "Follow",
     "fields": [
         {
             "fieldName": "followUserId",
@@ -51,11 +50,15 @@
             "fieldType": "Instant"
         }
     ],
-    "changelogDate": "20180704083408",
+    "relationships": [],
+    "changelogDate": "20180802115449",
     "javadoc": "关注记录信息",
     "entityTableName": "follow",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
-    "jpaMetamodelFiltering": false
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

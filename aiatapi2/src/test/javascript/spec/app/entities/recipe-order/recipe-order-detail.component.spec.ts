@@ -1,51 +1,40 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 import { AitpapiTestModule } from '../../../test.module';
-import { RecipeOrderDetailComponent } from '../../../../../../main/webapp/app/entities/recipe-order/recipe-order-detail.component';
-import { RecipeOrderService } from '../../../../../../main/webapp/app/entities/recipe-order/recipe-order.service';
-import { RecipeOrder } from '../../../../../../main/webapp/app/entities/recipe-order/recipe-order.model';
+import { RecipeOrderDetailComponent } from 'app/entities/recipe-order/recipe-order-detail.component';
+import { RecipeOrder } from 'app/shared/model/recipe-order.model';
 
 describe('Component Tests', () => {
-
     describe('RecipeOrder Management Detail Component', () => {
         let comp: RecipeOrderDetailComponent;
         let fixture: ComponentFixture<RecipeOrderDetailComponent>;
-        let service: RecipeOrderService;
+        const route = ({ data: of({ recipeOrder: new RecipeOrder(123) }) } as any) as ActivatedRoute;
 
-        beforeEach(async(() => {
+        beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [AitpapiTestModule],
                 declarations: [RecipeOrderDetailComponent],
-                providers: [
-                    RecipeOrderService
-                ]
+                providers: [{ provide: ActivatedRoute, useValue: route }]
             })
-            .overrideTemplate(RecipeOrderDetailComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
+                .overrideTemplate(RecipeOrderDetailComponent, '')
+                .compileComponents();
             fixture = TestBed.createComponent(RecipeOrderDetailComponent);
             comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(RecipeOrderService);
         });
 
         describe('OnInit', () => {
             it('Should call load all on init', () => {
                 // GIVEN
 
-                spyOn(service, 'find').and.returnValue(Observable.of(new RecipeOrder(123)));
-
                 // WHEN
                 comp.ngOnInit();
 
                 // THEN
-                expect(service.find).toHaveBeenCalledWith(123);
-                expect(comp.recipeOrder).toEqual(jasmine.objectContaining({id: 123}));
+                expect(comp.recipeOrder).toEqual(jasmine.objectContaining({ id: 123 }));
             });
         });
     });
-
 });

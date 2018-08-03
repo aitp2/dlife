@@ -1,83 +1,73 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import * as moment from 'moment';
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { map } from 'rxjs/operators';
 
-import { JhiDateUtils } from 'ng-jhipster';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IFollow } from 'app/shared/model/follow.model';
 
-import { Follow } from './follow.model';
-import { ResponseWrapper, createRequestOption } from '../../shared';
+type EntityResponseType = HttpResponse<IFollow>;
+type EntityArrayResponseType = HttpResponse<IFollow[]>;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class FollowService {
+    private resourceUrl = SERVER_API_URL + 'api/follows';
 
-    private resourceUrl =  SERVER_API_URL + 'api/follows';
+    constructor(private http: HttpClient) {}
 
-    constructor(private http: Http, private dateUtils: JhiDateUtils) { }
-
-    create(follow: Follow): Observable<Follow> {
-        const copy = this.convert(follow);
-        return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    create(follow: IFollow): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(follow);
+        return this.http
+            .post<IFollow>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    update(follow: Follow): Observable<Follow> {
-        const copy = this.convert(follow);
-        return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    update(follow: IFollow): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(follow);
+        return this.http
+            .put<IFollow>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    find(id: number): Observable<Follow> {
-        return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    find(id: number): Observable<EntityResponseType> {
+        return this.http
+            .get<IFollow>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    query(req?: any): Observable<ResponseWrapper> {
+    query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get(this.resourceUrl, options)
-            .map((res: Response) => this.convertResponse(res));
+        return this.http
+            .get<IFollow[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
-    delete(id: number): Observable<Response> {
-        return this.http.delete(`${this.resourceUrl}/${id}`);
+    delete(id: number): Observable<HttpResponse<any>> {
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    private convertResponse(res: Response): ResponseWrapper {
-        const jsonResponse = res.json();
-        const result = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            result.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return new ResponseWrapper(res.headers, result, res.status);
-    }
-
-    /**
-     * Convert a returned JSON object to Follow.
-     */
-    private convertItemFromServer(json: any): Follow {
-        const entity: Follow = Object.assign(new Follow(), json);
-        entity.createTime = this.dateUtils
-            .convertDateTimeFromServer(json.createTime);
-        entity.modifyTime = this.dateUtils
-            .convertDateTimeFromServer(json.modifyTime);
-        return entity;
-    }
-
-    /**
-     * Convert a Follow to a JSON which can be sent to the server.
-     */
-    private convert(follow: Follow): Follow {
-        const copy: Follow = Object.assign({}, follow);
-
-        copy.createTime = this.dateUtils.toDate(follow.createTime);
-
-        copy.modifyTime = this.dateUtils.toDate(follow.modifyTime);
+    private convertDateFromClient(follow: IFollow): IFollow {
+        const copy: IFollow = Object.assign({}, follow, {
+            createTime: follow.createTime != null && follow.createTime.isValid() ? follow.createTime.toJSON() : null,
+            modifyTime: follow.modifyTime != null && follow.modifyTime.isValid() ? follow.modifyTime.toJSON() : null
+        });
         return copy;
+    }
+
+    private convertDateFromServer(res: EntityResponseType): EntityResponseType {
+        res.body.createTime = res.body.createTime != null ? moment(res.body.createTime) : null;
+        res.body.modifyTime = res.body.modifyTime != null ? moment(res.body.modifyTime) : null;
+        return res;
+    }
+
+    private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+        res.body.forEach((follow: IFollow) => {
+            follow.createTime = follow.createTime != null ? moment(follow.createTime) : null;
+            follow.modifyTime = follow.modifyTime != null ? moment(follow.modifyTime) : null;
+        });
+        return res;
     }
 }

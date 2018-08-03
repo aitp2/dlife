@@ -1,26 +1,28 @@
 import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil } from 'ng-jhipster';
-
-import { UserRouteAccessService } from '../../shared';
+import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
+import { UserRouteAccessService } from 'app/core';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Pics } from 'app/shared/model/pics.model';
+import { PicsService } from './pics.service';
 import { PicsComponent } from './pics.component';
 import { PicsDetailComponent } from './pics-detail.component';
-import { PicsPopupComponent } from './pics-dialog.component';
+import { PicsUpdateComponent } from './pics-update.component';
 import { PicsDeletePopupComponent } from './pics-delete-dialog.component';
+import { IPics } from 'app/shared/model/pics.model';
 
-@Injectable()
-export class PicsResolvePagingParams implements Resolve<any> {
-
-    constructor(private paginationUtil: JhiPaginationUtil) {}
+@Injectable({ providedIn: 'root' })
+export class PicsResolve implements Resolve<IPics> {
+    constructor(private service: PicsService) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
-        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
-        return {
-            page: this.paginationUtil.parsePage(page),
-            predicate: this.paginationUtil.parsePredicate(sort),
-            ascending: this.paginationUtil.parseAscending(sort)
-      };
+        const id = route.params['id'] ? route.params['id'] : null;
+        if (id) {
+            return this.service.find(id).pipe(map((pics: HttpResponse<Pics>) => pics.body));
+        }
+        return of(new Pics());
     }
 }
 
@@ -29,16 +31,45 @@ export const picsRoute: Routes = [
         path: 'pics',
         component: PicsComponent,
         resolve: {
-            'pagingParams': PicsResolvePagingParams
+            pagingParams: JhiResolvePagingParams
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            defaultSort: 'id,asc',
+            pageTitle: 'Pics'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'pics/:id/view',
+        component: PicsDetailComponent,
+        resolve: {
+            pics: PicsResolve
         },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Pics'
         },
         canActivate: [UserRouteAccessService]
-    }, {
-        path: 'pics/:id',
-        component: PicsDetailComponent,
+    },
+    {
+        path: 'pics/new',
+        component: PicsUpdateComponent,
+        resolve: {
+            pics: PicsResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'Pics'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'pics/:id/edit',
+        component: PicsUpdateComponent,
+        resolve: {
+            pics: PicsResolve
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Pics'
@@ -49,28 +80,11 @@ export const picsRoute: Routes = [
 
 export const picsPopupRoute: Routes = [
     {
-        path: 'pics-new',
-        component: PicsPopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Pics'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    },
-    {
-        path: 'pics/:id/edit',
-        component: PicsPopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Pics'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    },
-    {
         path: 'pics/:id/delete',
         component: PicsDeletePopupComponent,
+        resolve: {
+            pics: PicsResolve
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Pics'

@@ -111,7 +111,6 @@ public class Comment implements Serializable {
     private Instant modifyTime;
 
     @OneToMany(mappedBy = "comment")
-    @JsonIgnore
     private Set<CommentPic> commentPics = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

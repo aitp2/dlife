@@ -1,33 +1,31 @@
 <div>
-    <h2>
+    <h2 id="page-heading">
         <span>Clockin Summaries</span>
-        <button class="btn btn-primary float-right jh-create-entity create-clockin-summary" [routerLink]="['/', { outlets: { popup: ['clockin-summary-new'] } }]">
-            <span class="fa fa-plus"></span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-clockin-summary" [routerLink]="['/clockin-summary/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
             <span >
             Create new Clockin Summary
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-    </div>
     <br/>
     <div class="table-responsive" *ngIf="clockinSummaries">
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="wechatUserId"><span>Wechat User Id</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="totallyCount"><span>Totally Count</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="weeklyCount"><span>Weekly Count</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="serialCount"><span>Serial Count</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="lastClockInTime"><span>Last Clock In Time</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="wechatUserId"><span>Wechat User Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="totallyCount"><span>Totally Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="weeklyCount"><span>Weekly Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="serialCount"><span>Serial Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="lastClockInTime"><span>Last Clock In Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let clockinSummary of clockinSummaries ;trackBy: trackId">
-                <td><a [routerLink]="['../clockin-summary', clockinSummary.id ]">{{clockinSummary.id}}</a></td>
+                <td><a [routerLink]="['/clockin-summary', clockinSummary.id, 'view' ]">{{clockinSummary.id}}</a></td>
                 <td>{{clockinSummary.wechatUserId}}</td>
                 <td>{{clockinSummary.totallyCount}}</td>
                 <td>{{clockinSummary.weeklyCount}}</td>
@@ -36,17 +34,15 @@
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['../clockin-summary', clockinSummary.id ]"
+                                [routerLink]="['/clockin-summary', clockinSummary.id, 'view' ]"
                                 class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'clockin-summary/'+ clockinSummary.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                                [routerLink]="['/clockin-summary', clockinSummary.id, 'edit']"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
@@ -54,7 +50,7 @@
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
+                            <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline">Delete</span>
                         </button>
                     </div>

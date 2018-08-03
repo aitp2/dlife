@@ -1,51 +1,40 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 import { AitpapiTestModule } from '../../../test.module';
-import { PinfanPicsDetailComponent } from '../../../../../../main/webapp/app/entities/pinfan-pics/pinfan-pics-detail.component';
-import { PinfanPicsService } from '../../../../../../main/webapp/app/entities/pinfan-pics/pinfan-pics.service';
-import { PinfanPics } from '../../../../../../main/webapp/app/entities/pinfan-pics/pinfan-pics.model';
+import { PinfanPicsDetailComponent } from 'app/entities/pinfan-pics/pinfan-pics-detail.component';
+import { PinfanPics } from 'app/shared/model/pinfan-pics.model';
 
 describe('Component Tests', () => {
-
     describe('PinfanPics Management Detail Component', () => {
         let comp: PinfanPicsDetailComponent;
         let fixture: ComponentFixture<PinfanPicsDetailComponent>;
-        let service: PinfanPicsService;
+        const route = ({ data: of({ pinfanPics: new PinfanPics(123) }) } as any) as ActivatedRoute;
 
-        beforeEach(async(() => {
+        beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [AitpapiTestModule],
                 declarations: [PinfanPicsDetailComponent],
-                providers: [
-                    PinfanPicsService
-                ]
+                providers: [{ provide: ActivatedRoute, useValue: route }]
             })
-            .overrideTemplate(PinfanPicsDetailComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
+                .overrideTemplate(PinfanPicsDetailComponent, '')
+                .compileComponents();
             fixture = TestBed.createComponent(PinfanPicsDetailComponent);
             comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(PinfanPicsService);
         });
 
         describe('OnInit', () => {
             it('Should call load all on init', () => {
                 // GIVEN
 
-                spyOn(service, 'find').and.returnValue(Observable.of(new PinfanPics(123)));
-
                 // WHEN
                 comp.ngOnInit();
 
                 // THEN
-                expect(service.find).toHaveBeenCalledWith(123);
-                expect(comp.pinfanPics).toEqual(jasmine.objectContaining({id: 123}));
+                expect(comp.pinfanPics).toEqual(jasmine.objectContaining({ id: 123 }));
             });
         });
     });
-
 });

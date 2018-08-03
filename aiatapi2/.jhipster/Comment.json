@@ -1,13 +1,5 @@
 {
-    "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "commentPic",
-            "otherEntityName": "commentPic",
-            "otherEntityRelationshipName": "comment"
-        }
-    ],
+    "name": "Comment",
     "fields": [
         {
             "fieldName": "parentId",
@@ -23,7 +15,7 @@
             "fieldName": "channel",
             "javadoc": "评论渠道",
             "fieldType": "CommentChannel",
-            "fieldValues": "COOK,FIT,PIN"
+            "fieldValues": "COOK,FIT,PIN,FAQS"
         },
         {
             "fieldName": "wechatUserId",
@@ -85,11 +77,22 @@
             "fieldType": "Instant"
         }
     ],
-    "changelogDate": "20180704083409",
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "commentPic",
+            "otherEntityName": "commentPic",
+            "otherEntityRelationshipName": "comment"
+        }
+    ],
+    "changelogDate": "20180802115450",
     "javadoc": "评论信息",
     "entityTableName": "comment",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
-    "jpaMetamodelFiltering": false
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

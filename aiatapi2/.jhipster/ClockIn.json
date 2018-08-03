@@ -1,19 +1,5 @@
 {
-    "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "pics",
-            "otherEntityName": "pics",
-            "otherEntityRelationshipName": "clockIn"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "activityParticipation",
-            "otherEntityName": "activityParticipation",
-            "otherEntityField": "id"
-        }
-    ],
+    "name": "ClockIn",
     "fields": [
         {
             "fieldName": "title",
@@ -40,15 +26,32 @@
         },
         {
             "fieldName": "activityId",
+            "javadoc": "活动id",
             "fieldType": "Integer"
         }
     ],
-    "changelogDate": "20180704083419",
-    "dto": "mapstruct",
-    "searchEngine": false,
-    "service": "serviceClass",
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "pics",
+            "otherEntityName": "pics",
+            "otherEntityRelationshipName": "clockIn"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "activityParticipation",
+            "otherEntityName": "activityParticipation",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180802115502",
+    "javadoc": "打卡信息",
     "entityTableName": "clock_in",
-    "jpaMetamodelFiltering": false,
+    "dto": "mapstruct",
     "pagination": "pagination",
-    "javadoc": "打卡信息"
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

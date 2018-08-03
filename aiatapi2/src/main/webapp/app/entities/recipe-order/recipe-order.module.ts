@@ -1,51 +1,29 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AitpapiSharedModule } from '../../shared';
+import { AitpapiSharedModule } from 'app/shared';
 import {
-    RecipeOrderService,
-    RecipeOrderPopupService,
     RecipeOrderComponent,
     RecipeOrderDetailComponent,
-    RecipeOrderDialogComponent,
-    RecipeOrderPopupComponent,
+    RecipeOrderUpdateComponent,
     RecipeOrderDeletePopupComponent,
     RecipeOrderDeleteDialogComponent,
     recipeOrderRoute,
-    recipeOrderPopupRoute,
-    RecipeOrderResolvePagingParams,
+    recipeOrderPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...recipeOrderRoute,
-    ...recipeOrderPopupRoute,
-];
+const ENTITY_STATES = [...recipeOrderRoute, ...recipeOrderPopupRoute];
 
 @NgModule({
-    imports: [
-        AitpapiSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
+    imports: [AitpapiSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [
         RecipeOrderComponent,
         RecipeOrderDetailComponent,
-        RecipeOrderDialogComponent,
+        RecipeOrderUpdateComponent,
         RecipeOrderDeleteDialogComponent,
-        RecipeOrderPopupComponent,
-        RecipeOrderDeletePopupComponent,
+        RecipeOrderDeletePopupComponent
     ],
-    entryComponents: [
-        RecipeOrderComponent,
-        RecipeOrderDialogComponent,
-        RecipeOrderPopupComponent,
-        RecipeOrderDeleteDialogComponent,
-        RecipeOrderDeletePopupComponent,
-    ],
-    providers: [
-        RecipeOrderService,
-        RecipeOrderPopupService,
-        RecipeOrderResolvePagingParams,
-    ],
+    entryComponents: [RecipeOrderComponent, RecipeOrderUpdateComponent, RecipeOrderDeleteDialogComponent, RecipeOrderDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AitpapiRecipeOrderModule {}

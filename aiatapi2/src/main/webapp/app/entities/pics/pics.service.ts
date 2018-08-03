@@ -1,79 +1,70 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import * as moment from 'moment';
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { map } from 'rxjs/operators';
 
-import { JhiDateUtils } from 'ng-jhipster';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IPics } from 'app/shared/model/pics.model';
 
-import { Pics } from './pics.model';
-import { ResponseWrapper, createRequestOption } from '../../shared';
+type EntityResponseType = HttpResponse<IPics>;
+type EntityArrayResponseType = HttpResponse<IPics[]>;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PicsService {
+    private resourceUrl = SERVER_API_URL + 'api/pics';
 
-    private resourceUrl =  SERVER_API_URL + 'api/pics';
+    constructor(private http: HttpClient) {}
 
-    constructor(private http: Http, private dateUtils: JhiDateUtils) { }
-
-    create(pics: Pics): Observable<Pics> {
-        const copy = this.convert(pics);
-        return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    create(pics: IPics): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(pics);
+        return this.http
+            .post<IPics>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    update(pics: Pics): Observable<Pics> {
-        const copy = this.convert(pics);
-        return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    update(pics: IPics): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(pics);
+        return this.http
+            .put<IPics>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    find(id: number): Observable<Pics> {
-        return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    find(id: number): Observable<EntityResponseType> {
+        return this.http
+            .get<IPics>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    query(req?: any): Observable<ResponseWrapper> {
+    query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get(this.resourceUrl, options)
-            .map((res: Response) => this.convertResponse(res));
+        return this.http
+            .get<IPics[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
-    delete(id: number): Observable<Response> {
-        return this.http.delete(`${this.resourceUrl}/${id}`);
+    delete(id: number): Observable<HttpResponse<any>> {
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    private convertResponse(res: Response): ResponseWrapper {
-        const jsonResponse = res.json();
-        const result = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            result.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return new ResponseWrapper(res.headers, result, res.status);
-    }
-
-    /**
-     * Convert a returned JSON object to Pics.
-     */
-    private convertItemFromServer(json: any): Pics {
-        const entity: Pics = Object.assign(new Pics(), json);
-        entity.createTime = this.dateUtils
-            .convertDateTimeFromServer(json.createTime);
-        return entity;
-    }
-
-    /**
-     * Convert a Pics to a JSON which can be sent to the server.
-     */
-    private convert(pics: Pics): Pics {
-        const copy: Pics = Object.assign({}, pics);
-
-        copy.createTime = this.dateUtils.toDate(pics.createTime);
+    private convertDateFromClient(pics: IPics): IPics {
+        const copy: IPics = Object.assign({}, pics, {
+            createTime: pics.createTime != null && pics.createTime.isValid() ? pics.createTime.toJSON() : null
+        });
         return copy;
+    }
+
+    private convertDateFromServer(res: EntityResponseType): EntityResponseType {
+        res.body.createTime = res.body.createTime != null ? moment(res.body.createTime) : null;
+        return res;
+    }
+
+    private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+        res.body.forEach((pics: IPics) => {
+            pics.createTime = pics.createTime != null ? moment(pics.createTime) : null;
+        });
+        return res;
     }
 }

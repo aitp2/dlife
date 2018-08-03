@@ -1,11 +1,8 @@
 package com.aitp.dlife.service.dto;
 
-
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -18,7 +15,7 @@ public class CommentPicDTO implements Serializable {
     @Size(max = 255)
     private String ossPath;
 
-    private String createTime;
+    private Instant createTime;
 
     private Long commentId;
 
@@ -38,11 +35,11 @@ public class CommentPicDTO implements Serializable {
         this.ossPath = ossPath;
     }
 
-    public String getCreateTime() {
+    public Instant getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Instant createTime) {
         this.createTime = createTime;
     }
 
@@ -64,7 +61,7 @@ public class CommentPicDTO implements Serializable {
         }
 
         CommentPicDTO commentPicDTO = (CommentPicDTO) o;
-        if(commentPicDTO.getId() == null || getId() == null) {
+        if (commentPicDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), commentPicDTO.getId());
@@ -81,6 +78,7 @@ public class CommentPicDTO implements Serializable {
             "id=" + getId() +
             ", ossPath='" + getOssPath() + "'" +
             ", createTime='" + getCreateTime() + "'" +
+            ", comment=" + getCommentId() +
             "}";
     }
 }

@@ -1,14 +1,8 @@
 package com.aitp.dlife.service.dto;
 
-
 import java.time.Instant;
 import javax.validation.constraints.*;
-
-import com.aitp.dlife.domain.Pics;
-
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -18,23 +12,17 @@ public class ClockInDTO implements Serializable {
 
     private Long id;
 
-    @Size(max = 64)
+    @Size(max = 128)
     private String title;
-
-    private String wechatUserId;
 
     @Size(max = 1024)
     private String signNote;
 
-    private String punchDateTime;
+    private Instant punchDateTime;
+
+    private Integer activityId;
 
     private Long activityParticipationId;
-
-    private Set<PicsDTO> pics = new HashSet<>();
-
-    private String nickName;
-
-    private String avatar;
 
     public Long getId() {
         return id;
@@ -60,16 +48,23 @@ public class ClockInDTO implements Serializable {
         this.signNote = signNote;
     }
 
+    public Instant getPunchDateTime() {
+        return punchDateTime;
+    }
 
-    public String getPunchDateTime() {
-		return punchDateTime;
-	}
+    public void setPunchDateTime(Instant punchDateTime) {
+        this.punchDateTime = punchDateTime;
+    }
 
-	public void setPunchDateTime(String punchDateTime) {
-		this.punchDateTime = punchDateTime;
-	}
+    public Integer getActivityId() {
+        return activityId;
+    }
 
-	public Long getActivityParticipationId() {
+    public void setActivityId(Integer activityId) {
+        this.activityId = activityId;
+    }
+
+    public Long getActivityParticipationId() {
         return activityParticipationId;
     }
 
@@ -77,40 +72,7 @@ public class ClockInDTO implements Serializable {
         this.activityParticipationId = activityParticipationId;
     }
 
-
-    public Set<PicsDTO> getPics() {
-		return pics;
-	}
-
-	public void setPics(Set<PicsDTO> pics) {
-		this.pics = pics;
-	}
-
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getWechatUserId() {
-		return wechatUserId;
-	}
-
-	public void setWechatUserId(String wechatUserId) {
-		this.wechatUserId = wechatUserId;
-	}
-
-	@Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -120,7 +82,7 @@ public class ClockInDTO implements Serializable {
         }
 
         ClockInDTO clockInDTO = (ClockInDTO) o;
-        if(clockInDTO.getId() == null || getId() == null) {
+        if (clockInDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), clockInDTO.getId());
@@ -138,6 +100,8 @@ public class ClockInDTO implements Serializable {
             ", title='" + getTitle() + "'" +
             ", signNote='" + getSignNote() + "'" +
             ", punchDateTime='" + getPunchDateTime() + "'" +
+            ", activityId=" + getActivityId() +
+            ", activityParticipation=" + getActivityParticipationId() +
             "}";
     }
 }

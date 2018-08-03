@@ -1,13 +1,12 @@
 package com.aitp.dlife.repository;
 
 import com.aitp.dlife.domain.CommentPic;
-import org.springframework.stereotype.Repository;
-
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 
 /**
- * Spring Data JPA repository for the CommentPic entity.
+ * Spring Data  repository for the CommentPic entity.
  */
 @SuppressWarnings("unused")
 @Repository

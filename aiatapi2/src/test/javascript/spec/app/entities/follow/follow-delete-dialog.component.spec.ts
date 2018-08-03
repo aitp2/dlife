@@ -1,15 +1,14 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { AitpapiTestModule } from '../../../test.module';
-import { FollowDeleteDialogComponent } from '../../../../../../main/webapp/app/entities/follow/follow-delete-dialog.component';
-import { FollowService } from '../../../../../../main/webapp/app/entities/follow/follow.service';
+import { FollowDeleteDialogComponent } from 'app/entities/follow/follow-delete-dialog.component';
+import { FollowService } from 'app/entities/follow/follow.service';
 
 describe('Component Tests', () => {
-
     describe('Follow Management Delete Component', () => {
         let comp: FollowDeleteDialogComponent;
         let fixture: ComponentFixture<FollowDeleteDialogComponent>;
@@ -17,19 +16,13 @@ describe('Component Tests', () => {
         let mockEventManager: any;
         let mockActiveModal: any;
 
-        beforeEach(async(() => {
+        beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [AitpapiTestModule],
-                declarations: [FollowDeleteDialogComponent],
-                providers: [
-                    FollowService
-                ]
+                declarations: [FollowDeleteDialogComponent]
             })
-            .overrideTemplate(FollowDeleteDialogComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
+                .overrideTemplate(FollowDeleteDialogComponent, '')
+                .compileComponents();
             fixture = TestBed.createComponent(FollowDeleteDialogComponent);
             comp = fixture.componentInstance;
             service = fixture.debugElement.injector.get(FollowService);
@@ -38,11 +31,13 @@ describe('Component Tests', () => {
         });
 
         describe('confirmDelete', () => {
-            it('Should call delete service on confirmDelete',
-                inject([],
+            it(
+                'Should call delete service on confirmDelete',
+                inject(
+                    [],
                     fakeAsync(() => {
                         // GIVEN
-                        spyOn(service, 'delete').and.returnValue(Observable.of({}));
+                        spyOn(service, 'delete').and.returnValue(of({}));
 
                         // WHEN
                         comp.confirmDelete(123);
@@ -57,5 +52,4 @@ describe('Component Tests', () => {
             );
         });
     });
-
 });

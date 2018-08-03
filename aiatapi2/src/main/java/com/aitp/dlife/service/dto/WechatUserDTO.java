@@ -1,6 +1,5 @@
 package com.aitp.dlife.service.dto;
 
-
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -41,12 +40,14 @@ public class WechatUserDTO implements Serializable {
     @Size(max = 1024)
     private String introduce;
 
-    private Boolean sex;
+    @Max(value = 2)
+    private Integer sex;
 
     @Size(max = 255)
     private String companyRole;
 
-    private Boolean cookFlag;
+    @Max(value = 2)
+    private Integer cookFlag;
 
     @Size(max = 1024)
     private String intesting;
@@ -54,9 +55,9 @@ public class WechatUserDTO implements Serializable {
     @Size(max = 1024)
     private String skill;
 
-    private String createTime;
+    private Instant createTime;
 
-    private String modifyTime;
+    private Instant modifyTime;
 
     public Long getId() {
         return id;
@@ -138,11 +139,11 @@ public class WechatUserDTO implements Serializable {
         this.introduce = introduce;
     }
 
-    public Boolean isSex() {
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(Boolean sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 
@@ -154,11 +155,11 @@ public class WechatUserDTO implements Serializable {
         this.companyRole = companyRole;
     }
 
-    public Boolean isCookFlag() {
+    public Integer getCookFlag() {
         return cookFlag;
     }
 
-    public void setCookFlag(Boolean cookFlag) {
+    public void setCookFlag(Integer cookFlag) {
         this.cookFlag = cookFlag;
     }
 
@@ -178,19 +179,19 @@ public class WechatUserDTO implements Serializable {
         this.skill = skill;
     }
 
-    public String getCreateTime() {
+    public Instant getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Instant createTime) {
         this.createTime = createTime;
     }
 
-    public String getModifyTime() {
+    public Instant getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(String modifyTime) {
+    public void setModifyTime(Instant modifyTime) {
         this.modifyTime = modifyTime;
     }
 
@@ -204,7 +205,7 @@ public class WechatUserDTO implements Serializable {
         }
 
         WechatUserDTO wechatUserDTO = (WechatUserDTO) o;
-        if(wechatUserDTO.getId() == null || getId() == null) {
+        if (wechatUserDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), wechatUserDTO.getId());
@@ -228,9 +229,9 @@ public class WechatUserDTO implements Serializable {
             ", project='" + getProject() + "'" +
             ", seat='" + getSeat() + "'" +
             ", introduce='" + getIntroduce() + "'" +
-            ", sex='" + isSex() + "'" +
+            ", sex=" + getSex() +
             ", companyRole='" + getCompanyRole() + "'" +
-            ", cookFlag='" + isCookFlag() + "'" +
+            ", cookFlag=" + getCookFlag() +
             ", intesting='" + getIntesting() + "'" +
             ", skill='" + getSkill() + "'" +
             ", createTime='" + getCreateTime() + "'" +

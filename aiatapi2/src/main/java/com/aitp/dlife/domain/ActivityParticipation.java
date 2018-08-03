@@ -1,6 +1,7 @@
 package com.aitp.dlife.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -66,12 +67,47 @@ public class ActivityParticipation implements Serializable {
     @Column(name = "participation_time")
     private Instant participationTime;
 
+    /**
+     * 总共加入天数
+     */
+    @ApiModelProperty(value = "总共加入天数")
+    @Column(name = "total_participate_days")
+    private Integer totalParticipateDays;
+
+    /**
+     * 总共打卡天数
+     */
+    @ApiModelProperty(value = "总共打卡天数")
+    @Column(name = "total_clockin_days")
+    private Integer totalClockinDays;
+
+    /**
+     * 当前连续天数
+     */
+    @ApiModelProperty(value = "当前连续天数")
+    @Column(name = "current_continue_days")
+    private Integer currentContinueDays;
+
+    /**
+     * 最长连续天数
+     */
+    @ApiModelProperty(value = "最长连续天数")
+    @Column(name = "longest_continue_days")
+    private Integer longestContinueDays;
+
+    /**
+     * 最新打卡时间
+     */
+    @ApiModelProperty(value = "最新打卡时间")
+    @Column(name = "latest_clockin_time")
+    private Instant latestClockinTime;
+
     @OneToMany(mappedBy = "activityParticipation")
-    @JsonIgnore
     private Set<ClockIn> clockIns = new HashSet<>();
 
     @ManyToOne
-    private FitnessActivity activity;
+    @JsonIgnoreProperties("activityParticipations")
+    private FitnessActivity fitnessActivity;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -147,6 +183,71 @@ public class ActivityParticipation implements Serializable {
         this.participationTime = participationTime;
     }
 
+    public Integer getTotalParticipateDays() {
+        return totalParticipateDays;
+    }
+
+    public ActivityParticipation totalParticipateDays(Integer totalParticipateDays) {
+        this.totalParticipateDays = totalParticipateDays;
+        return this;
+    }
+
+    public void setTotalParticipateDays(Integer totalParticipateDays) {
+        this.totalParticipateDays = totalParticipateDays;
+    }
+
+    public Integer getTotalClockinDays() {
+        return totalClockinDays;
+    }
+
+    public ActivityParticipation totalClockinDays(Integer totalClockinDays) {
+        this.totalClockinDays = totalClockinDays;
+        return this;
+    }
+
+    public void setTotalClockinDays(Integer totalClockinDays) {
+        this.totalClockinDays = totalClockinDays;
+    }
+
+    public Integer getCurrentContinueDays() {
+        return currentContinueDays;
+    }
+
+    public ActivityParticipation currentContinueDays(Integer currentContinueDays) {
+        this.currentContinueDays = currentContinueDays;
+        return this;
+    }
+
+    public void setCurrentContinueDays(Integer currentContinueDays) {
+        this.currentContinueDays = currentContinueDays;
+    }
+
+    public Integer getLongestContinueDays() {
+        return longestContinueDays;
+    }
+
+    public ActivityParticipation longestContinueDays(Integer longestContinueDays) {
+        this.longestContinueDays = longestContinueDays;
+        return this;
+    }
+
+    public void setLongestContinueDays(Integer longestContinueDays) {
+        this.longestContinueDays = longestContinueDays;
+    }
+
+    public Instant getLatestClockinTime() {
+        return latestClockinTime;
+    }
+
+    public ActivityParticipation latestClockinTime(Instant latestClockinTime) {
+        this.latestClockinTime = latestClockinTime;
+        return this;
+    }
+
+    public void setLatestClockinTime(Instant latestClockinTime) {
+        this.latestClockinTime = latestClockinTime;
+    }
+
     public Set<ClockIn> getClockIns() {
         return clockIns;
     }
@@ -172,17 +273,17 @@ public class ActivityParticipation implements Serializable {
         this.clockIns = clockIns;
     }
 
-    public FitnessActivity getActivity() {
-        return activity;
+    public FitnessActivity getFitnessActivity() {
+        return fitnessActivity;
     }
 
-    public ActivityParticipation activity(FitnessActivity fitnessActivity) {
-        this.activity = fitnessActivity;
+    public ActivityParticipation fitnessActivity(FitnessActivity fitnessActivity) {
+        this.fitnessActivity = fitnessActivity;
         return this;
     }
 
-    public void setActivity(FitnessActivity fitnessActivity) {
-        this.activity = fitnessActivity;
+    public void setFitnessActivity(FitnessActivity fitnessActivity) {
+        this.fitnessActivity = fitnessActivity;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -215,6 +316,11 @@ public class ActivityParticipation implements Serializable {
             ", avatar='" + getAvatar() + "'" +
             ", project='" + getProject() + "'" +
             ", participationTime='" + getParticipationTime() + "'" +
+            ", totalParticipateDays=" + getTotalParticipateDays() +
+            ", totalClockinDays=" + getTotalClockinDays() +
+            ", currentContinueDays=" + getCurrentContinueDays() +
+            ", longestContinueDays=" + getLongestContinueDays() +
+            ", latestClockinTime='" + getLatestClockinTime() + "'" +
             "}";
     }
 }

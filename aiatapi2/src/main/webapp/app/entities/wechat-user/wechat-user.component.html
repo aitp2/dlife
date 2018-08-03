@@ -1,44 +1,42 @@
 <div>
-    <h2>
+    <h2 id="page-heading">
         <span>Wechat Users</span>
-        <button class="btn btn-primary float-right jh-create-entity create-wechat-user" [routerLink]="['/', { outlets: { popup: ['wechat-user-new'] } }]">
-            <span class="fa fa-plus"></span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-wechat-user" [routerLink]="['/wechat-user/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
             <span >
             Create new Wechat User
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-    </div>
     <br/>
     <div class="table-responsive" *ngIf="wechatUsers">
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="openId"><span>Open Id</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="wechatCode"><span>Wechat Code</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="userName"><span>User Name</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="nickName"><span>Nick Name</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="avatar"><span>Avatar</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="mobileNum"><span>Mobile Num</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="project"><span>Project</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="seat"><span>Seat</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="introduce"><span>Introduce</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="sex"><span>Sex</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="companyRole"><span>Company Role</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="cookFlag"><span>Cook Flag</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="intesting"><span>Intesting</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="skill"><span>Skill</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="createTime"><span>Create Time</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="modifyTime"><span>Modify Time</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="openId"><span>Open Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="wechatCode"><span>Wechat Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="userName"><span>User Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="nickName"><span>Nick Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="avatar"><span>Avatar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="mobileNum"><span>Mobile Num</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="project"><span>Project</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="seat"><span>Seat</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="introduce"><span>Introduce</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="sex"><span>Sex</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="companyRole"><span>Company Role</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="cookFlag"><span>Cook Flag</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="intesting"><span>Intesting</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="skill"><span>Skill</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="createTime"><span>Create Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="modifyTime"><span>Modify Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let wechatUser of wechatUsers ;trackBy: trackId">
-                <td><a [routerLink]="['../wechat-user', wechatUser.id ]">{{wechatUser.id}}</a></td>
+                <td><a [routerLink]="['/wechat-user', wechatUser.id, 'view' ]">{{wechatUser.id}}</a></td>
                 <td>{{wechatUser.openId}}</td>
                 <td>{{wechatUser.wechatCode}}</td>
                 <td>{{wechatUser.userName}}</td>
@@ -58,17 +56,15 @@
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['../wechat-user', wechatUser.id ]"
+                                [routerLink]="['/wechat-user', wechatUser.id, 'view' ]"
                                 class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'wechat-user/'+ wechatUser.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                                [routerLink]="['/wechat-user', wechatUser.id, 'edit']"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
@@ -76,7 +72,7 @@
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
+                            <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline">Delete</span>
                         </button>
                     </div>

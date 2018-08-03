@@ -1,20 +1,22 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
-import { Follow } from './follow.model';
+import { IFollow } from 'app/shared/model/follow.model';
+import { Principal } from 'app/core';
+
+import { ITEMS_PER_PAGE } from 'app/shared';
 import { FollowService } from './follow.service';
-import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-follow',
     templateUrl: './follow.component.html'
 })
 export class FollowComponent implements OnInit, OnDestroy {
-
-currentAccount: any;
-    follows: Follow[];
+    currentAccount: any;
+    follows: IFollow[];
     error: any;
     success: any;
     eventSubscriber: Subscription;
@@ -38,7 +40,7 @@ currentAccount: any;
         private eventManager: JhiEventManager
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
-        this.routeData = this.activatedRoute.data.subscribe((data) => {
+        this.routeData = this.activatedRoute.data.subscribe(data => {
             this.page = data.pagingParams.page;
             this.previousPage = data.pagingParams.page;
             this.reverse = data.pagingParams.ascending;
@@ -47,23 +49,28 @@ currentAccount: any;
     }
 
     loadAll() {
-        this.followService.query({
-            page: this.page - 1,
-            size: this.itemsPerPage,
-            sort: this.sort()}).subscribe(
-            (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-            (res: ResponseWrapper) => this.onError(res.json)
-        );
+        this.followService
+            .query({
+                page: this.page - 1,
+                size: this.itemsPerPage,
+                sort: this.sort()
+            })
+            .subscribe(
+                (res: HttpResponse<IFollow[]>) => this.paginateFollows(res.body, res.headers),
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
     }
+
     loadPage(page: number) {
         if (page !== this.previousPage) {
             this.previousPage = page;
             this.transition();
         }
     }
+
     transition() {
-        this.router.navigate(['/follow'], {queryParams:
-            {
+        this.router.navigate(['/follow'], {
+            queryParams: {
                 page: this.page,
                 size: this.itemsPerPage,
                 sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
@@ -74,15 +81,19 @@ currentAccount: any;
 
     clear() {
         this.page = 0;
-        this.router.navigate(['/follow', {
-            page: this.page,
-            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-        }]);
+        this.router.navigate([
+            '/follow',
+            {
+                page: this.page,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }
+        ]);
         this.loadAll();
     }
+
     ngOnInit() {
         this.loadAll();
-        this.principal.identity().then((account) => {
+        this.principal.identity().then(account => {
             this.currentAccount = account;
         });
         this.registerChangeInFollows();
@@ -92,11 +103,12 @@ currentAccount: any;
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId(index: number, item: Follow) {
+    trackId(index: number, item: IFollow) {
         return item.id;
     }
+
     registerChangeInFollows() {
-        this.eventSubscriber = this.eventManager.subscribe('followListModification', (response) => this.loadAll());
+        this.eventSubscriber = this.eventManager.subscribe('followListModification', response => this.loadAll());
     }
 
     sort() {
@@ -107,14 +119,14 @@ currentAccount: any;
         return result;
     }
 
-    private onSuccess(data, headers) {
+    private paginateFollows(data: IFollow[], headers: HttpHeaders) {
         this.links = this.parseLinks.parse(headers.get('link'));
-        this.totalItems = headers.get('X-Total-Count');
+        this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
         this.queryCount = this.totalItems;
-        // this.page = pagingParams.page;
         this.follows = data;
     }
-    private onError(error) {
-        this.jhiAlertService.error(error.message, null, null);
+
+    private onError(errorMessage: string) {
+        this.jhiAlertService.error(errorMessage, null, null);
     }
 }

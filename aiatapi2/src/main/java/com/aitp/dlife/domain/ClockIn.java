@@ -1,5 +1,6 @@
 package com.aitp.dlife.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -50,6 +51,10 @@ public class ClockIn implements Serializable {
     @Column(name = "punch_date_time")
     private Instant punchDateTime;
 
+    /**
+     * 活动id
+     */
+    @ApiModelProperty(value = "活动id")
     @Column(name = "activity_id")
     private Integer activityId;
 

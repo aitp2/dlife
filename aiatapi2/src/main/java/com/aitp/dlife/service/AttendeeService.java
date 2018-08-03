@@ -6,12 +6,14 @@ import com.aitp.dlife.service.dto.AttendeeDTO;
 import com.aitp.dlife.service.mapper.AttendeeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.Optional;
 /**
  * Service Implementation for managing Attendee.
  */
@@ -56,6 +58,7 @@ public class AttendeeService {
             .map(attendeeMapper::toDto);
     }
 
+
     /**
      * Get one attendee by id.
      *
@@ -63,10 +66,10 @@ public class AttendeeService {
      * @return the entity
      */
     @Transactional(readOnly = true)
-    public AttendeeDTO findOne(Long id) {
+    public Optional<AttendeeDTO> findOne(Long id) {
         log.debug("Request to get Attendee : {}", id);
-        Attendee attendee = attendeeRepository.findOne(id);
-        return attendeeMapper.toDto(attendee);
+        return attendeeRepository.findById(id)
+            .map(attendeeMapper::toDto);
     }
 
     /**
@@ -76,6 +79,6 @@ public class AttendeeService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Attendee : {}", id);
-        attendeeRepository.delete(id);
+        attendeeRepository.deleteById(id);
     }
 }

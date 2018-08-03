@@ -15,81 +15,81 @@ import { IClockIn } from 'app/shared/model/clock-in.model';
 
 @Injectable({ providedIn: 'root' })
 export class ClockInResolve implements Resolve<IClockIn> {
-  constructor(private service: ClockInService) {}
+    constructor(private service: ClockInService) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const id = route.params['id'] ? route.params['id'] : null;
-    if (id) {
-      return this.service.find(id).pipe(map((clockIn: HttpResponse<ClockIn>) => clockIn.body));
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        const id = route.params['id'] ? route.params['id'] : null;
+        if (id) {
+            return this.service.find(id).pipe(map((clockIn: HttpResponse<ClockIn>) => clockIn.body));
+        }
+        return of(new ClockIn());
     }
-    return of(new ClockIn());
-  }
 }
 
 export const clockInRoute: Routes = [
-  {
-    path: 'clock-in',
-    component: ClockInComponent,
-    resolve: {
-      pagingParams: JhiResolvePagingParams
+    {
+        path: 'clock-in',
+        component: ClockInComponent,
+        resolve: {
+            pagingParams: JhiResolvePagingParams
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            defaultSort: 'id,asc',
+            pageTitle: 'ClockIns'
+        },
+        canActivate: [UserRouteAccessService]
     },
-    data: {
-      authorities: ['ROLE_USER'],
-      defaultSort: 'id,asc',
-      pageTitle: 'ClockIns'
+    {
+        path: 'clock-in/:id/view',
+        component: ClockInDetailComponent,
+        resolve: {
+            clockIn: ClockInResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'ClockIns'
+        },
+        canActivate: [UserRouteAccessService]
     },
-    canActivate: [UserRouteAccessService]
-  },
-  {
-    path: 'clock-in/:id/view',
-    component: ClockInDetailComponent,
-    resolve: {
-      clockIn: ClockInResolve
+    {
+        path: 'clock-in/new',
+        component: ClockInUpdateComponent,
+        resolve: {
+            clockIn: ClockInResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'ClockIns'
+        },
+        canActivate: [UserRouteAccessService]
     },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'ClockIns'
-    },
-    canActivate: [UserRouteAccessService]
-  },
-  {
-    path: 'clock-in/new',
-    component: ClockInUpdateComponent,
-    resolve: {
-      clockIn: ClockInResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'ClockIns'
-    },
-    canActivate: [UserRouteAccessService]
-  },
-  {
-    path: 'clock-in/:id/edit',
-    component: ClockInUpdateComponent,
-    resolve: {
-      clockIn: ClockInResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'ClockIns'
-    },
-    canActivate: [UserRouteAccessService]
-  }
+    {
+        path: 'clock-in/:id/edit',
+        component: ClockInUpdateComponent,
+        resolve: {
+            clockIn: ClockInResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'ClockIns'
+        },
+        canActivate: [UserRouteAccessService]
+    }
 ];
 
 export const clockInPopupRoute: Routes = [
-  {
-    path: 'clock-in/:id/delete',
-    component: ClockInDeletePopupComponent,
-    resolve: {
-      clockIn: ClockInResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'ClockIns'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  }
+    {
+        path: 'clock-in/:id/delete',
+        component: ClockInDeletePopupComponent,
+        resolve: {
+            clockIn: ClockInResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'ClockIns'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    }
 ];

@@ -1,26 +1,28 @@
 import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil } from 'ng-jhipster';
-
-import { UserRouteAccessService } from '../../shared';
+import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
+import { UserRouteAccessService } from 'app/core';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Follow } from 'app/shared/model/follow.model';
+import { FollowService } from './follow.service';
 import { FollowComponent } from './follow.component';
 import { FollowDetailComponent } from './follow-detail.component';
-import { FollowPopupComponent } from './follow-dialog.component';
+import { FollowUpdateComponent } from './follow-update.component';
 import { FollowDeletePopupComponent } from './follow-delete-dialog.component';
+import { IFollow } from 'app/shared/model/follow.model';
 
-@Injectable()
-export class FollowResolvePagingParams implements Resolve<any> {
-
-    constructor(private paginationUtil: JhiPaginationUtil) {}
+@Injectable({ providedIn: 'root' })
+export class FollowResolve implements Resolve<IFollow> {
+    constructor(private service: FollowService) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
-        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
-        return {
-            page: this.paginationUtil.parsePage(page),
-            predicate: this.paginationUtil.parsePredicate(sort),
-            ascending: this.paginationUtil.parseAscending(sort)
-      };
+        const id = route.params['id'] ? route.params['id'] : null;
+        if (id) {
+            return this.service.find(id).pipe(map((follow: HttpResponse<Follow>) => follow.body));
+        }
+        return of(new Follow());
     }
 }
 
@@ -29,16 +31,45 @@ export const followRoute: Routes = [
         path: 'follow',
         component: FollowComponent,
         resolve: {
-            'pagingParams': FollowResolvePagingParams
+            pagingParams: JhiResolvePagingParams
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            defaultSort: 'id,asc',
+            pageTitle: 'Follows'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'follow/:id/view',
+        component: FollowDetailComponent,
+        resolve: {
+            follow: FollowResolve
         },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Follows'
         },
         canActivate: [UserRouteAccessService]
-    }, {
-        path: 'follow/:id',
-        component: FollowDetailComponent,
+    },
+    {
+        path: 'follow/new',
+        component: FollowUpdateComponent,
+        resolve: {
+            follow: FollowResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'Follows'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'follow/:id/edit',
+        component: FollowUpdateComponent,
+        resolve: {
+            follow: FollowResolve
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Follows'
@@ -49,28 +80,11 @@ export const followRoute: Routes = [
 
 export const followPopupRoute: Routes = [
     {
-        path: 'follow-new',
-        component: FollowPopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Follows'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    },
-    {
-        path: 'follow/:id/edit',
-        component: FollowPopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Follows'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    },
-    {
         path: 'follow/:id/delete',
         component: FollowDeletePopupComponent,
+        resolve: {
+            follow: FollowResolve
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Follows'

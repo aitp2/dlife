@@ -1,7 +1,6 @@
 package com.aitp.dlife.service.dto;
 
-
-
+import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -22,7 +21,7 @@ public class AttendeeDTO implements Serializable {
     @Size(max = 1024)
     private String avatar;
 
-    private String participationTime;
+    private Instant participationTime;
 
     @Size(max = 128)
     private String activitiyTile;
@@ -61,11 +60,11 @@ public class AttendeeDTO implements Serializable {
         this.avatar = avatar;
     }
 
-    public String getParticipationTime() {
+    public Instant getParticipationTime() {
         return participationTime;
     }
 
-    public void setParticipationTime(String participationTime) {
+    public void setParticipationTime(Instant participationTime) {
         this.participationTime = participationTime;
     }
 
@@ -95,7 +94,7 @@ public class AttendeeDTO implements Serializable {
         }
 
         AttendeeDTO attendeeDTO = (AttendeeDTO) o;
-        if(attendeeDTO.getId() == null || getId() == null) {
+        if (attendeeDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), attendeeDTO.getId());
@@ -115,6 +114,7 @@ public class AttendeeDTO implements Serializable {
             ", avatar='" + getAvatar() + "'" +
             ", participationTime='" + getParticipationTime() + "'" +
             ", activitiyTile='" + getActivitiyTile() + "'" +
+            ", pinFanActivity=" + getPinFanActivityId() +
             "}";
     }
 }

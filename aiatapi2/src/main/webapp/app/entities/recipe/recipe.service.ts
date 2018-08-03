@@ -1,91 +1,79 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import * as moment from 'moment';
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { map } from 'rxjs/operators';
 
-import { JhiDateUtils } from 'ng-jhipster';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IRecipe } from 'app/shared/model/recipe.model';
 
-import { Recipe } from './recipe.model';
-import { ResponseWrapper, createRequestOption } from '../../shared';
+type EntityResponseType = HttpResponse<IRecipe>;
+type EntityArrayResponseType = HttpResponse<IRecipe[]>;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class RecipeService {
+    private resourceUrl = SERVER_API_URL + 'api/recipes';
 
-    private resourceUrl =  SERVER_API_URL + 'api/recipes';
+    constructor(private http: HttpClient) {}
 
-    constructor(private http: Http, private dateUtils: JhiDateUtils) { }
-
-    create(recipe: Recipe): Observable<Recipe> {
-        const copy = this.convert(recipe);
-        return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    create(recipe: IRecipe): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(recipe);
+        return this.http
+            .post<IRecipe>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    update(recipe: Recipe): Observable<Recipe> {
-        const copy = this.convert(recipe);
-        return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    update(recipe: IRecipe): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(recipe);
+        return this.http
+            .put<IRecipe>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    find(id: number): Observable<Recipe> {
-        return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    find(id: number): Observable<EntityResponseType> {
+        return this.http
+            .get<IRecipe>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    query(req?: any): Observable<ResponseWrapper> {
+    query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get(this.resourceUrl, options)
-            .map((res: Response) => this.convertResponse(res));
+        return this.http
+            .get<IRecipe[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
-    delete(id: number): Observable<Response> {
-        return this.http.delete(`${this.resourceUrl}/${id}`);
+    delete(id: number): Observable<HttpResponse<any>> {
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    private convertResponse(res: Response): ResponseWrapper {
-        const jsonResponse = res.json();
-        const result = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            result.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return new ResponseWrapper(res.headers, result, res.status);
-    }
-
-    /**
-     * Convert a returned JSON object to Recipe.
-     */
-    private convertItemFromServer(json: any): Recipe {
-        const entity: Recipe = Object.assign(new Recipe(), json);
-        entity.startTime = this.dateUtils
-            .convertDateTimeFromServer(json.startTime);
-        entity.endTime = this.dateUtils
-            .convertDateTimeFromServer(json.endTime);
-        entity.createTime = this.dateUtils
-            .convertDateTimeFromServer(json.createTime);
-        entity.modifyTime = this.dateUtils
-            .convertDateTimeFromServer(json.modifyTime);
-        return entity;
-    }
-
-    /**
-     * Convert a Recipe to a JSON which can be sent to the server.
-     */
-    private convert(recipe: Recipe): Recipe {
-        const copy: Recipe = Object.assign({}, recipe);
-
-        copy.startTime = this.dateUtils.toDate(recipe.startTime);
-
-        copy.endTime = this.dateUtils.toDate(recipe.endTime);
-
-        copy.createTime = this.dateUtils.toDate(recipe.createTime);
-
-        copy.modifyTime = this.dateUtils.toDate(recipe.modifyTime);
+    private convertDateFromClient(recipe: IRecipe): IRecipe {
+        const copy: IRecipe = Object.assign({}, recipe, {
+            startTime: recipe.startTime != null && recipe.startTime.isValid() ? recipe.startTime.toJSON() : null,
+            endTime: recipe.endTime != null && recipe.endTime.isValid() ? recipe.endTime.toJSON() : null,
+            createTime: recipe.createTime != null && recipe.createTime.isValid() ? recipe.createTime.toJSON() : null,
+            modifyTime: recipe.modifyTime != null && recipe.modifyTime.isValid() ? recipe.modifyTime.toJSON() : null
+        });
         return copy;
+    }
+
+    private convertDateFromServer(res: EntityResponseType): EntityResponseType {
+        res.body.startTime = res.body.startTime != null ? moment(res.body.startTime) : null;
+        res.body.endTime = res.body.endTime != null ? moment(res.body.endTime) : null;
+        res.body.createTime = res.body.createTime != null ? moment(res.body.createTime) : null;
+        res.body.modifyTime = res.body.modifyTime != null ? moment(res.body.modifyTime) : null;
+        return res;
+    }
+
+    private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+        res.body.forEach((recipe: IRecipe) => {
+            recipe.startTime = recipe.startTime != null ? moment(recipe.startTime) : null;
+            recipe.endTime = recipe.endTime != null ? moment(recipe.endTime) : null;
+            recipe.createTime = recipe.createTime != null ? moment(recipe.createTime) : null;
+            recipe.modifyTime = recipe.modifyTime != null ? moment(recipe.modifyTime) : null;
+        });
+        return res;
     }
 }

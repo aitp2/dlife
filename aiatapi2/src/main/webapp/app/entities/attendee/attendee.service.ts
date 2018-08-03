@@ -1,79 +1,71 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import * as moment from 'moment';
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { map } from 'rxjs/operators';
 
-import { JhiDateUtils } from 'ng-jhipster';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IAttendee } from 'app/shared/model/attendee.model';
 
-import { Attendee } from './attendee.model';
-import { ResponseWrapper, createRequestOption } from '../../shared';
+type EntityResponseType = HttpResponse<IAttendee>;
+type EntityArrayResponseType = HttpResponse<IAttendee[]>;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AttendeeService {
+    private resourceUrl = SERVER_API_URL + 'api/attendees';
 
-    private resourceUrl =  SERVER_API_URL + 'api/attendees';
+    constructor(private http: HttpClient) {}
 
-    constructor(private http: Http, private dateUtils: JhiDateUtils) { }
-
-    create(attendee: Attendee): Observable<Attendee> {
-        const copy = this.convert(attendee);
-        return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    create(attendee: IAttendee): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(attendee);
+        return this.http
+            .post<IAttendee>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    update(attendee: Attendee): Observable<Attendee> {
-        const copy = this.convert(attendee);
-        return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    update(attendee: IAttendee): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(attendee);
+        return this.http
+            .put<IAttendee>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    find(id: number): Observable<Attendee> {
-        return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    find(id: number): Observable<EntityResponseType> {
+        return this.http
+            .get<IAttendee>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    query(req?: any): Observable<ResponseWrapper> {
+    query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get(this.resourceUrl, options)
-            .map((res: Response) => this.convertResponse(res));
+        return this.http
+            .get<IAttendee[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
-    delete(id: number): Observable<Response> {
-        return this.http.delete(`${this.resourceUrl}/${id}`);
+    delete(id: number): Observable<HttpResponse<any>> {
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    private convertResponse(res: Response): ResponseWrapper {
-        const jsonResponse = res.json();
-        const result = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            result.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return new ResponseWrapper(res.headers, result, res.status);
-    }
-
-    /**
-     * Convert a returned JSON object to Attendee.
-     */
-    private convertItemFromServer(json: any): Attendee {
-        const entity: Attendee = Object.assign(new Attendee(), json);
-        entity.participationTime = this.dateUtils
-            .convertDateTimeFromServer(json.participationTime);
-        return entity;
-    }
-
-    /**
-     * Convert a Attendee to a JSON which can be sent to the server.
-     */
-    private convert(attendee: Attendee): Attendee {
-        const copy: Attendee = Object.assign({}, attendee);
-
-        copy.participationTime = this.dateUtils.toDate(attendee.participationTime);
+    private convertDateFromClient(attendee: IAttendee): IAttendee {
+        const copy: IAttendee = Object.assign({}, attendee, {
+            participationTime:
+                attendee.participationTime != null && attendee.participationTime.isValid() ? attendee.participationTime.toJSON() : null
+        });
         return copy;
+    }
+
+    private convertDateFromServer(res: EntityResponseType): EntityResponseType {
+        res.body.participationTime = res.body.participationTime != null ? moment(res.body.participationTime) : null;
+        return res;
+    }
+
+    private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+        res.body.forEach((attendee: IAttendee) => {
+            attendee.participationTime = attendee.participationTime != null ? moment(attendee.participationTime) : null;
+        });
+        return res;
     }
 }

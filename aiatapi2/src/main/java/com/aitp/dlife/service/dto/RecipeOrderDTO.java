@@ -1,12 +1,9 @@
 package com.aitp.dlife.service.dto;
 
-
-import java.io.Serializable;
 import java.time.Instant;
+import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.util.Objects;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Size;
 
 /**
  * A DTO for the RecipeOrder entity.
@@ -29,43 +26,13 @@ public class RecipeOrderDTO implements Serializable {
 
     private Double price;
 
-    private String createTime;
+    private Instant createTime;
 
-    private String modifyTime;
+    private Instant modifyTime;
 
     private Long recipeId;
 
-    private String imageURL;
-
-    private String recipeTile;
-
-    private String recipeStartTime;
-
-    public String getImageURL() {
-		return imageURL;
-	}
-
-	public void setImageURL(String imageURL) {
-		this.imageURL = imageURL;
-	}
-
-	public String getRecipeTile() {
-		return recipeTile;
-	}
-
-	public void setRecipeTile(String recipeTile) {
-		this.recipeTile = recipeTile;
-	}
-
-	public String getRecipeStartTime() {
-		return recipeStartTime;
-	}
-
-	public void setRecipeStartTime(String recipeStartTime) {
-		this.recipeStartTime = recipeStartTime;
-	}
-
-	public Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -113,19 +80,19 @@ public class RecipeOrderDTO implements Serializable {
         this.price = price;
     }
 
-    public String getCreateTime() {
+    public Instant getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Instant createTime) {
         this.createTime = createTime;
     }
 
-    public String getModifyTime() {
+    public Instant getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(String modifyTime) {
+    public void setModifyTime(Instant modifyTime) {
         this.modifyTime = modifyTime;
     }
 
@@ -147,7 +114,7 @@ public class RecipeOrderDTO implements Serializable {
         }
 
         RecipeOrderDTO recipeOrderDTO = (RecipeOrderDTO) o;
-        if(recipeOrderDTO.getId() == null || getId() == null) {
+        if (recipeOrderDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), recipeOrderDTO.getId());
@@ -169,6 +136,7 @@ public class RecipeOrderDTO implements Serializable {
             ", price=" + getPrice() +
             ", createTime='" + getCreateTime() + "'" +
             ", modifyTime='" + getModifyTime() + "'" +
+            ", recipe=" + getRecipeId() +
             "}";
     }
 }

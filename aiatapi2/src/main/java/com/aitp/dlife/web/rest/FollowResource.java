@@ -1,8 +1,5 @@
 package com.aitp.dlife.web.rest;
 
-import com.aitp.dlife.service.WechatUserService;
-import com.aitp.dlife.service.dto.WechatUserDTO;
-import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.FollowService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -10,7 +7,6 @@ import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import com.aitp.dlife.service.dto.FollowDTO;
 import io.github.jhipster.web.util.ResponseUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -24,7 +20,6 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,11 +36,8 @@ public class FollowResource {
 
     private final FollowService followService;
 
-    private final WechatUserService wechatUserService;
-
-    public FollowResource(FollowService followService, WechatUserService wechatUserService) {
+    public FollowResource(FollowService followService) {
         this.followService = followService;
-        this.wechatUserService = wechatUserService;
     }
 
     /**
@@ -62,53 +54,6 @@ public class FollowResource {
         if (followDTO.getId() != null) {
             throw new BadRequestAlertException("A new follow cannot already have an ID", ENTITY_NAME, "idexists");
         }
-
-        //set follow user message
-        if (StringUtils.isEmpty(followDTO.getFollowUserId()))
-        {
-            throw new BadRequestAlertException("The request must have the follow user id", ENTITY_NAME, "noFollowUserId");
-        }
-        try {
-            Long.valueOf(followDTO.getFollowUserId());
-        } catch (NumberFormatException e) {
-            throw new BadRequestAlertException("The request wechat user id must be number type", ENTITY_NAME, "notNumberType");
-        }
-        WechatUserDTO followUserDTO = wechatUserService.findOne(Long.valueOf(followDTO.getFollowUserId()));
-        if (followUserDTO == null)
-        {
-            throw new BadRequestAlertException("Can not get the wehcatUser by user id:" + followDTO.getFollowUserId(), ENTITY_NAME, "noFollowUser");
-        }
-        else
-        {
-            followDTO.setFollowUseravatar(followUserDTO.getAvatar());
-            followDTO.setFollowUserNickname(followUserDTO.getNickName());
-        }
-
-        //set followed user message
-        if (StringUtils.isEmpty(followDTO.getFollowedUserId()))
-        {
-            throw new BadRequestAlertException("The request must have the followed user id", ENTITY_NAME, "noFollowedUserId");
-        }
-        try {
-            Long.valueOf(followDTO.getFollowedUserId());
-        } catch (NumberFormatException e) {
-            throw new BadRequestAlertException("The request wechat user id must be number type", ENTITY_NAME, "notNumberType");
-        }
-        WechatUserDTO followedUserDTO = wechatUserService.findOne(Long.valueOf(followDTO.getFollowedUserId()));
-        if (followedUserDTO == null)
-        {
-            throw new BadRequestAlertException("Can not get the wehcatUser by user id:" + followDTO.getFollowUserId(), ENTITY_NAME, "noFollowUser");
-        }
-        else
-        {
-            followDTO.setFollowedUseravatar(followedUserDTO.getAvatar());
-            followDTO.setFollowedUserNickname(followedUserDTO.getNickName());
-        }
-
-        //set default messages
-        followDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
-        followDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
-
         FollowDTO result = followService.save(followDTO);
         return ResponseEntity.created(new URI("/api/follows/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -129,12 +74,8 @@ public class FollowResource {
     public ResponseEntity<FollowDTO> updateFollow(@Valid @RequestBody FollowDTO followDTO) throws URISyntaxException {
         log.debug("REST request to update Follow : {}", followDTO);
         if (followDTO.getId() == null) {
-            return createFollow(followDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-
-        //set default messages
-        followDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
-
         FollowDTO result = followService.save(followDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, followDTO.getId().toString()))
@@ -149,18 +90,9 @@ public class FollowResource {
      */
     @GetMapping("/follows")
     @Timed
-    public ResponseEntity<List<FollowDTO>> getAllFollows(Pageable pageable,
-    		@RequestParam(value = "followWechatUserId", required = false) String followWechatUserId,
-    		@RequestParam(value = "followedWechatUserId", required = false) String followedWechatUserId) {
+    public ResponseEntity<List<FollowDTO>> getAllFollows(Pageable pageable) {
         log.debug("REST request to get a page of Follows");
-        Page<FollowDTO> page = null;
-        if(!StringUtils.isEmpty(followWechatUserId)) {
-        	page = followService.findAllByFollowUserId(pageable, followWechatUserId);
-        }else if(!StringUtils.isEmpty(followedWechatUserId)) {
-        	page =  followService.findAllByFollowedUserId(pageable, followedWechatUserId);
-        }else {
-        	page = followService.findAll(pageable);
-        }
+        Page<FollowDTO> page = followService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/follows");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -175,8 +107,8 @@ public class FollowResource {
     @Timed
     public ResponseEntity<FollowDTO> getFollow(@PathVariable Long id) {
         log.debug("REST request to get Follow : {}", id);
-        FollowDTO followDTO = followService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(followDTO));
+        Optional<FollowDTO> followDTO = followService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(followDTO);
     }
 
     /**

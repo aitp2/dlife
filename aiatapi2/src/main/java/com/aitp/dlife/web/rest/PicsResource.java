@@ -1,6 +1,5 @@
 package com.aitp.dlife.web.rest;
 
-import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.PicsService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -8,7 +7,6 @@ import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import com.aitp.dlife.service.dto.PicsDTO;
 import io.github.jhipster.web.util.ResponseUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -21,8 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -57,9 +54,6 @@ public class PicsResource {
         if (picsDTO.getId() != null) {
             throw new BadRequestAlertException("A new pics cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        if(StringUtils.isEmpty(picsDTO.getCreateTime())){
-            picsDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
-        }
         PicsDTO result = picsService.save(picsDTO);
         return ResponseEntity.created(new URI("/api/pics/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -80,7 +74,7 @@ public class PicsResource {
     public ResponseEntity<PicsDTO> updatePics(@Valid @RequestBody PicsDTO picsDTO) throws URISyntaxException {
         log.debug("REST request to update Pics : {}", picsDTO);
         if (picsDTO.getId() == null) {
-            return createPics(picsDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         PicsDTO result = picsService.save(picsDTO);
         return ResponseEntity.ok()
@@ -113,8 +107,8 @@ public class PicsResource {
     @Timed
     public ResponseEntity<PicsDTO> getPics(@PathVariable Long id) {
         log.debug("REST request to get Pics : {}", id);
-        PicsDTO picsDTO = picsService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(picsDTO));
+        Optional<PicsDTO> picsDTO = picsService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(picsDTO);
     }
 
     /**
@@ -129,30 +123,5 @@ public class PicsResource {
         log.debug("REST request to delete Pics : {}", id);
         picsService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
-
-    /**
-     * POST  /pics : Create new pics.
-     *
-     * @param picsDTO the picsDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new picsDTO, or with status 400 (Bad Request) if the pics has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PostMapping("/multi-pics")
-    @Timed
-    public ResponseEntity<List<PicsDTO>> createPics(@Valid @RequestBody List<PicsDTO> picsDTOs) throws URISyntaxException {
-    	List<PicsDTO> list = new ArrayList<>();
-        for(PicsDTO picsDTO : picsDTOs){
-        	log.debug("REST request to save Pics : {}", picsDTO);
-            if (picsDTO.getId() != null) {
-                throw new BadRequestAlertException("A new pics cannot already have an ID", ENTITY_NAME, "idexists");
-            }
-            if(StringUtils.isEmpty(picsDTO.getCreateTime())){
-                picsDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
-            }
-            PicsDTO result = picsService.save(picsDTO);
-            list.add(result);
-        }
-        return ResponseEntity.ok(list);
     }
 }

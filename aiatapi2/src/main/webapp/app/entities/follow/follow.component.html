@@ -1,36 +1,34 @@
 <div>
-    <h2>
+    <h2 id="page-heading">
         <span>Follows</span>
-        <button class="btn btn-primary float-right jh-create-entity create-follow" [routerLink]="['/', { outlets: { popup: ['follow-new'] } }]">
-            <span class="fa fa-plus"></span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-follow" [routerLink]="['/follow/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
             <span >
             Create new Follow
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-    </div>
     <br/>
     <div class="table-responsive" *ngIf="follows">
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="followUserId"><span>Follow User Id</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="followUserNickname"><span>Follow User Nickname</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="followUseravatar"><span>Follow Useravatar</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="followedUserId"><span>Followed User Id</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="followedUserNickname"><span>Followed User Nickname</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="followedUseravatar"><span>Followed Useravatar</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="createTime"><span>Create Time</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="modifyTime"><span>Modify Time</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="followUserId"><span>Follow User Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="followUserNickname"><span>Follow User Nickname</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="followUseravatar"><span>Follow Useravatar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="followedUserId"><span>Followed User Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="followedUserNickname"><span>Followed User Nickname</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="followedUseravatar"><span>Followed Useravatar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="createTime"><span>Create Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="modifyTime"><span>Modify Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let follow of follows ;trackBy: trackId">
-                <td><a [routerLink]="['../follow', follow.id ]">{{follow.id}}</a></td>
+                <td><a [routerLink]="['/follow', follow.id, 'view' ]">{{follow.id}}</a></td>
                 <td>{{follow.followUserId}}</td>
                 <td>{{follow.followUserNickname}}</td>
                 <td>{{follow.followUseravatar}}</td>
@@ -42,17 +40,15 @@
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['../follow', follow.id ]"
+                                [routerLink]="['/follow', follow.id, 'view' ]"
                                 class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'follow/'+ follow.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                                [routerLink]="['/follow', follow.id, 'edit']"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
@@ -60,7 +56,7 @@
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
+                            <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline">Delete</span>
                         </button>
                     </div>

@@ -1,11 +1,8 @@
 package com.aitp.dlife.service.dto;
 
-
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -18,11 +15,9 @@ public class ImageDTO implements Serializable {
     @Size(max = 255)
     private String ossPath;
 
-    private String createTime;
+    private Instant createTime;
 
     private Long recipeId;
-
-    private Long evaluatId;
 
     public Long getId() {
         return id;
@@ -40,11 +35,11 @@ public class ImageDTO implements Serializable {
         this.ossPath = ossPath;
     }
 
-    public String getCreateTime() {
+    public Instant getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Instant createTime) {
         this.createTime = createTime;
     }
 
@@ -54,14 +49,6 @@ public class ImageDTO implements Serializable {
 
     public void setRecipeId(Long recipeId) {
         this.recipeId = recipeId;
-    }
-
-    public Long getEvaluatId() {
-        return evaluatId;
-    }
-
-    public void setEvaluatId(Long evaluateId) {
-        this.evaluatId = evaluateId;
     }
 
     @Override
@@ -74,7 +61,7 @@ public class ImageDTO implements Serializable {
         }
 
         ImageDTO imageDTO = (ImageDTO) o;
-        if(imageDTO.getId() == null || getId() == null) {
+        if (imageDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), imageDTO.getId());
@@ -91,6 +78,7 @@ public class ImageDTO implements Serializable {
             "id=" + getId() +
             ", ossPath='" + getOssPath() + "'" +
             ", createTime='" + getCreateTime() + "'" +
+            ", recipe=" + getRecipeId() +
             "}";
     }
 }

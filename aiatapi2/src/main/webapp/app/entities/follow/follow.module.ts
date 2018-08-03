@@ -1,51 +1,23 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AitpapiSharedModule } from '../../shared';
+import { AitpapiSharedModule } from 'app/shared';
 import {
-    FollowService,
-    FollowPopupService,
     FollowComponent,
     FollowDetailComponent,
-    FollowDialogComponent,
-    FollowPopupComponent,
+    FollowUpdateComponent,
     FollowDeletePopupComponent,
     FollowDeleteDialogComponent,
     followRoute,
-    followPopupRoute,
-    FollowResolvePagingParams,
+    followPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...followRoute,
-    ...followPopupRoute,
-];
+const ENTITY_STATES = [...followRoute, ...followPopupRoute];
 
 @NgModule({
-    imports: [
-        AitpapiSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
-    declarations: [
-        FollowComponent,
-        FollowDetailComponent,
-        FollowDialogComponent,
-        FollowDeleteDialogComponent,
-        FollowPopupComponent,
-        FollowDeletePopupComponent,
-    ],
-    entryComponents: [
-        FollowComponent,
-        FollowDialogComponent,
-        FollowPopupComponent,
-        FollowDeleteDialogComponent,
-        FollowDeletePopupComponent,
-    ],
-    providers: [
-        FollowService,
-        FollowPopupService,
-        FollowResolvePagingParams,
-    ],
+    imports: [AitpapiSharedModule, RouterModule.forChild(ENTITY_STATES)],
+    declarations: [FollowComponent, FollowDetailComponent, FollowUpdateComponent, FollowDeleteDialogComponent, FollowDeletePopupComponent],
+    entryComponents: [FollowComponent, FollowUpdateComponent, FollowDeleteDialogComponent, FollowDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AitpapiFollowModule {}

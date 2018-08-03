@@ -1,51 +1,23 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AitpapiSharedModule } from '../../shared';
+import { AitpapiSharedModule } from 'app/shared';
 import {
-    ImageService,
-    ImagePopupService,
     ImageComponent,
     ImageDetailComponent,
-    ImageDialogComponent,
-    ImagePopupComponent,
+    ImageUpdateComponent,
     ImageDeletePopupComponent,
     ImageDeleteDialogComponent,
     imageRoute,
-    imagePopupRoute,
-    ImageResolvePagingParams,
+    imagePopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...imageRoute,
-    ...imagePopupRoute,
-];
+const ENTITY_STATES = [...imageRoute, ...imagePopupRoute];
 
 @NgModule({
-    imports: [
-        AitpapiSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
-    declarations: [
-        ImageComponent,
-        ImageDetailComponent,
-        ImageDialogComponent,
-        ImageDeleteDialogComponent,
-        ImagePopupComponent,
-        ImageDeletePopupComponent,
-    ],
-    entryComponents: [
-        ImageComponent,
-        ImageDialogComponent,
-        ImagePopupComponent,
-        ImageDeleteDialogComponent,
-        ImageDeletePopupComponent,
-    ],
-    providers: [
-        ImageService,
-        ImagePopupService,
-        ImageResolvePagingParams,
-    ],
+    imports: [AitpapiSharedModule, RouterModule.forChild(ENTITY_STATES)],
+    declarations: [ImageComponent, ImageDetailComponent, ImageUpdateComponent, ImageDeleteDialogComponent, ImageDeletePopupComponent],
+    entryComponents: [ImageComponent, ImageUpdateComponent, ImageDeleteDialogComponent, ImageDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AitpapiImageModule {}

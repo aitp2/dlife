@@ -99,10 +99,12 @@ public class WechatUser implements Serializable {
 
     /**
      * 性别
+     * 值为1时是男性，值为2时是女性，值为0时是未知
      */
-    @ApiModelProperty(value = "性别")
+    @Max(value = 2)
+    @ApiModelProperty(value = "性别 值为1时是男性，值为2时是女性，值为0时是未知")
     @Column(name = "sex")
-    private Boolean sex;
+    private Integer sex;
 
     /**
      * 角色
@@ -114,10 +116,12 @@ public class WechatUser implements Serializable {
 
     /**
      * 厨师标志
+     * 值为1时是厨师，值为0时不是厨师
      */
-    @ApiModelProperty(value = "厨师标志")
+    @Max(value = 2)
+    @ApiModelProperty(value = "厨师标志 值为1时是厨师，值为0时不是厨师")
     @Column(name = "cook_flag")
-    private Boolean cookFlag;
+    private Integer cookFlag;
 
     /**
      * 兴趣
@@ -275,16 +279,16 @@ public class WechatUser implements Serializable {
         this.introduce = introduce;
     }
 
-    public Boolean isSex() {
+    public Integer getSex() {
         return sex;
     }
 
-    public WechatUser sex(Boolean sex) {
+    public WechatUser sex(Integer sex) {
         this.sex = sex;
         return this;
     }
 
-    public void setSex(Boolean sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 
@@ -301,16 +305,16 @@ public class WechatUser implements Serializable {
         this.companyRole = companyRole;
     }
 
-    public Boolean isCookFlag() {
+    public Integer getCookFlag() {
         return cookFlag;
     }
 
-    public WechatUser cookFlag(Boolean cookFlag) {
+    public WechatUser cookFlag(Integer cookFlag) {
         this.cookFlag = cookFlag;
         return this;
     }
 
-    public void setCookFlag(Boolean cookFlag) {
+    public void setCookFlag(Integer cookFlag) {
         this.cookFlag = cookFlag;
     }
 
@@ -400,9 +404,9 @@ public class WechatUser implements Serializable {
             ", project='" + getProject() + "'" +
             ", seat='" + getSeat() + "'" +
             ", introduce='" + getIntroduce() + "'" +
-            ", sex='" + isSex() + "'" +
+            ", sex=" + getSex() +
             ", companyRole='" + getCompanyRole() + "'" +
-            ", cookFlag='" + isCookFlag() + "'" +
+            ", cookFlag=" + getCookFlag() +
             ", intesting='" + getIntesting() + "'" +
             ", skill='" + getSkill() + "'" +
             ", createTime='" + getCreateTime() + "'" +

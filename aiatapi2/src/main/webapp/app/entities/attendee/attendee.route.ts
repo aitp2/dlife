@@ -1,26 +1,28 @@
 import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil } from 'ng-jhipster';
-
-import { UserRouteAccessService } from '../../shared';
+import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
+import { UserRouteAccessService } from 'app/core';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Attendee } from 'app/shared/model/attendee.model';
+import { AttendeeService } from './attendee.service';
 import { AttendeeComponent } from './attendee.component';
 import { AttendeeDetailComponent } from './attendee-detail.component';
-import { AttendeePopupComponent } from './attendee-dialog.component';
+import { AttendeeUpdateComponent } from './attendee-update.component';
 import { AttendeeDeletePopupComponent } from './attendee-delete-dialog.component';
+import { IAttendee } from 'app/shared/model/attendee.model';
 
-@Injectable()
-export class AttendeeResolvePagingParams implements Resolve<any> {
-
-    constructor(private paginationUtil: JhiPaginationUtil) {}
+@Injectable({ providedIn: 'root' })
+export class AttendeeResolve implements Resolve<IAttendee> {
+    constructor(private service: AttendeeService) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
-        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
-        return {
-            page: this.paginationUtil.parsePage(page),
-            predicate: this.paginationUtil.parsePredicate(sort),
-            ascending: this.paginationUtil.parseAscending(sort)
-      };
+        const id = route.params['id'] ? route.params['id'] : null;
+        if (id) {
+            return this.service.find(id).pipe(map((attendee: HttpResponse<Attendee>) => attendee.body));
+        }
+        return of(new Attendee());
     }
 }
 
@@ -29,16 +31,45 @@ export const attendeeRoute: Routes = [
         path: 'attendee',
         component: AttendeeComponent,
         resolve: {
-            'pagingParams': AttendeeResolvePagingParams
+            pagingParams: JhiResolvePagingParams
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            defaultSort: 'id,asc',
+            pageTitle: 'Attendees'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'attendee/:id/view',
+        component: AttendeeDetailComponent,
+        resolve: {
+            attendee: AttendeeResolve
         },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Attendees'
         },
         canActivate: [UserRouteAccessService]
-    }, {
-        path: 'attendee/:id',
-        component: AttendeeDetailComponent,
+    },
+    {
+        path: 'attendee/new',
+        component: AttendeeUpdateComponent,
+        resolve: {
+            attendee: AttendeeResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'Attendees'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'attendee/:id/edit',
+        component: AttendeeUpdateComponent,
+        resolve: {
+            attendee: AttendeeResolve
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Attendees'
@@ -49,28 +80,11 @@ export const attendeeRoute: Routes = [
 
 export const attendeePopupRoute: Routes = [
     {
-        path: 'attendee-new',
-        component: AttendeePopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Attendees'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    },
-    {
-        path: 'attendee/:id/edit',
-        component: AttendeePopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Attendees'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    },
-    {
         path: 'attendee/:id/delete',
         component: AttendeeDeletePopupComponent,
+        resolve: {
+            attendee: AttendeeResolve
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Attendees'

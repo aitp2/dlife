@@ -1,22 +1,18 @@
 package com.aitp.dlife.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+import javax.persistence.*;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
+import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 /**
  * 健身活动信息
  */
@@ -128,12 +124,11 @@ public class FitnessActivity implements Serializable {
     @Column(name = "reading_count")
     private Integer readingCount;
 
-    @OneToMany(mappedBy = "activity")
+    @OneToMany(mappedBy = "fitnessActivity")
     private Set<ActivityParticipation> activityParticipations = new HashSet<>();
 
     @OneToMany(mappedBy = "fitnessActivity")
-    private Set<Pics> images = new HashSet<>();
-    
+    private Set<Pics> pics = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -337,13 +332,13 @@ public class FitnessActivity implements Serializable {
 
     public FitnessActivity addActivityParticipation(ActivityParticipation activityParticipation) {
         this.activityParticipations.add(activityParticipation);
-        activityParticipation.setActivity(this);
+        activityParticipation.setFitnessActivity(this);
         return this;
     }
 
     public FitnessActivity removeActivityParticipation(ActivityParticipation activityParticipation) {
         this.activityParticipations.remove(activityParticipation);
-        activityParticipation.setActivity(null);
+        activityParticipation.setFitnessActivity(null);
         return this;
     }
 
@@ -351,29 +346,29 @@ public class FitnessActivity implements Serializable {
         this.activityParticipations = activityParticipations;
     }
 
-    public Set<Pics> getImages() {
-        return images;
+    public Set<Pics> getPics() {
+        return pics;
     }
 
-    public FitnessActivity images(Set<Pics> pics) {
-        this.images = pics;
+    public FitnessActivity pics(Set<Pics> pics) {
+        this.pics = pics;
         return this;
     }
 
-    public FitnessActivity addImage(Pics pics) {
-        this.images.add(pics);
+    public FitnessActivity addPics(Pics pics) {
+        this.pics.add(pics);
         pics.setFitnessActivity(this);
         return this;
     }
 
-    public FitnessActivity removeImage(Pics pics) {
-        this.images.remove(pics);
+    public FitnessActivity removePics(Pics pics) {
+        this.pics.remove(pics);
         pics.setFitnessActivity(null);
         return this;
     }
 
-    public void setImages(Set<Pics> pics) {
-        this.images = pics;
+    public void setPics(Set<Pics> pics) {
+        this.pics = pics;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

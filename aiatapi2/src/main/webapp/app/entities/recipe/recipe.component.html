@@ -1,42 +1,40 @@
 <div>
-    <h2>
+    <h2 id="page-heading">
         <span>Recipes</span>
-        <button class="btn btn-primary float-right jh-create-entity create-recipe" [routerLink]="['/', { outlets: { popup: ['recipe-new'] } }]">
-            <span class="fa fa-plus"></span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-recipe" [routerLink]="['/recipe/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
             <span >
             Create new Recipe
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-    </div>
     <br/>
     <div class="table-responsive" *ngIf="recipes">
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="wechatUserId"><span>Wechat User Id</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="avatar"><span>Avatar</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="nickName"><span>Nick Name</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="title"><span>Title</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="content"><span>Content</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="startTime"><span>Start Time</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="endTime"><span>End Time</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="price"><span>Price</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="num"><span>Num</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="status"><span>Status</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="publishVersion"><span>Publish Version</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="hot"><span>Hot</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="createTime"><span>Create Time</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="modifyTime"><span>Modify Time</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="wechatUserId"><span>Wechat User Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="avatar"><span>Avatar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="nickName"><span>Nick Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="title"><span>Title</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="content"><span>Content</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="startTime"><span>Start Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="endTime"><span>End Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="price"><span>Price</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="num"><span>Num</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="status"><span>Status</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="publishVersion"><span>Publish Version</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="hot"><span>Hot</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="createTime"><span>Create Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="modifyTime"><span>Modify Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let recipe of recipes ;trackBy: trackId">
-                <td><a [routerLink]="['../recipe', recipe.id ]">{{recipe.id}}</a></td>
+                <td><a [routerLink]="['/recipe', recipe.id, 'view' ]">{{recipe.id}}</a></td>
                 <td>{{recipe.wechatUserId}}</td>
                 <td>{{recipe.avatar}}</td>
                 <td>{{recipe.nickName}}</td>
@@ -54,17 +52,15 @@
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['../recipe', recipe.id ]"
+                                [routerLink]="['/recipe', recipe.id, 'view' ]"
                                 class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'recipe/'+ recipe.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                                [routerLink]="['/recipe', recipe.id, 'edit']"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
@@ -72,7 +68,7 @@
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
+                            <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline">Delete</span>
                         </button>
                     </div>

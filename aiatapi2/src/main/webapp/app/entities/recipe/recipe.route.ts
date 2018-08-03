@@ -1,26 +1,28 @@
 import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil } from 'ng-jhipster';
-
-import { UserRouteAccessService } from '../../shared';
+import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
+import { UserRouteAccessService } from 'app/core';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Recipe } from 'app/shared/model/recipe.model';
+import { RecipeService } from './recipe.service';
 import { RecipeComponent } from './recipe.component';
 import { RecipeDetailComponent } from './recipe-detail.component';
-import { RecipePopupComponent } from './recipe-dialog.component';
+import { RecipeUpdateComponent } from './recipe-update.component';
 import { RecipeDeletePopupComponent } from './recipe-delete-dialog.component';
+import { IRecipe } from 'app/shared/model/recipe.model';
 
-@Injectable()
-export class RecipeResolvePagingParams implements Resolve<any> {
-
-    constructor(private paginationUtil: JhiPaginationUtil) {}
+@Injectable({ providedIn: 'root' })
+export class RecipeResolve implements Resolve<IRecipe> {
+    constructor(private service: RecipeService) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
-        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
-        return {
-            page: this.paginationUtil.parsePage(page),
-            predicate: this.paginationUtil.parsePredicate(sort),
-            ascending: this.paginationUtil.parseAscending(sort)
-      };
+        const id = route.params['id'] ? route.params['id'] : null;
+        if (id) {
+            return this.service.find(id).pipe(map((recipe: HttpResponse<Recipe>) => recipe.body));
+        }
+        return of(new Recipe());
     }
 }
 
@@ -29,16 +31,45 @@ export const recipeRoute: Routes = [
         path: 'recipe',
         component: RecipeComponent,
         resolve: {
-            'pagingParams': RecipeResolvePagingParams
+            pagingParams: JhiResolvePagingParams
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            defaultSort: 'id,asc',
+            pageTitle: 'Recipes'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'recipe/:id/view',
+        component: RecipeDetailComponent,
+        resolve: {
+            recipe: RecipeResolve
         },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Recipes'
         },
         canActivate: [UserRouteAccessService]
-    }, {
-        path: 'recipe/:id',
-        component: RecipeDetailComponent,
+    },
+    {
+        path: 'recipe/new',
+        component: RecipeUpdateComponent,
+        resolve: {
+            recipe: RecipeResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'Recipes'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'recipe/:id/edit',
+        component: RecipeUpdateComponent,
+        resolve: {
+            recipe: RecipeResolve
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Recipes'
@@ -49,28 +80,11 @@ export const recipeRoute: Routes = [
 
 export const recipePopupRoute: Routes = [
     {
-        path: 'recipe-new',
-        component: RecipePopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Recipes'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    },
-    {
-        path: 'recipe/:id/edit',
-        component: RecipePopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Recipes'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    },
-    {
         path: 'recipe/:id/delete',
         component: RecipeDeletePopupComponent,
+        resolve: {
+            recipe: RecipeResolve
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Recipes'

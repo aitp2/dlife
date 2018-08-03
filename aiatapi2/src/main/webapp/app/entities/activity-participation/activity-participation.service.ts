@@ -1,79 +1,81 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import * as moment from 'moment';
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { map } from 'rxjs/operators';
 
-import { JhiDateUtils } from 'ng-jhipster';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IActivityParticipation } from 'app/shared/model/activity-participation.model';
 
-import { ActivityParticipation } from './activity-participation.model';
-import { ResponseWrapper, createRequestOption } from '../../shared';
+type EntityResponseType = HttpResponse<IActivityParticipation>;
+type EntityArrayResponseType = HttpResponse<IActivityParticipation[]>;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ActivityParticipationService {
+    private resourceUrl = SERVER_API_URL + 'api/activity-participations';
 
-    private resourceUrl =  SERVER_API_URL + 'api/activity-participations';
+    constructor(private http: HttpClient) {}
 
-    constructor(private http: Http, private dateUtils: JhiDateUtils) { }
-
-    create(activityParticipation: ActivityParticipation): Observable<ActivityParticipation> {
-        const copy = this.convert(activityParticipation);
-        return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    create(activityParticipation: IActivityParticipation): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(activityParticipation);
+        return this.http
+            .post<IActivityParticipation>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    update(activityParticipation: ActivityParticipation): Observable<ActivityParticipation> {
-        const copy = this.convert(activityParticipation);
-        return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    update(activityParticipation: IActivityParticipation): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(activityParticipation);
+        return this.http
+            .put<IActivityParticipation>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    find(id: number): Observable<ActivityParticipation> {
-        return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    find(id: number): Observable<EntityResponseType> {
+        return this.http
+            .get<IActivityParticipation>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    query(req?: any): Observable<ResponseWrapper> {
+    query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get(this.resourceUrl, options)
-            .map((res: Response) => this.convertResponse(res));
+        return this.http
+            .get<IActivityParticipation[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
-    delete(id: number): Observable<Response> {
-        return this.http.delete(`${this.resourceUrl}/${id}`);
+    delete(id: number): Observable<HttpResponse<any>> {
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    private convertResponse(res: Response): ResponseWrapper {
-        const jsonResponse = res.json();
-        const result = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            result.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return new ResponseWrapper(res.headers, result, res.status);
-    }
-
-    /**
-     * Convert a returned JSON object to ActivityParticipation.
-     */
-    private convertItemFromServer(json: any): ActivityParticipation {
-        const entity: ActivityParticipation = Object.assign(new ActivityParticipation(), json);
-        entity.participationTime = this.dateUtils
-            .convertDateTimeFromServer(json.participationTime);
-        return entity;
-    }
-
-    /**
-     * Convert a ActivityParticipation to a JSON which can be sent to the server.
-     */
-    private convert(activityParticipation: ActivityParticipation): ActivityParticipation {
-        const copy: ActivityParticipation = Object.assign({}, activityParticipation);
-
-        copy.participationTime = this.dateUtils.toDate(activityParticipation.participationTime);
+    private convertDateFromClient(activityParticipation: IActivityParticipation): IActivityParticipation {
+        const copy: IActivityParticipation = Object.assign({}, activityParticipation, {
+            participationTime:
+                activityParticipation.participationTime != null && activityParticipation.participationTime.isValid()
+                    ? activityParticipation.participationTime.toJSON()
+                    : null,
+            latestClockinTime:
+                activityParticipation.latestClockinTime != null && activityParticipation.latestClockinTime.isValid()
+                    ? activityParticipation.latestClockinTime.toJSON()
+                    : null
+        });
         return copy;
+    }
+
+    private convertDateFromServer(res: EntityResponseType): EntityResponseType {
+        res.body.participationTime = res.body.participationTime != null ? moment(res.body.participationTime) : null;
+        res.body.latestClockinTime = res.body.latestClockinTime != null ? moment(res.body.latestClockinTime) : null;
+        return res;
+    }
+
+    private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+        res.body.forEach((activityParticipation: IActivityParticipation) => {
+            activityParticipation.participationTime =
+                activityParticipation.participationTime != null ? moment(activityParticipation.participationTime) : null;
+            activityParticipation.latestClockinTime =
+                activityParticipation.latestClockinTime != null ? moment(activityParticipation.latestClockinTime) : null;
+        });
+        return res;
     }
 }

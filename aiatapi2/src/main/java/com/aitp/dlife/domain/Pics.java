@@ -1,6 +1,8 @@
 package com.aitp.dlife.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -23,17 +25,27 @@ public class Pics implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * 图片路径
+     */
     @Size(max = 255)
+    @ApiModelProperty(value = "图片路径")
     @Column(name = "oss_path", length = 255)
     private String ossPath;
 
+    /**
+     * 创建时间
+     */
+    @ApiModelProperty(value = "创建时间")
     @Column(name = "create_time")
     private Instant createTime;
 
     @ManyToOne
+    @JsonIgnoreProperties("pics")
     private FitnessActivity fitnessActivity;
 
     @ManyToOne
+    @JsonIgnoreProperties("pics")
     private ClockIn clockIn;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

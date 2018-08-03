@@ -1,51 +1,29 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AitpapiSharedModule } from '../../shared';
+import { AitpapiSharedModule } from 'app/shared';
 import {
-    PinfanPicsService,
-    PinfanPicsPopupService,
     PinfanPicsComponent,
     PinfanPicsDetailComponent,
-    PinfanPicsDialogComponent,
-    PinfanPicsPopupComponent,
+    PinfanPicsUpdateComponent,
     PinfanPicsDeletePopupComponent,
     PinfanPicsDeleteDialogComponent,
     pinfanPicsRoute,
-    pinfanPicsPopupRoute,
-    PinfanPicsResolvePagingParams,
+    pinfanPicsPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...pinfanPicsRoute,
-    ...pinfanPicsPopupRoute,
-];
+const ENTITY_STATES = [...pinfanPicsRoute, ...pinfanPicsPopupRoute];
 
 @NgModule({
-    imports: [
-        AitpapiSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
+    imports: [AitpapiSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [
         PinfanPicsComponent,
         PinfanPicsDetailComponent,
-        PinfanPicsDialogComponent,
+        PinfanPicsUpdateComponent,
         PinfanPicsDeleteDialogComponent,
-        PinfanPicsPopupComponent,
-        PinfanPicsDeletePopupComponent,
+        PinfanPicsDeletePopupComponent
     ],
-    entryComponents: [
-        PinfanPicsComponent,
-        PinfanPicsDialogComponent,
-        PinfanPicsPopupComponent,
-        PinfanPicsDeleteDialogComponent,
-        PinfanPicsDeletePopupComponent,
-    ],
-    providers: [
-        PinfanPicsService,
-        PinfanPicsPopupService,
-        PinfanPicsResolvePagingParams,
-    ],
+    entryComponents: [PinfanPicsComponent, PinfanPicsUpdateComponent, PinfanPicsDeleteDialogComponent, PinfanPicsDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AitpapiPinfanPicsModule {}

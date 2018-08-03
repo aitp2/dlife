@@ -1,51 +1,40 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 import { AitpapiTestModule } from '../../../test.module';
-import { ActivityParticipationDetailComponent } from '../../../../../../main/webapp/app/entities/activity-participation/activity-participation-detail.component';
-import { ActivityParticipationService } from '../../../../../../main/webapp/app/entities/activity-participation/activity-participation.service';
-import { ActivityParticipation } from '../../../../../../main/webapp/app/entities/activity-participation/activity-participation.model';
+import { ActivityParticipationDetailComponent } from 'app/entities/activity-participation/activity-participation-detail.component';
+import { ActivityParticipation } from 'app/shared/model/activity-participation.model';
 
 describe('Component Tests', () => {
-
     describe('ActivityParticipation Management Detail Component', () => {
         let comp: ActivityParticipationDetailComponent;
         let fixture: ComponentFixture<ActivityParticipationDetailComponent>;
-        let service: ActivityParticipationService;
+        const route = ({ data: of({ activityParticipation: new ActivityParticipation(123) }) } as any) as ActivatedRoute;
 
-        beforeEach(async(() => {
+        beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [AitpapiTestModule],
                 declarations: [ActivityParticipationDetailComponent],
-                providers: [
-                    ActivityParticipationService
-                ]
+                providers: [{ provide: ActivatedRoute, useValue: route }]
             })
-            .overrideTemplate(ActivityParticipationDetailComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
+                .overrideTemplate(ActivityParticipationDetailComponent, '')
+                .compileComponents();
             fixture = TestBed.createComponent(ActivityParticipationDetailComponent);
             comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(ActivityParticipationService);
         });
 
         describe('OnInit', () => {
             it('Should call load all on init', () => {
                 // GIVEN
 
-                spyOn(service, 'find').and.returnValue(Observable.of(new ActivityParticipation(123)));
-
                 // WHEN
                 comp.ngOnInit();
 
                 // THEN
-                expect(service.find).toHaveBeenCalledWith(123);
-                expect(comp.activityParticipation).toEqual(jasmine.objectContaining({id: 123}));
+                expect(comp.activityParticipation).toEqual(jasmine.objectContaining({ id: 123 }));
             });
         });
     });
-
 });

@@ -1,82 +1,95 @@
 /* tslint:disable max-line-length */
-import { TestBed, async } from '@angular/core/testing';
-import { MockBackend } from '@angular/http/testing';
-import { ConnectionBackend, RequestOptions, BaseRequestOptions, Http, Response, ResponseOptions } from '@angular/http';
-import { JhiDateUtils } from 'ng-jhipster';
-
-import { ImageService } from '../../../../../../main/webapp/app/entities/image/image.service';
-import { Image } from '../../../../../../main/webapp/app/entities/image/image.model';
-import { SERVER_API_URL } from '../../../../../../main/webapp/app/app.constants';
+import { TestBed, getTestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { ImageService } from 'app/entities/image/image.service';
+import { Image } from 'app/shared/model/image.model';
+import { SERVER_API_URL } from 'app/app.constants';
 
 describe('Service Tests', () => {
-
     describe('Image Service', () => {
+        let injector: TestBed;
         let service: ImageService;
+        let httpMock: HttpTestingController;
 
-        beforeEach(async(() => {
+        beforeEach(() => {
             TestBed.configureTestingModule({
-                providers: [
-                    {
-                        provide: ConnectionBackend,
-                        useClass: MockBackend
-                    },
-                    {
-                        provide: RequestOptions,
-                        useClass: BaseRequestOptions
-                    },
-                    Http,
-                    JhiDateUtils,
-                    ImageService
-                ]
+                imports: [HttpClientTestingModule]
             });
-
-            service = TestBed.get(ImageService);
-
-            this.backend = TestBed.get(ConnectionBackend) as MockBackend;
-            this.backend.connections.subscribe((connection: any) => {
-                this.lastConnection = connection;
-            });
-        }));
+            injector = getTestBed();
+            service = injector.get(ImageService);
+            httpMock = injector.get(HttpTestingController);
+        });
 
         describe('Service methods', () => {
             it('should call correct URL', () => {
                 service.find(123).subscribe(() => {});
 
-                expect(this.lastConnection).toBeDefined();
+                const req = httpMock.expectOne({ method: 'GET' });
 
                 const resourceUrl = SERVER_API_URL + 'api/images';
-                expect(this.lastConnection.request.url).toEqual(resourceUrl + '/' + 123);
+                expect(req.request.url).toEqual(resourceUrl + '/' + 123);
             });
-            it('should return Image', () => {
 
-                let entity: Image;
-                service.find(123).subscribe((_entity: Image) => {
-                    entity = _entity;
+            it('should create a Image', () => {
+                service.create(new Image(null)).subscribe(received => {
+                    expect(received.body.id).toEqual(null);
                 });
 
-                this.lastConnection.mockRespond(new Response(new ResponseOptions({
-                    body: JSON.stringify({id: 123}),
-                })));
+                const req = httpMock.expectOne({ method: 'POST' });
+                req.flush({ id: null });
+            });
 
-                expect(entity).toBeDefined();
-                expect(entity.id).toEqual(123);
+            it('should update a Image', () => {
+                service.update(new Image(123)).subscribe(received => {
+                    expect(received.body.id).toEqual(123);
+                });
+
+                const req = httpMock.expectOne({ method: 'PUT' });
+                req.flush({ id: 123 });
+            });
+
+            it('should return a Image', () => {
+                service.find(123).subscribe(received => {
+                    expect(received.body.id).toEqual(123);
+                });
+
+                const req = httpMock.expectOne({ method: 'GET' });
+                req.flush({ id: 123 });
+            });
+
+            it('should return a list of Image', () => {
+                service.query(null).subscribe(received => {
+                    expect(received.body[0].id).toEqual(123);
+                });
+
+                const req = httpMock.expectOne({ method: 'GET' });
+                req.flush([new Image(123)]);
+            });
+
+            it('should delete a Image', () => {
+                service.delete(123).subscribe(received => {
+                    expect(received.url).toContain('/' + 123);
+                });
+
+                const req = httpMock.expectOne({ method: 'DELETE' });
+                req.flush(null);
             });
 
             it('should propagate not found response', () => {
-
-                let error: any;
                 service.find(123).subscribe(null, (_error: any) => {
-                    error = _error;
+                    expect(_error.status).toEqual(404);
                 });
 
-                this.lastConnection.mockError(new Response(new ResponseOptions({
+                const req = httpMock.expectOne({ method: 'GET' });
+                req.flush('Invalid request parameters', {
                     status: 404,
-                })));
-
-                expect(error).toBeDefined();
-                expect(error.status).toEqual(404);
+                    statusText: 'Bad Request'
+                });
             });
         });
-    });
 
+        afterEach(() => {
+            httpMock.verify();
+        });
+    });
 });

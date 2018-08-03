@@ -1,5 +1,6 @@
 package com.aitp.dlife.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -58,6 +59,7 @@ public class RecipeOrder implements Serializable {
     private Instant modifyTime;
 
     @ManyToOne
+    @JsonIgnoreProperties("recipeOrders")
     private Recipe recipe;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

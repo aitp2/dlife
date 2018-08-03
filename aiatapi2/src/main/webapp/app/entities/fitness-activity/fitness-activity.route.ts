@@ -15,81 +15,81 @@ import { IFitnessActivity } from 'app/shared/model/fitness-activity.model';
 
 @Injectable({ providedIn: 'root' })
 export class FitnessActivityResolve implements Resolve<IFitnessActivity> {
-  constructor(private service: FitnessActivityService) {}
+    constructor(private service: FitnessActivityService) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const id = route.params['id'] ? route.params['id'] : null;
-    if (id) {
-      return this.service.find(id).pipe(map((fitnessActivity: HttpResponse<FitnessActivity>) => fitnessActivity.body));
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        const id = route.params['id'] ? route.params['id'] : null;
+        if (id) {
+            return this.service.find(id).pipe(map((fitnessActivity: HttpResponse<FitnessActivity>) => fitnessActivity.body));
+        }
+        return of(new FitnessActivity());
     }
-    return of(new FitnessActivity());
-  }
 }
 
 export const fitnessActivityRoute: Routes = [
-  {
-    path: 'fitness-activity',
-    component: FitnessActivityComponent,
-    resolve: {
-      pagingParams: JhiResolvePagingParams
+    {
+        path: 'fitness-activity',
+        component: FitnessActivityComponent,
+        resolve: {
+            pagingParams: JhiResolvePagingParams
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            defaultSort: 'id,asc',
+            pageTitle: 'FitnessActivities'
+        },
+        canActivate: [UserRouteAccessService]
     },
-    data: {
-      authorities: ['ROLE_USER'],
-      defaultSort: 'id,asc',
-      pageTitle: 'FitnessActivities'
+    {
+        path: 'fitness-activity/:id/view',
+        component: FitnessActivityDetailComponent,
+        resolve: {
+            fitnessActivity: FitnessActivityResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'FitnessActivities'
+        },
+        canActivate: [UserRouteAccessService]
     },
-    canActivate: [UserRouteAccessService]
-  },
-  {
-    path: 'fitness-activity/:id/view',
-    component: FitnessActivityDetailComponent,
-    resolve: {
-      fitnessActivity: FitnessActivityResolve
+    {
+        path: 'fitness-activity/new',
+        component: FitnessActivityUpdateComponent,
+        resolve: {
+            fitnessActivity: FitnessActivityResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'FitnessActivities'
+        },
+        canActivate: [UserRouteAccessService]
     },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'FitnessActivities'
-    },
-    canActivate: [UserRouteAccessService]
-  },
-  {
-    path: 'fitness-activity/new',
-    component: FitnessActivityUpdateComponent,
-    resolve: {
-      fitnessActivity: FitnessActivityResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'FitnessActivities'
-    },
-    canActivate: [UserRouteAccessService]
-  },
-  {
-    path: 'fitness-activity/:id/edit',
-    component: FitnessActivityUpdateComponent,
-    resolve: {
-      fitnessActivity: FitnessActivityResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'FitnessActivities'
-    },
-    canActivate: [UserRouteAccessService]
-  }
+    {
+        path: 'fitness-activity/:id/edit',
+        component: FitnessActivityUpdateComponent,
+        resolve: {
+            fitnessActivity: FitnessActivityResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'FitnessActivities'
+        },
+        canActivate: [UserRouteAccessService]
+    }
 ];
 
 export const fitnessActivityPopupRoute: Routes = [
-  {
-    path: 'fitness-activity/:id/delete',
-    component: FitnessActivityDeletePopupComponent,
-    resolve: {
-      fitnessActivity: FitnessActivityResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'FitnessActivities'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  }
+    {
+        path: 'fitness-activity/:id/delete',
+        component: FitnessActivityDeletePopupComponent,
+        resolve: {
+            fitnessActivity: FitnessActivityResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'FitnessActivities'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    }
 ];

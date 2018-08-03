@@ -36,6 +36,7 @@
             <th jhiSortBy="status"><span>Status</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="commentCount"><span>Comment Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="readingCount"><span>Reading Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="modifyTime"><span>Modify Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -63,6 +64,7 @@
                 <td>{{pinFanActivity.status}}</td>
                 <td>{{pinFanActivity.commentCount}}</td>
                 <td>{{pinFanActivity.readingCount}}</td>
+                <td>{{pinFanActivity.modifyTime | date:'medium'}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

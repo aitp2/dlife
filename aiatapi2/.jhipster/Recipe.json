@@ -1,19 +1,5 @@
 {
-    "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "recipeOrder",
-            "otherEntityName": "recipeOrder",
-            "otherEntityRelationshipName": "recipe"
-        },
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "image",
-            "otherEntityName": "image",
-            "otherEntityRelationshipName": "recipe"
-        }
-    ],
+    "name": "Recipe",
     "fields": [
         {
             "fieldName": "wechatUserId",
@@ -107,11 +93,28 @@
             "fieldType": "Instant"
         }
     ],
-    "changelogDate": "20180704083411",
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "image",
+            "otherEntityName": "image",
+            "otherEntityRelationshipName": "recipe"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "recipeOrder",
+            "otherEntityName": "recipeOrder",
+            "otherEntityRelationshipName": "recipe"
+        }
+    ],
+    "changelogDate": "20180802115454",
     "javadoc": "菜谱信息",
     "entityTableName": "recipe",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
-    "jpaMetamodelFiltering": false
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

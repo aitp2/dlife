@@ -1,15 +1,14 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { AitpapiTestModule } from '../../../test.module';
-import { ImageDeleteDialogComponent } from '../../../../../../main/webapp/app/entities/image/image-delete-dialog.component';
-import { ImageService } from '../../../../../../main/webapp/app/entities/image/image.service';
+import { ImageDeleteDialogComponent } from 'app/entities/image/image-delete-dialog.component';
+import { ImageService } from 'app/entities/image/image.service';
 
 describe('Component Tests', () => {
-
     describe('Image Management Delete Component', () => {
         let comp: ImageDeleteDialogComponent;
         let fixture: ComponentFixture<ImageDeleteDialogComponent>;
@@ -17,19 +16,13 @@ describe('Component Tests', () => {
         let mockEventManager: any;
         let mockActiveModal: any;
 
-        beforeEach(async(() => {
+        beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [AitpapiTestModule],
-                declarations: [ImageDeleteDialogComponent],
-                providers: [
-                    ImageService
-                ]
+                declarations: [ImageDeleteDialogComponent]
             })
-            .overrideTemplate(ImageDeleteDialogComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
+                .overrideTemplate(ImageDeleteDialogComponent, '')
+                .compileComponents();
             fixture = TestBed.createComponent(ImageDeleteDialogComponent);
             comp = fixture.componentInstance;
             service = fixture.debugElement.injector.get(ImageService);
@@ -38,11 +31,13 @@ describe('Component Tests', () => {
         });
 
         describe('confirmDelete', () => {
-            it('Should call delete service on confirmDelete',
-                inject([],
+            it(
+                'Should call delete service on confirmDelete',
+                inject(
+                    [],
                     fakeAsync(() => {
                         // GIVEN
-                        spyOn(service, 'delete').and.returnValue(Observable.of({}));
+                        spyOn(service, 'delete').and.returnValue(of({}));
 
                         // WHEN
                         comp.confirmDelete(123);
@@ -57,5 +52,4 @@ describe('Component Tests', () => {
             );
         });
     });
-
 });

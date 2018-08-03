@@ -1,9 +1,10 @@
 {
   "generator-jhipster": {
     "promptValues": {
-      "packageName": "com.aitp.dlife"
+      "packageName": "com.aitp.dlife",
+      "nativeLanguage": "en"
     },
-    "jhipsterVersion": "4.13.3",
+    "jhipsterVersion": "5.0.2",
     "baseName": "aitpapi",
     "packageName": "com.aitp.dlife",
     "packageFolder": "com/aitp/dlife",
@@ -20,13 +21,17 @@
     "buildTool": "maven",
     "enableSocialSignIn": false,
     "enableSwaggerCodegen": true,
-    "jwtSecretKey": "12c583f972ce48b35e1bd9b15661bec4713d486f",
+    "jwtSecretKey": "9b5317f410e499dc7ea1add7159a4d2e3f4736ae",
     "clientFramework": "angularX",
     "useSass": false,
     "clientPackageManager": "yarn",
     "applicationType": "monolith",
     "testFrameworks": [],
     "jhiPrefix": "jhi",
-    "enableTranslation": false
+    "enableTranslation": false,
+    "nativeLanguage": "en",
+    "languages": [
+      "en"
+    ]
   }
 }

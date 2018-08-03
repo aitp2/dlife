@@ -1,15 +1,14 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { AitpapiTestModule } from '../../../test.module';
-import { PinfanPicsDeleteDialogComponent } from '../../../../../../main/webapp/app/entities/pinfan-pics/pinfan-pics-delete-dialog.component';
-import { PinfanPicsService } from '../../../../../../main/webapp/app/entities/pinfan-pics/pinfan-pics.service';
+import { PinfanPicsDeleteDialogComponent } from 'app/entities/pinfan-pics/pinfan-pics-delete-dialog.component';
+import { PinfanPicsService } from 'app/entities/pinfan-pics/pinfan-pics.service';
 
 describe('Component Tests', () => {
-
     describe('PinfanPics Management Delete Component', () => {
         let comp: PinfanPicsDeleteDialogComponent;
         let fixture: ComponentFixture<PinfanPicsDeleteDialogComponent>;
@@ -17,19 +16,13 @@ describe('Component Tests', () => {
         let mockEventManager: any;
         let mockActiveModal: any;
 
-        beforeEach(async(() => {
+        beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [AitpapiTestModule],
-                declarations: [PinfanPicsDeleteDialogComponent],
-                providers: [
-                    PinfanPicsService
-                ]
+                declarations: [PinfanPicsDeleteDialogComponent]
             })
-            .overrideTemplate(PinfanPicsDeleteDialogComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
+                .overrideTemplate(PinfanPicsDeleteDialogComponent, '')
+                .compileComponents();
             fixture = TestBed.createComponent(PinfanPicsDeleteDialogComponent);
             comp = fixture.componentInstance;
             service = fixture.debugElement.injector.get(PinfanPicsService);
@@ -38,11 +31,13 @@ describe('Component Tests', () => {
         });
 
         describe('confirmDelete', () => {
-            it('Should call delete service on confirmDelete',
-                inject([],
+            it(
+                'Should call delete service on confirmDelete',
+                inject(
+                    [],
                     fakeAsync(() => {
                         // GIVEN
-                        spyOn(service, 'delete').and.returnValue(Observable.of({}));
+                        spyOn(service, 'delete').and.returnValue(of({}));
 
                         // WHEN
                         comp.confirmDelete(123);
@@ -57,5 +52,4 @@ describe('Component Tests', () => {
             );
         });
     });
-
 });

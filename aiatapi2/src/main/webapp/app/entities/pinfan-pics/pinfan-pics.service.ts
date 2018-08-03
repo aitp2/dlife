@@ -1,79 +1,70 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import * as moment from 'moment';
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { map } from 'rxjs/operators';
 
-import { JhiDateUtils } from 'ng-jhipster';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IPinfanPics } from 'app/shared/model/pinfan-pics.model';
 
-import { PinfanPics } from './pinfan-pics.model';
-import { ResponseWrapper, createRequestOption } from '../../shared';
+type EntityResponseType = HttpResponse<IPinfanPics>;
+type EntityArrayResponseType = HttpResponse<IPinfanPics[]>;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PinfanPicsService {
+    private resourceUrl = SERVER_API_URL + 'api/pinfan-pics';
 
-    private resourceUrl =  SERVER_API_URL + 'api/pinfan-pics';
+    constructor(private http: HttpClient) {}
 
-    constructor(private http: Http, private dateUtils: JhiDateUtils) { }
-
-    create(pinfanPics: PinfanPics): Observable<PinfanPics> {
-        const copy = this.convert(pinfanPics);
-        return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    create(pinfanPics: IPinfanPics): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(pinfanPics);
+        return this.http
+            .post<IPinfanPics>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    update(pinfanPics: PinfanPics): Observable<PinfanPics> {
-        const copy = this.convert(pinfanPics);
-        return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    update(pinfanPics: IPinfanPics): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(pinfanPics);
+        return this.http
+            .put<IPinfanPics>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    find(id: number): Observable<PinfanPics> {
-        return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    find(id: number): Observable<EntityResponseType> {
+        return this.http
+            .get<IPinfanPics>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    query(req?: any): Observable<ResponseWrapper> {
+    query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get(this.resourceUrl, options)
-            .map((res: Response) => this.convertResponse(res));
+        return this.http
+            .get<IPinfanPics[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
-    delete(id: number): Observable<Response> {
-        return this.http.delete(`${this.resourceUrl}/${id}`);
+    delete(id: number): Observable<HttpResponse<any>> {
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    private convertResponse(res: Response): ResponseWrapper {
-        const jsonResponse = res.json();
-        const result = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            result.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return new ResponseWrapper(res.headers, result, res.status);
-    }
-
-    /**
-     * Convert a returned JSON object to PinfanPics.
-     */
-    private convertItemFromServer(json: any): PinfanPics {
-        const entity: PinfanPics = Object.assign(new PinfanPics(), json);
-        entity.createTime = this.dateUtils
-            .convertDateTimeFromServer(json.createTime);
-        return entity;
-    }
-
-    /**
-     * Convert a PinfanPics to a JSON which can be sent to the server.
-     */
-    private convert(pinfanPics: PinfanPics): PinfanPics {
-        const copy: PinfanPics = Object.assign({}, pinfanPics);
-
-        copy.createTime = this.dateUtils.toDate(pinfanPics.createTime);
+    private convertDateFromClient(pinfanPics: IPinfanPics): IPinfanPics {
+        const copy: IPinfanPics = Object.assign({}, pinfanPics, {
+            createTime: pinfanPics.createTime != null && pinfanPics.createTime.isValid() ? pinfanPics.createTime.toJSON() : null
+        });
         return copy;
+    }
+
+    private convertDateFromServer(res: EntityResponseType): EntityResponseType {
+        res.body.createTime = res.body.createTime != null ? moment(res.body.createTime) : null;
+        return res;
+    }
+
+    private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+        res.body.forEach((pinfanPics: IPinfanPics) => {
+            pinfanPics.createTime = pinfanPics.createTime != null ? moment(pinfanPics.createTime) : null;
+        });
+        return res;
     }
 }

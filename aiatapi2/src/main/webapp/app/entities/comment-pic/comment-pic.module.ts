@@ -1,51 +1,29 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AitpapiSharedModule } from '../../shared';
+import { AitpapiSharedModule } from 'app/shared';
 import {
-    CommentPicService,
-    CommentPicPopupService,
     CommentPicComponent,
     CommentPicDetailComponent,
-    CommentPicDialogComponent,
-    CommentPicPopupComponent,
+    CommentPicUpdateComponent,
     CommentPicDeletePopupComponent,
     CommentPicDeleteDialogComponent,
     commentPicRoute,
-    commentPicPopupRoute,
-    CommentPicResolvePagingParams,
+    commentPicPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...commentPicRoute,
-    ...commentPicPopupRoute,
-];
+const ENTITY_STATES = [...commentPicRoute, ...commentPicPopupRoute];
 
 @NgModule({
-    imports: [
-        AitpapiSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
+    imports: [AitpapiSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [
         CommentPicComponent,
         CommentPicDetailComponent,
-        CommentPicDialogComponent,
+        CommentPicUpdateComponent,
         CommentPicDeleteDialogComponent,
-        CommentPicPopupComponent,
-        CommentPicDeletePopupComponent,
+        CommentPicDeletePopupComponent
     ],
-    entryComponents: [
-        CommentPicComponent,
-        CommentPicDialogComponent,
-        CommentPicPopupComponent,
-        CommentPicDeleteDialogComponent,
-        CommentPicDeletePopupComponent,
-    ],
-    providers: [
-        CommentPicService,
-        CommentPicPopupService,
-        CommentPicResolvePagingParams,
-    ],
+    entryComponents: [CommentPicComponent, CommentPicUpdateComponent, CommentPicDeleteDialogComponent, CommentPicDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AitpapiCommentPicModule {}

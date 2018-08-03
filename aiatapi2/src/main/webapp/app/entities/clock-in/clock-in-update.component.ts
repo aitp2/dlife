@@ -12,76 +12,76 @@ import { IActivityParticipation } from 'app/shared/model/activity-participation.
 import { ActivityParticipationService } from 'app/entities/activity-participation';
 
 @Component({
-  selector: 'jhi-clock-in-update',
-  templateUrl: './clock-in-update.component.html'
+    selector: 'jhi-clock-in-update',
+    templateUrl: './clock-in-update.component.html'
 })
 export class ClockInUpdateComponent implements OnInit {
-  private _clockIn: IClockIn;
-  isSaving: boolean;
+    private _clockIn: IClockIn;
+    isSaving: boolean;
 
-  activityparticipations: IActivityParticipation[];
-  punchDateTime: string;
+    activityparticipations: IActivityParticipation[];
+    punchDateTime: string;
 
-  constructor(
-    private jhiAlertService: JhiAlertService,
-    private clockInService: ClockInService,
-    private activityParticipationService: ActivityParticipationService,
-    private activatedRoute: ActivatedRoute
-  ) {}
+    constructor(
+        private jhiAlertService: JhiAlertService,
+        private clockInService: ClockInService,
+        private activityParticipationService: ActivityParticipationService,
+        private activatedRoute: ActivatedRoute
+    ) {}
 
-  ngOnInit() {
-    this.isSaving = false;
-    this.activatedRoute.data.subscribe(({ clockIn }) => {
-      this.clockIn = clockIn;
-    });
-    this.activityParticipationService.query().subscribe(
-      (res: HttpResponse<IActivityParticipation[]>) => {
-        this.activityparticipations = res.body;
-      },
-      (res: HttpErrorResponse) => this.onError(res.message)
-    );
-  }
-
-  previousState() {
-    window.history.back();
-  }
-
-  save() {
-    this.isSaving = true;
-    this.clockIn.punchDateTime = moment(this.punchDateTime, DATE_TIME_FORMAT);
-    if (this.clockIn.id !== undefined) {
-      this.subscribeToSaveResponse(this.clockInService.update(this.clockIn));
-    } else {
-      this.subscribeToSaveResponse(this.clockInService.create(this.clockIn));
+    ngOnInit() {
+        this.isSaving = false;
+        this.activatedRoute.data.subscribe(({ clockIn }) => {
+            this.clockIn = clockIn;
+        });
+        this.activityParticipationService.query().subscribe(
+            (res: HttpResponse<IActivityParticipation[]>) => {
+                this.activityparticipations = res.body;
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
     }
-  }
 
-  private subscribeToSaveResponse(result: Observable<HttpResponse<IClockIn>>) {
-    result.subscribe((res: HttpResponse<IClockIn>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
-  }
+    previousState() {
+        window.history.back();
+    }
 
-  private onSaveSuccess() {
-    this.isSaving = false;
-    this.previousState();
-  }
+    save() {
+        this.isSaving = true;
+        this.clockIn.punchDateTime = moment(this.punchDateTime, DATE_TIME_FORMAT);
+        if (this.clockIn.id !== undefined) {
+            this.subscribeToSaveResponse(this.clockInService.update(this.clockIn));
+        } else {
+            this.subscribeToSaveResponse(this.clockInService.create(this.clockIn));
+        }
+    }
 
-  private onSaveError() {
-    this.isSaving = false;
-  }
+    private subscribeToSaveResponse(result: Observable<HttpResponse<IClockIn>>) {
+        result.subscribe((res: HttpResponse<IClockIn>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+    }
 
-  private onError(errorMessage: string) {
-    this.jhiAlertService.error(errorMessage, null, null);
-  }
+    private onSaveSuccess() {
+        this.isSaving = false;
+        this.previousState();
+    }
 
-  trackActivityParticipationById(index: number, item: IActivityParticipation) {
-    return item.id;
-  }
-  get clockIn() {
-    return this._clockIn;
-  }
+    private onSaveError() {
+        this.isSaving = false;
+    }
 
-  set clockIn(clockIn: IClockIn) {
-    this._clockIn = clockIn;
-    this.punchDateTime = moment(clockIn.punchDateTime).format(DATE_TIME_FORMAT);
-  }
+    private onError(errorMessage: string) {
+        this.jhiAlertService.error(errorMessage, null, null);
+    }
+
+    trackActivityParticipationById(index: number, item: IActivityParticipation) {
+        return item.id;
+    }
+    get clockIn() {
+        return this._clockIn;
+    }
+
+    set clockIn(clockIn: IClockIn) {
+        this._clockIn = clockIn;
+        this.punchDateTime = moment(clockIn.punchDateTime).format(DATE_TIME_FORMAT);
+    }
 }

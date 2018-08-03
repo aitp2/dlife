@@ -1,5 +1,6 @@
 package com.aitp.dlife.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -64,6 +65,7 @@ public class Attendee implements Serializable {
     private String activitiyTile;
 
     @ManyToOne
+    @JsonIgnoreProperties("attendees")
     private PinFanActivity pinFanActivity;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

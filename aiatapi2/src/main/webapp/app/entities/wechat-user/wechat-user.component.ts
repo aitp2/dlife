@@ -1,20 +1,22 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
-import { WechatUser } from './wechat-user.model';
+import { IWechatUser } from 'app/shared/model/wechat-user.model';
+import { Principal } from 'app/core';
+
+import { ITEMS_PER_PAGE } from 'app/shared';
 import { WechatUserService } from './wechat-user.service';
-import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-wechat-user',
     templateUrl: './wechat-user.component.html'
 })
 export class WechatUserComponent implements OnInit, OnDestroy {
-
-currentAccount: any;
-    wechatUsers: WechatUser[];
+    currentAccount: any;
+    wechatUsers: IWechatUser[];
     error: any;
     success: any;
     eventSubscriber: Subscription;
@@ -38,7 +40,7 @@ currentAccount: any;
         private eventManager: JhiEventManager
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
-        this.routeData = this.activatedRoute.data.subscribe((data) => {
+        this.routeData = this.activatedRoute.data.subscribe(data => {
             this.page = data.pagingParams.page;
             this.previousPage = data.pagingParams.page;
             this.reverse = data.pagingParams.ascending;
@@ -47,23 +49,28 @@ currentAccount: any;
     }
 
     loadAll() {
-        this.wechatUserService.query({
-            page: this.page - 1,
-            size: this.itemsPerPage,
-            sort: this.sort()}).subscribe(
-            (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-            (res: ResponseWrapper) => this.onError(res.json)
-        );
+        this.wechatUserService
+            .query({
+                page: this.page - 1,
+                size: this.itemsPerPage,
+                sort: this.sort()
+            })
+            .subscribe(
+                (res: HttpResponse<IWechatUser[]>) => this.paginateWechatUsers(res.body, res.headers),
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
     }
+
     loadPage(page: number) {
         if (page !== this.previousPage) {
             this.previousPage = page;
             this.transition();
         }
     }
+
     transition() {
-        this.router.navigate(['/wechat-user'], {queryParams:
-            {
+        this.router.navigate(['/wechat-user'], {
+            queryParams: {
                 page: this.page,
                 size: this.itemsPerPage,
                 sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
@@ -74,15 +81,19 @@ currentAccount: any;
 
     clear() {
         this.page = 0;
-        this.router.navigate(['/wechat-user', {
-            page: this.page,
-            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-        }]);
+        this.router.navigate([
+            '/wechat-user',
+            {
+                page: this.page,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }
+        ]);
         this.loadAll();
     }
+
     ngOnInit() {
         this.loadAll();
-        this.principal.identity().then((account) => {
+        this.principal.identity().then(account => {
             this.currentAccount = account;
         });
         this.registerChangeInWechatUsers();
@@ -92,11 +103,12 @@ currentAccount: any;
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId(index: number, item: WechatUser) {
+    trackId(index: number, item: IWechatUser) {
         return item.id;
     }
+
     registerChangeInWechatUsers() {
-        this.eventSubscriber = this.eventManager.subscribe('wechatUserListModification', (response) => this.loadAll());
+        this.eventSubscriber = this.eventManager.subscribe('wechatUserListModification', response => this.loadAll());
     }
 
     sort() {
@@ -107,14 +119,14 @@ currentAccount: any;
         return result;
     }
 
-    private onSuccess(data, headers) {
+    private paginateWechatUsers(data: IWechatUser[], headers: HttpHeaders) {
         this.links = this.parseLinks.parse(headers.get('link'));
-        this.totalItems = headers.get('X-Total-Count');
+        this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
         this.queryCount = this.totalItems;
-        // this.page = pagingParams.page;
         this.wechatUsers = data;
     }
-    private onError(error) {
-        this.jhiAlertService.error(error.message, null, null);
+
+    private onError(errorMessage: string) {
+        this.jhiAlertService.error(errorMessage, null, null);
     }
 }

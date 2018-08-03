@@ -1,51 +1,23 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AitpapiSharedModule } from '../../shared';
+import { AitpapiSharedModule } from 'app/shared';
 import {
-    PicsService,
-    PicsPopupService,
     PicsComponent,
     PicsDetailComponent,
-    PicsDialogComponent,
-    PicsPopupComponent,
+    PicsUpdateComponent,
     PicsDeletePopupComponent,
     PicsDeleteDialogComponent,
     picsRoute,
-    picsPopupRoute,
-    PicsResolvePagingParams,
+    picsPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...picsRoute,
-    ...picsPopupRoute,
-];
+const ENTITY_STATES = [...picsRoute, ...picsPopupRoute];
 
 @NgModule({
-    imports: [
-        AitpapiSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
-    declarations: [
-        PicsComponent,
-        PicsDetailComponent,
-        PicsDialogComponent,
-        PicsDeleteDialogComponent,
-        PicsPopupComponent,
-        PicsDeletePopupComponent,
-    ],
-    entryComponents: [
-        PicsComponent,
-        PicsDialogComponent,
-        PicsPopupComponent,
-        PicsDeleteDialogComponent,
-        PicsDeletePopupComponent,
-    ],
-    providers: [
-        PicsService,
-        PicsPopupService,
-        PicsResolvePagingParams,
-    ],
+    imports: [AitpapiSharedModule, RouterModule.forChild(ENTITY_STATES)],
+    declarations: [PicsComponent, PicsDetailComponent, PicsUpdateComponent, PicsDeleteDialogComponent, PicsDeletePopupComponent],
+    entryComponents: [PicsComponent, PicsUpdateComponent, PicsDeleteDialogComponent, PicsDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AitpapiPicsModule {}

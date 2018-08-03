@@ -1,13 +1,5 @@
 {
-    "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "pinFanActivity",
-            "otherEntityName": "pinFanActivity",
-            "otherEntityField": "id"
-        }
-    ],
+    "name": "PinfanPics",
     "fields": [
         {
             "fieldName": "ossPath",
@@ -23,11 +15,22 @@
             "fieldType": "Instant"
         }
     ],
-    "changelogDate": "20180704083416",
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "pinFanActivity",
+            "otherEntityName": "pinFanActivity",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180802115459",
     "javadoc": "拼饭活动图片信息",
     "entityTableName": "pinfan_pics",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
-    "jpaMetamodelFiltering": false
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

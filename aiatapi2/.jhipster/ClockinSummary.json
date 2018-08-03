@@ -1,6 +1,5 @@
 {
-    "fluentMethods": true,
-    "relationships": [],
+    "name": "ClockinSummary",
     "fields": [
         {
             "fieldName": "wechatUserId",
@@ -32,11 +31,15 @@
             "fieldType": "Instant"
         }
     ],
-    "changelogDate": "20180704083421",
+    "relationships": [],
+    "changelogDate": "20180802115504",
     "javadoc": "打卡汇总表",
     "entityTableName": "clockin_summary",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
-    "jpaMetamodelFiltering": false
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

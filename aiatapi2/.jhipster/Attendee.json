@@ -1,13 +1,5 @@
 {
-    "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "pinFanActivity",
-            "otherEntityName": "pinFanActivity",
-            "otherEntityField": "id"
-        }
-    ],
+    "name": "Attendee",
     "fields": [
         {
             "fieldName": "wechatUserId",
@@ -51,11 +43,22 @@
             "fieldValidateRulesMaxlength": 128
         }
     ],
-    "changelogDate": "20180704083415",
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "pinFanActivity",
+            "otherEntityName": "pinFanActivity",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180802115458",
     "javadoc": "拼饭活动参与信息",
     "entityTableName": "attendee",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
-    "jpaMetamodelFiltering": false
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

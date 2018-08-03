@@ -1,19 +1,5 @@
 {
-    "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "activityParticipation",
-            "otherEntityName": "activityParticipation",
-            "otherEntityRelationshipName": "activity"
-        },
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "image",
-            "otherEntityName": "pics",
-            "otherEntityRelationshipName": "fitnessActivity"
-        }
-    ],
+    "name": "FitnessActivity",
     "fields": [
         {
             "fieldName": "title",
@@ -112,12 +98,28 @@
             "fieldType": "Integer"
         }
     ],
-    "changelogDate": "20180704083417",
-    "dto": "mapstruct",
-    "searchEngine": false,
-    "service": "serviceClass",
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "activityParticipation",
+            "otherEntityName": "activityParticipation",
+            "otherEntityRelationshipName": "fitnessActivity"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "pics",
+            "otherEntityName": "pics",
+            "otherEntityRelationshipName": "fitnessActivity"
+        }
+    ],
+    "changelogDate": "20180802115500",
+    "javadoc": "健身活动信息",
     "entityTableName": "fitness_activity",
-    "jpaMetamodelFiltering": false,
+    "dto": "mapstruct",
     "pagination": "pagination",
-    "javadoc": "健身活动信息"
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

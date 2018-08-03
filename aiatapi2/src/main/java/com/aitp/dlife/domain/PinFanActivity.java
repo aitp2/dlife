@@ -179,8 +179,19 @@ public class PinFanActivity implements Serializable {
     @Column(name = "comment_count")
     private Integer commentCount;
 
+    /**
+     * 浏览量
+     */
+    @ApiModelProperty(value = "浏览量")
     @Column(name = "reading_count")
     private Integer readingCount;
+
+    /**
+     * 最新评论/参与时间
+     */
+    @ApiModelProperty(value = "最新评论/参与时间")
+    @Column(name = "modify_time")
+    private Instant modifyTime;
 
     @OneToMany(mappedBy = "pinFanActivity")
     private Set<Attendee> attendees = new HashSet<>();
@@ -470,6 +481,19 @@ public class PinFanActivity implements Serializable {
         this.readingCount = readingCount;
     }
 
+    public Instant getModifyTime() {
+        return modifyTime;
+    }
+
+    public PinFanActivity modifyTime(Instant modifyTime) {
+        this.modifyTime = modifyTime;
+        return this;
+    }
+
+    public void setModifyTime(Instant modifyTime) {
+        this.modifyTime = modifyTime;
+    }
+
     public Set<Attendee> getAttendees() {
         return attendees;
     }
@@ -566,6 +590,7 @@ public class PinFanActivity implements Serializable {
             ", status=" + getStatus() +
             ", commentCount=" + getCommentCount() +
             ", readingCount=" + getReadingCount() +
+            ", modifyTime='" + getModifyTime() + "'" +
             "}";
     }
 }

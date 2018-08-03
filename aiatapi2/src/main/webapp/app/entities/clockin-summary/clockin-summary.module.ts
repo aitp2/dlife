@@ -1,50 +1,33 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AitpapiSharedModule } from '../../shared';
+import { AitpapiSharedModule } from 'app/shared';
 import {
-    ClockinSummaryService,
-    ClockinSummaryPopupService,
     ClockinSummaryComponent,
     ClockinSummaryDetailComponent,
-    ClockinSummaryDialogComponent,
-    ClockinSummaryPopupComponent,
+    ClockinSummaryUpdateComponent,
     ClockinSummaryDeletePopupComponent,
     ClockinSummaryDeleteDialogComponent,
     clockinSummaryRoute,
-    clockinSummaryPopupRoute,
-    ClockinSummaryResolvePagingParams,
+    clockinSummaryPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...clockinSummaryRoute,
-    ...clockinSummaryPopupRoute,
-];
+const ENTITY_STATES = [...clockinSummaryRoute, ...clockinSummaryPopupRoute];
 
 @NgModule({
-    imports: [
-        AitpapiSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
+    imports: [AitpapiSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [
         ClockinSummaryComponent,
         ClockinSummaryDetailComponent,
-        ClockinSummaryDialogComponent,
+        ClockinSummaryUpdateComponent,
         ClockinSummaryDeleteDialogComponent,
-        ClockinSummaryPopupComponent,
-        ClockinSummaryDeletePopupComponent,
+        ClockinSummaryDeletePopupComponent
     ],
     entryComponents: [
         ClockinSummaryComponent,
-        ClockinSummaryDialogComponent,
-        ClockinSummaryPopupComponent,
+        ClockinSummaryUpdateComponent,
         ClockinSummaryDeleteDialogComponent,
-        ClockinSummaryDeletePopupComponent,
-    ],
-    providers: [
-        ClockinSummaryService,
-        ClockinSummaryPopupService,
-        ClockinSummaryResolvePagingParams,
+        ClockinSummaryDeletePopupComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

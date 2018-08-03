@@ -1,12 +1,8 @@
 package com.aitp.dlife.service.dto;
 
-
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -30,13 +26,13 @@ public class RecipeDTO implements Serializable {
 
     private String content;
 
-    private String startTime;
+    private Instant startTime;
 
-    private String endTime;
+    private Instant endTime;
 
     private Double price;
 
-    @Max(value = 999999)
+    @Max(value = 9)
     private Integer num;
 
     @Max(value = 2)
@@ -48,30 +44,9 @@ public class RecipeDTO implements Serializable {
     @Max(value = 9)
     private Integer hot;
 
-    private String createTime;
+    private Instant createTime;
 
-    private String modifyTime;
-
-    private String bookStatus;
-
-    private Set<ImageDTO> images = new HashSet<>();
-
-    public String getBookStatus() {
-        return bookStatus;
-    }
-
-    public void setBookStatus(String bookStatus) {
-        this.bookStatus = bookStatus;
-    }
-
-
-    public Set<ImageDTO> getImages() {
-        return images;
-    }
-
-    public void setImages(Set<ImageDTO> images) {
-        this.images = images;
-    }
+    private Instant modifyTime;
 
     public Long getId() {
         return id;
@@ -121,19 +96,19 @@ public class RecipeDTO implements Serializable {
         this.content = content;
     }
 
-    public String getStartTime() {
+    public Instant getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(Instant startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public Instant getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(Instant endTime) {
         this.endTime = endTime;
     }
 
@@ -177,23 +152,21 @@ public class RecipeDTO implements Serializable {
         this.hot = hot;
     }
 
-    public String getCreateTime() {
+    public Instant getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Instant createTime) {
         this.createTime = createTime;
     }
 
-    public String getModifyTime() {
+    public Instant getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(String modifyTime) {
+    public void setModifyTime(Instant modifyTime) {
         this.modifyTime = modifyTime;
     }
-
-
 
     @Override
     public boolean equals(Object o) {
@@ -205,7 +178,7 @@ public class RecipeDTO implements Serializable {
         }
 
         RecipeDTO recipeDTO = (RecipeDTO) o;
-        if(recipeDTO.getId() == null || getId() == null) {
+        if (recipeDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), recipeDTO.getId());

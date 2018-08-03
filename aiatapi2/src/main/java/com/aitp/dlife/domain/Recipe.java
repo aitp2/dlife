@@ -90,12 +90,10 @@ public class Recipe implements Serializable {
     private Instant modifyTime;
 
     @OneToMany(mappedBy = "recipe")
-    @JsonIgnore
-    private Set<RecipeOrder> recipeOrders = new HashSet<>();
+    private Set<Image> images = new HashSet<>();
 
     @OneToMany(mappedBy = "recipe")
-    @JsonIgnore
-    private Set<Image> images = new HashSet<>();
+    private Set<RecipeOrder> recipeOrders = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -288,31 +286,6 @@ public class Recipe implements Serializable {
         this.modifyTime = modifyTime;
     }
 
-    public Set<RecipeOrder> getRecipeOrders() {
-        return recipeOrders;
-    }
-
-    public Recipe recipeOrders(Set<RecipeOrder> recipeOrders) {
-        this.recipeOrders = recipeOrders;
-        return this;
-    }
-
-    public Recipe addRecipeOrder(RecipeOrder recipeOrder) {
-        this.recipeOrders.add(recipeOrder);
-        recipeOrder.setRecipe(this);
-        return this;
-    }
-
-    public Recipe removeRecipeOrder(RecipeOrder recipeOrder) {
-        this.recipeOrders.remove(recipeOrder);
-        recipeOrder.setRecipe(null);
-        return this;
-    }
-
-    public void setRecipeOrders(Set<RecipeOrder> recipeOrders) {
-        this.recipeOrders = recipeOrders;
-    }
-
     public Set<Image> getImages() {
         return images;
     }
@@ -336,6 +309,31 @@ public class Recipe implements Serializable {
 
     public void setImages(Set<Image> images) {
         this.images = images;
+    }
+
+    public Set<RecipeOrder> getRecipeOrders() {
+        return recipeOrders;
+    }
+
+    public Recipe recipeOrders(Set<RecipeOrder> recipeOrders) {
+        this.recipeOrders = recipeOrders;
+        return this;
+    }
+
+    public Recipe addRecipeOrder(RecipeOrder recipeOrder) {
+        this.recipeOrders.add(recipeOrder);
+        recipeOrder.setRecipe(this);
+        return this;
+    }
+
+    public Recipe removeRecipeOrder(RecipeOrder recipeOrder) {
+        this.recipeOrders.remove(recipeOrder);
+        recipeOrder.setRecipe(null);
+        return this;
+    }
+
+    public void setRecipeOrders(Set<RecipeOrder> recipeOrders) {
+        this.recipeOrders = recipeOrders;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
