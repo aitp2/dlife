@@ -149,12 +149,14 @@ public class ClockinSummaryResource {
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(wechatUserId));
         String sexString="";
-        if (null!=wechatUserDTO && null!=wechatUserDTO.isSex()){
-            boolean sex = wechatUserDTO.isSex();
-            if (sex) {
+        if (null!=wechatUserDTO && null!=wechatUserDTO.getSex()){
+            Integer sex = wechatUserDTO.getSex();
+            if (sex==1) {
                 sexString = "male";
-            }else{
+            }else if(sex==2){
                 sexString = "female";
+            }else{
+                sexString="";
             }
         }
         log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit","","","login",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);

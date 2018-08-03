@@ -94,7 +94,7 @@ public class CommentResource {
         }
 
         if (null!=commentDTO.getChannel()&&commentDTO.getChannel().equals(CommentChannel.FIT)){
-        	FitnessActivity fitnessActivity = fitnessActivityRepository.findOne(commentDTO.getObjectId());
+        	FitnessActivity fitnessActivity = fitnessActivityRepository.findById(commentDTO.getObjectId()).get();
             fitnessActivity.setModifyTime(Instant.now());
             fitnessActivityRepository.save(fitnessActivity);
         }

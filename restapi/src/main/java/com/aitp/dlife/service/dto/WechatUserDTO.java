@@ -41,12 +41,12 @@ public class WechatUserDTO implements Serializable {
     @Size(max = 1024)
     private String introduce;
 
-    private Boolean sex;
+    private Integer sex;
 
     @Size(max = 255)
     private String companyRole;
 
-    private Boolean cookFlag;
+    private Integer cookFlag;
 
     @Size(max = 1024)
     private String intesting;
@@ -138,11 +138,11 @@ public class WechatUserDTO implements Serializable {
         this.introduce = introduce;
     }
 
-    public Boolean isSex() {
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(Boolean sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 
@@ -154,11 +154,11 @@ public class WechatUserDTO implements Serializable {
         this.companyRole = companyRole;
     }
 
-    public Boolean isCookFlag() {
+    public Integer getCookFlag() {
         return cookFlag;
     }
 
-    public void setCookFlag(Boolean cookFlag) {
+    public void setCookFlag(Integer cookFlag) {
         this.cookFlag = cookFlag;
     }
 
@@ -228,9 +228,9 @@ public class WechatUserDTO implements Serializable {
             ", project='" + getProject() + "'" +
             ", seat='" + getSeat() + "'" +
             ", introduce='" + getIntroduce() + "'" +
-            ", sex='" + isSex() + "'" +
+            ", sex='" + getSex() + "'" +
             ", companyRole='" + getCompanyRole() + "'" +
-            ", cookFlag='" + isCookFlag() + "'" +
+            ", cookFlag='" + getCookFlag() + "'" +
             ", intesting='" + getIntesting() + "'" +
             ", skill='" + getSkill() + "'" +
             ", createTime='" + getCreateTime() + "'" +

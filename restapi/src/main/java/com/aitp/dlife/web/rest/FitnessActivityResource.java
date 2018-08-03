@@ -100,12 +100,14 @@ public class FitnessActivityResource {
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(fitnessActivityDTO.getWechatUserId()));
         String sexString="";
-        if (null!=wechatUserDTO && null!=wechatUserDTO.isSex()){
-            boolean sex = wechatUserDTO.isSex();
-            if (sex) {
+        if (null!=wechatUserDTO && null!=wechatUserDTO.getSex()){
+            Integer sex = wechatUserDTO.getSex();
+            if (sex==1) {
                 sexString = "male";
-            }else{
+            }else if(sex==2){
                 sexString = "female";
+            }else{
+                sexString="";
             }
         }
         log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit","",HttpUtil.baseEncoder(fitnessActivityDTO.getTitle()),"createActivity",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
@@ -117,9 +119,9 @@ public class FitnessActivityResource {
             .body(result);
     }
 
-    
-    
-    
+
+
+
     /**
      * PUT  /fitness-activities : Updates an existing fitnessActivity.
      *
@@ -248,19 +250,21 @@ public class FitnessActivityResource {
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(wechatUserId));
         String sexString="";
-        if (null!=wechatUserDTO && null!=wechatUserDTO.isSex()){
-            boolean sex = wechatUserDTO.isSex();
-            if (sex) {
+        if (null!=wechatUserDTO && null!=wechatUserDTO.getSex()){
+            Integer sex = wechatUserDTO.getSex();
+            if (sex==1) {
                 sexString = "male";
-            }else{
+            }else if(sex==2){
                 sexString = "female";
+            }else{
+                sexString="";
             }
         }
         log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit","","","createView",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
         //log for markting end
         return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wechatUserId)).build();
     }
-    
+
     @PutMapping("/fitness-activities/readingCount")
     @Timed
 	public ResponseEntity<FitnessActivityDTO> updateReadingCount(Long id) throws URISyntaxException {

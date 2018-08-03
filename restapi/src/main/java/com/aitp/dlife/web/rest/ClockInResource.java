@@ -116,12 +116,14 @@ public class ClockInResource {
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(clockInDTO.getWechatUserId()));
         String sexString="";
-        if (null!=wechatUserDTO && null!=wechatUserDTO.isSex()){
-            boolean sex = wechatUserDTO.isSex();
-            if (sex) {
+        if (null!=wechatUserDTO && null!=wechatUserDTO.getSex()){
+            Integer sex = wechatUserDTO.getSex();
+            if (sex==1) {
                 sexString = "male";
-            }else{
+            }else if(sex==2){
                 sexString = "female";
+            }else{
+                sexString="";
             }
         }
         ActivityParticipationDTO participationDTO = activityParticipationService.findOne(clockInDTO.getActivityParticipationId()).get();

@@ -107,14 +107,16 @@ public class ActivityParticipationResource {
 		WechatUserDTO wechatUserDTO = wechatUserService
 				.findOne(Long.valueOf(activityParticipationDTO.getWechatUserId()));
 		String sexString = "";
-		if (null != wechatUserDTO && null != wechatUserDTO.isSex()) {
-			boolean sex = wechatUserDTO.isSex();
-			if (sex) {
-				sexString = "male";
-			} else {
-				sexString = "female";
-			}
-		}
+        if (null!=wechatUserDTO && null!=wechatUserDTO.getSex()){
+            Integer sex = wechatUserDTO.getSex();
+            if (sex==1) {
+                sexString = "male";
+            }else if(sex==2){
+                sexString = "female";
+            }else{
+                sexString="";
+            }
+        }
 		FitnessActivityDTO dto = fitnessActivityService.findOne(activityParticipationDTO.getActivityId());
 
 		log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}",
@@ -265,14 +267,16 @@ public class ActivityParticipationResource {
 		FitnessActivityDTO dto = fitnessActivityService.findOne(activityId);
 		WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(wechatUserId));
 		String sexString = "";
-		if (null != wechatUserDTO && null != wechatUserDTO.isSex()) {
-			boolean sex = wechatUserDTO.isSex();
-			if (sex) {
-				sexString = "male";
-			} else {
-				sexString = "female";
-			}
-		}
+        if (null!=wechatUserDTO && null!=wechatUserDTO.getSex()){
+            Integer sex = wechatUserDTO.getSex();
+            if (sex==1) {
+                sexString = "male";
+            }else if(sex==2){
+                sexString = "female";
+            }else{
+                sexString="";
+            }
+        }
 		log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}",
 				"fit", dto.getId(), HttpUtil.baseEncoder(dto.getTitle()), "PDP", DateUtil.getYMDDateString(new Date()),
 				wechatUserDTO.getNickName(), sexString);
