@@ -74,7 +74,7 @@ public class CommentPicResource {
     public ResponseEntity<CommentPicDTO> updateCommentPic(@Valid @RequestBody CommentPicDTO commentPicDTO) throws URISyntaxException {
         log.debug("REST request to update CommentPic : {}", commentPicDTO);
         if (commentPicDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            return createCommentPic(commentPicDTO);
         }
         CommentPicDTO result = commentPicService.save(commentPicDTO);
         return ResponseEntity.ok()
@@ -107,8 +107,8 @@ public class CommentPicResource {
     @Timed
     public ResponseEntity<CommentPicDTO> getCommentPic(@PathVariable Long id) {
         log.debug("REST request to get CommentPic : {}", id);
-        Optional<CommentPicDTO> commentPicDTO = commentPicService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(commentPicDTO);
+        CommentPicDTO commentPicDTO = commentPicService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(commentPicDTO));
     }
 
     /**

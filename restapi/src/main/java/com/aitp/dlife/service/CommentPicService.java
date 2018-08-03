@@ -6,14 +6,12 @@ import com.aitp.dlife.service.dto.CommentPicDTO;
 import com.aitp.dlife.service.mapper.CommentPicMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.Optional;
 /**
  * Service Implementation for managing CommentPic.
  */
@@ -58,7 +56,6 @@ public class CommentPicService {
             .map(commentPicMapper::toDto);
     }
 
-
     /**
      * Get one commentPic by id.
      *
@@ -66,10 +63,10 @@ public class CommentPicService {
      * @return the entity
      */
     @Transactional(readOnly = true)
-    public Optional<CommentPicDTO> findOne(Long id) {
+    public CommentPicDTO findOne(Long id) {
         log.debug("Request to get CommentPic : {}", id);
-        return commentPicRepository.findById(id)
-            .map(commentPicMapper::toDto);
+        CommentPic commentPic = commentPicRepository.findOne(id);
+        return commentPicMapper.toDto(commentPic);
     }
 
     /**
@@ -79,6 +76,6 @@ public class CommentPicService {
      */
     public void delete(Long id) {
         log.debug("Request to delete CommentPic : {}", id);
-        commentPicRepository.deleteById(id);
+        commentPicRepository.delete(id);
     }
 }

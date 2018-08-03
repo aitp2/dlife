@@ -74,7 +74,7 @@ public class PinfanPicsResource {
     public ResponseEntity<PinfanPicsDTO> updatePinfanPics(@Valid @RequestBody PinfanPicsDTO pinfanPicsDTO) throws URISyntaxException {
         log.debug("REST request to update PinfanPics : {}", pinfanPicsDTO);
         if (pinfanPicsDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            return createPinfanPics(pinfanPicsDTO);
         }
         PinfanPicsDTO result = pinfanPicsService.save(pinfanPicsDTO);
         return ResponseEntity.ok()
@@ -107,8 +107,8 @@ public class PinfanPicsResource {
     @Timed
     public ResponseEntity<PinfanPicsDTO> getPinfanPics(@PathVariable Long id) {
         log.debug("REST request to get PinfanPics : {}", id);
-        Optional<PinfanPicsDTO> pinfanPicsDTO = pinfanPicsService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(pinfanPicsDTO);
+        PinfanPicsDTO pinfanPicsDTO = pinfanPicsService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(pinfanPicsDTO));
     }
 
     /**

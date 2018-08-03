@@ -1,8 +1,11 @@
 package com.aitp.dlife.service.dto;
 
+
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -15,7 +18,7 @@ public class PicsDTO implements Serializable {
     @Size(max = 255)
     private String ossPath;
 
-    private Instant createTime;
+    private String createTime;
 
     private Long fitnessActivityId;
 
@@ -37,15 +40,16 @@ public class PicsDTO implements Serializable {
         this.ossPath = ossPath;
     }
 
-    public Instant getCreateTime() {
-        return createTime;
-    }
+   
+	public String getCreateTime() {
+		return createTime;
+	}
 
-    public void setCreateTime(Instant createTime) {
-        this.createTime = createTime;
-    }
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
 
-    public Long getFitnessActivityId() {
+	public Long getFitnessActivityId() {
         return fitnessActivityId;
     }
 
@@ -71,7 +75,7 @@ public class PicsDTO implements Serializable {
         }
 
         PicsDTO picsDTO = (PicsDTO) o;
-        if (picsDTO.getId() == null || getId() == null) {
+        if(picsDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), picsDTO.getId());
@@ -88,8 +92,6 @@ public class PicsDTO implements Serializable {
             "id=" + getId() +
             ", ossPath='" + getOssPath() + "'" +
             ", createTime='" + getCreateTime() + "'" +
-            ", fitnessActivity=" + getFitnessActivityId() +
-            ", clockIn=" + getClockInId() +
             "}";
     }
 }

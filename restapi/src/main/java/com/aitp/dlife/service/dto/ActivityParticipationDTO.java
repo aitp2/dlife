@@ -1,6 +1,7 @@
 package com.aitp.dlife.service.dto;
 
-import java.time.Instant;
+
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -10,7 +11,12 @@ import java.util.Objects;
  */
 public class ActivityParticipationDTO implements Serializable {
 
-    private Long id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
 
     @Size(max = 128)
     private String wechatUserId;
@@ -18,25 +24,22 @@ public class ActivityParticipationDTO implements Serializable {
     @Size(max = 128)
     private String nickName;
 
+    @Size(max=128)
+    private String activityTitle;
+    
     @Size(max = 1024)
     private String avatar;
 
     @Size(max = 128)
     private String project;
 
-    private Instant participationTime;
+    private String participationTime;
 
-    private Integer totalParticipateDays;
+    private Long activityId;
 
-    private Integer totalClockinDays;
+    private Integer clockinCount;
 
-    private Integer currentContinueDays;
-
-    private Integer longestContinueDays;
-
-    private Instant latestClockinTime;
-
-    private Long fitnessActivityId;
+    private Integer attendStatus;
 
     public Long getId() {
         return id;
@@ -78,60 +81,48 @@ public class ActivityParticipationDTO implements Serializable {
         this.project = project;
     }
 
-    public Instant getParticipationTime() {
-        return participationTime;
+
+    public String getParticipationTime() {
+		return participationTime;
+	}
+
+	public void setParticipationTime(String participationTime) {
+		this.participationTime = participationTime;
+	}
+
+	public Long getActivityId() {
+        return activityId;
     }
 
-    public void setParticipationTime(Instant participationTime) {
-        this.participationTime = participationTime;
+    public void setActivityId(Long fitnessActivityId) {
+        this.activityId = fitnessActivityId;
     }
 
-    public Integer getTotalParticipateDays() {
-        return totalParticipateDays;
+
+    
+    
+    public String getActivityTitle() {
+		return activityTitle;
+	}
+
+	public void setActivityTitle(String activityTitle) {
+		this.activityTitle = activityTitle;
+	}
+
+	public Integer getClockinCount() {
+		return clockinCount;
+	}
+
+	public void setClockinCount(Integer clockinCount) {
+		this.clockinCount = clockinCount;
+	}
+
+    public Integer getAttendStatus() {
+        return attendStatus;
     }
 
-    public void setTotalParticipateDays(Integer totalParticipateDays) {
-        this.totalParticipateDays = totalParticipateDays;
-    }
-
-    public Integer getTotalClockinDays() {
-        return totalClockinDays;
-    }
-
-    public void setTotalClockinDays(Integer totalClockinDays) {
-        this.totalClockinDays = totalClockinDays;
-    }
-
-    public Integer getCurrentContinueDays() {
-        return currentContinueDays;
-    }
-
-    public void setCurrentContinueDays(Integer currentContinueDays) {
-        this.currentContinueDays = currentContinueDays;
-    }
-
-    public Integer getLongestContinueDays() {
-        return longestContinueDays;
-    }
-
-    public void setLongestContinueDays(Integer longestContinueDays) {
-        this.longestContinueDays = longestContinueDays;
-    }
-
-    public Instant getLatestClockinTime() {
-        return latestClockinTime;
-    }
-
-    public void setLatestClockinTime(Instant latestClockinTime) {
-        this.latestClockinTime = latestClockinTime;
-    }
-
-    public Long getFitnessActivityId() {
-        return fitnessActivityId;
-    }
-
-    public void setFitnessActivityId(Long fitnessActivityId) {
-        this.fitnessActivityId = fitnessActivityId;
+    public void setAttendStatus(Integer attendStatus) {
+        this.attendStatus = attendStatus;
     }
 
     @Override
@@ -144,7 +135,7 @@ public class ActivityParticipationDTO implements Serializable {
         }
 
         ActivityParticipationDTO activityParticipationDTO = (ActivityParticipationDTO) o;
-        if (activityParticipationDTO.getId() == null || getId() == null) {
+        if(activityParticipationDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), activityParticipationDTO.getId());
@@ -155,21 +146,13 @@ public class ActivityParticipationDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "ActivityParticipationDTO{" +
-            "id=" + getId() +
-            ", wechatUserId='" + getWechatUserId() + "'" +
-            ", nickName='" + getNickName() + "'" +
-            ", avatar='" + getAvatar() + "'" +
-            ", project='" + getProject() + "'" +
-            ", participationTime='" + getParticipationTime() + "'" +
-            ", totalParticipateDays=" + getTotalParticipateDays() +
-            ", totalClockinDays=" + getTotalClockinDays() +
-            ", currentContinueDays=" + getCurrentContinueDays() +
-            ", longestContinueDays=" + getLongestContinueDays() +
-            ", latestClockinTime='" + getLatestClockinTime() + "'" +
-            ", fitnessActivity=" + getFitnessActivityId() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "ActivityParticipationDTO [id=" + id + ", wechatUserId=" + wechatUserId + ", nickName=" + nickName
+				+ ", activityTitle=" + activityTitle + ", avatar=" + avatar + ", project=" + project
+				+ ", participationTime=" + participationTime + ", activityId=" + activityId + ", clockinCount="
+				+ clockinCount + ", attendStatus=" + attendStatus + "]";
+	}
+
+ 
 }
