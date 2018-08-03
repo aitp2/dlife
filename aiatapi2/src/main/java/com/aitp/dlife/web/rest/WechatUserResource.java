@@ -5,6 +5,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.WechatUserService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
+import com.aitp.dlife.web.rest.util.HttpUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import com.aitp.dlife.service.dto.WechatUserDTO;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -62,6 +63,10 @@ public class WechatUserResource {
         wechatUserDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
 
         WechatUserDTO result = wechatUserService.save(wechatUserDTO);
+        
+        log.info("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","","","","createUser",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),wechatUserDTO.isSex()==true?"female":"male");
+        //log for markting end
+
         return ResponseEntity.created(new URI("/api/wechat-users/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
