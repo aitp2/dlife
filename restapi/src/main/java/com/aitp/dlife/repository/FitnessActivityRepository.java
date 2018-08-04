@@ -19,17 +19,17 @@ import com.aitp.dlife.service.dto.FitnessActivityDTO;
 @Repository
 public interface FitnessActivityRepository extends JpaRepository<FitnessActivity, Long> {
 
-	@Query(value = "select * from fitness_activity LEFT JOIN activity_participation ON fitness_activity.id = activity_participation.activity_id "
+	@Query(value = "select * from fitness_activity LEFT JOIN activity_participation ON fitness_activity.id = activity_participation.fitness_activity_id "
 			+ " where activity_participation.wechat_user_id =:wechatUserId",nativeQuery = true)
 	Set<FitnessActivity> findActivitiesByWechatUserId(@Param("wechatUserId")String wechatUserId);
 
-	@Query(value = "select * from fitness_activity LEFT JOIN activity_participation ON fitness_activity.id = activity_participation.activity_id  where activity_start_time >=:nowData",nativeQuery = true)
+	@Query(value = "select * from fitness_activity LEFT JOIN activity_participation ON fitness_activity.id = activity_participation.fitness_activity_id  where activity_start_time >=:nowData",nativeQuery = true)
 	Set<FitnessActivity> findOpend(@Param("nowData")String nowData);
-	
-	@Query(value = "select * from fitness_activity LEFT JOIN activity_participation ON fitness_activity.id = activity_participation.activity_id  where activity_start_time <:nowData and activity_end_time >:nowData",nativeQuery = true)
+
+	@Query(value = "select * from fitness_activity LEFT JOIN activity_participation ON fitness_activity.id = activity_participation.fitness_activity_id  where activity_start_time <:nowData and activity_end_time >:nowData",nativeQuery = true)
 	Set<FitnessActivity> findInProgress(@Param("nowData")String nowData);
 
-	@Query(value = "select * from fitness_activity LEFT JOIN activity_participation ON fitness_activity.id = activity_participation.activity_id  where activity_end_time <:nowData",nativeQuery = true)
+	@Query(value = "select * from fitness_activity LEFT JOIN activity_participation ON fitness_activity.id = activity_participation.fitness_activity_id  where activity_end_time <:nowData",nativeQuery = true)
 	List<FitnessActivity> findEnd(@Param("nowData")String nowData);
-	
+
 }
