@@ -56,6 +56,7 @@ public class ClockInActivityService {
 
 	/**
 	 * 用户打卡
+	 * 
 	 * @param request
 	 * @return
 	 */
@@ -75,7 +76,7 @@ public class ClockInActivityService {
 		// log for markting end
 		return true;
 	}
-	
+
 	/**
 	 * 查询活动完成用户的打卡情况
 	 * 
@@ -139,10 +140,12 @@ public class ClockInActivityService {
 			Optional<ActivityParticipation> activityParticipation = activityParticipationRepository
 					.findById(request.getActivityParticipationId());
 			FitnessActivity fitnessActivity = activityParticipation.map(ap -> ap.getFitnessActivity()).orElse(null);
-
-			log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}",
-					"fit", fitnessActivity.getId(), HttpUtil.baseEncoder(fitnessActivity.getTitle()), "clock-in",
-					DateUtil.getYMDDateString(new Date()), wechatUserEntity.getNickName(), sexString);
+			if (null != fitnessActivity) {
+				log.debug(
+						"module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}",
+						"fit", fitnessActivity.getId(), HttpUtil.baseEncoder(fitnessActivity.getTitle()), "clock-in",
+						DateUtil.getYMDDateString(new Date()), wechatUserEntity.getNickName(), sexString);
+			}
 		}
 	}
 
@@ -200,7 +203,6 @@ public class ClockInActivityService {
 			}
 		}
 	}
-
 
 	/**
 	 * 获取用户排名
