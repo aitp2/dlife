@@ -112,7 +112,7 @@ public class CommentResource {
 
         if (eventChannel != null){
             //record the activity participation event start
-            eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()), EventType.COMMENT,
+            eventMessageService.recordEventMessage(eventChannel,DateUtil.getYMDDateString(new Date()), EventType.COMMENT,
                 commentDTO.getWechatUserId(),objectTitle,objectId,commentDTO.getAvatar(),commentDTO.getNickName());
             //record the activity participation event end
         }

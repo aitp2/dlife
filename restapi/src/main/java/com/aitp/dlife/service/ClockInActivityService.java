@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.aitp.dlife.domain.enumeration.EventChannel;
+import com.aitp.dlife.domain.enumeration.EventType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +55,8 @@ public class ClockInActivityService {
 	private ActivityParticipationMapper activityParticipationMapper;
 	@Autowired
 	private ClockInMapper clockInMapper;
+    @Autowired
+    private EventMessageService eventMessageService;
 
 	/**
 	 * 用户打卡
@@ -63,6 +67,9 @@ public class ClockInActivityService {
 		// 保存打卡记录
 		log.debug("保存打卡记录");
 		saveClockInRecord(request);
+		// save the event message
+        log.debug("保存Event message记录");
+        saveEnventMessage(request);
 		// 更新打卡记录汇总
 		log.debug("更新打卡汇总");
 		updateClockInSummary(request);
@@ -75,10 +82,25 @@ public class ClockInActivityService {
 		// log for markting end
 		return true;
 	}
-	
+
+	protected void saveEnventMessage(ClockInRequest request){
+
+        Optional<ActivityParticipation> activityParticipation = activityParticipationRepository.findById(request.getActivityParticipationId());
+
+        if (activityParticipation.isPresent()){
+            //record the activity participation event start
+            eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()), EventType.CLOCKIN,
+                request.getWechatUserId(),activityParticipation.get().getFitnessActivity().getTitle(),
+                activityParticipation.get().getFitnessActivity().getId(),activityParticipation.get().getAvatar(),
+                activityParticipation.get().getNickName());
+            //record the activity participation event end
+        }
+
+    }
+
 	/**
 	 * 查询活动完成用户的打卡情况
-	 * 
+	 *
 	 * @param activityParticipationId
 	 * @return
 	 */
@@ -204,7 +226,7 @@ public class ClockInActivityService {
 
 	/**
 	 * 获取用户排名
-	 * 
+	 *
 	 * @param activityParticipationEntity
 	 * @return
 	 */
@@ -224,7 +246,7 @@ public class ClockInActivityService {
 
 	/**
 	 * 获取最早打卡时间
-	 * 
+	 *
 	 * @param activityParticipationEntity
 	 * @return
 	 */
@@ -236,7 +258,7 @@ public class ClockInActivityService {
 
 	/**
 	 * 获取最晚打卡时间
-	 * 
+	 *
 	 * @param activityParticipationEntity
 	 * @return
 	 */
@@ -248,9 +270,8 @@ public class ClockInActivityService {
 
 	/**
 	 * 活动是否完成
-	 * 
+	 *
 	 * @param activityParticipationEntity
-	 * @param fitnessActivityEntity
 	 * @return
 	 */
 	private boolean isCompleted(ActivityParticipation activityParticipationEntity) {
@@ -264,7 +285,7 @@ public class ClockInActivityService {
 
 	/**
 	 * 更新用户参加活动的打卡情况
-	 * 
+	 *
 	 * @param activityParticipationId
 	 */
 	public void updateActivityParticipation(Long activityParticipationId) {
@@ -293,8 +314,8 @@ public class ClockInActivityService {
 
 	/**
 	 * 获取总打卡天数
-	 * 
-	 * @param activityParticipation
+	 *
+	 * @param activityParticipationEntity
 	 * @return
 	 */
 	private Integer getTotalClockInCount(ActivityParticipation activityParticipationEntity) {
@@ -305,8 +326,8 @@ public class ClockInActivityService {
 
 	/**
 	 * 当前连续打卡天数
-	 * 
-	 * @param activityParticipation
+	 *
+	 * @param activityParticipationEntity
 	 * @return
 	 */
 	private Integer getCurrentContinueDays(ActivityParticipation activityParticipationEntity) {
@@ -328,8 +349,9 @@ public class ClockInActivityService {
 
 	/**
 	 * 最长连续天数
-	 * 
-	 * @param activityParticipation
+	 *
+	 * @param activityParticipationEntity
+     * @param currentContinueDays
 	 * @return
 	 */
 	private Integer getLongestContinueDays(ActivityParticipation activityParticipationEntity,
@@ -345,7 +367,7 @@ public class ClockInActivityService {
 
 	/**
 	 * 判断用户今天是否打过卡
-	 * 
+	 *
 	 * @param wechatUserId
 	 * @param activityParticipationId
 	 * @return true -> 打过卡 false -> 未打过卡
