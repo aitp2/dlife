@@ -62,16 +62,16 @@ public class ClockInActivityService {
 	 */
 	public boolean clockIn(ClockInRequest request) {
 		// 保存打卡记录
-		log.debug("保存打卡记录");
+		log.debug("start to saveClockInRecord");
 		saveClockInRecord(request);
 		// 更新打卡记录汇总
-		log.debug("更新打卡汇总");
+		log.debug("start to updateClockInSummary");
 		updateClockInSummary(request);
 		// 冗余打卡信息
-		log.debug("更新个人打活动打卡");
+		log.debug("start to updateActivityParticipation");
 		updateActivityParticipation(request.getActivityParticipationId());
 		// log for markting start
-		log.debug("记录市场日志");
+		log.debug("start to saveLogForMarking");
 		saveLogForMarking(request);
 		// log for markting end
 		return true;
@@ -112,7 +112,7 @@ public class ClockInActivityService {
 			clockInActivityResponse.setCompleted(completed);
 
 		} else {
-			log.error("没有找到参与信息，参与ID：" + activityParticipationId);
+			log.error("can not find activityParticipation info,activityParticipationId：" + activityParticipationId);
 		}
 
 		return clockInActivityResponse;
