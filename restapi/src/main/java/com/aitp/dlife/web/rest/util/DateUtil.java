@@ -1,11 +1,11 @@
 package com.aitp.dlife.web.rest.util;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author jianfei.yin
@@ -13,8 +13,18 @@ import java.util.Date;
  **/
 public class DateUtil {
 	private static String Y_M_D = "yyyy-MM-dd HH:mm:ss";
-    private static String YY_MM_DD = "yyyy-MM-dd";
+    public static String YY_MM_DD = "yyyy-MM-dd";
+    public static String YY_M_D_HH_mm = "yy.M.d HH:mm";
 
+    public static String getDateString(String format,Date date) {
+        if (date == null) {
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(date);
+    }
+    
+    
 	public static String getYMDDateString(Date date) {
 		if (date == null) {
 			return null;
@@ -44,6 +54,26 @@ public class DateUtil {
 		}
 	}
 
+	/**
+	 * String -> Date
+	 * @param fromat
+	 * @param date
+	 * @return
+	 */
+	public static Date fromStringDate(String fromat,String date) {
+		if (StringUtils.isEmpty(date)) {
+			return null;
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat(fromat);
+		try {
+			return sdf.parse(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
 	public static boolean isToday(Date date) {
 		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
 		if (fmt.format(date).toString().equals(fmt.format(new Date()).toString())) {
@@ -90,6 +120,7 @@ public class DateUtil {
 		return date.getTime() > getThisWeekMonday().getTime();
 
 	}
+	
 
 
 }

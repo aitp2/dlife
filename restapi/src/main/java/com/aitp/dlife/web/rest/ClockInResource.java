@@ -3,15 +3,21 @@ package com.aitp.dlife.web.rest;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.service.*;
-import com.aitp.dlife.service.dto.*;
 import com.aitp.dlife.web.rest.util.HttpUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,16 +26,30 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import com.aitp.dlife.service.ActivityParticipationService;
+import com.aitp.dlife.service.ClockInActivityService;
+import com.aitp.dlife.service.ClockInService;
+import com.aitp.dlife.service.ClockinSummaryService;
+import com.aitp.dlife.service.FitnessActivityService;
+import com.aitp.dlife.service.PicsService;
+import com.aitp.dlife.service.WechatUserService;
+import com.aitp.dlife.service.dto.ActivityParticipationDTO;
+import com.aitp.dlife.service.dto.ClockInDTO;
+import com.aitp.dlife.service.dto.ClockinSummaryDTO;
+import com.aitp.dlife.service.dto.FitnessActivityDTO;
+import com.aitp.dlife.service.dto.PicsDTO;
+import com.aitp.dlife.service.dto.WechatUserDTO;
+
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing ClockIn.
@@ -49,9 +69,10 @@ public class ClockInResource {
     private final FitnessActivityService fitnessActivityService;
     private final ActivityParticipationService activityParticipationService;
     private final EventMessageService eventMessageService;
+    private final ClockInActivityService clockInActivityService;
 
 	public ClockInResource(ClockInService clockInService, PicsService picsService,
-                           ClockinSummaryService clockinSummaryService, WechatUserService wechatUserService, FitnessActivityService fitnessActivityService, ActivityParticipationService activityParticipationService, EventMessageService eventMessageService) {
+                           ClockinSummaryService clockinSummaryService, WechatUserService wechatUserService, FitnessActivityService fitnessActivityService, ActivityParticipationService activityParticipationService, EventMessageService eventMessageService, ClockInActivityService clockInActivityService) {
 		this.clockInService = clockInService;
 		this.picsService = picsService;
 		this.clockinSummaryService = clockinSummaryService;
@@ -59,6 +80,7 @@ public class ClockInResource {
 		this.fitnessActivityService=fitnessActivityService;
 		this.activityParticipationService=activityParticipationService;
         this.eventMessageService = eventMessageService;
+        this.clockInActivityService = clockInActivityService;
     }
 
     /**
@@ -69,6 +91,7 @@ public class ClockInResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/clock-ins")
+    @Deprecated
     @Timed
     public ResponseEntity<ClockInDTO> createClockIn(@Valid @RequestBody ClockInDTO clockInDTO) throws URISyntaxException {
         log.debug("REST request to save ClockIn : {}", clockInDTO);
@@ -114,6 +137,8 @@ public class ClockInResource {
 			clockinSummaryService.save(newClockinSummaryDTO);
 		}
 
+        //冗余活动打卡信息
+        clockInActivityService.updateActivityParticipation(clockInDTO.getActivityParticipationId());
 
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(clockInDTO.getWechatUserId()));
