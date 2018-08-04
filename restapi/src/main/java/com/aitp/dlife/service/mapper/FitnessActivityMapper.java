@@ -19,6 +19,7 @@ public interface FitnessActivityMapper extends EntityMapper<FitnessActivityDTO, 
 	@Mapping(target = "activityEndTime", expression = "java(InstantMapper.toDateString(fitnessActivity.getActivityEndTime()))")
 	@Mapping(target = "attendCount", expression = "java(fitnessActivity.getActivityParticipations() == null ? 0 : fitnessActivity.getActivityParticipations().size())")
 	@Mapping(source="activityParticipations",target ="activityParticipations")
+    @Mapping(target="images",source ="pics")
 	FitnessActivityDTO toDto(FitnessActivity fitnessActivity);
 
 	@Mapping(target = "activityParticipations", ignore = true)
@@ -37,6 +38,6 @@ public interface FitnessActivityMapper extends EntityMapper<FitnessActivityDTO, 
 		fitnessActivity.setId(id);
 		return fitnessActivity;
 	}
-	
-	
+
+
 }
