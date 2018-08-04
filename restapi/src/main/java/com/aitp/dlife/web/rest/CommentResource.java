@@ -1,12 +1,14 @@
 package com.aitp.dlife.web.rest;
 
 import com.aitp.dlife.domain.enumeration.CommentChannel;
+import com.aitp.dlife.domain.enumeration.EventChannel;
+import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.service.CommentPicService;
+import com.aitp.dlife.service.EventMessageService;
 import com.aitp.dlife.service.dto.CommentPicDTO;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.domain.FitnessActivity;
-import com.aitp.dlife.repository.CommentRepository;
 import com.aitp.dlife.repository.FitnessActivityRepository;
 import com.aitp.dlife.service.CommentService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -53,11 +55,13 @@ public class CommentResource {
 
     private final FitnessActivityRepository fitnessActivityRepository;
 
+    private final EventMessageService eventMessageService;
 
-    public CommentResource(CommentService commentService,CommentPicService commentPicService,FitnessActivityRepository fitnessActivityRepository) {
+    public CommentResource(CommentService commentService, CommentPicService commentPicService, FitnessActivityRepository fitnessActivityRepository, EventMessageService eventMessageService) {
         this.commentService = commentService;
         this.commentPicService=commentPicService;
         this.fitnessActivityRepository = fitnessActivityRepository;
+        this.eventMessageService = eventMessageService;
     }
 
     /**
@@ -93,10 +97,24 @@ public class CommentResource {
             result.setCommentPics(picDTOS);
         }
 
-        if (null!=commentDTO.getChannel()&&commentDTO.getChannel().equals(CommentChannel.FIT)){
+        EventChannel eventChannel = null;
+        String objectTitle = null;
+        Long objectId = null;
+        if (CommentChannel.FIT.equals(commentDTO.getChannel())){
         	FitnessActivity fitnessActivity = fitnessActivityRepository.findById(commentDTO.getObjectId()).get();
             fitnessActivity.setModifyTime(Instant.now());
             fitnessActivityRepository.save(fitnessActivity);
+
+            eventChannel = EventChannel.FITNESS;
+            objectTitle = fitnessActivity.getTitle();
+            objectId = fitnessActivity.getId();
+        }
+
+        if (eventChannel != null){
+            //record the activity participation event start
+            eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()), EventType.COMMENT,
+                commentDTO.getWechatUserId(),objectTitle,objectId,commentDTO.getAvatar(),commentDTO.getNickName());
+            //record the activity participation event end
         }
 
         return ResponseEntity.created(new URI("/api/comments/" + result.getId()))

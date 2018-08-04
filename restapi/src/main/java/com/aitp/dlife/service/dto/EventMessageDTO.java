@@ -32,7 +32,7 @@ public class EventMessageDTO implements Serializable {
     @Size(max = 256)
     private String objectTitle;
 
-    private Instant createTime;
+    private String createTime;
 
     public Long getId() {
         return id;
@@ -98,11 +98,11 @@ public class EventMessageDTO implements Serializable {
         this.objectTitle = objectTitle;
     }
 
-    public Instant getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Instant createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 

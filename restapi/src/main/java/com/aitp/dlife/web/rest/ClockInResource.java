@@ -1,5 +1,7 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.domain.enumeration.EventChannel;
+import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.service.*;
 import com.aitp.dlife.service.dto.*;
 import com.aitp.dlife.web.rest.util.HttpUtil;
@@ -11,8 +13,6 @@ import com.aitp.dlife.web.rest.util.PaginationUtil;
 
 import io.github.jhipster.web.util.ResponseUtil;
 
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.Instant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -48,16 +48,18 @@ public class ClockInResource {
     private final WechatUserService wechatUserService;
     private final FitnessActivityService fitnessActivityService;
     private final ActivityParticipationService activityParticipationService;
+    private final EventMessageService eventMessageService;
 
 	public ClockInResource(ClockInService clockInService, PicsService picsService,
-			ClockinSummaryService clockinSummaryService,WechatUserService wechatUserService,FitnessActivityService fitnessActivityService,ActivityParticipationService activityParticipationService) {
+                           ClockinSummaryService clockinSummaryService, WechatUserService wechatUserService, FitnessActivityService fitnessActivityService, ActivityParticipationService activityParticipationService, EventMessageService eventMessageService) {
 		this.clockInService = clockInService;
 		this.picsService = picsService;
 		this.clockinSummaryService = clockinSummaryService;
 		this.wechatUserService=wechatUserService;
 		this.fitnessActivityService=fitnessActivityService;
 		this.activityParticipationService=activityParticipationService;
-	}
+        this.eventMessageService = eventMessageService;
+    }
 
     /**
      * POST  /clock-ins : Create a new clockIn.
@@ -131,6 +133,10 @@ public class ClockInResource {
         log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit",dto.getId(),HttpUtil.baseEncoder(dto.getTitle()),"clock-in",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
         //log for markting end
 
+        //record the activity participation event start
+        eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()), EventType.CLOCKIN,
+            result.getWechatUserId(),participationDTO.getActivityTitle(),participationDTO.getActivityId(),wechatUserDTO.getAvatar(),wechatUserDTO.getNickName());
+        //record the activity participation event end
 
         return ResponseEntity.created(new URI("/api/clock-ins/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

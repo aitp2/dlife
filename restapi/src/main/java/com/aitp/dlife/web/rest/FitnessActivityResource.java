@@ -11,8 +11,10 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
-import com.aitp.dlife.service.WechatUserService;
-import com.aitp.dlife.service.dto.WechatUserDTO;
+import com.aitp.dlife.domain.enumeration.EventChannel;
+import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.service.*;
+import com.aitp.dlife.service.dto.*;
 import com.aitp.dlife.web.rest.util.HttpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,11 +33,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aitp.dlife.service.FitnessActivityService;
-import com.aitp.dlife.service.PicsService;
 import com.aitp.dlife.service.WechatUserService;
-import com.aitp.dlife.service.dto.FitnessActivityDTO;
-import com.aitp.dlife.service.dto.PicsDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.DateUtil;
@@ -63,10 +61,13 @@ public class FitnessActivityResource {
 
     private final WechatUserService wechatUserService;
 
-    public FitnessActivityResource(FitnessActivityService fitnessActivityService,PicsService picsService,WechatUserService wechatUserService) {
+    private final EventMessageService eventMessageService;
+
+    public FitnessActivityResource(FitnessActivityService fitnessActivityService,PicsService picsService,WechatUserService wechatUserService, EventMessageService eventMessageService) {
         this.fitnessActivityService = fitnessActivityService;
         this.picsService = picsService;
         this.wechatUserService=wechatUserService;
+        this.eventMessageService = eventMessageService;
     }
 
     /**
@@ -96,7 +97,6 @@ public class FitnessActivityResource {
         }
         result.setImages(imagesDTO);
 
-
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(fitnessActivityDTO.getWechatUserId()));
         String sexString="";
@@ -113,6 +113,10 @@ public class FitnessActivityResource {
         log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit","",HttpUtil.baseEncoder(fitnessActivityDTO.getTitle()),"createActivity",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
         //log for markting end
 
+        //record the activity create event start
+        eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()),EventType.CREATE,
+            result.getWechatUserId(),result.getTitle(),result.getId(),wechatUserDTO.getAvatar(),wechatUserDTO.getNickName());
+        //record the activity create event end
 
         return ResponseEntity.created(new URI("/api/fitness-activities/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -182,6 +186,12 @@ public class FitnessActivityResource {
                 picsService.delete(oldImage.getId());
             }
         }
+
+        //record the activity modify event start
+        eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()),EventType.UPDATE,
+            result.getWechatUserId(),result.getTitle(),result.getId(),result.getAvatar(),result.getNickName());
+        //record the activity modify event end
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, fitnessActivityDTO.getId().toString()))
             .body(result);

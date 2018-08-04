@@ -10,10 +10,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 
-import com.aitp.dlife.service.FitnessActivityService;
-import com.aitp.dlife.service.WechatUserService;
+import com.aitp.dlife.domain.enumeration.EventChannel;
+import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.service.*;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.service.enums.Status;
@@ -37,8 +37,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.repository.FitnessActivityRepository;
-import com.aitp.dlife.service.ActivityParticipationService;
-import com.aitp.dlife.service.ClockInService;
 import com.aitp.dlife.service.dto.ActivityParticipationDTO;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.DateUtil;
@@ -63,19 +61,21 @@ public class ActivityParticipationResource {
 
 	private final FitnessActivityRepository fitnessActivityRepository;
 
-
 	private final WechatUserService wechatUserService;
 
 	private final FitnessActivityService fitnessActivityService;
 
+    private final EventMessageService eventMessageService;
+
 	public ActivityParticipationResource(ActivityParticipationService activityParticipationService,
-			FitnessActivityRepository fitnessActivityRepository, WechatUserService wechatUserService,
-			FitnessActivityService fitnessActivityService) {
+                                         FitnessActivityRepository fitnessActivityRepository, WechatUserService wechatUserService,
+                                         FitnessActivityService fitnessActivityService, EventMessageService eventMessageService) {
 		this.activityParticipationService = activityParticipationService;
 		this.fitnessActivityRepository = fitnessActivityRepository;
 		this.wechatUserService = wechatUserService;
 		this.fitnessActivityService = fitnessActivityService;
-	}
+        this.eventMessageService = eventMessageService;
+    }
 
 	/**
 	 * POST /activity-participations : Create a new activityParticipation.
@@ -125,6 +125,12 @@ public class ActivityParticipationResource {
 		// log for markting end
 
 		ActivityParticipationDTO result = activityParticipationService.save(activityParticipationDTO);
+
+        //record the activity participation event start
+        eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()), EventType.ATTEND,
+            result.getWechatUserId(),result.getActivityTitle(),result.getActivityId(),wechatUserDTO.getAvatar(),wechatUserDTO.getNickName());
+        //record the activity participation event end
+
 		return ResponseEntity.created(new URI("/api/activity-participations/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
 	}
@@ -178,8 +184,8 @@ public class ActivityParticipationResource {
 	/**
 	 * GET /activity-participations : get all the activityParticipations.
 	 *
-	 * @param pageable
-	 *            the pagination information
+	 * @param isClockIn
+     * @param clockinDate
 	 * @return the ResponseEntity with status 200 (OK) and the list of
 	 *         activityParticipations in body
 	 */
@@ -234,7 +240,20 @@ public class ActivityParticipationResource {
 	@Timed
 	public ResponseEntity<Void> deleteActivityParticipation(@PathVariable Long id) {
 		log.debug("REST request to delete ActivityParticipation : {}", id);
-		activityParticipationService.delete(id);
+
+        Optional<ActivityParticipationDTO> activityParticipationDTO = activityParticipationService.findOne(id);
+
+        if (activityParticipationDTO.isPresent()){
+            //record the activity quit event start
+            eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()),EventType.QUIT,
+                activityParticipationDTO.get().getWechatUserId(),activityParticipationDTO.get().getActivityTitle(),
+                activityParticipationDTO.get().getActivityId(),activityParticipationDTO.get().getAvatar(),
+                activityParticipationDTO.get().getNickName());
+            //record the activity quit event end
+
+        }
+
+        activityParticipationService.delete(id);
 		return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
 	}
 
