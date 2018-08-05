@@ -24,8 +24,9 @@ public class UserServiceImp implements UserService{
         jsonObject.put("avatar",wechatUserDTO.getHeadimgurl());
         jsonObject.put("openId",wechatUserDTO.getOpenId());
         jsonObject.put("nickName",HttpUtil.baseEncoder(wechatUserDTO.getUserName()));
-        jsonObject.put("sex",wechatUserDTO.getSex());
-
+        if (StringUtils.isNotBlank(wechatUserDTO.getSex())){
+            jsonObject.put("sex",Integer.valueOf(wechatUserDTO.getSex()));
+        }
         String resultData=HttpUtil.doPostJson(apiPath+"/wechat-users",jsonObject);
         if(StringUtils.isNotBlank(resultData)){
             return JSONObject.parseObject(resultData);
@@ -40,5 +41,17 @@ public class UserServiceImp implements UserService{
             return JSONObject.parseObject(userInfo);
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("avatar","Test");
+        jsonObject.put("openId","8888888888888888888888");
+        jsonObject.put("nickName","Test");
+        jsonObject.put("sex",1);
+        String resultData=HttpUtil.doPostJson("http://newapi.aitpgroup.tech:8080/api/wechat-users",jsonObject);
+        if(StringUtils.isNotBlank(resultData)){
+            System.out.println(JSONObject.parseObject(resultData));
+        }
     }
 }
