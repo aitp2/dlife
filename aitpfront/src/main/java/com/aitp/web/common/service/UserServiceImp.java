@@ -45,10 +45,10 @@ public class UserServiceImp implements UserService{
 
     public static void main(String[] args) {
         JSONObject jsonObject=new JSONObject();
-        jsonObject.put("avatar","Test");
-        jsonObject.put("openId","8888888888888888888888");
-        jsonObject.put("nickName","Test");
-        jsonObject.put("sex",1);
+        jsonObject.put("avatar","http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJt9eFezfhFoxBxEV3oK9RxWJnibicl07jAUvxw797X2D8qvwNjykytAmZbtY1BpfQRdOT0SbpibkibuA/132");
+        jsonObject.put("openId","oeVW6wkkQg-qxgItc_162QSfprow");
+        jsonObject.put("nickName","TW9vb29vbg==");
+        jsonObject.put("sex",2);
         String resultData=HttpUtil.doPostJson("http://newapi.aitpgroup.tech:8080/api/wechat-users",jsonObject);
         if(StringUtils.isNotBlank(resultData)){
             System.out.println(JSONObject.parseObject(resultData));
