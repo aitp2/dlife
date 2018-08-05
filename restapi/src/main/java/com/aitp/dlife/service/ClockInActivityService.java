@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import com.aitp.dlife.domain.ActivityParticipation;
 import com.aitp.dlife.domain.ClockIn;
@@ -278,6 +279,9 @@ public class ClockInActivityService {
 	 */
 	private boolean isCompleted(ActivityParticipation activityParticipationEntity) {
 		FitnessActivity fitnessActivityEntity = activityParticipationEntity.getFitnessActivity();
+		if(StringUtils.isEmpty(fitnessActivityEntity.getActivityEndTime()) || StringUtils.isEmpty(activityParticipationEntity.getLatestClockinTime())) {
+			return false;
+		}
 		String activityEndTimeStr = DateUtil.getYYMMDDDateString(Date.from(fitnessActivityEntity.getActivityEndTime()));
 		String lastClockInTimeStr = DateUtil
 				.getYYMMDDDateString(Date.from(activityParticipationEntity.getLatestClockinTime()));

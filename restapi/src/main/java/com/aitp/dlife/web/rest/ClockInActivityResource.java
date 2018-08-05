@@ -62,7 +62,7 @@ public class ClockInActivityResource {
 			@ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "activityParticipationId", value = "用户参与活动的ID", required = true) })
 	@Timed
 	public ClockInActivityResponse clockInResult(
-			@PathVariable("activityParticipationID") Long activityParticipationId) {
+			@PathVariable("activityParticipationId") Long activityParticipationId) {
 		log.debug("REST request to get clock-in-result : {}", activityParticipationId);
 		ClockInActivityResponse res = new ClockInActivityResponse();
 		res = clockInActivityService.getActivityParticipationClockInResult(activityParticipationId);
