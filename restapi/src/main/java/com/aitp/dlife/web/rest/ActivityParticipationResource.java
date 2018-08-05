@@ -128,7 +128,7 @@ public class ActivityParticipationResource {
 
         //record the activity participation event start
         eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()), EventType.ATTEND,
-            result.getWechatUserId(),result.getActivityTitle(),result.getActivityId(),wechatUserDTO.getAvatar(),wechatUserDTO.getNickName());
+            result.getWechatUserId(),dto.getTitle(),dto.getId(),wechatUserDTO.getAvatar(),wechatUserDTO.getNickName());
         //record the activity participation event end
 
 		return ResponseEntity.created(new URI("/api/activity-participations/" + result.getId()))
