@@ -51,12 +51,14 @@ public class FitnessActivityDTO implements Serializable {
     private Integer status;
 
     private Set<ActivityParticipationDTO> activityParticipations;
-    
+
     private Integer commentCount;
-    
+
     private Integer readingCount;
 
     private Set<PicsDTO> images = new HashSet<>();
+
+    private Set<EventMessageDTO> eventMessages = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -159,11 +161,17 @@ public class FitnessActivityDTO implements Serializable {
 	public Integer getAttendCount() {
 		return attendCount;
 	}
-	
-	
 
 
-	public Set<ActivityParticipationDTO> getActivityParticipations() {
+    public Set<EventMessageDTO> getEventMessages() {
+        return eventMessages;
+    }
+
+    public void setEventMessages(Set<EventMessageDTO> eventMessages) {
+        this.eventMessages = eventMessages;
+    }
+
+    public Set<ActivityParticipationDTO> getActivityParticipations() {
 		return activityParticipations;
 	}
 
@@ -190,7 +198,7 @@ public class FitnessActivityDTO implements Serializable {
     public void setStatus(Integer status) {
         this.status = status;
     }
-    
+
     public Integer getReadingCount() {
 		return readingCount;
 	}

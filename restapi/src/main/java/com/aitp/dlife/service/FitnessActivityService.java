@@ -2,6 +2,7 @@ package com.aitp.dlife.service;
 
 import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.repository.FitnessActivityRepository;
+import com.aitp.dlife.service.dto.EventMessageDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.enums.Status;
 import com.aitp.dlife.service.mapper.FitnessActivityMapper;
@@ -13,12 +14,15 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,9 +40,12 @@ public class FitnessActivityService {
 
     private final FitnessActivityMapper fitnessActivityMapper;
 
-    public FitnessActivityService(FitnessActivityRepository fitnessActivityRepository, FitnessActivityMapper fitnessActivityMapper) {
+    private final EventMessageService eventMessageService;
+
+    public FitnessActivityService(FitnessActivityRepository fitnessActivityRepository, FitnessActivityMapper fitnessActivityMapper, EventMessageService eventMessageService) {
         this.fitnessActivityRepository = fitnessActivityRepository;
         this.fitnessActivityMapper = fitnessActivityMapper;
+        this.eventMessageService = eventMessageService;
     }
 
     /**
@@ -65,6 +72,33 @@ public class FitnessActivityService {
         log.debug("Request to get all FitnessActivities");
         return fitnessActivityRepository.findAll(pageable)
             .map(fitnessActivityMapper::toDto);
+    }
+
+    /**
+     * Get all the fitnessActivities.
+     *
+     * @param pageable the pagination information
+     * @param eventCount the event count
+     * @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public Page<FitnessActivityDTO> findAllAndEvent(Pageable pageable, Integer eventCount) {
+        log.debug("Request to get all FitnessActivities");
+        Page<FitnessActivityDTO> result = fitnessActivityRepository.findAll(pageable)
+            .map(fitnessActivityMapper::toDto);
+
+        if(result!=null){
+            Sort.Order order = new Sort.Order(Sort.Direction.DESC,"createTime");
+            Sort sort = new Sort(order);
+            PageRequest eventPageable = new PageRequest(0,eventCount,sort);
+            for(FitnessActivityDTO fitnessActivityDTO:result){
+                Set<EventMessageDTO> eventMessageDTOSet = eventMessageService.findAllForObjectId(eventPageable,
+                    fitnessActivityDTO.getId()+"").stream().collect(Collectors.toSet());
+                fitnessActivityDTO.setEventMessages(eventMessageDTOSet);
+            }
+        }
+
+        return result;
     }
 
     /**
@@ -99,7 +133,7 @@ public class FitnessActivityService {
 
 	/**
 	 * According to state query
-	 * @param status
+	 * @param state
 	 * @return
 	 */
 	public List<FitnessActivityDTO> getActivitiesByState(Integer state){
