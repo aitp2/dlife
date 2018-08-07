@@ -19,6 +19,7 @@ import { AitpapiPicsModule } from './pics/pics.module';
 import { AitpapiClockinSummaryModule } from './clockin-summary/clockin-summary.module';
 import { AitpapiQuestionModule } from './question/question.module';
 import { AitpapiQuestionPicModule } from './question-pic/question-pic.module';
+import { AitpapiThumbsUpModule } from './thumbs-up/thumbs-up.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -43,6 +44,7 @@ import { AitpapiQuestionPicModule } from './question-pic/question-pic.module';
         AitpapiClockinSummaryModule,
         AitpapiQuestionModule,
         AitpapiQuestionPicModule,
+        AitpapiThumbsUpModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],
