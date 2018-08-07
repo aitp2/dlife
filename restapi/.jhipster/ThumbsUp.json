@@ -1,0 +1,65 @@
+{
+    "name": "ThumbsUp",
+    "fields": [
+        {
+            "fieldName": "objectId",
+            "javadoc": "点赞对象id",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "channel",
+            "javadoc": "点赞渠道",
+            "fieldType": "ThumbsUpChannel",
+            "fieldValues": "COOK,FIT,PIN,FAQS"
+        },
+        {
+            "fieldName": "module",
+            "javadoc": "点赞模块",
+            "fieldType": "ThumbsUpModule",
+            "fieldValues": "COMMENT,ACTIVITY,USERCENTER"
+        },
+        {
+            "fieldName": "wechatUserId",
+            "javadoc": "点赞人id",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "avatar",
+            "javadoc": "点赞人头像",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 1024
+        },
+        {
+            "fieldName": "nickName",
+            "javadoc": "点赞人昵称",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        },
+        {
+            "fieldName": "createTime",
+            "javadoc": "创建时间",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20180807062747",
+    "javadoc": "点赞信息",
+    "entityTableName": "thumbs_up",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

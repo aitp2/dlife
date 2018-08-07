@@ -24,7 +24,8 @@
     <include file="config/liquibase/changelog/20180802115504_added_entity_ClockinSummary.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180802115505_added_entity_Question.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180802115506_added_entity_QuestionPic.xml" relativeToChangelogFile="false"/>
-	-->
+	<include file="config/liquibase/changelog/20180807062747_added_entity_ThumbsUp.xml" relativeToChangelogFile="false"/>
+    -->
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
 	<!--
     <include file="config/liquibase/changelog/20180802115451_added_entity_constraints_CommentPic.xml" relativeToChangelogFile="false"/>
@@ -42,6 +43,6 @@
 	<!--
 	<include file="config/liquibase/changelog/20180802123341_changelog.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20180804005713_changelog.xml" relativeToChangelogFile="false"/>
-	-->
-
+	<include file="config/liquibase/changelog/20180807082732_changelog.xml" relativeToChangelogFile="false"/>
+    -->
 </databaseChangeLog>

@@ -15,52 +15,44 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity EventMessage.
+        Added the entity ThumbsUp.
     -->
-    <changeSet id="20180802115452-1" author="jhipster">
-        <createTable tableName="event_message" remarks="事件消息">
+    <changeSet id="20180807062747-1" author="jhipster">
+        <createTable tableName="thumbs_up" remarks="点赞信息">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="wechat_user_id" type="varchar(128)" remarks="触发人id">
+            <column name="object_id" type="bigint" remarks="点赞对象id">
                 <constraints nullable="true" />
             </column>
 
-            <column name="avatar" type="varchar(1024)" remarks="触发人头像">
+            <column name="channel" type="varchar(255)" remarks="点赞渠道">
                 <constraints nullable="true" />
             </column>
 
-            <column name="nick_name" type="varchar(128)" remarks="触发人昵称">
+            <column name="module" type="varchar(255)" remarks="点赞模块">
                 <constraints nullable="true" />
             </column>
 
-            <column name="jhi_type" type="varchar(255)" remarks="事件类型">
+            <column name="wechat_user_id" type="varchar(128)" remarks="点赞人id">
                 <constraints nullable="true" />
             </column>
 
-            <column name="channel" type="varchar(255)" remarks="事件渠道">
+            <column name="avatar" type="varchar(1024)" remarks="点赞人头像">
                 <constraints nullable="true" />
             </column>
 
-            <column name="object_id" type="bigint" remarks="触发对象id">
+            <column name="nick_name" type="varchar(128)" remarks="点赞人昵称">
                 <constraints nullable="true" />
             </column>
 
-            <column name="object_title" type="varchar(256)" remarks="触发对象标题">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="create_time" type="datetime" remarks="触发时间">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="content" type="varchar(1024)">
+            <column name="create_time" type="datetime" remarks="创建时间">
                 <constraints nullable="true" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="event_message" columnName="create_time" columnDataType="datetime"/>
+        <dropDefaultValue tableName="thumbs_up" columnName="create_time" columnDataType="datetime"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
