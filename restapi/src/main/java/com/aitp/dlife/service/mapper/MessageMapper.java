@@ -11,10 +11,10 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {EventMessageMapper.class})
 public interface MessageMapper extends EntityMapper<MessageDTO, Message> {
 
-    @Mapping(source = "eventMessage.id", target = "eventMessageId")
+    @Mapping(source = "eventMessage", target = "eventMessage")
     MessageDTO toDto(Message message);
 
-    @Mapping(source = "eventMessageId", target = "eventMessage")
+    @Mapping(source = "eventMessage", target = "eventMessage")
     Message toEntity(MessageDTO messageDTO);
 
     default Message fromId(Long id) {

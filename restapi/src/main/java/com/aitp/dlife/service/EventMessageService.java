@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -147,4 +148,34 @@ public class EventMessageService {
         eventMessageDTO.setNickName(nickName);
         return save(eventMessageDTO);
     }
+
+    /**
+     * record the event message for comment
+     *
+     * @param eventChannel the event channel
+     * @param createTime the event create time
+     * @param eventType the event type
+     * @param wechatUserId the event trigger user's wechat user id
+     * @param objectTitle the object title
+     * @param objectId the object id
+     * @param avatar the event trigger user's avatar
+     * @param nickName the event trigger user's nickName
+     * @return EventMessageDTO
+     */
+    public EventMessageDTO recordEventMessage(EventChannel eventChannel, String createTime, EventType eventType,
+                                              String wechatUserId, String objectTitle, Long objectId, String avatar,
+                                              String nickName,String content){
+        EventMessageDTO eventMessageDTO = new EventMessageDTO();
+        eventMessageDTO.setChannel(eventChannel);
+        eventMessageDTO.setCreateTime(createTime);
+        eventMessageDTO.setType(eventType);
+        eventMessageDTO.setWechatUserId(wechatUserId);
+        eventMessageDTO.setObjectTitle(objectTitle);
+        eventMessageDTO.setObjectId(objectId);
+        eventMessageDTO.setAvatar(avatar);
+        eventMessageDTO.setNickName(nickName);
+        return save(eventMessageDTO);
+    }
+
+
 }

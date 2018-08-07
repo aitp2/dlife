@@ -1,6 +1,7 @@
 package com.aitp.dlife.service;
 
 import com.aitp.dlife.domain.Message;
+import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.repository.MessageRepository;
 import com.aitp.dlife.service.dto.MessageDTO;
 import com.aitp.dlife.service.mapper.MessageMapper;
@@ -13,7 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 /**
  * Service Implementation for managing Message.
  */
@@ -80,5 +84,12 @@ public class MessageService {
     public void delete(Long id) {
         log.debug("Request to delete Message : {}", id);
         messageRepository.deleteById(id);
+    }
+
+    public List<MessageDTO> findMessageByUser(String wechatUserId,String type, boolean read){
+
+        List<Message>  list  = messageRepository.findMessageByUser(wechatUserId,read,EventType.getMessageTypeList(type).stream().map(EventType::toString).collect(Collectors.toList()));
+
+        return list.stream().map(messageMapper::toDto).collect(Collectors.toList());
     }
 }

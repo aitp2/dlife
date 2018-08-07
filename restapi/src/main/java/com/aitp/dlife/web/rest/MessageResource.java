@@ -124,4 +124,18 @@ public class MessageResource {
         messageService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    /**
+     * GET  /messages/:type : get the "id" message.
+     *
+     * @param wechatUserId the id of the messageDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the messageDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/messages/my-message/{wechatUserId}/{read}")
+    @Timed
+    public ResponseEntity<List<MessageDTO>> getMyMessage(@PathVariable String wechatUserId,String type, @PathVariable boolean read) {
+        log.debug("REST request to get Message : {}", wechatUserId);
+        List<MessageDTO> messageDTO = messageService.findMessageByUser(wechatUserId,type,read);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(messageDTO));
+    }
 }
