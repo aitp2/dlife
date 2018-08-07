@@ -1,5 +1,20 @@
 {
-    "name": "PinFanActivity",
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "attendees",
+            "otherEntityName": "attendee",
+            "otherEntityRelationshipName": "pinFanActivity"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "pinfanPics",
+            "otherEntityName": "pinfanPics",
+            "otherEntityRelationshipName": "pinFanActivity"
+        }
+    ],
     "fields": [
         {
             "fieldName": "wechatUserId",
@@ -154,30 +169,18 @@
             "fieldName": "modifyTime",
             "javadoc": "最新评论/参与时间",
             "fieldType": "Instant"
-        }
-    ],
-    "relationships": [
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "attendees",
-            "otherEntityName": "attendee",
-            "otherEntityRelationshipName": "pinFanActivity"
         },
         {
-            "relationshipType": "one-to-many",
-            "relationshipName": "pinfanPics",
-            "otherEntityName": "pinfanPics",
-            "otherEntityRelationshipName": "pinFanActivity"
+            "fieldName": "joinStatus",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180802115457",
-    "javadoc": "拼饭活动",
-    "entityTableName": "pin_fan_activity",
     "dto": "mapstruct",
-    "pagination": "pagination",
+    "searchEngine": false,
     "service": "serviceClass",
+    "entityTableName": "pin_fan_activity",
     "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "clientRootFolder": "",
-    "applications": "*"
+    "pagination": "pagination",
+    "javadoc": "拼饭活动"
 }

@@ -26,6 +26,7 @@ export interface IPinFanActivity {
     commentCount?: number;
     readingCount?: number;
     modifyTime?: Moment;
+    joinStatus?: number;
     attendees?: IAttendee[];
     pinfanPics?: IPinfanPics[];
 }
@@ -55,6 +56,7 @@ export class PinFanActivity implements IPinFanActivity {
         public commentCount?: number,
         public readingCount?: number,
         public modifyTime?: Moment,
+        public joinStatus?: number,
         public attendees?: IAttendee[],
         public pinfanPics?: IPinfanPics[]
     ) {}

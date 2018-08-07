@@ -1,0 +1,86 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-thumbs-up-heading">Create or edit a Thumbs Up</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!thumbsUp.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="thumbsUp.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_objectId" ngbTooltip="点赞对象id">Object Id</label>
+                    <input type="number" class="form-control" name="objectId" id="field_objectId"
+                        [(ngModel)]="thumbsUp.objectId" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_channel" ngbTooltip="点赞渠道">Channel</label>
+                    <select class="form-control" name="channel" [(ngModel)]="thumbsUp.channel" id="field_channel" >
+                        <option value="COOK">COOK</option>
+                        <option value="FIT">FIT</option>
+                        <option value="PIN">PIN</option>
+                        <option value="FAQS">FAQS</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_module" ngbTooltip="点赞模块">Module</label>
+                    <select class="form-control" name="module" [(ngModel)]="thumbsUp.module" id="field_module" >
+                        <option value="COMMENT">COMMENT</option>
+                        <option value="ACTIVITY">ACTIVITY</option>
+                        <option value="USERCENTER">USERCENTER</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_wechatUserId" ngbTooltip="点赞人id">Wechat User Id</label>
+                    <input type="text" class="form-control" name="wechatUserId" id="field_wechatUserId"
+                        [(ngModel)]="thumbsUp.wechatUserId" maxlength="128"/>
+                    <div [hidden]="!(editForm.controls.wechatUserId?.dirty && editForm.controls.wechatUserId?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.wechatUserId?.errors?.maxlength">
+                        This field cannot be longer than 128 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_avatar" ngbTooltip="点赞人头像">Avatar</label>
+                    <input type="text" class="form-control" name="avatar" id="field_avatar"
+                        [(ngModel)]="thumbsUp.avatar" maxlength="1024"/>
+                    <div [hidden]="!(editForm.controls.avatar?.dirty && editForm.controls.avatar?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.avatar?.errors?.maxlength">
+                        This field cannot be longer than 1024 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_nickName" ngbTooltip="点赞人昵称">Nick Name</label>
+                    <input type="text" class="form-control" name="nickName" id="field_nickName"
+                        [(ngModel)]="thumbsUp.nickName" maxlength="128"/>
+                    <div [hidden]="!(editForm.controls.nickName?.dirty && editForm.controls.nickName?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.nickName?.errors?.maxlength">
+                        This field cannot be longer than 128 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_createTime" ngbTooltip="创建时间">Create Time</label>
+                    <div class="d-flex">
+                        <input id="field_createTime" type="datetime-local" class="form-control" name="createTime" [(ngModel)]="createTime"
+                        />
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

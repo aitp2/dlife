@@ -1,5 +1,14 @@
 {
-    "name": "EventMessage",
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "messages",
+            "otherEntityName": "message",
+            "otherEntityRelationshipName": "eventMessage"
+        }
+    ],
     "fields": [
         {
             "fieldName": "wechatUserId",
@@ -58,24 +67,22 @@
             "fieldName": "createTime",
             "javadoc": "触发时间",
             "fieldType": "Instant"
-        }
-    ],
-    "relationships": [
+        },
         {
-            "relationshipType": "one-to-many",
-            "relationshipName": "messages",
-            "otherEntityName": "message",
-            "otherEntityRelationshipName": "eventMessage"
+            "fieldName": "content",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "1024"
         }
     ],
     "changelogDate": "20180802115452",
-    "javadoc": "事件消息",
-    "entityTableName": "event_message",
     "dto": "mapstruct",
-    "pagination": "pagination",
+    "searchEngine": false,
     "service": "serviceClass",
+    "entityTableName": "event_message",
     "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "clientRootFolder": "",
-    "applications": "*"
+    "pagination": "pagination",
+    "javadoc": "事件消息"
 }

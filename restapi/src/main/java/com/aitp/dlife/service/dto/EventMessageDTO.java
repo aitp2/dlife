@@ -34,6 +34,9 @@ public class EventMessageDTO implements Serializable {
 
     private String createTime;
 
+    @Size(max = 1024)
+    private String content;
+
     public Long getId() {
         return id;
     }
@@ -106,6 +109,14 @@ public class EventMessageDTO implements Serializable {
         this.createTime = createTime;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -139,6 +150,7 @@ public class EventMessageDTO implements Serializable {
             ", objectId=" + getObjectId() +
             ", objectTitle='" + getObjectTitle() + "'" +
             ", createTime='" + getCreateTime() + "'" +
+            ", content='" + getContent() + "'" +
             "}";
     }
 }

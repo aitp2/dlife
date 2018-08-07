@@ -93,6 +93,10 @@ public class EventMessage implements Serializable {
     @Column(name = "create_time")
     private Instant createTime;
 
+    @Size(max = 1024)
+    @Column(name = "content", length = 1024)
+    private String content;
+
     @OneToMany(mappedBy = "eventMessage")
     private Set<Message> messages = new HashSet<>();
 
@@ -209,6 +213,19 @@ public class EventMessage implements Serializable {
         this.createTime = createTime;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public EventMessage content(String content) {
+        this.content = content;
+        return this;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public Set<Message> getMessages() {
         return messages;
     }
@@ -267,6 +284,7 @@ public class EventMessage implements Serializable {
             ", objectId=" + getObjectId() +
             ", objectTitle='" + getObjectTitle() + "'" +
             ", createTime='" + getCreateTime() + "'" +
+            ", content='" + getContent() + "'" +
             "}";
     }
 }
