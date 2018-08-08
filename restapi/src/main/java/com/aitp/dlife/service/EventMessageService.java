@@ -4,22 +4,20 @@ import com.aitp.dlife.domain.EventMessage;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.repository.EventMessageRepository;
-import com.aitp.dlife.service.dto.EventMessageDTO;
+import com.aitp.dlife.service.dto.*;
 import com.aitp.dlife.service.mapper.EventMessageMapper;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
-import com.aitp.dlife.web.rest.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
+
 /**
  * Service Implementation for managing EventMessage.
  */
@@ -33,9 +31,14 @@ public class EventMessageService {
 
     private final EventMessageMapper eventMessageMapper;
 
-    public EventMessageService(EventMessageRepository eventMessageRepository, EventMessageMapper eventMessageMapper) {
+    private final MessageService messageService;
+
+
+    public EventMessageService(EventMessageRepository eventMessageRepository, EventMessageMapper eventMessageMapper,
+                               MessageService messageService) {
         this.eventMessageRepository = eventMessageRepository;
         this.eventMessageMapper = eventMessageMapper;
+        this.messageService = messageService;
     }
 
     /**
@@ -146,11 +149,16 @@ public class EventMessageService {
         eventMessageDTO.setObjectId(objectId);
         eventMessageDTO.setAvatar(avatar);
         eventMessageDTO.setNickName(nickName);
-        return save(eventMessageDTO);
+        EventMessageDTO dto = save(eventMessageDTO);
+        //async to create message
+        if(null!=dto.getId()){
+            messageService.createMessageForEvent(dto);
+        }
+        return dto;
     }
 
     /**
-     * record the event message for comment
+     * record the event message for comment and FAQS
      *
      * @param eventChannel the event channel
      * @param createTime the event create time
@@ -174,7 +182,13 @@ public class EventMessageService {
         eventMessageDTO.setObjectId(objectId);
         eventMessageDTO.setAvatar(avatar);
         eventMessageDTO.setNickName(nickName);
-        return save(eventMessageDTO);
+        eventMessageDTO.setContent(content);
+        EventMessageDTO dto = save(eventMessageDTO);
+        //async to create message
+        if(null!=dto.getId()){
+            messageService.createMessageForEvent(dto);
+        }
+        return dto;
     }
 
 

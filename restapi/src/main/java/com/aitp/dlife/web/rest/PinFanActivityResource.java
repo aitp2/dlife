@@ -1,5 +1,8 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.domain.enumeration.EventChannel;
+import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.service.EventMessageService;
 import com.aitp.dlife.service.PinfanPicsService;
 import com.aitp.dlife.service.WechatUserService;
 import com.aitp.dlife.service.dto.AttendeeDTO;
@@ -48,10 +51,14 @@ public class PinFanActivityResource {
     private final PinfanPicsService pinfanPicsService;
 
     private final WechatUserService wechatUserService;
-    public PinFanActivityResource(PinFanActivityService pinFanActivityService,PinfanPicsService pinfanPicsService,WechatUserService wechatUserService) {
+
+    private final EventMessageService eventMessageService;
+    public PinFanActivityResource(PinFanActivityService pinFanActivityService,PinfanPicsService pinfanPicsService,WechatUserService wechatUserService,
+                                  EventMessageService eventMessageService) {
         this.pinFanActivityService = pinFanActivityService;
         this.pinfanPicsService=pinfanPicsService;
         this.wechatUserService = wechatUserService;
+        this.eventMessageService = eventMessageService;
     }
 
     /**
@@ -131,6 +138,11 @@ public class PinFanActivityResource {
         }
         PinFanActivityDTO result = pinFanActivityService.save(pinFanActivityDTO);
 
+        //record the activity modify event start
+        eventMessageService.recordEventMessage(EventChannel.PINFAN,DateUtil.getYMDDateString(new Date()),EventType.UPDATE,
+            result.getWechatUserId(),result.getActivitiyTile(),result.getId(),result.getAvatar(),result.getNickName());
+        //record the activity modify event end
+
         //we need to compar image with the new image,
         List<PinfanPicsDTO> oldImages = pinfanPicsService.findPicsByActivityId(pinFanActivityDTO.getId());
         if (!CollectionUtils.isEmpty(pinFanActivityDTO.getPinfanPics()))
@@ -190,6 +202,14 @@ public class PinFanActivityResource {
         PinFanActivityDTO pinFanActivityDTO = pinFanActivityService.findOne(id);
         pinFanActivityDTO.setStatus(2);
         pinFanActivityService.save(pinFanActivityDTO);
+
+        //record the activity quit event start
+        eventMessageService.recordEventMessage(EventChannel.PINFAN,DateUtil.getYMDDateString(new Date()),EventType.CANCEL,
+            pinFanActivityDTO.getWechatUserId(),pinFanActivityDTO.getActivitiyTile(),
+            pinFanActivityDTO.getId(),pinFanActivityDTO.getAvatar(),
+            pinFanActivityDTO.getNickName());
+        //record the activity quit event end
+
         return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -343,7 +363,7 @@ public class PinFanActivityResource {
     /**
      * PUT  /pin-fan-activities : Updates an existing pinFanActivity.
      *
-     * @param pinFanActivityDTO the pinFanActivityDTO to update
+     * @param id the pinFanActivityDTO to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated pinFanActivityDTO,
      * or with status 400 (Bad Request) if the pinFanActivityDTO is not valid,
      * or with status 500 (Internal Server Error) if the pinFanActivityDTO couldn't be updated

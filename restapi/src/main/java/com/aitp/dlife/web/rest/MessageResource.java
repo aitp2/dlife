@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -131,11 +132,18 @@ public class MessageResource {
      * @param wechatUserId the id of the messageDTO to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the messageDTO, or with status 404 (Not Found)
      */
-    @GetMapping("/messages/my-message/{wechatUserId}/{read}")
+    @GetMapping("/messages/my-message")
     @Timed
-    public ResponseEntity<List<MessageDTO>> getMyMessage(@PathVariable String wechatUserId,String type, @PathVariable boolean read) {
+    public ResponseEntity<List<MessageDTO>> getMyMessage(String wechatUserId,String type, Boolean read) {
+        if(null==wechatUserId||null==type||null==read){
+            throw new BadRequestAlertException("need request param ", ENTITY_NAME, "param is null");
+        }
         log.debug("REST request to get Message : {}", wechatUserId);
         List<MessageDTO> messageDTO = messageService.findMessageByUser(wechatUserId,type,read);
+        if (!CollectionUtils.isEmpty(messageDTO)){
+            List<MessageDTO> toReadDTO = messageDTO;
+            messageService.markAsRead(toReadDTO);
+        }
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(messageDTO));
     }
 }

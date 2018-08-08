@@ -1,16 +1,19 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.domain.PinFanActivity;
+import com.aitp.dlife.domain.Question;
 import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
-import com.aitp.dlife.service.CommentPicService;
-import com.aitp.dlife.service.EventMessageService;
+import com.aitp.dlife.repository.PinFanActivityRepository;
+import com.aitp.dlife.service.*;
 import com.aitp.dlife.service.dto.CommentPicDTO;
+import com.aitp.dlife.service.dto.PinFanActivityDTO;
+import com.aitp.dlife.service.dto.QuestionDTO;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.repository.FitnessActivityRepository;
-import com.aitp.dlife.service.CommentService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
@@ -57,11 +60,19 @@ public class CommentResource {
 
     private final EventMessageService eventMessageService;
 
-    public CommentResource(CommentService commentService, CommentPicService commentPicService, FitnessActivityRepository fitnessActivityRepository, EventMessageService eventMessageService) {
+    private final PinFanActivityService pinFanActivityService;
+
+    private final QuestionService questionService;
+
+    public CommentResource(CommentService commentService, CommentPicService commentPicService, FitnessActivityRepository fitnessActivityRepository,
+                           EventMessageService eventMessageService,PinFanActivityService pinFanActivityService,
+                           QuestionService questionService) {
         this.commentService = commentService;
         this.commentPicService=commentPicService;
         this.fitnessActivityRepository = fitnessActivityRepository;
         this.eventMessageService = eventMessageService;
+        this.pinFanActivityService = pinFanActivityService;
+        this.questionService = questionService;
     }
 
     /**
@@ -108,15 +119,27 @@ public class CommentResource {
             eventChannel = EventChannel.FITNESS;
             objectTitle = fitnessActivity.getTitle();
             objectId = fitnessActivity.getId();
+        }else if (CommentChannel.PIN.equals(commentDTO.getChannel())){
+            PinFanActivityDTO pinFanActivity = pinFanActivityService.findOne(commentDTO.getObjectId());
+            eventChannel = EventChannel.PINFAN;
+            objectTitle = pinFanActivity.getActivitiyTile();
+            objectId = pinFanActivity.getId();
+        }else if (CommentChannel.FAQS.equals(commentDTO.getChannel())){
+            Optional<QuestionDTO> questionDTO = questionService.findOne(commentDTO.getObjectId());
+            if (questionDTO.isPresent()){
+                QuestionDTO dto = questionDTO.get();
+                eventChannel = EventChannel.FAQS;
+                objectTitle = dto.getTitle();
+                objectId = dto.getId();
+            }
         }
 
         if (eventChannel != null){
             //record the activity participation event start
             eventMessageService.recordEventMessage(eventChannel,DateUtil.getYMDDateString(new Date()), EventType.COMMENT,
-                commentDTO.getWechatUserId(),objectTitle,objectId,commentDTO.getAvatar(),commentDTO.getNickName());
+                commentDTO.getWechatUserId(),objectTitle,objectId,commentDTO.getAvatar(),commentDTO.getNickName(),commentDTO.getContent());
             //record the activity participation event end
         }
-
         return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
