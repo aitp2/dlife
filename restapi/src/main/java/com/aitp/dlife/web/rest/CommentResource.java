@@ -5,6 +5,7 @@ import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.service.CommentPicService;
 import com.aitp.dlife.service.EventMessageService;
+import com.aitp.dlife.service.ThumbsUpService;
 import com.aitp.dlife.service.dto.CommentPicDTO;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
@@ -55,13 +56,16 @@ public class CommentResource {
 
     private final FitnessActivityRepository fitnessActivityRepository;
 
+    private final ThumbsUpService thumbsUpService;
+    
     private final EventMessageService eventMessageService;
 
-    public CommentResource(CommentService commentService, CommentPicService commentPicService, FitnessActivityRepository fitnessActivityRepository, EventMessageService eventMessageService) {
+    public CommentResource(CommentService commentService, CommentPicService commentPicService, FitnessActivityRepository fitnessActivityRepository, EventMessageService eventMessageService,ThumbsUpService thumbsUpService) {
         this.commentService = commentService;
         this.commentPicService=commentPicService;
         this.fitnessActivityRepository = fitnessActivityRepository;
         this.eventMessageService = eventMessageService;
+        this.thumbsUpService =thumbsUpService;
     }
 
     /**
@@ -171,6 +175,7 @@ public class CommentResource {
         log.debug("REST request to get a page of Comments");
         Page<CommentDTO> page = commentService.findAllForOneObject(pageable,channel,objectId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/comments");
+        
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

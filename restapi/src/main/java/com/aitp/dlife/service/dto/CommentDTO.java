@@ -14,7 +14,12 @@ import com.aitp.dlife.domain.enumeration.CommentChannel;
  */
 public class CommentDTO implements Serializable {
 
-    private Long id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
 
     private Long parentId;
 
@@ -44,7 +49,9 @@ public class CommentDTO implements Serializable {
 
     private String modifyTime;
 
-    private Set<CommentPicDTO> commentPics = new HashSet<>();;
+    private Set<CommentPicDTO> commentPics = new HashSet<>();
+    
+    private Set<ThumbsUpDTO> thumbsUpDTOs = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -138,7 +145,16 @@ public class CommentDTO implements Serializable {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    
+    public Set<ThumbsUpDTO> getThumbsUpDTOs() {
+		return thumbsUpDTOs;
+	}
+
+	public void setThumbsUpDTOs(Set<ThumbsUpDTO> thumbsUpDTOs) {
+		this.thumbsUpDTOs = thumbsUpDTOs;
+	}
+
+	public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
