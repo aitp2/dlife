@@ -44,7 +44,7 @@ public class CommentDTO implements Serializable {
 
     private String modifyTime;
 
-    private Set<CommentPicDTO> commentPics = new HashSet<>();;
+    private Set<CommentPicDTO> commentPics = new HashSet<>();
 
     public Long getId() {
         return id;

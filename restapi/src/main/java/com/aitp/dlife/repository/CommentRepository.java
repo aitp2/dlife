@@ -15,7 +15,7 @@ import org.springframework.data.jpa.repository.*;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CommentRepository extends JpaRepository<Comment, Long> {
+public interface CommentRepository extends JpaSpecificationExecutor<Comment>, JpaRepository<Comment, Long> {
 
     @Query(value = "select cm from Comment cm "
         + "where cm.objectId =:objectId and cm.channel=:channel",nativeQuery = false)

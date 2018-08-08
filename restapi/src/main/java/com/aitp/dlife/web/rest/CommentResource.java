@@ -3,8 +3,10 @@ package com.aitp.dlife.web.rest;
 import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.service.CommentPicService;
 import com.aitp.dlife.service.dto.CommentPicDTO;
+import com.aitp.dlife.service.dto.QueryDTO;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
+import com.google.common.collect.Lists;
 import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.repository.CommentRepository;
 import com.aitp.dlife.repository.FitnessActivityRepository;
@@ -134,13 +136,18 @@ public class CommentResource {
      */
     @GetMapping("/comments")
     @Timed
-    public ResponseEntity<List<CommentDTO>> getAllComments(Pageable pageable) {
+    public ResponseEntity<List<CommentDTO>> getAllComments(Pageable pageable,String id) {
         log.debug("REST request to get a page of Comments");
-        Page<CommentDTO> page = commentService.findAll(pageable);
+        List<QueryDTO> queryDTOs = Lists.newArrayList();
+        queryDTOs.add(new QueryDTO("id", id));
+        Page<CommentDTO> page = commentService.findAll(pageable,queryDTOs);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/comments");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    
+    
+    
     /**
      * GET  /comments : get all the comments.
      *
