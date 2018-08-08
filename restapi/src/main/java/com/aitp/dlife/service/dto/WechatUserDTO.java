@@ -1,5 +1,6 @@
 package com.aitp.dlife.service.dto;
 
+
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -40,13 +41,11 @@ public class WechatUserDTO implements Serializable {
     @Size(max = 1024)
     private String introduce;
 
-    @Max(value = 2)
     private Integer sex;
 
     @Size(max = 255)
     private String companyRole;
 
-    @Max(value = 2)
     private Integer cookFlag;
 
     @Size(max = 1024)
@@ -55,9 +54,9 @@ public class WechatUserDTO implements Serializable {
     @Size(max = 1024)
     private String skill;
 
-    private Instant createTime;
+    private String createTime;
 
-    private Instant modifyTime;
+    private String modifyTime;
 
     public Long getId() {
         return id;
@@ -179,19 +178,19 @@ public class WechatUserDTO implements Serializable {
         this.skill = skill;
     }
 
-    public Instant getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Instant createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Instant getModifyTime() {
+    public String getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(Instant modifyTime) {
+    public void setModifyTime(String modifyTime) {
         this.modifyTime = modifyTime;
     }
 
@@ -205,7 +204,7 @@ public class WechatUserDTO implements Serializable {
         }
 
         WechatUserDTO wechatUserDTO = (WechatUserDTO) o;
-        if (wechatUserDTO.getId() == null || getId() == null) {
+        if(wechatUserDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), wechatUserDTO.getId());
@@ -229,9 +228,9 @@ public class WechatUserDTO implements Serializable {
             ", project='" + getProject() + "'" +
             ", seat='" + getSeat() + "'" +
             ", introduce='" + getIntroduce() + "'" +
-            ", sex=" + getSex() +
+            ", sex='" + getSex() + "'" +
             ", companyRole='" + getCompanyRole() + "'" +
-            ", cookFlag=" + getCookFlag() +
+            ", cookFlag='" + getCookFlag() + "'" +
             ", intesting='" + getIntesting() + "'" +
             ", skill='" + getSkill() + "'" +
             ", createTime='" + getCreateTime() + "'" +

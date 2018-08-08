@@ -3,6 +3,8 @@ package com.aitp.dlife.service.dto;
 
 
 import javax.validation.constraints.*;
+
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -141,17 +143,44 @@ public class ActivityParticipationDTO implements Serializable {
         return Objects.equals(getId(), activityParticipationDTO.getId());
     }
 
+    
+    
+    
     @Override
     public int hashCode() {
         return Objects.hashCode(getId());
     }
+    
+    public static void main(String[] args) {
+		ActivityParticipationDTO activityParticipationDTO = new ActivityParticipationDTO();
+		System.out.println(activityParticipationDTO.toString());
+	}
 
 	@Override
 	public String toString() {
-		return "ActivityParticipationDTO [id=" + id + ", wechatUserId=" + wechatUserId + ", nickName=" + nickName
-				+ ", activityTitle=" + activityTitle + ", avatar=" + avatar + ", project=" + project
-				+ ", participationTime=" + participationTime + ", activityId=" + activityId + ", clockinCount="
-				+ clockinCount + ", attendStatus=" + attendStatus + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("{\"id\":\"");
+		builder.append(id);
+		builder.append("\",\"wechatUserId\":\"");
+		builder.append(wechatUserId);
+		builder.append("\",\"nickName\":\"");
+		builder.append(nickName);
+		builder.append("\",\"activityTitle\":\"");
+		builder.append(activityTitle);
+		builder.append("\",\"avatar\":\"");
+		builder.append(avatar);
+		builder.append("\",\"project\":\"");
+		builder.append(project);
+		builder.append("\",\"participationTime\":\"");
+		builder.append(participationTime);
+		builder.append("\",\"activityId\":\"");
+		builder.append(activityId);
+		builder.append("\",\"clockinCount\":\"");
+		builder.append(clockinCount);
+		builder.append("\",\"attendStatus\":\"");
+		builder.append(attendStatus);
+		builder.append("\"}  ");
+		return builder.toString();
 	}
 
  

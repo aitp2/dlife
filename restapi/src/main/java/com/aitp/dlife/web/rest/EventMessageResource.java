@@ -98,6 +98,36 @@ public class EventMessageResource {
     }
 
     /**
+     * GET  /event-messages : get all the eventMessages.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of eventMessages in body
+     */
+    @GetMapping("/event-messages/channel/{channel}")
+    @Timed
+    public ResponseEntity<List<EventMessageDTO>> getEventMessagesByChannel(Pageable pageable, @PathVariable String channel) {
+        log.debug("REST request to get a page of EventMessages");
+        Page<EventMessageDTO> page = eventMessageService.findAllForChannel(pageable,channel);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/event-messages");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /event-messages : get all the eventMessages.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of eventMessages in body
+     */
+    @GetMapping("/event-messages/object/{objectId}")
+    @Timed
+    public ResponseEntity<List<EventMessageDTO>> getEventMessagesByObject(Pageable pageable, @PathVariable String objectId) {
+        log.debug("REST request to get a page of EventMessages");
+        Page<EventMessageDTO> page = eventMessageService.findAllForObjectId(pageable,objectId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/event-messages");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
      * GET  /event-messages/:id : get the "id" eventMessage.
      *
      * @param id the id of the eventMessageDTO to retrieve

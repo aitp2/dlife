@@ -193,6 +193,9 @@ public class PinFanActivity implements Serializable {
     @Column(name = "modify_time")
     private Instant modifyTime;
 
+    @Column(name = "join_status")
+    private Integer joinStatus;
+
     @OneToMany(mappedBy = "pinFanActivity")
     private Set<Attendee> attendees = new HashSet<>();
 
@@ -494,6 +497,19 @@ public class PinFanActivity implements Serializable {
         this.modifyTime = modifyTime;
     }
 
+    public Integer getJoinStatus() {
+        return joinStatus;
+    }
+
+    public PinFanActivity joinStatus(Integer joinStatus) {
+        this.joinStatus = joinStatus;
+        return this;
+    }
+
+    public void setJoinStatus(Integer joinStatus) {
+        this.joinStatus = joinStatus;
+    }
+
     public Set<Attendee> getAttendees() {
         return attendees;
     }
@@ -591,6 +607,7 @@ public class PinFanActivity implements Serializable {
             ", commentCount=" + getCommentCount() +
             ", readingCount=" + getReadingCount() +
             ", modifyTime='" + getModifyTime() + "'" +
+            ", joinStatus=" + getJoinStatus() +
             "}";
     }
 }

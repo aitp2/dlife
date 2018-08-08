@@ -1,12 +1,22 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.domain.enumeration.CommentChannel;
+import com.aitp.dlife.domain.enumeration.EventChannel;
+import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.service.CommentPicService;
+import com.aitp.dlife.service.EventMessageService;
+import com.aitp.dlife.service.dto.CommentPicDTO;
+import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
+import com.aitp.dlife.domain.FitnessActivity;
+import com.aitp.dlife.repository.FitnessActivityRepository;
 import com.aitp.dlife.service.CommentService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import com.aitp.dlife.service.dto.CommentDTO;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -20,8 +30,13 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+
+import java.util.*;
+
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+
 
 /**
  * REST controller for managing Comment.
@@ -36,8 +51,17 @@ public class CommentResource {
 
     private final CommentService commentService;
 
-    public CommentResource(CommentService commentService) {
+    private final CommentPicService commentPicService;
+
+    private final FitnessActivityRepository fitnessActivityRepository;
+
+    private final EventMessageService eventMessageService;
+
+    public CommentResource(CommentService commentService, CommentPicService commentPicService, FitnessActivityRepository fitnessActivityRepository, EventMessageService eventMessageService) {
         this.commentService = commentService;
+        this.commentPicService=commentPicService;
+        this.fitnessActivityRepository = fitnessActivityRepository;
+        this.eventMessageService = eventMessageService;
     }
 
     /**
@@ -54,7 +78,45 @@ public class CommentResource {
         if (commentDTO.getId() != null) {
             throw new BadRequestAlertException("A new comment cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        commentDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
+        commentDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
+
         CommentDTO result = commentService.save(commentDTO);
+
+        Set<CommentPicDTO> picDTOS = new HashSet<>();
+        if (commentDTO.getCommentPics()!=null && !commentDTO.getCommentPics().isEmpty()){
+
+            for(CommentPicDTO pics:commentDTO.getCommentPics()){
+                if(!StringUtils.isEmpty(pics.getCreateTime())){
+                    pics.setCreateTime(DateUtil.getYMDDateString(new Date()));
+                }
+                pics.setCommentId(result.getId());
+                picDTOS.add(commentPicService.save(pics));
+            }
+            result.setCommentPics(picDTOS);
+        }
+
+        EventChannel eventChannel = null;
+        String objectTitle = null;
+        Long objectId = null;
+        if (CommentChannel.FIT.equals(commentDTO.getChannel())){
+        	FitnessActivity fitnessActivity = fitnessActivityRepository.findById(commentDTO.getObjectId()).get();
+            fitnessActivity.setModifyTime(Instant.now());
+            fitnessActivityRepository.save(fitnessActivity);
+
+            eventChannel = EventChannel.FITNESS;
+            objectTitle = fitnessActivity.getTitle();
+            objectId = fitnessActivity.getId();
+        }
+
+        if (eventChannel != null){
+            //record the activity participation event start
+            eventMessageService.recordEventMessage(eventChannel,DateUtil.getYMDDateString(new Date()), EventType.COMMENT,
+                commentDTO.getWechatUserId(),objectTitle,objectId,commentDTO.getAvatar(),commentDTO.getNickName());
+            //record the activity participation event end
+        }
+
         return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -74,7 +136,7 @@ public class CommentResource {
     public ResponseEntity<CommentDTO> updateComment(@Valid @RequestBody CommentDTO commentDTO) throws URISyntaxException {
         log.debug("REST request to update Comment : {}", commentDTO);
         if (commentDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            return createComment(commentDTO);
         }
         CommentDTO result = commentService.save(commentDTO);
         return ResponseEntity.ok()
@@ -98,6 +160,21 @@ public class CommentResource {
     }
 
     /**
+     * GET  /comments : get all the comments.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of comments in body
+     */
+    @GetMapping("/comments/{channel}/{objectId}")
+    @Timed
+    public ResponseEntity<List<CommentDTO>> getAllCommentsForOneObject(Pageable pageable,@PathVariable String channel,@PathVariable String objectId) {
+        log.debug("REST request to get a page of Comments");
+        Page<CommentDTO> page = commentService.findAllForOneObject(pageable,channel,objectId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/comments");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
      * GET  /comments/:id : get the "id" comment.
      *
      * @param id the id of the commentDTO to retrieve
@@ -107,8 +184,8 @@ public class CommentResource {
     @Timed
     public ResponseEntity<CommentDTO> getComment(@PathVariable Long id) {
         log.debug("REST request to get Comment : {}", id);
-        Optional<CommentDTO> commentDTO = commentService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(commentDTO);
+        CommentDTO commentDTO = commentService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(commentDTO));
     }
 
     /**

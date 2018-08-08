@@ -1,19 +1,18 @@
 package com.aitp.dlife.service;
 
-import com.aitp.dlife.domain.Follow;
-import com.aitp.dlife.repository.FollowRepository;
-import com.aitp.dlife.service.dto.FollowDTO;
-import com.aitp.dlife.service.mapper.FollowMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.aitp.dlife.domain.Follow;
+import com.aitp.dlife.repository.FollowRepository;
+import com.aitp.dlife.service.dto.FollowDTO;
+import com.aitp.dlife.service.mapper.FollowMapper;
 
-import java.util.Optional;
+
 /**
  * Service Implementation for managing Follow.
  */
@@ -58,7 +57,6 @@ public class FollowService {
             .map(followMapper::toDto);
     }
 
-
     /**
      * Get one follow by id.
      *
@@ -66,10 +64,10 @@ public class FollowService {
      * @return the entity
      */
     @Transactional(readOnly = true)
-    public Optional<FollowDTO> findOne(Long id) {
+    public FollowDTO findOne(Long id) {
         log.debug("Request to get Follow : {}", id);
-        return followRepository.findById(id)
-            .map(followMapper::toDto);
+        Follow follow = followRepository.findById(id).get();
+        return followMapper.toDto(follow);
     }
 
     /**
@@ -81,4 +79,25 @@ public class FollowService {
         log.debug("Request to delete Follow : {}", id);
         followRepository.deleteById(id);
     }
+
+    /**
+     * findAllByFollowUserId
+     * @param pageable
+     * @param wechatUserId
+     * @return
+     */
+    public Page<FollowDTO> findAllByFollowUserId(Pageable pageable, String wechatUserId) {
+    	return followRepository.findAllByFollowUserId(pageable,wechatUserId).map(followMapper::toDto);
+
+	}
+
+    /**
+     * findAllByFollowedUserId
+     * @param pageable
+     * @param wechatUserId
+     * @return
+     */
+    public Page<FollowDTO> findAllByFollowedUserId(Pageable pageable, String wechatUserId) {
+    	return followRepository.findAllByFollowedUserId(pageable,wechatUserId).map(followMapper::toDto);
+	}
 }

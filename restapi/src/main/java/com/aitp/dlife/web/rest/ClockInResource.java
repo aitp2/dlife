@@ -1,12 +1,24 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.domain.enumeration.EventChannel;
+import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.service.*;
+import com.aitp.dlife.web.rest.util.HttpUtil;
 import com.codahale.metrics.annotation.Timed;
-import com.aitp.dlife.service.ClockInService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
+import com.aitp.dlife.web.rest.util.DateUtil;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
-import com.aitp.dlife.service.dto.ClockInDTO;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -14,14 +26,30 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.aitp.dlife.service.ActivityParticipationService;
+import com.aitp.dlife.service.ClockInActivityService;
+import com.aitp.dlife.service.ClockInService;
+import com.aitp.dlife.service.ClockinSummaryService;
+import com.aitp.dlife.service.FitnessActivityService;
+import com.aitp.dlife.service.PicsService;
+import com.aitp.dlife.service.WechatUserService;
+import com.aitp.dlife.service.dto.ActivityParticipationDTO;
+import com.aitp.dlife.service.dto.ClockInDTO;
+import com.aitp.dlife.service.dto.ClockinSummaryDTO;
+import com.aitp.dlife.service.dto.FitnessActivityDTO;
+import com.aitp.dlife.service.dto.PicsDTO;
+import com.aitp.dlife.service.dto.WechatUserDTO;
 
-import java.util.List;
-import java.util.Optional;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing ClockIn.
@@ -35,9 +63,24 @@ public class ClockInResource {
     private static final String ENTITY_NAME = "clockIn";
 
     private final ClockInService clockInService;
+    private final PicsService picsService;
+    private final ClockinSummaryService clockinSummaryService;
+    private final WechatUserService wechatUserService;
+    private final FitnessActivityService fitnessActivityService;
+    private final ActivityParticipationService activityParticipationService;
+    private final EventMessageService eventMessageService;
+    private final ClockInActivityService clockInActivityService;
 
-    public ClockInResource(ClockInService clockInService) {
-        this.clockInService = clockInService;
+	public ClockInResource(ClockInService clockInService, PicsService picsService,
+                           ClockinSummaryService clockinSummaryService, WechatUserService wechatUserService, FitnessActivityService fitnessActivityService, ActivityParticipationService activityParticipationService, EventMessageService eventMessageService, ClockInActivityService clockInActivityService) {
+		this.clockInService = clockInService;
+		this.picsService = picsService;
+		this.clockinSummaryService = clockinSummaryService;
+		this.wechatUserService=wechatUserService;
+		this.fitnessActivityService=fitnessActivityService;
+		this.activityParticipationService=activityParticipationService;
+        this.eventMessageService = eventMessageService;
+        this.clockInActivityService = clockInActivityService;
     }
 
     /**
@@ -48,13 +91,78 @@ public class ClockInResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/clock-ins")
+    @Deprecated
     @Timed
     public ResponseEntity<ClockInDTO> createClockIn(@Valid @RequestBody ClockInDTO clockInDTO) throws URISyntaxException {
         log.debug("REST request to save ClockIn : {}", clockInDTO);
         if (clockInDTO.getId() != null) {
             throw new BadRequestAlertException("A new clockIn cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        if(clockInService.isClockIn(clockInDTO.getWechatUserId(),clockInDTO.getActivityParticipationId()))
+        {
+            throw new BadRequestAlertException("A new clockIn cannot already have clockin today",ENTITY_NAME,"请不要重复打卡哦");
+        }
+        clockInDTO.setPunchDateTime(DateUtil.getYMDDateString(new Date()));
+        Set<PicsDTO> imagesDTO = new HashSet<>();
         ClockInDTO result = clockInService.save(clockInDTO);
+        if (clockInDTO.getPics() != null && !clockInDTO.getPics().isEmpty()){
+        	for(PicsDTO pics : clockInDTO.getPics()){
+                     pics.setCreateTime(DateUtil.getYMDDateString(new Date()));
+        		 pics.setClockInId(result.getId());
+        		 imagesDTO.add(picsService.save(pics));
+        	}
+        }
+        result.setPics(imagesDTO);
+        //update clockin summary
+        ClockinSummaryDTO clockinSummaryDTO = clockinSummaryService.findByWechatUserId(clockInDTO.getWechatUserId());
+        if(null == clockinSummaryDTO ){
+        	ClockinSummaryDTO newClockinSummaryDTO = new ClockinSummaryDTO();
+        	newClockinSummaryDTO.setLastClockInTime(DateUtil.getYMDDateString(new Date()));
+        	newClockinSummaryDTO.setSerialCount(1);
+        	newClockinSummaryDTO.setWeeklyCount(1);
+        	newClockinSummaryDTO.setTotallyCount(1);
+        	newClockinSummaryDTO.setWechatUserId(String.valueOf(clockInDTO.getWechatUserId()));
+        	clockinSummaryService.save(newClockinSummaryDTO);
+		} else if (!DateUtil.isToday(DateUtil.fromYDMStringDate(clockinSummaryDTO.getLastClockInTime()))) {
+			ClockinSummaryDTO newClockinSummaryDTO = new ClockinSummaryDTO();
+			newClockinSummaryDTO.setId(clockinSummaryDTO.getId());
+			newClockinSummaryDTO.setSerialCount(
+					DateUtil.isYesterday(DateUtil.fromYDMStringDate(clockinSummaryDTO.getLastClockInTime()))
+							? clockinSummaryDTO.getSerialCount() + 1 : 1);
+			newClockinSummaryDTO.setWeeklyCount(DateUtil.isThisWeek(clockinSummaryDTO.getLastClockInTime())
+					? clockinSummaryDTO.getWeeklyCount() + 1 : 1);
+			newClockinSummaryDTO.setTotallyCount(clockinSummaryDTO.getTotallyCount() + 1);
+			newClockinSummaryDTO.setWechatUserId(String.valueOf(clockInDTO.getWechatUserId()));
+			newClockinSummaryDTO.setLastClockInTime(DateUtil.getYMDDateString(new Date()));
+			clockinSummaryService.save(newClockinSummaryDTO);
+		}
+
+        //冗余活动打卡信息
+        clockInActivityService.updateActivityParticipation(clockInDTO.getActivityParticipationId());
+
+        //log for markting start
+        WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(clockInDTO.getWechatUserId()));
+        String sexString="";
+        if (null!=wechatUserDTO && null!=wechatUserDTO.getSex()){
+            Integer sex = wechatUserDTO.getSex();
+            if (sex==1) {
+                sexString = "male";
+            }else if(sex==2){
+                sexString = "female";
+            }else{
+                sexString="";
+            }
+        }
+        ActivityParticipationDTO participationDTO = activityParticipationService.findOne(clockInDTO.getActivityParticipationId()).get();
+        FitnessActivityDTO dto = fitnessActivityService.findOne(participationDTO.getActivityId());
+        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit",dto.getId(),HttpUtil.baseEncoder(dto.getTitle()),"clock-in",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
+        //log for markting end
+
+        //record the activity participation event start
+        eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()), EventType.CLOCKIN,
+            result.getWechatUserId(),participationDTO.getActivityTitle(),participationDTO.getActivityId(),wechatUserDTO.getAvatar(),wechatUserDTO.getNickName());
+        //record the activity participation event end
+
         return ResponseEntity.created(new URI("/api/clock-ins/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -74,7 +182,7 @@ public class ClockInResource {
     public ResponseEntity<ClockInDTO> updateClockIn(@Valid @RequestBody ClockInDTO clockInDTO) throws URISyntaxException {
         log.debug("REST request to update ClockIn : {}", clockInDTO);
         if (clockInDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            return createClockIn(clockInDTO);
         }
         ClockInDTO result = clockInService.save(clockInDTO);
         return ResponseEntity.ok()
@@ -107,8 +215,8 @@ public class ClockInResource {
     @Timed
     public ResponseEntity<ClockInDTO> getClockIn(@PathVariable Long id) {
         log.debug("REST request to get ClockIn : {}", id);
-        Optional<ClockInDTO> clockInDTO = clockInService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(clockInDTO);
+        ClockInDTO clockInDTO = clockInService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(clockInDTO));
     }
 
     /**
@@ -123,5 +231,33 @@ public class ClockInResource {
         log.debug("REST request to delete ClockIn : {}", id);
         clockInService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/clock-ins/getClockinsByActivityParticipationId")
+    @Timed
+    public List<ClockInDTO>  getClockinsByActivityParticipationId(Long activityParticipationId) {
+        log.debug("REST request to get Clockins : {}", activityParticipationId);
+        return clockInService.findClockinsByActivityParticipationId(activityParticipationId);
+    }
+
+    @GetMapping("/clock-ins/getClockinsDateByWechatUserIdAndMonth")
+    @Timed
+    public List<String>  getClockinsDateByWechatUserIdAndMonth(String wechatUserId,String yearMonth) {
+        log.debug("REST request to get Clockins : {}", wechatUserId,yearMonth);
+        return clockInService.getClockinsDateByWechatUserIdAndMonth(wechatUserId,yearMonth);
+    }
+
+    @GetMapping("/clock-ins/getClockinsByWechatUserIdAndDate")
+    @Timed
+    public List<ClockInDTO>  getClockinsByWechatUserIdAndDate(String wechatUserId,String yearMonthDate) {
+        log.debug("REST request to get Clockins : {}", wechatUserId,yearMonthDate);
+        return clockInService.getClockinsByWechatUserIdAndDate(wechatUserId,yearMonthDate);
+    }
+
+    @GetMapping("/clock-ins/getClockinsByActivityId")
+    @Timed
+    public List<ClockInDTO>  getClockinsByActivityId(String activityId) {
+        log.debug("REST request to get Clockins by activity id: {}", activityId);
+        return clockInService.getClockinsByActivityId(activityId);
     }
 }

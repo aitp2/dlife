@@ -32,7 +32,10 @@ public class EventMessageDTO implements Serializable {
     @Size(max = 256)
     private String objectTitle;
 
-    private Instant createTime;
+    private String createTime;
+
+    @Size(max = 1024)
+    private String content;
 
     public Long getId() {
         return id;
@@ -98,12 +101,20 @@ public class EventMessageDTO implements Serializable {
         this.objectTitle = objectTitle;
     }
 
-    public Instant getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Instant createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Override
@@ -139,6 +150,7 @@ public class EventMessageDTO implements Serializable {
             ", objectId=" + getObjectId() +
             ", objectTitle='" + getObjectTitle() + "'" +
             ", createTime='" + getCreateTime() + "'" +
+            ", content='" + getContent() + "'" +
             "}";
     }
 }

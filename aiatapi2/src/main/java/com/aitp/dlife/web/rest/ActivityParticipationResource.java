@@ -10,7 +10,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 
 import com.aitp.dlife.service.FitnessActivityService;
 import com.aitp.dlife.service.WechatUserService;
@@ -38,7 +37,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.repository.FitnessActivityRepository;
 import com.aitp.dlife.service.ActivityParticipationService;
-import com.aitp.dlife.service.ClockInService;
 import com.aitp.dlife.service.dto.ActivityParticipationDTO;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.DateUtil;

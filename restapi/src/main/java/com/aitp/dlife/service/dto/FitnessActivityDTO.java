@@ -1,8 +1,13 @@
 package com.aitp.dlife.service.dto;
 
-import java.time.Instant;
+
 import javax.validation.constraints.*;
+
+
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -12,10 +17,10 @@ public class FitnessActivityDTO implements Serializable {
 
     private Long id;
 
-    @Size(max = 128)
+    @Size(max = 64)
     private String title;
 
-    @Size(max = 1024)
+    @Size(max = 128)
     private String descrption;
 
     @Size(max = 128)
@@ -30,22 +35,30 @@ public class FitnessActivityDTO implements Serializable {
     @Size(max = 128)
     private String project;
 
-    @Size(max = 128)
+    @Size(max = 255)
     private String companyRole;
 
-    private Instant signStartTime;
+    private String signStartTime;
 
-    private Instant signEndTime;
+    private String signEndTime;
 
-    private Instant activityStartTime;
+    private String activityStartTime;
 
-    private Instant activityEndTime;
+    private String activityEndTime;
+
+    private Integer attendCount;
+
+    private Integer status;
+
+    private Set<ActivityParticipationDTO> activityParticipations;
 
     private Integer commentCount;
 
-    private Instant modifyTime;
-
     private Integer readingCount;
+
+    private Set<PicsDTO> images = new HashSet<>();
+
+    private Set<EventMessageDTO> eventMessages = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -111,63 +124,90 @@ public class FitnessActivityDTO implements Serializable {
         this.companyRole = companyRole;
     }
 
-    public Instant getSignStartTime() {
-        return signStartTime;
+
+
+    public String getSignStartTime() {
+		return signStartTime;
+	}
+
+	public void setSignStartTime(String signStartTime) {
+		this.signStartTime = signStartTime;
+	}
+
+	public String getSignEndTime() {
+		return signEndTime;
+	}
+
+	public void setSignEndTime(String signEndTime) {
+		this.signEndTime = signEndTime;
+	}
+
+	public String getActivityStartTime() {
+		return activityStartTime;
+	}
+
+	public void setActivityStartTime(String activityStartTime) {
+		this.activityStartTime = activityStartTime;
+	}
+
+	public String getActivityEndTime() {
+		return activityEndTime;
+	}
+
+	public void setActivityEndTime(String activityEndTime) {
+		this.activityEndTime = activityEndTime;
+	}
+
+	public Integer getAttendCount() {
+		return attendCount;
+	}
+
+
+    public Set<EventMessageDTO> getEventMessages() {
+        return eventMessages;
     }
 
-    public void setSignStartTime(Instant signStartTime) {
-        this.signStartTime = signStartTime;
+    public void setEventMessages(Set<EventMessageDTO> eventMessages) {
+        this.eventMessages = eventMessages;
     }
 
-    public Instant getSignEndTime() {
-        return signEndTime;
+    public Set<ActivityParticipationDTO> getActivityParticipations() {
+		return activityParticipations;
+	}
+
+	public void setActivityParticipations(Set<ActivityParticipationDTO> activityParticipations) {
+		this.activityParticipations = activityParticipations;
+	}
+
+	public void setAttendCount(Integer attendCount) {
+		this.attendCount = attendCount;
+	}
+
+	public Set<PicsDTO> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<PicsDTO> images) {
+		this.images = images;
+	}
+
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setSignEndTime(Instant signEndTime) {
-        this.signEndTime = signEndTime;
-    }
-
-    public Instant getActivityStartTime() {
-        return activityStartTime;
-    }
-
-    public void setActivityStartTime(Instant activityStartTime) {
-        this.activityStartTime = activityStartTime;
-    }
-
-    public Instant getActivityEndTime() {
-        return activityEndTime;
-    }
-
-    public void setActivityEndTime(Instant activityEndTime) {
-        this.activityEndTime = activityEndTime;
-    }
-
-    public Integer getCommentCount() {
-        return commentCount;
-    }
-
-    public void setCommentCount(Integer commentCount) {
-        this.commentCount = commentCount;
-    }
-
-    public Instant getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(Instant modifyTime) {
-        this.modifyTime = modifyTime;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Integer getReadingCount() {
-        return readingCount;
-    }
+		return readingCount;
+	}
 
-    public void setReadingCount(Integer readingCount) {
-        this.readingCount = readingCount;
-    }
+	public void setReadingCount(Integer readingCount) {
+		this.readingCount = readingCount;
+	}
 
-    @Override
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -177,7 +217,7 @@ public class FitnessActivityDTO implements Serializable {
         }
 
         FitnessActivityDTO fitnessActivityDTO = (FitnessActivityDTO) o;
-        if (fitnessActivityDTO.getId() == null || getId() == null) {
+        if(fitnessActivityDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), fitnessActivityDTO.getId());
@@ -203,9 +243,14 @@ public class FitnessActivityDTO implements Serializable {
             ", signEndTime='" + getSignEndTime() + "'" +
             ", activityStartTime='" + getActivityStartTime() + "'" +
             ", activityEndTime='" + getActivityEndTime() + "'" +
-            ", commentCount=" + getCommentCount() +
-            ", modifyTime='" + getModifyTime() + "'" +
-            ", readingCount=" + getReadingCount() +
             "}";
+    }
+
+    public Integer getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(Integer commentCount) {
+        this.commentCount = commentCount;
     }
 }

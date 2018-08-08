@@ -23,6 +23,7 @@
             <th jhiSortBy="objectId"><span>Object Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="objectTitle"><span>Object Title</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="createTime"><span>Create Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="content"><span>Content</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -37,6 +38,7 @@
                 <td>{{eventMessage.objectId}}</td>
                 <td>{{eventMessage.objectTitle}}</td>
                 <td>{{eventMessage.createTime | date:'medium'}}</td>
+                <td>{{eventMessage.content}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

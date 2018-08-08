@@ -54,6 +54,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="content" type="varchar(1024)">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="event_message" columnName="create_time" columnDataType="datetime"/>

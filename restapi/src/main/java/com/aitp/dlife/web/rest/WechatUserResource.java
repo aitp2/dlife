@@ -1,5 +1,6 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.WechatUserService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -20,6 +21,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +56,11 @@ public class WechatUserResource {
         if (wechatUserDTO.getId() != null) {
             throw new BadRequestAlertException("A new wechatUser cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        //set default messages
+        wechatUserDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
+        wechatUserDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
+
         WechatUserDTO result = wechatUserService.save(wechatUserDTO);
         return ResponseEntity.created(new URI("/api/wechat-users/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -74,8 +81,12 @@ public class WechatUserResource {
     public ResponseEntity<WechatUserDTO> updateWechatUser(@Valid @RequestBody WechatUserDTO wechatUserDTO) throws URISyntaxException {
         log.debug("REST request to update WechatUser : {}", wechatUserDTO);
         if (wechatUserDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            return createWechatUser(wechatUserDTO);
         }
+
+        //set default messages
+        wechatUserDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
+
         WechatUserDTO result = wechatUserService.save(wechatUserDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wechatUserDTO.getId().toString()))
@@ -107,8 +118,22 @@ public class WechatUserResource {
     @Timed
     public ResponseEntity<WechatUserDTO> getWechatUser(@PathVariable Long id) {
         log.debug("REST request to get WechatUser : {}", id);
-        Optional<WechatUserDTO> wechatUserDTO = wechatUserService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(wechatUserDTO);
+        WechatUserDTO wechatUserDTO = wechatUserService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(wechatUserDTO));
+    }
+
+    /**
+     * GET  /wechat-users/userinfo/:openid : get the "openid" wechatUser.
+     *
+     * @param openid
+     * @return
+     */
+    @GetMapping("/wechat-users/userinfo/{openid}")
+    @Timed
+    public ResponseEntity<WechatUserDTO> getWechatUserByOpenID(@PathVariable String openid) {
+        log.debug("REST request to get WechatUser : {}", openid);
+        WechatUserDTO wechatUserDTO = wechatUserService.findByOpenId(openid);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(wechatUserDTO));
     }
 
     /**

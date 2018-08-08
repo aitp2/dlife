@@ -8,11 +8,14 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity EventMessage and its DTO EventMessageDTO.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {InstantMapper.class})
 public interface EventMessageMapper extends EntityMapper<EventMessageDTO, EventMessage> {
 
+    @Mapping(target = "createTime", expression = "java(InstantMapper.toDateString(eventMessage.getCreateTime()))")
+    EventMessageDTO toDto(EventMessage eventMessage);
 
     @Mapping(target = "messages", ignore = true)
+    @Mapping(target = "createTime", expression = "java(InstantMapper.fromString(eventMessageDTO.getCreateTime()))")
     EventMessage toEntity(EventMessageDTO eventMessageDTO);
 
     default EventMessage fromId(Long id) {

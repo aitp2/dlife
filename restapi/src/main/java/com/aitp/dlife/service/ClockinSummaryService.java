@@ -3,17 +3,20 @@ package com.aitp.dlife.service;
 import com.aitp.dlife.domain.ClockinSummary;
 import com.aitp.dlife.repository.ClockinSummaryRepository;
 import com.aitp.dlife.service.dto.ClockinSummaryDTO;
-import com.aitp.dlife.service.mapper.ClockinSummaryMapper;
+import com.aitp.dlife.service.mapper.ClockinSummaryMapper;import com.aitp.dlife.web.rest.util.DateUtil;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.Optional;
 /**
  * Service Implementation for managing ClockinSummary.
  */
@@ -58,7 +61,6 @@ public class ClockinSummaryService {
             .map(clockinSummaryMapper::toDto);
     }
 
-
     /**
      * Get one clockinSummary by id.
      *
@@ -66,10 +68,10 @@ public class ClockinSummaryService {
      * @return the entity
      */
     @Transactional(readOnly = true)
-    public Optional<ClockinSummaryDTO> findOne(Long id) {
+    public ClockinSummaryDTO findOne(Long id) {
         log.debug("Request to get ClockinSummary : {}", id);
-        return clockinSummaryRepository.findById(id)
-            .map(clockinSummaryMapper::toDto);
+        ClockinSummary clockinSummary = clockinSummaryRepository.findById(id).get();
+        return clockinSummaryMapper.toDto(clockinSummary);
     }
 
     /**
@@ -81,4 +83,22 @@ public class ClockinSummaryService {
         log.debug("Request to delete ClockinSummary : {}", id);
         clockinSummaryRepository.deleteById(id);
     }
+
+    /**
+     * Get one clockinSummary by wechatUserId.
+     *
+     * @param wechatUserId
+     * @return
+     */
+    public ClockinSummaryDTO findByWechatUserId(String wechatUserId) {
+    	ClockinSummaryDTO result = clockinSummaryMapper.toDto(clockinSummaryRepository.findByWechatUserId(String.valueOf(wechatUserId))) ;
+    	if(null != result && null != result.getId()){
+    		result.setWeeklyCount(DateUtil.isThisWeek(result.getLastClockInTime())
+					? result.getWeeklyCount() : 0);
+    		result.setSerialCount(
+					DateUtil.isYesterday(DateUtil.fromYDMStringDate(result.getLastClockInTime())) || DateUtil.isToday(DateUtil.fromYDMStringDate(result.getLastClockInTime()))
+							? result.getSerialCount() : 0);
+    	}
+		return result;
+	}
 }

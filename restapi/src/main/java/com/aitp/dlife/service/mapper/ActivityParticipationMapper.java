@@ -1,9 +1,10 @@
 package com.aitp.dlife.service.mapper;
 
-import com.aitp.dlife.domain.*;
-import com.aitp.dlife.service.dto.ActivityParticipationDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import org.mapstruct.*;
+import com.aitp.dlife.domain.ActivityParticipation;
+import com.aitp.dlife.service.dto.ActivityParticipationDTO;
 
 /**
  * Mapper for the entity ActivityParticipation and its DTO ActivityParticipationDTO.
@@ -11,17 +12,22 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {FitnessActivityMapper.class})
 public interface ActivityParticipationMapper extends EntityMapper<ActivityParticipationDTO, ActivityParticipation> {
 
-    @Mapping(source = "fitnessActivity.id", target = "fitnessActivityId")
+    @Mapping(source = "fitnessActivity.id", target = "activityId")
+    @Mapping(target = "participationTime", expression = "java(InstantMapper.toDateString(activityParticipation.getParticipationTime()))")
+    @Mapping(target = "latestClockinTime", expression = "java(InstantMapper.toDateString(activityParticipation.getLatestClockinTime()))")
+    @Mapping(target = "clockinCount", expression = "java(activityParticipation.getClockIns() == null ? 0 : activityParticipation.getClockIns().size())")
+    @Mapping(source = "fitnessActivity.title", target = "activityTitle")
     ActivityParticipationDTO toDto(ActivityParticipation activityParticipation);
 
     @Mapping(target = "clockIns", ignore = true)
-    @Mapping(source = "fitnessActivityId", target = "fitnessActivity")
+    @Mapping(source = "activityId", target = "fitnessActivity")
+    @Mapping(target = "participationTime", expression = "java(InstantMapper.fromString(activityParticipationDTO.getParticipationTime()))")
+    @Mapping(target = "latestClockinTime", expression = "java(InstantMapper.fromString(activityParticipationDTO.getLatestClockinTime()))")
     ActivityParticipation toEntity(ActivityParticipationDTO activityParticipationDTO);
 
     default ActivityParticipation fromId(Long id) {
         if (id == null) {
-            return null;
-        }
+            return null;        }
         ActivityParticipation activityParticipation = new ActivityParticipation();
         activityParticipation.setId(id);
         return activityParticipation;

@@ -1,5 +1,8 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.service.WechatUserService;
+import com.aitp.dlife.service.dto.WechatUserDTO;
+import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.ClockinSummaryService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -7,6 +10,8 @@ import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import com.aitp.dlife.service.dto.ClockinSummaryDTO;
 import io.github.jhipster.web.util.ResponseUtil;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -20,6 +25,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,8 +42,11 @@ public class ClockinSummaryResource {
 
     private final ClockinSummaryService clockinSummaryService;
 
-    public ClockinSummaryResource(ClockinSummaryService clockinSummaryService) {
+    private final WechatUserService wechatUserService;
+
+    public ClockinSummaryResource(ClockinSummaryService clockinSummaryService,WechatUserService wechatUserService) {
         this.clockinSummaryService = clockinSummaryService;
+        this.wechatUserService=wechatUserService;
     }
 
     /**
@@ -74,7 +83,7 @@ public class ClockinSummaryResource {
     public ResponseEntity<ClockinSummaryDTO> updateClockinSummary(@Valid @RequestBody ClockinSummaryDTO clockinSummaryDTO) throws URISyntaxException {
         log.debug("REST request to update ClockinSummary : {}", clockinSummaryDTO);
         if (clockinSummaryDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            return createClockinSummary(clockinSummaryDTO);
         }
         ClockinSummaryDTO result = clockinSummaryService.save(clockinSummaryDTO);
         return ResponseEntity.ok()
@@ -107,8 +116,8 @@ public class ClockinSummaryResource {
     @Timed
     public ResponseEntity<ClockinSummaryDTO> getClockinSummary(@PathVariable Long id) {
         log.debug("REST request to get ClockinSummary : {}", id);
-        Optional<ClockinSummaryDTO> clockinSummaryDTO = clockinSummaryService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(clockinSummaryDTO);
+        ClockinSummaryDTO clockinSummaryDTO = clockinSummaryService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(clockinSummaryDTO));
     }
 
     /**
@@ -123,5 +132,39 @@ public class ClockinSummaryResource {
         log.debug("REST request to delete ClockinSummary : {}", id);
         clockinSummaryService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    /**
+     * GET  /clockin-summaries : GET a clockinSummary.
+     *
+     * @param wechatUserId the clockinSummaryDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new clockinSummaryDTO, or with status 400 (Bad Request) if the clockinSummary has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @GetMapping("/clockin-summaries/getByWechatUserId")
+    @Timed
+    public ClockinSummaryDTO getClockinSummary(String wechatUserId) {
+        log.debug("REST request to get ClockinSummary by wechatUserId: {}", wechatUserId);
+
+        //log for markting start
+        WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(wechatUserId));
+        String sexString="";
+        if (null!=wechatUserDTO && null!=wechatUserDTO.getSex()){
+            Integer sex = wechatUserDTO.getSex();
+            if (sex==1) {
+                sexString = "male";
+            }else if(sex==2){
+                sexString = "female";
+            }else{
+                sexString="";
+            }
+        }
+        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","fit","","","login",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
+        //log for markting end
+
+        if (null == wechatUserId) {
+            throw new BadRequestAlertException("wechatUserId is null", ENTITY_NAME, "wechatUserIdNULL");
+        }
+        return clockinSummaryService.findByWechatUserId(wechatUserId);
     }
 }

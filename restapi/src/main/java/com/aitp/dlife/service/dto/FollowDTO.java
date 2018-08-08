@@ -1,5 +1,6 @@
 package com.aitp.dlife.service.dto;
 
+
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -28,9 +29,9 @@ public class FollowDTO implements Serializable {
     @Size(max = 1024)
     private String followedUseravatar;
 
-    private Instant createTime;
+    private String createTime;
 
-    private Instant modifyTime;
+    private String modifyTime;
 
     public Long getId() {
         return id;
@@ -88,19 +89,19 @@ public class FollowDTO implements Serializable {
         this.followedUseravatar = followedUseravatar;
     }
 
-    public Instant getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Instant createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Instant getModifyTime() {
+    public String getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(Instant modifyTime) {
+    public void setModifyTime(String modifyTime) {
         this.modifyTime = modifyTime;
     }
 
@@ -114,7 +115,7 @@ public class FollowDTO implements Serializable {
         }
 
         FollowDTO followDTO = (FollowDTO) o;
-        if (followDTO.getId() == null || getId() == null) {
+        if(followDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), followDTO.getId());
