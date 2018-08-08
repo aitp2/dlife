@@ -92,8 +92,8 @@ public class FitnessActivityService {
             Sort sort = new Sort(order);
             PageRequest eventPageable = new PageRequest(0,eventCount,sort);
             for(FitnessActivityDTO fitnessActivityDTO:result){
-                Set<EventMessageDTO> eventMessageDTOSet = eventMessageService.findAllForObjectId(eventPageable,
-                    fitnessActivityDTO.getId()+"").stream().collect(Collectors.toSet());
+                List<EventMessageDTO> eventMessageDTOSet = eventMessageService.findAllForObjectId(eventPageable,
+                    fitnessActivityDTO.getId()+"").stream().collect(Collectors.toList());
                 fitnessActivityDTO.setEventMessages(eventMessageDTOSet);
             }
         }

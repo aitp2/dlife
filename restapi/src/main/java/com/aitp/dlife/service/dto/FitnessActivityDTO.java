@@ -58,7 +58,7 @@ public class FitnessActivityDTO implements Serializable {
 
     private Set<PicsDTO> images = new HashSet<>();
 
-    private Set<EventMessageDTO> eventMessages = new HashSet<>();
+    private List<EventMessageDTO> eventMessages;
 
     public Long getId() {
         return id;
@@ -163,11 +163,11 @@ public class FitnessActivityDTO implements Serializable {
 	}
 
 
-    public Set<EventMessageDTO> getEventMessages() {
+    public List<EventMessageDTO> getEventMessages() {
         return eventMessages;
     }
 
-    public void setEventMessages(Set<EventMessageDTO> eventMessages) {
+    public void setEventMessages(List<EventMessageDTO> eventMessages) {
         this.eventMessages = eventMessages;
     }
 
