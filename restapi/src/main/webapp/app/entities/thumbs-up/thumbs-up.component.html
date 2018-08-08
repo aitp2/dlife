@@ -22,6 +22,8 @@
             <th jhiSortBy="avatar"><span>Avatar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="nickName"><span>Nick Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="createTime"><span>Create Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="keyName_1"><span>Key Name 1</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="keyName_2"><span>Key Name 2</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -35,6 +37,8 @@
                 <td>{{thumbsUp.avatar}}</td>
                 <td>{{thumbsUp.nickName}}</td>
                 <td>{{thumbsUp.createTime | date:'medium'}}</td>
+                <td>{{thumbsUp.keyName_1}}</td>
+                <td>{{thumbsUp.keyName_2}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

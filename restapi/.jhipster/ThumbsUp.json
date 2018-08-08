@@ -1,5 +1,7 @@
 {
-    "name": "ThumbsUp",
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [],
     "fields": [
         {
             "fieldName": "objectId",
@@ -49,17 +51,22 @@
             "fieldName": "createTime",
             "javadoc": "创建时间",
             "fieldType": "Instant"
+        },
+        {
+            "fieldName": "keyName_1",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "keyName_2",
+            "fieldType": "String"
         }
     ],
-    "relationships": [],
     "changelogDate": "20180807062747",
-    "javadoc": "点赞信息",
-    "entityTableName": "thumbs_up",
     "dto": "mapstruct",
-    "pagination": "pagination",
+    "searchEngine": false,
     "service": "serviceClass",
+    "entityTableName": "thumbs_up",
     "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "clientRootFolder": "",
-    "applications": "*"
+    "pagination": "pagination",
+    "javadoc": "点赞信息"
 }

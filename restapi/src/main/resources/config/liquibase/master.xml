@@ -44,5 +44,7 @@
 	<include file="config/liquibase/changelog/20180802123341_changelog.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20180804005713_changelog.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20180807082732_changelog.xml" relativeToChangelogFile="false"/>
+	<include file="config/liquibase/changelog/20180808103735_changelog.xml" relativeToChangelogFile="false"/>
     -->
+
 </databaseChangeLog>

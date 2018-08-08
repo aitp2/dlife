@@ -82,6 +82,12 @@ public class ThumbsUp implements Serializable {
     @Column(name = "create_time")
     private Instant createTime;
 
+    @Column(name = "key_name_1")
+    private String keyName_1;
+
+    @Column(name = "key_name_2")
+    private String keyName_2;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -181,6 +187,32 @@ public class ThumbsUp implements Serializable {
     public void setCreateTime(Instant createTime) {
         this.createTime = createTime;
     }
+
+    public String getKeyName_1() {
+        return keyName_1;
+    }
+
+    public ThumbsUp keyName_1(String keyName_1) {
+        this.keyName_1 = keyName_1;
+        return this;
+    }
+
+    public void setKeyName_1(String keyName_1) {
+        this.keyName_1 = keyName_1;
+    }
+
+    public String getKeyName_2() {
+        return keyName_2;
+    }
+
+    public ThumbsUp keyName_2(String keyName_2) {
+        this.keyName_2 = keyName_2;
+        return this;
+    }
+
+    public void setKeyName_2(String keyName_2) {
+        this.keyName_2 = keyName_2;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -214,6 +246,8 @@ public class ThumbsUp implements Serializable {
             ", avatar='" + getAvatar() + "'" +
             ", nickName='" + getNickName() + "'" +
             ", createTime='" + getCreateTime() + "'" +
+            ", keyName_1='" + getKeyName_1() + "'" +
+            ", keyName_2='" + getKeyName_2() + "'" +
             "}";
     }
 }

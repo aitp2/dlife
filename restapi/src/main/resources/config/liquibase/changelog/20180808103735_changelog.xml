@@ -1,0 +1,120 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="l.mao (generated)" id="1533724687181-1">
+        <addColumn tableName="thumbs_up">
+            <column name="key_name_1" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-2">
+        <addColumn tableName="thumbs_up">
+            <column name="key_name_2" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <!--
+    <changeSet author="l.mao (generated)" id="1533724687181-3">
+        <setColumnRemarks columnName="activitiy_addre" tableName="pin_fan_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-4">
+        <setColumnRemarks columnName="activitiy_tile" tableName="pin_fan_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-5">
+        <setColumnRemarks columnName="activitiy_type" tableName="pin_fan_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-6">
+        <setColumnRemarks columnName="activity_end_time" tableName="fitness_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-7">
+        <setColumnRemarks columnName="activity_start_time" tableName="fitness_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-8">
+        <setColumnRemarks columnName="appoint_datetime" tableName="pin_fan_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-9">
+        <setColumnRemarks columnName="appoint_end_datetime" tableName="pin_fan_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-10">
+        <setColumnRemarks columnName="avatar" tableName="fitness_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-11">
+        <setColumnRemarks columnName="avatar" tableName="pin_fan_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-12">
+        <setColumnRemarks columnName="budget" tableName="pin_fan_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-13">
+        <setColumnRemarks columnName="comment_count" tableName="fitness_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-14">
+        <setColumnRemarks columnName="comment_count" tableName="pin_fan_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-15">
+        <setColumnRemarks columnName="company_role" tableName="fitness_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-16">
+        <setColumnRemarks columnName="cover_picture" tableName="pin_fan_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-17">
+        <setColumnRemarks columnName="deadline" tableName="pin_fan_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-18">
+        <setColumnRemarks columnName="descrption" tableName="fitness_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-19">
+        <setColumnRemarks columnName="descrption" tableName="pin_fan_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-20">
+        <setColumnRemarks columnName="jhi_comment" tableName="pin_fan_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-21">
+        <setColumnRemarks columnName="lower_limit" tableName="pin_fan_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-22">
+        <setColumnRemarks columnName="nick_name" tableName="fitness_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-23">
+        <setColumnRemarks columnName="nick_name" tableName="pin_fan_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-24">
+        <setColumnRemarks columnName="organize_user" tableName="pin_fan_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-25">
+        <setColumnRemarks columnName="pay_type" tableName="pin_fan_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-26">
+        <setColumnRemarks columnName="project" tableName="fitness_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-27">
+        <setColumnRemarks columnName="punch_date_time" tableName="clock_in"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-28">
+        <setColumnRemarks columnName="saler_url" tableName="pin_fan_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-29">
+        <setColumnRemarks columnName="sign_end_time" tableName="fitness_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-30">
+        <setColumnRemarks columnName="sign_note" tableName="clock_in"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-31">
+        <setColumnRemarks columnName="sign_start_time" tableName="fitness_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-32">
+        <setColumnRemarks columnName="status" tableName="pin_fan_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-33">
+        <setColumnRemarks columnName="title" tableName="clock_in"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-34">
+        <setColumnRemarks columnName="title" tableName="fitness_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-35">
+        <setColumnRemarks columnName="upper_limit" tableName="pin_fan_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-36">
+        <setColumnRemarks columnName="wechat_user_id" tableName="fitness_activity"/>
+    </changeSet>
+    <changeSet author="l.mao (generated)" id="1533724687181-37">
+        <setColumnRemarks columnName="wechat_user_id" tableName="pin_fan_activity"/>
+    </changeSet>
+    -->
+</databaseChangeLog>
