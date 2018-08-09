@@ -1,6 +1,8 @@
 package com.aitp.dlife.service.dto;
 
 import java.time.Instant;
+
+import javax.persistence.Column;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -31,7 +33,9 @@ public class ThumbsUpDTO implements Serializable {
 
     private Instant createTime;
 
+    private String keyName_1;
 
+    private String keyName_2;
     
     public Long getId() {
         return id;
@@ -113,7 +117,25 @@ public class ThumbsUpDTO implements Serializable {
         return Objects.equals(getId(), thumbsUpDTO.getId());
     }
 
+    
+    
    
+	public String getKeyName_1() {
+		return keyName_1;
+	}
+
+	public void setKeyName_1(String keyName_1) {
+		this.keyName_1 = keyName_1;
+	}
+
+	public String getKeyName_2() {
+		return keyName_2;
+	}
+
+	public void setKeyName_2(String keyName_2) {
+		this.keyName_2 = keyName_2;
+	}
+
 	@Override
     public int hashCode() {
         return Objects.hashCode(getId());
