@@ -50,6 +50,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="key_name_1" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="key_name_2" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="thumbs_up" columnName="create_time" columnDataType="datetime"/>

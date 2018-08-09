@@ -16,6 +16,7 @@ import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.service.*;
 import com.aitp.dlife.service.dto.*;
 import com.aitp.dlife.web.rest.util.HttpUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -205,9 +206,16 @@ public class FitnessActivityResource {
      */
     @GetMapping("/fitness-activities")
     @Timed
-    public ResponseEntity<List<FitnessActivityDTO>> getAllFitnessActivities(Pageable pageable) {
-        log.debug("REST request to get a page of FitnessActivities");
-        Page<FitnessActivityDTO> page = fitnessActivityService.findAll(pageable);
+    public ResponseEntity<List<FitnessActivityDTO>> getAllFitnessActivities(Pageable pageable, Integer eventCount) {
+        log.debug("REST request to get a page of FitnessActivities, event count:"+ eventCount);
+
+        Page<FitnessActivityDTO> page;
+        if (eventCount == null) {
+            page = fitnessActivityService.findAll(pageable);
+        } else {
+            page = fitnessActivityService.findAllAndEvent(pageable,eventCount);
+        }
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/fitness-activities");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

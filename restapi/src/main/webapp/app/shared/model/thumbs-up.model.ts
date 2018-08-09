@@ -22,6 +22,8 @@ export interface IThumbsUp {
     avatar?: string;
     nickName?: string;
     createTime?: Moment;
+    keyName_1?: string;
+    keyName_2?: string;
 }
 
 export class ThumbsUp implements IThumbsUp {
@@ -33,6 +35,8 @@ export class ThumbsUp implements IThumbsUp {
         public wechatUserId?: string,
         public avatar?: string,
         public nickName?: string,
-        public createTime?: Moment
+        public createTime?: Moment,
+        public keyName_1?: string,
+        public keyName_2?: string
     ) {}
 }
