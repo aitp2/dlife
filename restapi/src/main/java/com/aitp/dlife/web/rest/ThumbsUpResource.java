@@ -62,7 +62,7 @@ public class ThumbsUpResource {
         if (thumbsUpDTO.getId() != null) {
             throw new BadRequestAlertException("A new thumbsUp cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        CommentDTO commentDTO = commentService.findOne(thumbsUpDTO.getId());
+        CommentDTO commentDTO = commentService.findOne(thumbsUpDTO.getObjectId());
         Integer thumbsUp = commentDTO.getRating1()==null?0:commentDTO.getRating1();
         thumbsUp = thumbsUp++;
         commentDTO.setRating1(thumbsUp);
