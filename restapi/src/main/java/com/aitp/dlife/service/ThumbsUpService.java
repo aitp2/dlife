@@ -2,6 +2,9 @@ package com.aitp.dlife.service;
 
 import com.aitp.dlife.domain.ThumbsUp;
 import com.aitp.dlife.repository.ThumbsUpRepository;
+import com.aitp.dlife.repository.specification.CommentSpecification;
+import com.aitp.dlife.repository.specification.ThumbsUpSpecification;
+import com.aitp.dlife.service.dto.QueryDTO;
 import com.aitp.dlife.service.dto.ThumbsUpDTO;
 import com.aitp.dlife.service.mapper.ThumbsUpMapper;
 import org.slf4j.Logger;
@@ -12,8 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 /**
  * Service Implementation for managing ThumbsUp.
  */
@@ -52,13 +56,29 @@ public class ThumbsUpService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<ThumbsUpDTO> findAll(Pageable pageable) {
+    public Page<ThumbsUpDTO> findAll(Pageable pageable,List<QueryDTO> queryDTOs) {
         log.debug("Request to get all ThumbsUps");
-        return thumbsUpRepository.findAll(pageable)
+        ThumbsUpSpecification spec = new ThumbsUpSpecification(queryDTOs);
+        return thumbsUpRepository.findAll(spec,pageable)
             .map(thumbsUpMapper::toDto);
     }
 
 
+    /**
+     * Get all the thumbsUps.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public List<ThumbsUpDTO> findAll(List<QueryDTO> queryDTOs) {
+        log.debug("Request to get all ThumbsUps");
+        ThumbsUpSpecification spec = new ThumbsUpSpecification(queryDTOs);
+        return thumbsUpRepository.findAll(spec).stream()
+            .map(thumbsUpMapper::toDto).collect(Collectors.toList());
+    }
+    
+    
     /**
      * Get one thumbsUp by id.
      *

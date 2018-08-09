@@ -84,7 +84,7 @@ public class Comment implements Serializable {
     private String content;
 
     /**
-     * 评价级别 1
+     * 点赞数量
      */
     @ApiModelProperty(value = "评价级别 1")
     @Column(name = "rating_1")

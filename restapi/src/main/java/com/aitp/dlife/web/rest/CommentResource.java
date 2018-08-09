@@ -7,11 +7,15 @@ import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.repository.PinFanActivityRepository;
 import com.aitp.dlife.service.*;
+import com.aitp.dlife.service.ThumbsUpService;
 import com.aitp.dlife.service.dto.CommentPicDTO;
+import com.aitp.dlife.service.dto.QueryDTO;
+import com.aitp.dlife.service.dto.ThumbsUpDTO;
 import com.aitp.dlife.service.dto.PinFanActivityDTO;
 import com.aitp.dlife.service.dto.QuestionDTO;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
+import com.google.common.collect.Lists;
 import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.repository.FitnessActivityRepository;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -30,6 +34,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -39,6 +45,7 @@ import java.util.*;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 /**
@@ -58,6 +65,8 @@ public class CommentResource {
 
     private final FitnessActivityRepository fitnessActivityRepository;
 
+    private final ThumbsUpService thumbsUpService;
+
     private final EventMessageService eventMessageService;
 
     private final PinFanActivityService pinFanActivityService;
@@ -65,12 +74,13 @@ public class CommentResource {
     private final QuestionService questionService;
 
     public CommentResource(CommentService commentService, CommentPicService commentPicService, FitnessActivityRepository fitnessActivityRepository,
-                           EventMessageService eventMessageService,PinFanActivityService pinFanActivityService,
+                           EventMessageService eventMessageService,PinFanActivityService pinFanActivityService,ThumbsUpService thumbsUpService,
                            QuestionService questionService) {
         this.commentService = commentService;
         this.commentPicService=commentPicService;
         this.fitnessActivityRepository = fitnessActivityRepository;
         this.eventMessageService = eventMessageService;
+        this.thumbsUpService =thumbsUpService;
         this.pinFanActivityService = pinFanActivityService;
         this.questionService = questionService;
     }
@@ -175,12 +185,20 @@ public class CommentResource {
      */
     @GetMapping("/comments")
     @Timed
-    public ResponseEntity<List<CommentDTO>> getAllComments(Pageable pageable) {
-        log.debug("REST request to get a page of Comments");
-        Page<CommentDTO> page = commentService.findAll(pageable);
+    public ResponseEntity<List<CommentDTO>> getAllComments(Pageable pageable,String channel,Integer objectId) {
+    	log.debug("REST request to get a page of Comments");
+        List<QueryDTO> queryDTOs = Lists.newArrayList();
+        queryDTOs.add(new QueryDTO("objectId", objectId.toString()));
+        queryDTOs.add(new QueryDTO("channel", CommentChannel.valueIn(channel)));
+        Page<CommentDTO> page = commentService.findAll(pageable,queryDTOs);
+        List<ThumbsUpDTO> thumbsUpDTOs = thumbsUpService.findAll(queryDTOs);
+        page.getContent().parallelStream().forEach(comment-> comment.setThumbsUpDTOs(thumbsUpDTOs.stream().filter(thb->thb.getObjectId().equals(comment.getId())).collect(Collectors.toSet())));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/comments");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
+
+
 
     /**
      * GET  /comments : get all the comments.
@@ -194,6 +212,7 @@ public class CommentResource {
         log.debug("REST request to get a page of Comments");
         Page<CommentDTO> page = commentService.findAllForOneObject(pageable,channel,objectId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/comments");
+
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

@@ -7,9 +7,16 @@ import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.repository.CommentRepository;
 import com.aitp.dlife.repository.FitnessActivityRepository;
 import com.aitp.dlife.repository.PinFanActivityRepository;
+import com.aitp.dlife.repository.specification.CommentSpecification;
 import com.aitp.dlife.service.dto.CommentDTO;
+import com.aitp.dlife.service.dto.QueryDTO;
 import com.aitp.dlife.service.mapper.CommentMapper;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
+
+import java.util.List;
+
+import javax.management.Query;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -73,9 +80,10 @@ public class CommentService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<CommentDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all Comments");
-        return commentRepository.findAll(pageable)
+    public Page<CommentDTO> findAll(Pageable pageable,List<QueryDTO> queryDTOs) {
+    	log.debug("Request to get all Comments");
+    	CommentSpecification spec = new CommentSpecification(queryDTOs);
+        return commentRepository.findAll(spec, pageable)
             .map(commentMapper::toDto);
     }
 
@@ -88,7 +96,7 @@ public class CommentService {
     @Transactional(readOnly = true)
     public Page<CommentDTO> findAllForOneObject(Pageable pageable,String channel,String objectId) {
         log.debug("Request to get all Comments");
-
+        
         for(CommentChannel channel1:CommentChannel.values()){
             if(channel.toUpperCase().equals(channel1.toString())){
                 return commentRepository.findAllForOneObject(pageable,channel1,Long.valueOf(objectId))
