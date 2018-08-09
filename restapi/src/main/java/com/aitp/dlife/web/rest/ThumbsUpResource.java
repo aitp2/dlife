@@ -1,10 +1,12 @@
 package com.aitp.dlife.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.aitp.dlife.service.CommentService;
 import com.aitp.dlife.service.ThumbsUpService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
+import com.aitp.dlife.service.dto.CommentDTO;
 import com.aitp.dlife.service.dto.QueryDTO;
 import com.aitp.dlife.service.dto.ThumbsUpDTO;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -37,9 +39,13 @@ public class ThumbsUpResource {
     private static final String ENTITY_NAME = "thumbsUp";
 
     private final ThumbsUpService thumbsUpService;
+    
+    private final CommentService commentService;
 
-    public ThumbsUpResource(ThumbsUpService thumbsUpService) {
+
+    public ThumbsUpResource(ThumbsUpService thumbsUpService,CommentService commentService) {
         this.thumbsUpService = thumbsUpService;
+        this.commentService = commentService;
     }
 
     /**
@@ -56,7 +62,13 @@ public class ThumbsUpResource {
         if (thumbsUpDTO.getId() != null) {
             throw new BadRequestAlertException("A new thumbsUp cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        CommentDTO commentDTO = commentService.findOne(thumbsUpDTO.getId());
+        Integer thumbsUp = commentDTO.getRating1()==null?0:commentDTO.getRating1();
+        thumbsUp = thumbsUp++;
+        commentDTO.setRating1(thumbsUp);
+        thumbsUpDTO.setKeyName_1(commentDTO.getObjectId().toString());
         ThumbsUpDTO result = thumbsUpService.save(thumbsUpDTO);
+        commentService.save(commentDTO);
         return ResponseEntity.created(new URI("/api/thumbs-ups/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -124,7 +136,13 @@ public class ThumbsUpResource {
     @Timed
     public ResponseEntity<Void> deleteThumbsUp(@PathVariable Long id) {
         log.debug("REST request to delete ThumbsUp : {}", id);
+        ThumbsUpDTO thumbsUpDTO = thumbsUpService.findOne(id).get();
+        CommentDTO commentDTO = commentService.findOne(thumbsUpDTO.getObjectId());
+        Integer thumbsUp = commentDTO.getRating1()==null?0:commentDTO.getRating1();
+        thumbsUp = thumbsUp--;
+        commentDTO.setRating1(thumbsUp);
         thumbsUpService.delete(id);
+        commentService.save(commentDTO);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }
