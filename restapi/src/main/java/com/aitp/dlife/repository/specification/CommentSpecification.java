@@ -37,14 +37,20 @@ public class CommentSpecification implements Specification<Comment>{
 	 */
 	@Override
 	public Predicate toPredicate(Root<Comment> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        Path<String> idPath = root.get("id");
-        QueryDTO id = querys.stream().filter(quz->quz.getQueryKey().equals("id")).findFirst().orElse(null);
-        Predicate p = null;
-        if(id!=null){
-        	   p = criteriaBuilder.equal(idPath, id.getQueryValue());
+        Path<String> idPath = root.get("objectId");
+        QueryDTO objectId = querys.stream().filter(quz->quz.getQueryKey().equals("objectId")).findFirst().orElse(null);
+        Path<String> channelPath = root.get("channel");
+        QueryDTO channel = querys.stream().filter(quz->quz.getQueryKey().equals("channel")).findFirst().orElse(null);
+        Predicate objectPredicate = null;
+        Predicate channelPredicate = null;
+        if(null!=objectId){
+        	objectPredicate = criteriaBuilder.equal(idPath, objectId.getQueryValue());
         }
-        
-        return p;  
+        if(null!=channel){
+        	channelPredicate = criteriaBuilder.equal(channelPath, channel.getQueryValue());
+        }
+        Predicate predicate = criteriaBuilder.and(objectPredicate,channelPredicate);
+        return predicate;  
           
 
 	}

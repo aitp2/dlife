@@ -31,6 +31,8 @@ public class ThumbsUpDTO implements Serializable {
 
     private Instant createTime;
 
+
+    
     public Long getId() {
         return id;
     }
@@ -111,7 +113,8 @@ public class ThumbsUpDTO implements Serializable {
         return Objects.equals(getId(), thumbsUpDTO.getId());
     }
 
-    @Override
+   
+	@Override
     public int hashCode() {
         return Objects.hashCode(getId());
     }

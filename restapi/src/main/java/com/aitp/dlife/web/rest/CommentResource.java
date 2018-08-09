@@ -8,6 +8,7 @@ import com.aitp.dlife.service.EventMessageService;
 import com.aitp.dlife.service.ThumbsUpService;
 import com.aitp.dlife.service.dto.CommentPicDTO;
 import com.aitp.dlife.service.dto.QueryDTO;
+import com.aitp.dlife.service.dto.ThumbsUpDTO;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.Lists;
@@ -30,6 +31,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -39,6 +42,7 @@ import java.util.*;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 /**
@@ -158,11 +162,14 @@ public class CommentResource {
      */
     @GetMapping("/comments")
     @Timed
-    public ResponseEntity<List<CommentDTO>> getAllComments(Pageable pageable,String id) {
-        log.debug("REST request to get a page of Comments");
+    public ResponseEntity<List<CommentDTO>> getAllComments(Pageable pageable,String channel,Integer objectId) {
+    	log.debug("REST request to get a page of Comments");
         List<QueryDTO> queryDTOs = Lists.newArrayList();
-        queryDTOs.add(new QueryDTO("id", id));
+        queryDTOs.add(new QueryDTO("objectId", objectId.toString()));
+        queryDTOs.add(new QueryDTO("channel", CommentChannel.valueIn(channel)));
         Page<CommentDTO> page = commentService.findAll(pageable,queryDTOs);
+        List<ThumbsUpDTO> thumbsUpDTOs = thumbsUpService.findAll(queryDTOs);
+        page.getContent().parallelStream().forEach(comment-> comment.setThumbsUpDTOs(thumbsUpDTOs.stream().filter(thb->thb.getObjectId().equals(comment.getId())).collect(Collectors.toSet())));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/comments");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

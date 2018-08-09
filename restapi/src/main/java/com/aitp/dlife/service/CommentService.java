@@ -96,7 +96,7 @@ public class CommentService {
     @Transactional(readOnly = true)
     public Page<CommentDTO> findAllForOneObject(Pageable pageable,String channel,String objectId) {
         log.debug("Request to get all Comments");
-
+        
         for(CommentChannel channel1:CommentChannel.values()){
             if(channel.toUpperCase().equals(channel1.toString())){
                 return commentRepository.findAllForOneObject(pageable,channel1,Long.valueOf(objectId))

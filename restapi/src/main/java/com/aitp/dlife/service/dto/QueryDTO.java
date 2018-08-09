@@ -8,7 +8,7 @@ public class QueryDTO {
 	
 	private String queryKey ;
 	
-	private String queryValue;
+	private Object queryValue;
 	
 	@JsonIgnore
 	private String predicate;
@@ -23,7 +23,7 @@ public class QueryDTO {
 	
 
 
-	public QueryDTO(String queryKey, String queryValue) {
+	public QueryDTO(String queryKey, Object queryValue) {
 		super();
 		this.queryKey = queryKey;
 		this.queryValue = queryValue;
@@ -32,7 +32,7 @@ public class QueryDTO {
 
 
 
-	public QueryDTO(String queryKey, String queryValue, String predicate) {
+	public QueryDTO(String queryKey, Object queryValue, String predicate) {
 		super();
 		this.queryKey = queryKey;
 		this.queryValue = queryValue;
@@ -47,13 +47,20 @@ public class QueryDTO {
 		this.queryKey = queryKey;
 	}
 
-	public String getQueryValue() {
+
+	public Object getQueryValue() {
 		return queryValue;
 	}
 
-	public void setQueryValue(String queryValue) {
+
+
+
+	public void setQueryValue(Object queryValue) {
 		this.queryValue = queryValue;
 	}
+
+
+
 
 	public String getPredicate() {
 		return predicate;
@@ -63,6 +70,8 @@ public class QueryDTO {
 		this.predicate = predicate;
 	}
 
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

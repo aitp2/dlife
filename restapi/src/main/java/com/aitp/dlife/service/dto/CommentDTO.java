@@ -1,7 +1,7 @@
 package com.aitp.dlife.service.dto;
 
 
-import java.time.Instant;
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -49,6 +49,8 @@ public class CommentDTO implements Serializable {
 
     private String modifyTime;
 
+ 
+    
     private Set<CommentPicDTO> commentPics = new HashSet<>();
     
     private Set<ThumbsUpDTO> thumbsUpDTOs = new HashSet<>();
@@ -189,8 +191,9 @@ public class CommentDTO implements Serializable {
         }
         return Objects.equals(getId(), commentDTO.getId());
     }
+    
 
-    @Override
+	@Override
     public int hashCode() {
         return Objects.hashCode(getId());
     }
