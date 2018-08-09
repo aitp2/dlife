@@ -20,7 +20,7 @@ public class FitnessActivityDTO implements Serializable {
     @Size(max = 64)
     private String title;
 
-    @Size(max = 128)
+    @Size(max = 1024)
     private String descrption;
 
     @Size(max = 128)
