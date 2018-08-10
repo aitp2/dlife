@@ -7,9 +7,11 @@ import com.aitp.dlife.repository.specification.ThumbsUpSpecification;
 import com.aitp.dlife.service.dto.QueryDTO;
 import com.aitp.dlife.service.dto.ThumbsUpDTO;
 import com.aitp.dlife.service.mapper.ThumbsUpMapper;
+import com.aitp.dlife.web.rest.errors.UniquenessConflictException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -43,9 +45,13 @@ public class ThumbsUpService {
      * @return the persisted entity
      */
     public ThumbsUpDTO save(ThumbsUpDTO thumbsUpDTO) {
-        log.debug("Request to save ThumbsUp : {}", thumbsUpDTO);
-        ThumbsUp thumbsUp = thumbsUpMapper.toEntity(thumbsUpDTO);
-        thumbsUp = thumbsUpRepository.save(thumbsUp);
+    	 log.debug("Request to save ThumbsUp : {}", thumbsUpDTO);
+	        ThumbsUp thumbsUp = thumbsUpMapper.toEntity(thumbsUpDTO);
+    	try {
+    	        thumbsUp = thumbsUpRepository.save(thumbsUp);
+		} catch (DataIntegrityViolationException e) {
+			throw new UniquenessConflictException();
+		}
         return thumbsUpMapper.toDto(thumbsUp);
     }
 
