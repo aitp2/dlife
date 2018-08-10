@@ -64,7 +64,7 @@ public class ThumbsUpResource {
         }
         CommentDTO commentDTO = commentService.findOne(thumbsUpDTO.getObjectId());
         Integer thumbsUp = commentDTO.getRating1()==null?0:commentDTO.getRating1();
-        thumbsUp = thumbsUp++;
+        thumbsUp++;
         commentDTO.setRating1(thumbsUp);
         thumbsUpDTO.setKeyName_1(commentDTO.getObjectId().toString());
         ThumbsUpDTO result = thumbsUpService.save(thumbsUpDTO);
@@ -139,7 +139,7 @@ public class ThumbsUpResource {
         ThumbsUpDTO thumbsUpDTO = thumbsUpService.findOne(id).get();
         CommentDTO commentDTO = commentService.findOne(thumbsUpDTO.getObjectId());
         Integer thumbsUp = commentDTO.getRating1()==null?0:commentDTO.getRating1();
-        thumbsUp = thumbsUp--;
+        thumbsUp--;
         commentDTO.setRating1(thumbsUp);
         thumbsUpService.delete(id);
         commentService.save(commentDTO);
