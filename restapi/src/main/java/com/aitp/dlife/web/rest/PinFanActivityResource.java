@@ -2,20 +2,14 @@ package com.aitp.dlife.web.rest;
 
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
-import com.aitp.dlife.service.EventMessageService;
-import com.aitp.dlife.service.PinfanPicsService;
-import com.aitp.dlife.service.WechatUserService;
-import com.aitp.dlife.service.dto.AttendeeDTO;
-import com.aitp.dlife.service.dto.PinfanPicsDTO;
-import com.aitp.dlife.service.dto.WechatUserDTO;
+import com.aitp.dlife.service.*;
+import com.aitp.dlife.service.dto.*;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.aitp.dlife.web.rest.util.HttpUtil;
 import com.codahale.metrics.annotation.Timed;
-import com.aitp.dlife.service.PinFanActivityService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
-import com.aitp.dlife.service.dto.PinFanActivityDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -53,12 +47,15 @@ public class PinFanActivityResource {
     private final WechatUserService wechatUserService;
 
     private final EventMessageService eventMessageService;
+
+    private final MessageService messageService;
     public PinFanActivityResource(PinFanActivityService pinFanActivityService,PinfanPicsService pinfanPicsService,WechatUserService wechatUserService,
-                                  EventMessageService eventMessageService) {
+                                  EventMessageService eventMessageService,MessageService messageService) {
         this.pinFanActivityService = pinFanActivityService;
         this.pinfanPicsService=pinfanPicsService;
         this.wechatUserService = wechatUserService;
         this.eventMessageService = eventMessageService;
+        this.messageService = messageService;
     }
 
     /**
@@ -139,8 +136,11 @@ public class PinFanActivityResource {
         PinFanActivityDTO result = pinFanActivityService.save(pinFanActivityDTO);
 
         //record the activity modify event start
-        eventMessageService.recordEventMessage(EventChannel.PINFAN,DateUtil.getYMDDateString(new Date()),EventType.UPDATE,
+        EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.PINFAN,DateUtil.getYMDDateString(new Date()),EventType.UPDATE,
             result.getWechatUserId(),result.getActivitiyTile(),result.getId(),result.getAvatar(),result.getNickName());
+        if (null!=eventMessageDTO.getId()){
+            messageService.createMessageForEvent(eventMessageDTO);
+        }
         //record the activity modify event end
 
         //we need to compar image with the new image,
@@ -204,10 +204,13 @@ public class PinFanActivityResource {
         pinFanActivityService.save(pinFanActivityDTO);
 
         //record the activity quit event start
-        eventMessageService.recordEventMessage(EventChannel.PINFAN,DateUtil.getYMDDateString(new Date()),EventType.CANCEL,
+        EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.PINFAN,DateUtil.getYMDDateString(new Date()),EventType.CANCEL,
             pinFanActivityDTO.getWechatUserId(),pinFanActivityDTO.getActivitiyTile(),
             pinFanActivityDTO.getId(),pinFanActivityDTO.getAvatar(),
             pinFanActivityDTO.getNickName());
+        if (null!=eventMessageDTO.getId()){
+            messageService.createMessageForEvent(eventMessageDTO);
+        }
         //record the activity quit event end
 
         return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, id.toString())).build();

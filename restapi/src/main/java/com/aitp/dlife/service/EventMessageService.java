@@ -31,14 +31,13 @@ public class EventMessageService {
 
     private final EventMessageMapper eventMessageMapper;
 
-    private final MessageService messageService;
 
 
-    public EventMessageService(EventMessageRepository eventMessageRepository, EventMessageMapper eventMessageMapper,
-                               MessageService messageService) {
+
+    public EventMessageService(EventMessageRepository eventMessageRepository, EventMessageMapper eventMessageMapper
+                              ) {
         this.eventMessageRepository = eventMessageRepository;
         this.eventMessageMapper = eventMessageMapper;
-        this.messageService = messageService;
     }
 
     /**
@@ -150,10 +149,6 @@ public class EventMessageService {
         eventMessageDTO.setAvatar(avatar);
         eventMessageDTO.setNickName(nickName);
         EventMessageDTO dto = save(eventMessageDTO);
-        //async to create message
-        if(null!=dto.getId()){
-            messageService.createMessageForEvent(dto);
-        }
         return dto;
     }
 
@@ -184,10 +179,6 @@ public class EventMessageService {
         eventMessageDTO.setNickName(nickName);
         eventMessageDTO.setContent(content);
         EventMessageDTO dto = save(eventMessageDTO);
-        //async to create message
-        if(null!=dto.getId()){
-            messageService.createMessageForEvent(dto);
-        }
         return dto;
     }
 

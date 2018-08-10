@@ -31,12 +31,9 @@ public class AttendeeService {
 
     private final AttendeeMapper attendeeMapper;
 
-    private final EventMessageService eventMessageService;
-
-    public AttendeeService(AttendeeRepository attendeeRepository, AttendeeMapper attendeeMapper, EventMessageService eventMessageService) {
+    public AttendeeService(AttendeeRepository attendeeRepository, AttendeeMapper attendeeMapper) {
         this.attendeeRepository = attendeeRepository;
         this.attendeeMapper = attendeeMapper;
-        this.eventMessageService = eventMessageService;
     }
 
     /**
@@ -49,14 +46,7 @@ public class AttendeeService {
         log.debug("Request to save Attendee : {}", attendeeDTO);
         Attendee attendee = attendeeMapper.toEntity(attendeeDTO);
         attendee = attendeeRepository.save(attendee);
-        AttendeeDTO dto = attendeeMapper.toDto(attendee);
-
-        //record the activity participation event start
-        eventMessageService.recordEventMessage(EventChannel.PINFAN,DateUtil.getYMDDateString(new Date()), EventType.ATTEND,
-            attendeeDTO.getWechatUserId(),attendeeDTO.getActivitiyTile(),dto.getPinFanActivityId(),attendeeDTO.getAvatar(),attendeeDTO.getNickName());
-        //record the activity participation event end
-
-        return dto;
+        return attendeeMapper.toDto(attendee);
     }
 
     /**
@@ -96,16 +86,6 @@ public class AttendeeService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Attendee : {}", id);
-        AttendeeDTO attendeeDTO = findOne(id);
-        if (null != attendeeDTO){
-            //record the activity quit event start
-            eventMessageService.recordEventMessage(EventChannel.PINFAN,DateUtil.getYMDDateString(new Date()),EventType.QUIT,
-                attendeeDTO.getWechatUserId(),attendeeDTO.getActivitiyTile(),
-                attendeeDTO.getPinFanActivityId(),attendeeDTO.getAvatar(),
-                attendeeDTO.getNickName());
-            //record the activity quit event end
-        }
-
         attendeeRepository.deleteById(id);
     }
 }

@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.service.*;
+import com.aitp.dlife.service.dto.EventMessageDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.service.enums.Status;
@@ -67,14 +68,18 @@ public class ActivityParticipationResource {
 
     private final EventMessageService eventMessageService;
 
+    private final MessageService messageService;
+
 	public ActivityParticipationResource(ActivityParticipationService activityParticipationService,
                                          FitnessActivityRepository fitnessActivityRepository, WechatUserService wechatUserService,
-                                         FitnessActivityService fitnessActivityService, EventMessageService eventMessageService) {
+                                         FitnessActivityService fitnessActivityService, EventMessageService eventMessageService,
+                                         MessageService messageService) {
 		this.activityParticipationService = activityParticipationService;
 		this.fitnessActivityRepository = fitnessActivityRepository;
 		this.wechatUserService = wechatUserService;
 		this.fitnessActivityService = fitnessActivityService;
         this.eventMessageService = eventMessageService;
+        this.messageService = messageService;
     }
 
 	/**
@@ -127,8 +132,11 @@ public class ActivityParticipationResource {
 		ActivityParticipationDTO result = activityParticipationService.save(activityParticipationDTO);
 
         //record the activity participation event start
-        eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()), EventType.ATTEND,
+        EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()), EventType.ATTEND,
             result.getWechatUserId(),dto.getTitle(),dto.getId(),wechatUserDTO.getAvatar(),wechatUserDTO.getNickName());
+        if (null!=eventMessageDTO.getId()){
+            messageService.createMessageForEvent(eventMessageDTO);
+        }
         //record the activity participation event end
 
 		return ResponseEntity.created(new URI("/api/activity-participations/" + result.getId()))
@@ -245,10 +253,13 @@ public class ActivityParticipationResource {
 
         if (activityParticipationDTO.isPresent()){
             //record the activity quit event start
-            eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()),EventType.QUIT,
+            EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()),EventType.QUIT,
                 activityParticipationDTO.get().getWechatUserId(),activityParticipationDTO.get().getActivityTitle(),
                 activityParticipationDTO.get().getActivityId(),activityParticipationDTO.get().getAvatar(),
                 activityParticipationDTO.get().getNickName());
+            if (null!=eventMessageDTO.getId()){
+                messageService.createMessageForEvent(eventMessageDTO);
+            }
             //record the activity quit event end
 
         }
