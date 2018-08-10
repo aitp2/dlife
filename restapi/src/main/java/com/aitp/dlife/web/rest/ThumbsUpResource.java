@@ -134,7 +134,7 @@ public class ThumbsUpResource {
      */
     @DeleteMapping("/thumbs-ups/{id}")
     @Timed
-    public ResponseEntity<Void> deleteThumbsUp(@PathVariable Long id) {
+    public ResponseEntity<String> deleteThumbsUp(@PathVariable Long id) {
         log.debug("REST request to delete ThumbsUp : {}", id);
         ThumbsUpDTO thumbsUpDTO = thumbsUpService.findOne(id).get();
         CommentDTO commentDTO = commentService.findOne(thumbsUpDTO.getObjectId());
@@ -143,6 +143,6 @@ public class ThumbsUpResource {
         commentDTO.setRating1(thumbsUp);
         thumbsUpService.delete(id);
         commentService.save(commentDTO);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).body("ok");
     }
 }

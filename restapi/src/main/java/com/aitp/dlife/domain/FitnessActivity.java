@@ -38,9 +38,8 @@ public class FitnessActivity implements Serializable {
     /**
      * 活动描述
      */
-    @Size(max = 1024)
     @ApiModelProperty(value = "活动描述")
-    @Column(name = "descrption", length = 1024)
+    @Column(name = "descrption")
     private String descrption;
 
     /**

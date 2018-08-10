@@ -36,7 +36,7 @@ public class CommentDTO implements Serializable {
     @Size(max = 128)
     private String nickName;
 
-    @Size(max = 1024)
+
     private String content;
 
     private Integer rating1;
