@@ -10,6 +10,7 @@ import com.aitp.dlife.service.dto.CommentDTO;
 import com.aitp.dlife.service.dto.QueryDTO;
 import com.aitp.dlife.service.dto.ThumbsUpDTO;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
