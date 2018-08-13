@@ -40,7 +40,7 @@ public class ThumbsUpResource {
     private static final String ENTITY_NAME = "thumbsUp";
 
     private final ThumbsUpService thumbsUpService;
-    
+
     private final CommentService commentService;
 
 
@@ -69,7 +69,7 @@ public class ThumbsUpResource {
         commentDTO.setRating1(thumbsUp);
         thumbsUpDTO.setKeyName_1(commentDTO.getObjectId().toString());
         ThumbsUpDTO result = thumbsUpService.save(thumbsUpDTO);
-        commentService.save(commentDTO);
+        commentService.saveForThumbsUp(commentDTO);
         return ResponseEntity.created(new URI("/api/thumbs-ups/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -143,7 +143,7 @@ public class ThumbsUpResource {
         thumbsUp--;
         commentDTO.setRating1(thumbsUp);
         thumbsUpService.delete(id);
-        commentService.save(commentDTO);
+        commentService.saveForThumbsUp(commentDTO);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).body("ok");
     }
 }

@@ -18,6 +18,8 @@ public class MessageDTO implements Serializable {
 
     private Long eventMessageId;
 
+    private EventMessageDTO eventMessage;
+
     public Long getId() {
         return id;
     }
@@ -48,6 +50,14 @@ public class MessageDTO implements Serializable {
 
     public void setEventMessageId(Long eventMessageId) {
         this.eventMessageId = eventMessageId;
+    }
+
+    public EventMessageDTO getEventMessage() {
+        return eventMessage;
+    }
+
+    public void setEventMessage(EventMessageDTO eventMessage) {
+        this.eventMessage = eventMessage;
     }
 
     @Override

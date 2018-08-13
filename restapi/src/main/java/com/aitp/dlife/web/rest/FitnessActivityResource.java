@@ -64,11 +64,15 @@ public class FitnessActivityResource {
 
     private final EventMessageService eventMessageService;
 
-    public FitnessActivityResource(FitnessActivityService fitnessActivityService,PicsService picsService,WechatUserService wechatUserService, EventMessageService eventMessageService) {
+    private final MessageService messageService;
+
+    public FitnessActivityResource(FitnessActivityService fitnessActivityService,PicsService picsService,WechatUserService wechatUserService, EventMessageService eventMessageService,
+                                   MessageService messageService) {
         this.fitnessActivityService = fitnessActivityService;
         this.picsService = picsService;
         this.wechatUserService=wechatUserService;
         this.eventMessageService = eventMessageService;
+        this.messageService = messageService;
     }
 
     /**
@@ -189,8 +193,11 @@ public class FitnessActivityResource {
         }
 
         //record the activity modify event start
-        eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()),EventType.UPDATE,
+        EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()),EventType.UPDATE,
             result.getWechatUserId(),result.getTitle(),result.getId(),result.getAvatar(),result.getNickName());
+        if (null!=eventMessageDTO.getId()){
+            messageService.createMessageForEvent(eventMessageDTO);
+        }
         //record the activity modify event end
 
         return ResponseEntity.ok()

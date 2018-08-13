@@ -1,24 +1,22 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.domain.PinFanActivity;
+import com.aitp.dlife.domain.Question;
 import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
-import com.aitp.dlife.service.CommentPicService;
-import com.aitp.dlife.service.EventMessageService;
+import com.aitp.dlife.repository.PinFanActivityRepository;
+import com.aitp.dlife.service.*;
 import com.aitp.dlife.service.ThumbsUpService;
-import com.aitp.dlife.service.dto.CommentPicDTO;
-import com.aitp.dlife.service.dto.QueryDTO;
-import com.aitp.dlife.service.dto.ThumbsUpDTO;
+import com.aitp.dlife.service.dto.*;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.Lists;
 import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.repository.FitnessActivityRepository;
-import com.aitp.dlife.service.CommentService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
-import com.aitp.dlife.service.dto.CommentDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -63,15 +61,26 @@ public class CommentResource {
     private final FitnessActivityRepository fitnessActivityRepository;
 
     private final ThumbsUpService thumbsUpService;
-    
+
     private final EventMessageService eventMessageService;
 
-    public CommentResource(CommentService commentService, CommentPicService commentPicService, FitnessActivityRepository fitnessActivityRepository, EventMessageService eventMessageService,ThumbsUpService thumbsUpService) {
+    private final PinFanActivityService pinFanActivityService;
+
+    private final MessageService messageService;
+
+    private final QuestionService questionService;
+
+    public CommentResource(CommentService commentService, CommentPicService commentPicService, FitnessActivityRepository fitnessActivityRepository,
+                           EventMessageService eventMessageService,PinFanActivityService pinFanActivityService,ThumbsUpService thumbsUpService,
+                           QuestionService questionService,MessageService messageService) {
         this.commentService = commentService;
         this.commentPicService=commentPicService;
         this.fitnessActivityRepository = fitnessActivityRepository;
         this.eventMessageService = eventMessageService;
         this.thumbsUpService =thumbsUpService;
+        this.pinFanActivityService = pinFanActivityService;
+        this.questionService = questionService;
+        this.messageService = messageService;
     }
 
     /**
@@ -118,15 +127,31 @@ public class CommentResource {
             eventChannel = EventChannel.FITNESS;
             objectTitle = fitnessActivity.getTitle();
             objectId = fitnessActivity.getId();
+        }else if (CommentChannel.PIN.equals(commentDTO.getChannel())){
+            PinFanActivityDTO pinFanActivity = pinFanActivityService.findOne(commentDTO.getObjectId());
+            eventChannel = EventChannel.PINFAN;
+            objectTitle = pinFanActivity.getActivitiyTile();
+            objectId = pinFanActivity.getId();
+        }else if (CommentChannel.FAQS.equals(commentDTO.getChannel())){
+            Optional<QuestionDTO> questionDTO = questionService.findOne(commentDTO.getObjectId());
+            if (questionDTO.isPresent()){
+                QuestionDTO dto = questionDTO.get();
+                eventChannel = EventChannel.FAQS;
+                objectTitle = dto.getTitle();
+                objectId = dto.getId();
+            }
         }
 
         if (eventChannel != null){
             //record the activity participation event start
-            eventMessageService.recordEventMessage(eventChannel,DateUtil.getYMDDateString(new Date()), EventType.COMMENT,
-                commentDTO.getWechatUserId(),objectTitle,objectId,commentDTO.getAvatar(),commentDTO.getNickName());
+            EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(eventChannel,DateUtil.getYMDDateString(new Date()), EventType.COMMENT,
+                commentDTO.getWechatUserId(),objectTitle,objectId,commentDTO.getAvatar(),commentDTO.getNickName(),commentDTO.getContent());
+
+            if (null!=eventMessageDTO.getId()){
+                messageService.createMessageForEvent(eventMessageDTO);
+            }
             //record the activity participation event end
         }
-
         return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -174,9 +199,9 @@ public class CommentResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
-    
-    
-    
+
+
+
     /**
      * GET  /comments : get all the comments.
      *
@@ -189,7 +214,7 @@ public class CommentResource {
         log.debug("REST request to get a page of Comments");
         Page<CommentDTO> page = commentService.findAllForOneObject(pageable,channel,objectId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/comments");
-        
+
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
