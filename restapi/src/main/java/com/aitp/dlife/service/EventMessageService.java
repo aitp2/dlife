@@ -4,10 +4,9 @@ import com.aitp.dlife.domain.EventMessage;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.repository.EventMessageRepository;
-import com.aitp.dlife.service.dto.EventMessageDTO;
+import com.aitp.dlife.service.dto.*;
 import com.aitp.dlife.service.mapper.EventMessageMapper;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
-import com.aitp.dlife.web.rest.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
+
 /**
  * Service Implementation for managing EventMessage.
  */
@@ -32,7 +31,11 @@ public class EventMessageService {
 
     private final EventMessageMapper eventMessageMapper;
 
-    public EventMessageService(EventMessageRepository eventMessageRepository, EventMessageMapper eventMessageMapper) {
+
+
+
+    public EventMessageService(EventMessageRepository eventMessageRepository, EventMessageMapper eventMessageMapper
+                              ) {
         this.eventMessageRepository = eventMessageRepository;
         this.eventMessageMapper = eventMessageMapper;
     }
@@ -145,6 +148,39 @@ public class EventMessageService {
         eventMessageDTO.setObjectId(objectId);
         eventMessageDTO.setAvatar(avatar);
         eventMessageDTO.setNickName(nickName);
-        return save(eventMessageDTO);
+        EventMessageDTO dto = save(eventMessageDTO);
+        return dto;
     }
+
+    /**
+     * record the event message for comment and FAQS
+     *
+     * @param eventChannel the event channel
+     * @param createTime the event create time
+     * @param eventType the event type
+     * @param wechatUserId the event trigger user's wechat user id
+     * @param objectTitle the object title
+     * @param objectId the object id
+     * @param avatar the event trigger user's avatar
+     * @param nickName the event trigger user's nickName
+     * @return EventMessageDTO
+     */
+    public EventMessageDTO recordEventMessage(EventChannel eventChannel, String createTime, EventType eventType,
+                                              String wechatUserId, String objectTitle, Long objectId, String avatar,
+                                              String nickName,String content){
+        EventMessageDTO eventMessageDTO = new EventMessageDTO();
+        eventMessageDTO.setChannel(eventChannel);
+        eventMessageDTO.setCreateTime(createTime);
+        eventMessageDTO.setType(eventType);
+        eventMessageDTO.setWechatUserId(wechatUserId);
+        eventMessageDTO.setObjectTitle(objectTitle);
+        eventMessageDTO.setObjectId(objectId);
+        eventMessageDTO.setAvatar(avatar);
+        eventMessageDTO.setNickName(nickName);
+        eventMessageDTO.setContent(content);
+        EventMessageDTO dto = save(eventMessageDTO);
+        return dto;
+    }
+
+
 }
