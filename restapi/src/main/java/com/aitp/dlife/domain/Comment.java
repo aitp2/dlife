@@ -78,9 +78,8 @@ public class Comment implements Serializable {
     /**
      * 评论内容
      */
-    @Size(max = 1024)
     @ApiModelProperty(value = "评论内容")
-    @Column(name = "content", length = 1024)
+    @Column(name = "content")
     private String content;
 
     /**

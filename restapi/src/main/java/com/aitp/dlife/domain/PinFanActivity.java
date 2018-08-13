@@ -85,9 +85,8 @@ public class PinFanActivity implements Serializable {
     /**
      * 活动描述
      */
-    @Size(max = 1024)
     @ApiModelProperty(value = "活动描述")
-    @Column(name = "descrption", length = 1024)
+    @Column(name = "descrption")
     private String descrption;
 
     /**
@@ -160,9 +159,8 @@ public class PinFanActivity implements Serializable {
     /**
      * 备注
      */
-    @Size(max = 500)
     @ApiModelProperty(value = "备注")
-    @Column(name = "jhi_comment", length = 500)
+    @Column(name = "jhi_comment")
     private String comment;
 
     /**

@@ -16,7 +16,7 @@
 logging:
     level:
         ROOT: INFO
-        com.aitp.dlife: INFO
+        com.aitp.dlife: DEBUG
         io.github.jhipster: INFO
 
 spring:

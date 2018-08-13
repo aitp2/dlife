@@ -93,8 +93,7 @@ public class EventMessage implements Serializable {
     @Column(name = "create_time")
     private Instant createTime;
 
-    @Size(max = 1024)
-    @Column(name = "content", length = 1024)
+    @Column(name = "content")
     private String content;
 
     @OneToMany(mappedBy = "eventMessage")

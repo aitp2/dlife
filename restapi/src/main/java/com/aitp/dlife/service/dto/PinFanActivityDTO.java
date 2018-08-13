@@ -35,7 +35,7 @@ public class PinFanActivityDTO implements Serializable {
     @Size(max = 1024)
     private String activitiyAddre;
 
-    @Size(max = 1024)
+
     private String descrption;
 
     @Size(max = 128)
@@ -60,7 +60,6 @@ public class PinFanActivityDTO implements Serializable {
 
     private String deadline;
 
-    @Size(max = 500)
     private String comment;
 
     private Integer commentCount;

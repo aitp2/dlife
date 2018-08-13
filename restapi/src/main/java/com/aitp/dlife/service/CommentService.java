@@ -74,6 +74,19 @@ public class CommentService {
     }
 
     /**
+     * Save a comment.
+     *
+     * @param commentDTO the entity to save
+     * @return the persisted entity
+     */
+    public CommentDTO saveForThumbsUp(CommentDTO commentDTO) {
+        log.debug("Request to save Comment : {}", commentDTO);
+        Comment comment = commentMapper.toEntity(commentDTO);
+        comment = commentRepository.save(comment);
+        return commentMapper.toDto(comment);
+    }
+
+    /**
      * Get all the comments.
      *
      * @param pageable the pagination information
@@ -96,7 +109,7 @@ public class CommentService {
     @Transactional(readOnly = true)
     public Page<CommentDTO> findAllForOneObject(Pageable pageable,String channel,String objectId) {
         log.debug("Request to get all Comments");
-        
+
         for(CommentChannel channel1:CommentChannel.values()){
             if(channel.toUpperCase().equals(channel1.toString())){
                 return commentRepository.findAllForOneObject(pageable,channel1,Long.valueOf(objectId))

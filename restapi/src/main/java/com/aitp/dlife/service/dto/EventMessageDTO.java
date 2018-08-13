@@ -34,7 +34,6 @@ public class EventMessageDTO implements Serializable {
 
     private String createTime;
 
-    @Size(max = 1024)
     private String content;
 
     public Long getId() {
