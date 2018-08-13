@@ -202,6 +202,7 @@ public class FitnessActivityResource {
      * GET  /fitness-activities : get all the fitnessActivities.
      *
      * @param pageable the pagination information
+     * @param eventCount the request count of the activity's envent message, default is 0
      * @return the ResponseEntity with status 200 (OK) and the list of fitnessActivities in body
      */
     @GetMapping("/fitness-activities")

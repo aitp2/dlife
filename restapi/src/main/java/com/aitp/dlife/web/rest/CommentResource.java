@@ -6,9 +6,7 @@ import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.service.CommentPicService;
 import com.aitp.dlife.service.EventMessageService;
 import com.aitp.dlife.service.ThumbsUpService;
-import com.aitp.dlife.service.dto.CommentPicDTO;
-import com.aitp.dlife.service.dto.QueryDTO;
-import com.aitp.dlife.service.dto.ThumbsUpDTO;
+import com.aitp.dlife.service.dto.*;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.Lists;
@@ -18,8 +16,11 @@ import com.aitp.dlife.service.CommentService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
-import com.aitp.dlife.service.dto.CommentDTO;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +49,7 @@ import java.util.stream.Collectors;
 /**
  * REST controller for managing Comment.
  */
+@Api(value = "评论和小问答回答API", tags = "评论和小问答回答API")
 @RestController
 @RequestMapping("/api")
 public class CommentResource {
@@ -63,7 +65,7 @@ public class CommentResource {
     private final FitnessActivityRepository fitnessActivityRepository;
 
     private final ThumbsUpService thumbsUpService;
-    
+
     private final EventMessageService eventMessageService;
 
     public CommentResource(CommentService commentService, CommentPicService commentPicService, FitnessActivityRepository fitnessActivityRepository, EventMessageService eventMessageService,ThumbsUpService thumbsUpService) {
@@ -82,6 +84,9 @@ public class CommentResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/comments")
+    @ApiOperation(value = "创建评论，创建小问答的回答", response = CommentDTO.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "body", dataType = "String", defaultValue = "", name = "commentDTO", value = "评论的内容", required = true) })
     @Timed
     public ResponseEntity<CommentDTO> createComment(@Valid @RequestBody CommentDTO commentDTO) throws URISyntaxException {
         log.debug("REST request to save Comment : {}", commentDTO);
@@ -142,6 +147,7 @@ public class CommentResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/comments")
+    @ApiOperation(value = "更新评论", response = CommentDTO.class, produces = "application/json")
     @Timed
     public ResponseEntity<CommentDTO> updateComment(@Valid @RequestBody CommentDTO commentDTO) throws URISyntaxException {
         log.debug("REST request to update Comment : {}", commentDTO);
@@ -161,6 +167,7 @@ public class CommentResource {
      * @return the ResponseEntity with status 200 (OK) and the list of comments in body
      */
     @GetMapping("/comments")
+    @ApiOperation(value = "获得评论信息", response = CommentDTO.class, produces = "application/json")
     @Timed
     public ResponseEntity<List<CommentDTO>> getAllComments(Pageable pageable,String channel,Integer objectId) {
     	log.debug("REST request to get a page of Comments");
@@ -174,9 +181,9 @@ public class CommentResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
-    
-    
-    
+
+
+
     /**
      * GET  /comments : get all the comments.
      *
@@ -184,12 +191,16 @@ public class CommentResource {
      * @return the ResponseEntity with status 200 (OK) and the list of comments in body
      */
     @GetMapping("/comments/{channel}/{objectId}")
+    @ApiOperation(value = "获得应用和对象的评论信息", response = CommentDTO.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "channel", value = "应用的code", required = true),
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "objectId", value = "对象的ID", required = true)})
     @Timed
     public ResponseEntity<List<CommentDTO>> getAllCommentsForOneObject(Pageable pageable,@PathVariable String channel,@PathVariable String objectId) {
         log.debug("REST request to get a page of Comments");
         Page<CommentDTO> page = commentService.findAllForOneObject(pageable,channel,objectId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/comments");
-        
+
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
@@ -200,6 +211,9 @@ public class CommentResource {
      * @return the ResponseEntity with status 200 (OK) and with body the commentDTO, or with status 404 (Not Found)
      */
     @GetMapping("/comments/{id}")
+    @ApiOperation(value = "获取评论信息", response = Void.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "id", value = "评论的ID", required = true) })
     @Timed
     public ResponseEntity<CommentDTO> getComment(@PathVariable Long id) {
         log.debug("REST request to get Comment : {}", id);
@@ -214,6 +228,9 @@ public class CommentResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/comments/{id}")
+    @ApiOperation(value = "删除评论信息", response = Void.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "id", value = "评论的ID", required = true) })
     @Timed
     public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
         log.debug("REST request to delete Comment : {}", id);
