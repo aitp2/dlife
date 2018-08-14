@@ -18,6 +18,9 @@ import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -187,7 +190,8 @@ public class CommentResource {
      */
     @GetMapping("/comments")
     @Timed
-    public ResponseEntity<List<CommentDTO>> getAllComments(Pageable pageable,String channel,Integer objectId) {
+    @ApiOperation(value="获取查询列表" ,notes="根据不同条件进行分页查查询和排序" ,response=CommentDTO.class)
+    public ResponseEntity<List<CommentDTO>> getAllComments(Pageable pageable,@ApiParam(value="渠道")String channel,@ApiParam(value="活动Id") Integer objectId) {
     	log.debug("REST request to get a page of Comments");
         List<QueryDTO> queryDTOs = Lists.newArrayList();
         queryDTOs.add(new QueryDTO("objectId", objectId.toString()));
@@ -209,6 +213,7 @@ public class CommentResource {
      * @return the ResponseEntity with status 200 (OK) and the list of comments in body
      */
     @GetMapping("/comments/{channel}/{objectId}")
+    @Deprecated
     @Timed
     public ResponseEntity<List<CommentDTO>> getAllCommentsForOneObject(Pageable pageable,@PathVariable String channel,@PathVariable String objectId) {
         log.debug("REST request to get a page of Comments");

@@ -15,7 +15,6 @@ import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 
 import java.util.List;
 
-import javax.management.Query;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,12 +57,12 @@ public class CommentService {
      */
     public CommentDTO save(CommentDTO commentDTO) {
         log.debug("Request to save Comment : {}", commentDTO);
-        if(CommentChannel.FIT.equals(commentDTO.getChannel()))
+        if(CommentChannel.FIT.equals(commentDTO.getChannel())&&null==commentDTO.getId())
         {
             FitnessActivity fitnessActivity = fitnessActivityRepository.findById(commentDTO.getObjectId()).get();
             fitnessActivity.setCommentCount(fitnessActivity.getCommentCount() == null? 1 : fitnessActivity.getCommentCount() +1);
         }
-        if(CommentChannel.PIN.equals(commentDTO.getChannel()))
+        if(CommentChannel.PIN.equals(commentDTO.getChannel())&&null==commentDTO.getId())
         {
             PinFanActivity pinFanActivity = pinFanActivityRepository.findById(commentDTO.getObjectId()).get();
             pinFanActivity.setCommentCount(pinFanActivity.getCommentCount() == null? 1 : pinFanActivity.getCommentCount() + 1);
@@ -73,18 +72,6 @@ public class CommentService {
         return commentMapper.toDto(comment);
     }
 
-    /**
-     * Save a comment.
-     *
-     * @param commentDTO the entity to save
-     * @return the persisted entity
-     */
-    public CommentDTO saveForThumbsUp(CommentDTO commentDTO) {
-        log.debug("Request to save Comment : {}", commentDTO);
-        Comment comment = commentMapper.toEntity(commentDTO);
-        comment = commentRepository.save(comment);
-        return commentMapper.toDto(comment);
-    }
 
     /**
      * Get all the comments.
@@ -107,6 +94,7 @@ public class CommentService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
+    @Deprecated
     public Page<CommentDTO> findAllForOneObject(Pageable pageable,String channel,String objectId) {
         log.debug("Request to get all Comments");
 

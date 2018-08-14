@@ -4,11 +4,13 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.aitp.dlife.domain.ClockIn;
+import com.aitp.dlife.domain.Comment;
 import com.aitp.dlife.service.dto.ClockInDTO;
 
 
@@ -17,7 +19,7 @@ import com.aitp.dlife.service.dto.ClockInDTO;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ClockInRepository extends JpaRepository<ClockIn, Long> {
+public interface ClockInRepository extends JpaSpecificationExecutor<ClockIn>,JpaRepository<ClockIn, Long> {
 
 	@Query(value = "select clockIn from ClockIn clockIn "
 			+ "where clockIn.activityParticipation.id =:activityParticipationId",nativeQuery = false)
@@ -30,6 +32,7 @@ public interface ClockInRepository extends JpaRepository<ClockIn, Long> {
 			+ "  activity_participation.wechat_user_id =:wechatUserId "
 			+ " and DATE_FORMAT(clock_in.punch_date_time,'%Y-%m') =:yearMonth"
 			,nativeQuery = true)
+	@Deprecated
 	List<String> findClockinsDateByWechatUserIdAndMonth(@Param("wechatUserId")String wechatUserId,@Param("yearMonth")String yearMonth);
 
 
@@ -41,6 +44,7 @@ public interface ClockInRepository extends JpaRepository<ClockIn, Long> {
 			+ "  activity_participation.wechat_user_id =:wechatUserId "
 			+ " and DATE_FORMAT(clock_in.punch_date_time,'%Y-%m-%d') =:yearMonthDate"
 			,nativeQuery = true)
+	@Deprecated
 	List<ClockIn> getClockinsByWechatUserIdAndDate(@Param("wechatUserId")String wechatUserId,@Param("yearMonthDate")String yearMonthDate);
 
     @Query(value = "SELECT * FROM clock_in "

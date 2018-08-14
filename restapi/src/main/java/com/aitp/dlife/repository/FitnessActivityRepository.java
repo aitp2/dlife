@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.aitp.dlife.domain.Comment;
 import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
 
@@ -17,7 +19,7 @@ import com.aitp.dlife.service.dto.FitnessActivityDTO;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface FitnessActivityRepository extends JpaRepository<FitnessActivity, Long> {
+public interface FitnessActivityRepository extends JpaSpecificationExecutor<FitnessActivity>, JpaRepository<FitnessActivity, Long> {
 
 	@Query(value = "select * from fitness_activity LEFT JOIN activity_participation ON fitness_activity.id = activity_participation.fitness_activity_id "
 			+ " where activity_participation.wechat_user_id =:wechatUserId",nativeQuery = true)

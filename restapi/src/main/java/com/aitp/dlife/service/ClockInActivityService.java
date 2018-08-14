@@ -214,6 +214,8 @@ public class ClockInActivityService {
 		clockIn.setTitle(request.getTitle());
 		clockIn.setSignNote(request.getSignNote());
 		clockIn.setPunchDateTime(Instant.now());
+		ActivityParticipation activityParticipation = activityParticipationRepository.getOne(request.getActivityParticipationId());
+		clockIn.setActivityId(Integer.valueOf(activityParticipation.getFitnessActivity().getId().toString()));
 		ClockIn clockInResult = clockInRepository.save(clockIn);
 		// 保存打卡图片
 		if (!CollectionUtils.isEmpty(request.getPics())) {

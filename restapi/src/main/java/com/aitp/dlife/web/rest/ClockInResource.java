@@ -11,12 +11,14 @@ import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.management.Query;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -47,6 +49,7 @@ import com.aitp.dlife.service.dto.ClockInDTO;
 import com.aitp.dlife.service.dto.ClockinSummaryDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.dto.PicsDTO;
+import com.aitp.dlife.service.dto.QueryDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
 
 import io.github.jhipster.web.util.ResponseUtil;
@@ -198,9 +201,13 @@ public class ClockInResource {
      */
     @GetMapping("/clock-ins")
     @Timed
-    public ResponseEntity<List<ClockInDTO>> getAllClockIns(Pageable pageable) {
+    public ResponseEntity<List<ClockInDTO>> getAllClockIns(Pageable pageable,String wechatUserId,String activityParticipationId,String activityId) {
         log.debug("REST request to get a page of ClockIns");
-        Page<ClockInDTO> page = clockInService.findAll(pageable);
+        List<QueryDTO> queryDTOs = new ArrayList<>();
+        queryDTOs.add(new QueryDTO("wechatUserId",wechatUserId));
+        queryDTOs.add(new QueryDTO("activityParticipationId",activityParticipationId));
+        queryDTOs.add(new QueryDTO("activityId",activityId));
+        Page<ClockInDTO> page = clockInService.findAll(pageable,queryDTOs);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/clock-ins");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

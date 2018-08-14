@@ -213,14 +213,15 @@ public class FitnessActivityResource {
      */
     @GetMapping("/fitness-activities")
     @Timed
-    public ResponseEntity<List<FitnessActivityDTO>> getAllFitnessActivities(Pageable pageable, Integer eventCount) {
+    public ResponseEntity<List<FitnessActivityDTO>> getAllFitnessActivities(Pageable pageable,String wechatUserId, Integer eventCount) {
         log.debug("REST request to get a page of FitnessActivities, event count:"+ eventCount);
-
+        List<QueryDTO> queryDTOs = new ArrayList<QueryDTO>();
+        queryDTOs.add(new QueryDTO("wechatUserId", wechatUserId));
         Page<FitnessActivityDTO> page;
         if (eventCount == null) {
-            page = fitnessActivityService.findAll(pageable);
+            page = fitnessActivityService.findAll(pageable,queryDTOs);
         } else {
-            page = fitnessActivityService.findAllAndEvent(pageable,eventCount);
+            page = fitnessActivityService.findAllAndEvent(pageable,queryDTOs,eventCount);
         }
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/fitness-activities");

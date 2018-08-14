@@ -10,8 +10,11 @@ import com.aitp.dlife.service.dto.CommentDTO;
 import com.aitp.dlife.service.dto.QueryDTO;
 import com.aitp.dlife.service.dto.ThumbsUpDTO;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+import org.apiguardian.api.API;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -56,6 +59,8 @@ public class ThumbsUpResource {
      * @return the ResponseEntity with status 201 (Created) and with body the new thumbsUpDTO, or with status 400 (Bad Request) if the thumbsUp has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
+    @ApiOperation(value="点赞" ,notes ="根据用户信息通道，数据进行点赞.", produces="application/json")
+    
     @PostMapping("/thumbs-ups")
     @Timed
     public ResponseEntity<ThumbsUpDTO> createThumbsUp(@Valid @RequestBody ThumbsUpDTO thumbsUpDTO) throws URISyntaxException {
@@ -69,7 +74,7 @@ public class ThumbsUpResource {
         commentDTO.setRating1(thumbsUp);
         thumbsUpDTO.setKeyName_1(commentDTO.getObjectId().toString());
         ThumbsUpDTO result = thumbsUpService.save(thumbsUpDTO);
-        commentService.saveForThumbsUp(commentDTO);
+        commentService.save(commentDTO);
         return ResponseEntity.created(new URI("/api/thumbs-ups/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -133,9 +138,11 @@ public class ThumbsUpResource {
      * @param id the id of the thumbsUpDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
+    @ApiOperation(value="取消點贊",notes="根据点赞ID进行删除")
+    @ApiParam()
     @DeleteMapping("/thumbs-ups/{id}")
     @Timed
-    public ResponseEntity<String> deleteThumbsUp(@PathVariable Long id) {
+    public ResponseEntity<String> deleteThumbsUp(@PathVariable @ApiParam(value="点赞ID", required=true) Long id) {
         log.debug("REST request to delete ThumbsUp : {}", id);
         ThumbsUpDTO thumbsUpDTO = thumbsUpService.findOne(id).get();
         CommentDTO commentDTO = commentService.findOne(thumbsUpDTO.getObjectId());
@@ -143,7 +150,7 @@ public class ThumbsUpResource {
         thumbsUp--;
         commentDTO.setRating1(thumbsUp);
         thumbsUpService.delete(id);
-        commentService.saveForThumbsUp(commentDTO);
+        commentService.save(commentDTO);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).body("ok");
     }
 }
