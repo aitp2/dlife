@@ -1,33 +1,45 @@
 package com.aitp.dlife.request;
 
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 /**
  * A DTO for the ClockIn entity.
  */
-public class ClockInRequest implements Serializable {
+public class ClockInRequest {
 
 
-    /**
-	 * 
+	/**
+	 * 活动标题
 	 */
-	private static final long serialVersionUID = -5231225359327519297L;
-
 	@Size(max = 64)
     private String title;
 
+	/**
+	 * 用户id
+	 */
     private String wechatUserId;
 
+    /**
+     * 打卡日记
+     */
     @Size(max = 1024)
     private String signNote;
 
+    
+    /**
+     * 用户参与活动id
+     */
+    @NotEmpty
     private Long activityParticipationId;
 
+    /**
+     * 打卡图片
+     */
     private Set<PicsRequest> pics = new HashSet<>();
 
 
