@@ -72,7 +72,7 @@ public class PinFanActivityService {
                 }
             }
         }
-        return all.map(pinFanActivityMapper::toDtoIgnoreAttendees);
+        return all.map(pinFanActivityMapper::toDto);
     }
     @Transactional(readOnly = true)
     public Page<PinFanActivityDTO> findAllByWechatUserId(Pageable pageable,String wechatUserId) {

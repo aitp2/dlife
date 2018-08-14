@@ -22,15 +22,15 @@ public interface PinFanActivityMapper extends EntityMapper<PinFanActivityDTO, Pi
     @Mapping(target = "appointDatetime",expression = "java(InstantMapper.fromString(pinFanActivityDTO.getAppointDatetime()))")
     @Mapping(target = "appointEndDatetime",expression = "java(InstantMapper.fromString(pinFanActivityDTO.getAppointEndDatetime()))")
     PinFanActivity toEntity(PinFanActivityDTO pinFanActivityDTO);
-    
-    
-    @Mapping(target = "attendees", ignore = true)
+
+
+/*    @Mapping(target = "attendees", ignore = true)
     @Mapping(target = "appointDatetime",expression = "java(InstantMapper.toDateString(entity.getAppointDatetime()))")
     @Mapping(target = "appointEndDatetime",expression = "java(InstantMapper.toDateString(entity.getAppointEndDatetime()))")
     @Mapping(target = "deadline",expression = "java(InstantMapper.toDateString(entity.getDeadline()))")
-    PinFanActivityDTO toDtoIgnoreAttendees(PinFanActivity entity);
-    
-    
+    PinFanActivityDTO toDtoIgnoreAttendees(PinFanActivity entity);*/
+
+
     default PinFanActivity fromId(Long id) {
         if (id == null) {
             return null;
