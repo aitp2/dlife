@@ -1,24 +1,31 @@
 package com.aitp.dlife.response;
 
-public class ClockInActivityResponse {
+import java.io.Serializable;
+
+public class ClockInActivityResponse implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6547652834940893058L;
+
 	/** 活动是否完成  **/
 	private boolean completed;
 	
 	/** 活动排名 **/
-	private String ranking;
+	private String ranking = "0";
 	
 	/** 最长连续打卡天数 **/
-	private String longestContinueDays;
+	private String longestContinueDays = "0";
 	
 	/** 总共打卡天数 **/
-	private String totalClockInDays;
+	private String totalClockInDays = "0";
 	
 	/** 最早打卡时间 **/
-	private String earliestClockInTime;
+	private String earliestClockInTime = "无";
 	
 	/** 最晚打卡时间 **/
-	private String latestClockInTime;
+	private String latestClockInTime = "无";
 
 	public String getRanking() {
 		return ranking;
@@ -66,6 +73,13 @@ public class ClockInActivityResponse {
 
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
+	}
+
+	@Override
+	public String toString() {
+		return "ClockInActivityResponse [completed=" + completed + ", ranking=" + ranking + ", longestContinueDays="
+				+ longestContinueDays + ", totalClockInDays=" + totalClockInDays + ", earliestClockInTime="
+				+ earliestClockInTime + ", latestClockInTime=" + latestClockInTime + "]";
 	}
 	
 	

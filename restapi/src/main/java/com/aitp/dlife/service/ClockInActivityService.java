@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import com.aitp.dlife.domain.enumeration.EventChannel;
-import com.aitp.dlife.domain.enumeration.EventType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +20,8 @@ import com.aitp.dlife.domain.ClockinSummary;
 import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.domain.Pics;
 import com.aitp.dlife.domain.WechatUser;
+import com.aitp.dlife.domain.enumeration.EventChannel;
+import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.repository.ActivityParticipationRepository;
 import com.aitp.dlife.repository.ClockInRepository;
 import com.aitp.dlife.repository.ClockinSummaryRepository;
@@ -56,8 +56,8 @@ public class ClockInActivityService {
 	private ActivityParticipationMapper activityParticipationMapper;
 	@Autowired
 	private ClockInMapper clockInMapper;
-    @Autowired
-    private EventMessageService eventMessageService;
+	@Autowired
+	private EventMessageService eventMessageService;
 
 	/**
 	 * 用户打卡
@@ -70,8 +70,8 @@ public class ClockInActivityService {
 		log.debug("start to saveClockInRecord");
 		saveClockInRecord(request);
 		// save the event message
-        log.debug("保存Event message记录");
-        saveEnventMessage(request);
+		log.debug("保存Event message记录");
+		saveEnventMessage(request);
 		// 更新打卡记录汇总
 		log.debug("start to updateClockInSummary");
 		updateClockInSummary(request);
@@ -85,60 +85,87 @@ public class ClockInActivityService {
 		return true;
 	}
 
-	protected void saveEnventMessage(ClockInRequest request){
+	protected void saveEnventMessage(ClockInRequest request) {
 
-        Optional<ActivityParticipation> activityParticipation = activityParticipationRepository.findById(request.getActivityParticipationId());
+		Optional<ActivityParticipation> activityParticipation = activityParticipationRepository
+				.findById(request.getActivityParticipationId());
 
-        if (activityParticipation.isPresent()){
-            //record the activity participation event start
-            eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()), EventType.CLOCKIN,
-                request.getWechatUserId(),activityParticipation.get().getFitnessActivity().getTitle(),
-                activityParticipation.get().getFitnessActivity().getId(),activityParticipation.get().getAvatar(),
-                activityParticipation.get().getNickName());
-            //record the activity participation event end
-        }
+		if (activityParticipation.isPresent()) {
+			// record the activity participation event start
+			eventMessageService.recordEventMessage(EventChannel.FITNESS, DateUtil.getYMDDateString(new Date()),
+					EventType.CLOCKIN, request.getWechatUserId(),
+					activityParticipation.get().getFitnessActivity().getTitle(),
+					activityParticipation.get().getFitnessActivity().getId(), activityParticipation.get().getAvatar(),
+					activityParticipation.get().getNickName());
+			// record the activity participation event end
+		}
 
-    }
+	}
 
 	/**
-	 * 查询活动完成用户的打卡情况
+	 * 根据用户参与活动关系查询活动完成用户的打卡情况
 	 *
 	 * @param activityParticipationId
 	 * @return
 	 */
-	public ClockInActivityResponse getActivityParticipationClockInResult(Long activityParticipationId) {
+	public ClockInActivityResponse getClockInResultByActivityParticipationId(Long activityParticipationId) {
 		ClockInActivityResponse clockInActivityResponse = new ClockInActivityResponse();
-		Optional<ActivityParticipation> activityParticipation = activityParticipationRepository
-				.findById(activityParticipationId);
-		if (activityParticipation.isPresent()) {
-			ActivityParticipation activityParticipationEntity = activityParticipation.get();
-			// 活动是否完成
-			boolean completed = isCompleted(activityParticipationEntity);
-			log.debug("活动是否已经完成：" + completed);
-			if (completed) {
-				// 最早打卡时间
-				String earliestClockInTimeStr = getEarliestClockInTimeStr(activityParticipationEntity);
-				// 最晚打卡时间
-				String latestClockInTimeStr = getLatestClockInTimeStr(activityParticipationEntity);
-				// 最长连续打卡
-				String longestContinueDaysStr = String.valueOf(activityParticipationEntity.getLongestContinueDays());
-				// 总共打卡天数
-				String totalClockinDaysStr = String.valueOf(activityParticipationEntity.getTotalClockinDays());
-				// 打卡排名
-				String rankingStr = getRanking(activityParticipationEntity);
-				clockInActivityResponse.setEarliestClockInTime(earliestClockInTimeStr);
-				clockInActivityResponse.setLatestClockInTime(latestClockInTimeStr);
-				clockInActivityResponse.setLongestContinueDays(longestContinueDaysStr);
-				clockInActivityResponse.setTotalClockInDays(totalClockinDaysStr);
-				clockInActivityResponse.setRanking(rankingStr);
-			}
-			clockInActivityResponse.setCompleted(completed);
+		activityParticipationRepository.findById(activityParticipationId)
+				.ifPresent(e -> populateClockInResult(clockInActivityResponse, e));
+		return clockInActivityResponse;
+	}
+
+	/**
+	 * 根据用户Id 活动Id 查询活动完成用户的打卡情况
+	 * 
+	 * @param wechatUserId
+	 * @param activityId
+	 * @return
+	 */
+	public ClockInActivityResponse getClockInResultByWechatUserIdAndActivityId(String wechatUserId, Long activityId) {
+		ClockInActivityResponse clockInActivityResponse = new ClockInActivityResponse();
+		ActivityParticipation activityParticipationEntity = activityParticipationRepository
+				.findByUidAndActivityId(activityId, wechatUserId);
+		if (null != activityParticipationEntity) {
+			populateClockInResult(clockInActivityResponse, activityParticipationEntity);
 
 		} else {
-			log.error("can not find activityParticipation info,activityParticipationId：" + activityParticipationId);
+			log.error("can not find activityParticipation info,wechatUserId:{},activityId{}：", wechatUserId,
+					activityId);
 		}
 
 		return clockInActivityResponse;
+	}
+
+	/**
+	 * 转换打卡结果
+	 * 
+	 * @param clockInActivityResponse
+	 * @param activityParticipationEntity
+	 */
+	private void populateClockInResult(ClockInActivityResponse clockInActivityResponse,
+			ActivityParticipation activityParticipationEntity) {
+		// 活动是否完成
+		boolean completed = isCompleted(activityParticipationEntity);
+		log.debug("活动是否已经完成：" + completed);
+		if (completed) {
+			// 最早打卡时间
+			String earliestClockInTimeStr = getEarliestClockInTimeStr(activityParticipationEntity);
+			// 最晚打卡时间
+			String latestClockInTimeStr = getLatestClockInTimeStr(activityParticipationEntity);
+			// 最长连续打卡
+			String longestContinueDaysStr = String.valueOf(activityParticipationEntity.getLongestContinueDays());
+			// 总共打卡天数
+			String totalClockinDaysStr = String.valueOf(activityParticipationEntity.getTotalClockinDays());
+			// 打卡排名
+			String rankingStr = getRanking(activityParticipationEntity);
+			clockInActivityResponse.setEarliestClockInTime(earliestClockInTimeStr);
+			clockInActivityResponse.setLatestClockInTime(latestClockInTimeStr);
+			clockInActivityResponse.setLongestContinueDays(longestContinueDaysStr);
+			clockInActivityResponse.setTotalClockInDays(totalClockinDaysStr);
+			clockInActivityResponse.setRanking(rankingStr);
+		}
+		clockInActivityResponse.setCompleted(completed);
 	}
 
 	/**
@@ -281,7 +308,8 @@ public class ClockInActivityService {
 	 */
 	private boolean isCompleted(ActivityParticipation activityParticipationEntity) {
 		FitnessActivity fitnessActivityEntity = activityParticipationEntity.getFitnessActivity();
-		if(StringUtils.isEmpty(fitnessActivityEntity.getActivityEndTime()) || StringUtils.isEmpty(activityParticipationEntity.getLatestClockinTime())) {
+		if (StringUtils.isEmpty(fitnessActivityEntity.getActivityEndTime())
+				|| StringUtils.isEmpty(activityParticipationEntity.getLatestClockinTime())) {
 			return false;
 		}
 		String activityEndTimeStr = DateUtil.getYYMMDDDateString(Date.from(fitnessActivityEntity.getActivityEndTime()));
@@ -359,7 +387,7 @@ public class ClockInActivityService {
 	 * 最长连续天数
 	 *
 	 * @param activityParticipationEntity
-     * @param currentContinueDays
+	 * @param currentContinueDays
 	 * @return
 	 */
 	private Integer getLongestContinueDays(ActivityParticipation activityParticipationEntity,

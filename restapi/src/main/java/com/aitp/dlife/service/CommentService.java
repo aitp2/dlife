@@ -3,10 +3,12 @@ package com.aitp.dlife.service;
 import com.aitp.dlife.domain.Comment;
 import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.domain.PinFanActivity;
+import com.aitp.dlife.domain.Question;
 import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.repository.CommentRepository;
 import com.aitp.dlife.repository.FitnessActivityRepository;
 import com.aitp.dlife.repository.PinFanActivityRepository;
+import com.aitp.dlife.repository.QuestionRepository;
 import com.aitp.dlife.repository.specification.CommentSpecification;
 import com.aitp.dlife.service.dto.CommentDTO;
 import com.aitp.dlife.service.dto.QueryDTO;
@@ -14,7 +16,6 @@ import com.aitp.dlife.service.mapper.CommentMapper;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 
 import java.util.List;
-
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,12 +42,15 @@ public class CommentService {
 
     private final PinFanActivityRepository pinFanActivityRepository;
 
-    public CommentService(CommentRepository commentRepository, CommentMapper commentMapper, FitnessActivityRepository fitnessActivityRepository, PinFanActivityRepository pinFanActivityRepository) {
+    private final QuestionRepository questionRepository;
+
+    public CommentService(CommentRepository commentRepository, CommentMapper commentMapper, FitnessActivityRepository fitnessActivityRepository, PinFanActivityRepository pinFanActivityRepository, QuestionRepository questionRepository) {
         this.commentRepository = commentRepository;
         this.commentMapper = commentMapper;
 
         this.fitnessActivityRepository = fitnessActivityRepository;
         this.pinFanActivityRepository = pinFanActivityRepository;
+        this.questionRepository = questionRepository;
     }
 
     /**
@@ -66,6 +70,12 @@ public class CommentService {
         {
             PinFanActivity pinFanActivity = pinFanActivityRepository.findById(commentDTO.getObjectId()).get();
             pinFanActivity.setCommentCount(pinFanActivity.getCommentCount() == null? 1 : pinFanActivity.getCommentCount() + 1);
+        }
+        if(CommentChannel.FAQS.equals(commentDTO.getChannel()))
+        {
+            Question question = questionRepository.findById(commentDTO.getObjectId()).get();
+            question.setAnswerCount(question.getAnswerCount() == null ? 1 : question.getAnswerCount() + 1);
+            questionRepository.save(question);
         }
         Comment comment = commentMapper.toEntity(commentDTO);
         comment = commentRepository.save(comment);
