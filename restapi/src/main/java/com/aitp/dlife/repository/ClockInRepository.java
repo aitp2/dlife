@@ -23,6 +23,7 @@ public interface ClockInRepository extends JpaSpecificationExecutor<ClockIn>,Jpa
 
 	@Query(value = "select clockIn from ClockIn clockIn "
 			+ "where clockIn.activityParticipation.id =:activityParticipationId",nativeQuery = false)
+	@Deprecated
 	List<ClockIn> findClockinsByActivityParticipationId(@Param("activityParticipationId")Long activityParticipationId);
 
 	@Query(value = "SELECT DISTINCT DATE_FORMAT(clock_in.punch_date_time,'%Y-%m-%d') FROM clock_in "
@@ -32,7 +33,6 @@ public interface ClockInRepository extends JpaSpecificationExecutor<ClockIn>,Jpa
 			+ "  activity_participation.wechat_user_id =:wechatUserId "
 			+ " and DATE_FORMAT(clock_in.punch_date_time,'%Y-%m') =:yearMonth"
 			,nativeQuery = true)
-	@Deprecated
 	List<String> findClockinsDateByWechatUserIdAndMonth(@Param("wechatUserId")String wechatUserId,@Param("yearMonth")String yearMonth);
 
 
@@ -44,7 +44,6 @@ public interface ClockInRepository extends JpaSpecificationExecutor<ClockIn>,Jpa
 			+ "  activity_participation.wechat_user_id =:wechatUserId "
 			+ " and DATE_FORMAT(clock_in.punch_date_time,'%Y-%m-%d') =:yearMonthDate"
 			,nativeQuery = true)
-	@Deprecated
 	List<ClockIn> getClockinsByWechatUserIdAndDate(@Param("wechatUserId")String wechatUserId,@Param("yearMonthDate")String yearMonthDate);
 
     @Query(value = "SELECT * FROM clock_in "
@@ -66,6 +65,7 @@ public interface ClockInRepository extends JpaSpecificationExecutor<ClockIn>,Jpa
         + "  fitness_activity.id =:activityId "
         + " ORDER BY clock_in.punch_date_time DESC "
         ,nativeQuery = true)
+    @Deprecated
     List<ClockIn> getClockinsByActivityId(@Param("activityId")String activityId);
 
 }
