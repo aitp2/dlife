@@ -21,6 +21,7 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
         + " on m.event_message_id = em.id where "
         + "  m.wechat_user_id=:wechatUserId"
         + " and m.jhi_read=:read and em.jhi_type in (:eventTypes)"
+        + "  order by em.create_time desc"
         ,nativeQuery = true)
     List<Message> findMessageByUser( @Param("wechatUserId")String wechatUserId, @Param("read")boolean read , @Param("eventTypes")List<String> eventTypes);
 
