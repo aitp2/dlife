@@ -137,6 +137,22 @@ public class QuestionService {
         return result;
     }
 
+    /**
+     * Get all the mine questions.
+     *
+     * @param pageable the pagination information
+     * @param wechatUserId the wechatUserId
+     * @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public Page<QuestionDTO> findAllByWechatUserId(Pageable pageable, String wechatUserId) {
+        log.debug("Request to get all mine Questions");
+        Page<QuestionDTO> result = questionRepository.findAllByWechatUserId(pageable, wechatUserId)
+            .map(questionMapper::toDto);
+
+        return result;
+    }
+
 
     /**
      * Get one question by id.
