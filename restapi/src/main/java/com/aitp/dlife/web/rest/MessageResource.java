@@ -54,6 +54,7 @@ public class MessageResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/messages")
+    @ApiOperation(value = "创建消息", response = MessageDTO.class, produces = "application/json")
     @Timed
     public ResponseEntity<MessageDTO> createMessage(@Valid @RequestBody MessageDTO messageDTO) throws URISyntaxException {
         log.debug("REST request to save Message : {}", messageDTO);
@@ -76,6 +77,7 @@ public class MessageResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/messages")
+    @ApiOperation(value = "修改消息", response = MessageDTO.class, produces = "application/json")
     @Timed
     public ResponseEntity<MessageDTO> updateMessage(@Valid @RequestBody MessageDTO messageDTO) throws URISyntaxException {
         log.debug("REST request to update Message : {}", messageDTO);
@@ -95,6 +97,7 @@ public class MessageResource {
      * @return the ResponseEntity with status 200 (OK) and the list of messages in body
      */
     @GetMapping("/messages")
+    @ApiOperation(value = "查询所有消息列表", response = MessageDTO.class, produces = "application/json")
     @Timed
     public ResponseEntity<List<MessageDTO>> getAllMessages(Pageable pageable) {
         log.debug("REST request to get a page of Messages");
@@ -110,6 +113,9 @@ public class MessageResource {
      * @return the ResponseEntity with status 200 (OK) and with body the messageDTO, or with status 404 (Not Found)
      */
     @GetMapping("/messages/{id}")
+    @ApiOperation(value = "查询单个消息", response = MessageDTO.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "path", dataType = "Long", defaultValue = "", name = "id", value = "消息id", required = true)})
     @Timed
     public ResponseEntity<MessageDTO> getMessage(@PathVariable Long id) {
         log.debug("REST request to get Message : {}", id);
@@ -124,6 +130,9 @@ public class MessageResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/messages/{id}")
+    @ApiOperation(value = "删除单个消息", response = void.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "path", dataType = "Long", defaultValue = "", name = "id", value = "消息id", required = true)})
     @Timed
     public ResponseEntity<Void> deleteMessage(@PathVariable Long id) {
         log.debug("REST request to delete Message : {}", id);

@@ -79,6 +79,7 @@ public class AttendeeResource {
         if(activityDTO.getAttendees()!=null && activityDTO.getUpperLimit() != null && activityDTO.getAttendees().size()>=activityDTO.getUpperLimit()){
             throw new BadRequestAlertException("活动人数已达上限", ENTITY_NAME, "活动人数已达上限");
         }
+        attendeeDTO.setActivitiyTile(activityDTO.getActivitiyTile());
         AttendeeDTO result = attendeeService.save(attendeeDTO);
 
         //record the activity participation event start

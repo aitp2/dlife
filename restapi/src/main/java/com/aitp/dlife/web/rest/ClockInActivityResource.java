@@ -1,7 +1,5 @@
 package com.aitp.dlife.web.rest;
 
-import java.net.URISyntaxException;
-
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -59,13 +57,27 @@ public class ClockInActivityResource {
 	@GetMapping("/clock-in-result/{activityParticipationId}")
 	@ApiOperation(value = "查询活动结束用户的打卡情况", response = ClockInActivityResponse.class, produces = "application/json")
 	@ApiImplicitParams({
-			@ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "activityParticipationId", value = "用户参与活动的ID", required = true) })
+			@ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "activityParticipationId", value = "用户参与活动的Id", required = true) })
 	@Timed
-	public ClockInActivityResponse clockInResult(
+	public ClockInActivityResponse getClockInResultByActivityParticipationId(
 			@PathVariable("activityParticipationId") Long activityParticipationId) {
-		log.debug("REST request to get clock-in-result : {}", activityParticipationId);
+		log.debug("REST request to getClockInResultByActivityParticipationId : {}", activityParticipationId);
 		ClockInActivityResponse res = new ClockInActivityResponse();
-		res = clockInActivityService.getActivityParticipationClockInResult(activityParticipationId);
+		res = clockInActivityService.getClockInResultByActivityParticipationId(activityParticipationId);
+		return res;
+	}
+	
+	@GetMapping("/clock-in-result/{wechatUserId}/{activityId}")
+	@ApiOperation(value = "查询活动结束用户的打卡情况", response = ClockInActivityResponse.class, produces = "application/json")
+	@ApiImplicitParams({
+		@ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "wechatUserId", value = "用户Id", required = true),
+		@ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "activityId", value = "活动Id", required = true) })
+	@Timed
+	public ClockInActivityResponse getClockInResultByWechatUserIdAndActivityId(
+			@PathVariable("wechatUserId") String wechatUserId, @PathVariable("activityId") Long activityId) {
+		log.debug("REST request to getClockInResultByWechatUserIdAndActivityId : {},{}", wechatUserId,activityId);
+		ClockInActivityResponse res = new ClockInActivityResponse();
+		res = clockInActivityService.getClockInResultByWechatUserIdAndActivityId(wechatUserId,activityId);
 		return res;
 	}
 

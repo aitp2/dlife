@@ -10,11 +10,10 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import com.aitp.dlife.domain.Comment;
 import com.aitp.dlife.domain.ThumbsUp;
 import com.aitp.dlife.service.dto.QueryDTO;
 
-public class ThumbsUpSpecification implements Specification<ThumbsUp>{
+public class ThumbsUpSpecification extends AbstractSpecifcation implements Specification<ThumbsUp>{
 
 	
 	/**
@@ -23,14 +22,9 @@ public class ThumbsUpSpecification implements Specification<ThumbsUp>{
 	private static final long serialVersionUID = 1L;
 
 	
-	private List<QueryDTO>  querys;
-	
-	
-	
 
 	public ThumbsUpSpecification(List<QueryDTO> querys) {
-		super();
-		this.querys = querys;
+		super(querys);
 	}
 
 	/**
@@ -41,7 +35,7 @@ public class ThumbsUpSpecification implements Specification<ThumbsUp>{
         Path<String> keyName_1 = root.get("keyName_1");
         QueryDTO objectId = querys.stream().filter(quz->quz.getQueryKey().equals("objectId")).findFirst().orElse(null);
         Predicate p = null;
-        if(objectId!=null){
+        if(objectId!=null&&!objectId.isEmpty()){
         	   p = criteriaBuilder.equal(keyName_1, objectId.getQueryValue());
         }
         

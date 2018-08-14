@@ -13,7 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,8 +81,9 @@ public class ThumbsUpService {
     @Transactional(readOnly = true)
     public List<ThumbsUpDTO> findAll(List<QueryDTO> queryDTOs) {
         log.debug("Request to get all ThumbsUps");
-        ThumbsUpSpecification spec = new ThumbsUpSpecification(queryDTOs);
-        return thumbsUpRepository.findAll(spec).stream()
+        Sort sort = new Sort(Sort.Direction.DESC, "createTime");
+        ThumbsUpSpecification spec =  new ThumbsUpSpecification(queryDTOs);
+        return thumbsUpRepository.findAll(spec,sort).stream()
             .map(thumbsUpMapper::toDto).collect(Collectors.toList());
     }
     

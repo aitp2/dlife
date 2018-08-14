@@ -66,6 +66,15 @@ public class PinFanActivityDTO implements Serializable {
     
     private Integer readingCount;
 
+    
+    private boolean attended = false;
+
+    private Set<AttendeeDTO> attendees = new HashSet<>();
+
+    private Set<PinfanPicsDTO> pinfanPics = new HashSet<>();
+
+    private Set<RatesDTO> rates = new HashSet<>();
+    
     public Integer getStatus() {
         return status;
     }
@@ -84,13 +93,6 @@ public class PinFanActivityDTO implements Serializable {
         this.attended = attended;
     }
 
-    private boolean attended = false;
-
-    private Set<AttendeeDTO> attendees = new HashSet<>();
-
-    private Set<PinfanPicsDTO> pinfanPics = new HashSet<>();
-
-    private Set<RatesDTO> rates = new HashSet<>();
 
     public Set<AttendeeDTO> getAttendees() {
         return attendees;

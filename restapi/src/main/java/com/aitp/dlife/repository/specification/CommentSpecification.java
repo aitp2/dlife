@@ -13,7 +13,7 @@ import org.springframework.data.jpa.domain.Specification;
 import com.aitp.dlife.domain.Comment;
 import com.aitp.dlife.service.dto.QueryDTO;
 
-public class CommentSpecification implements Specification<Comment>{
+public class CommentSpecification extends AbstractSpecifcation implements Specification<Comment>{
 
 	
 	/**
@@ -22,14 +22,10 @@ public class CommentSpecification implements Specification<Comment>{
 	private static final long serialVersionUID = 1L;
 
 	
-	private List<QueryDTO>  querys;
-	
-	
 	
 
 	public CommentSpecification(List<QueryDTO> querys) {
-		super();
-		this.querys = querys;
+		super(querys);
 	}
 
 	/**
@@ -42,11 +38,11 @@ public class CommentSpecification implements Specification<Comment>{
         QueryDTO channel = querys.stream().filter(quz->quz.getQueryKey().equals("channel")).findFirst().orElse(null);
         Predicate objectPredicate = null;
         Predicate channelPredicate = null;
-        if(null!=objectId){
+        if(null!=objectId&&!objectId.isEmpty()){
         	Path<String> idPath = root.get("objectId");
         	objectPredicate = criteriaBuilder.equal(idPath, objectId.getQueryValue());
         }
-        if(null!=channel){
+        if(null!=channel&&!channel.isEmpty()){
         	Path<String> channelPath = root.get("channel");
         	channelPredicate = criteriaBuilder.equal(channelPath, channel.getQueryValue());
         }

@@ -24,7 +24,11 @@ public class ClockInResponse implements Serializable {
 
 	public void setClockInSuccess(boolean clockInSuccess) {
 		this.clockInSuccess = clockInSuccess;
+	}
+
+	@Override
+	public String toString() {
+		return "ClockInResponse [clockInSuccess=" + clockInSuccess + "]";
 	} 
-	
 	
 }

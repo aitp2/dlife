@@ -70,13 +70,9 @@ public class PinFanActivityService {
                     &&0==activity.getStatus()){
                     activity.setStatus(1);
                 }
-                activity.setPinfanPics(null);
-                if(!Hibernate.isInitialized(activity.getAttendees())){
-                    Hibernate.initialize(activity.getAttendees());
-                }
             }
         }
-        return all.map(pinFanActivityMapper::toDto);
+        return all.map(pinFanActivityMapper::toDtoIgnoreAttendees);
     }
     @Transactional(readOnly = true)
     public Page<PinFanActivityDTO> findAllByWechatUserId(Pageable pageable,String wechatUserId) {

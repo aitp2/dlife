@@ -4,11 +4,13 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.aitp.dlife.domain.ClockIn;
+import com.aitp.dlife.domain.Comment;
 import com.aitp.dlife.service.dto.ClockInDTO;
 
 
@@ -17,10 +19,11 @@ import com.aitp.dlife.service.dto.ClockInDTO;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ClockInRepository extends JpaRepository<ClockIn, Long> {
+public interface ClockInRepository extends JpaSpecificationExecutor<ClockIn>,JpaRepository<ClockIn, Long> {
 
 	@Query(value = "select clockIn from ClockIn clockIn "
 			+ "where clockIn.activityParticipation.id =:activityParticipationId",nativeQuery = false)
+	@Deprecated
 	List<ClockIn> findClockinsByActivityParticipationId(@Param("activityParticipationId")Long activityParticipationId);
 
 	@Query(value = "SELECT DISTINCT DATE_FORMAT(clock_in.punch_date_time,'%Y-%m-%d') FROM clock_in "
@@ -62,6 +65,7 @@ public interface ClockInRepository extends JpaRepository<ClockIn, Long> {
         + "  fitness_activity.id =:activityId "
         + " ORDER BY clock_in.punch_date_time DESC "
         ,nativeQuery = true)
+    @Deprecated
     List<ClockIn> getClockinsByActivityId(@Param("activityId")String activityId);
 
 }

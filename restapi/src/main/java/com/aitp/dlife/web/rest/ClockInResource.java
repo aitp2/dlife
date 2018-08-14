@@ -11,12 +11,14 @@ import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.management.Query;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -45,11 +47,15 @@ import com.aitp.dlife.service.WechatUserService;
 import com.aitp.dlife.service.dto.ActivityParticipationDTO;
 import com.aitp.dlife.service.dto.ClockInDTO;
 import com.aitp.dlife.service.dto.ClockinSummaryDTO;
+import com.aitp.dlife.service.dto.CommentDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.dto.PicsDTO;
+import com.aitp.dlife.service.dto.QueryDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
 
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 /**
  * REST controller for managing ClockIn.
@@ -93,6 +99,7 @@ public class ClockInResource {
     @PostMapping("/clock-ins")
     @Deprecated
     @Timed
+    @ApiOperation(value = "创建打卡", notes = "根据ClockDTO传入打卡信息", response = ClockInDTO.class)
     public ResponseEntity<ClockInDTO> createClockIn(@Valid @RequestBody ClockInDTO clockInDTO) throws URISyntaxException {
         log.debug("REST request to save ClockIn : {}", clockInDTO);
         if (clockInDTO.getId() != null) {
@@ -179,6 +186,7 @@ public class ClockInResource {
      */
     @PutMapping("/clock-ins")
     @Timed
+    @ApiOperation(value = "更新打卡方法", notes = "根据ClockDTO传入打卡信息", response = ClockInDTO.class)
     public ResponseEntity<ClockInDTO> updateClockIn(@Valid @RequestBody ClockInDTO clockInDTO) throws URISyntaxException {
         log.debug("REST request to update ClockIn : {}", clockInDTO);
         if (clockInDTO.getId() == null) {
@@ -198,9 +206,14 @@ public class ClockInResource {
      */
     @GetMapping("/clock-ins")
     @Timed
-    public ResponseEntity<List<ClockInDTO>> getAllClockIns(Pageable pageable) {
+    @ApiOperation(value = "打卡信息列表查询方法", notes = "根据不同传入参数获取打卡信息，具有分页功能，查询条件可传可不传", response = ClockInDTO.class)
+    public ResponseEntity<List<ClockInDTO>> getAllClockIns(Pageable pageable,@ApiParam(value = "用户ID") String wechatUserId,@ApiParam(value = "报名ID")String activityParticipationId,@ApiParam(value = "活动ID")String activityId) {
         log.debug("REST request to get a page of ClockIns");
-        Page<ClockInDTO> page = clockInService.findAll(pageable);
+        List<QueryDTO> queryDTOs = new ArrayList<>();
+        queryDTOs.add(new QueryDTO("wechatUserId",wechatUserId));
+        queryDTOs.add(new QueryDTO("activityParticipationId",activityParticipationId));
+        queryDTOs.add(new QueryDTO("activityId",activityId));
+        Page<ClockInDTO> page = clockInService.findAll(pageable,queryDTOs);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/clock-ins");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -213,6 +226,7 @@ public class ClockInResource {
      */
     @GetMapping("/clock-ins/{id}")
     @Timed
+    @ApiOperation(value = "获取打卡信息方法", notes = "根据打卡ID获取打卡信息", response = ClockInDTO.class)
     public ResponseEntity<ClockInDTO> getClockIn(@PathVariable Long id) {
         log.debug("REST request to get ClockIn : {}", id);
         ClockInDTO clockInDTO = clockInService.findOne(id);
@@ -227,14 +241,17 @@ public class ClockInResource {
      */
     @DeleteMapping("/clock-ins/{id}")
     @Timed
-    public ResponseEntity<Void> deleteClockIn(@PathVariable Long id) {
+    @ApiOperation(value = "删除打卡信息方法", notes = "根据打卡ID删除打卡信息, 正确返回ok")
+    public ResponseEntity<String> deleteClockIn(@PathVariable Long id) {
         log.debug("REST request to delete ClockIn : {}", id);
         clockInService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).body("ok");
     }
 
     @GetMapping("/clock-ins/getClockinsByActivityParticipationId")
     @Timed
+    @Deprecated
+    @ApiOperation(value = "根据报名信息查询打卡信息", notes = "已过时", response = ClockInDTO.class)
     public List<ClockInDTO>  getClockinsByActivityParticipationId(Long activityParticipationId) {
         log.debug("REST request to get Clockins : {}", activityParticipationId);
         return clockInService.findClockinsByActivityParticipationId(activityParticipationId);
@@ -242,6 +259,8 @@ public class ClockInResource {
 
     @GetMapping("/clock-ins/getClockinsDateByWechatUserIdAndMonth")
     @Timed
+    @Deprecated
+    @ApiOperation(value = "获取根据用户和月份获取打卡信息", notes = "已过时", response = ClockInDTO.class)
     public List<String>  getClockinsDateByWechatUserIdAndMonth(String wechatUserId,String yearMonth) {
         log.debug("REST request to get Clockins : {}", wechatUserId,yearMonth);
         return clockInService.getClockinsDateByWechatUserIdAndMonth(wechatUserId,yearMonth);
@@ -249,6 +268,8 @@ public class ClockInResource {
 
     @GetMapping("/clock-ins/getClockinsByWechatUserIdAndDate")
     @Timed
+    @Deprecated
+    @ApiOperation(value = "获取根据用户和日期获取打卡信息", notes = "已过时", response = ClockInDTO.class)
     public List<ClockInDTO>  getClockinsByWechatUserIdAndDate(String wechatUserId,String yearMonthDate) {
         log.debug("REST request to get Clockins : {}", wechatUserId,yearMonthDate);
         return clockInService.getClockinsByWechatUserIdAndDate(wechatUserId,yearMonthDate);
@@ -256,6 +277,8 @@ public class ClockInResource {
 
     @GetMapping("/clock-ins/getClockinsByActivityId")
     @Timed
+    @Deprecated
+    @ApiOperation(value = "获取根活动获取打卡信息", notes = "已过时", response = ClockInDTO.class)
     public List<ClockInDTO>  getClockinsByActivityId(String activityId) {
         log.debug("REST request to get Clockins by activity id: {}", activityId);
         return clockInService.getClockinsByActivityId(activityId);

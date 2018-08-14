@@ -1,6 +1,8 @@
 package com.aitp.dlife.service.dto;
 
 
+import org.springframework.util.ObjectUtils;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class QueryDTO {
@@ -27,7 +29,7 @@ public class QueryDTO {
 		super();
 		this.queryKey = queryKey;
 		this.queryValue = queryValue;
-		this.predicate = "eq";
+		this.predicate = "and";
 	}
 
 
@@ -70,7 +72,9 @@ public class QueryDTO {
 		this.predicate = predicate;
 	}
 
-	
+	public boolean isEmpty(){
+	 	return ObjectUtils.isEmpty(this.getQueryValue());
+	}
 	
 	@Override
 	public int hashCode() {
