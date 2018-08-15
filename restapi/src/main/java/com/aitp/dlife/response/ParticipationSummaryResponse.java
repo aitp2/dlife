@@ -11,16 +11,16 @@ public class ParticipationSummaryResponse implements Serializable{
 	private static final long serialVersionUID = -3714519476896697448L;
 
 	/** 总共加入天数 **/
-	private String totalParticipateDays = "0";
+	private String totalParticipateDays;
 	
 	/** 总共打卡天数 **/
-	private String totalClockInDays = "0";
+	private String totalClockInDays;
 	
 	/** 当前连续天数 **/
-	private String currentContinueDays = "0";
+	private String currentContinueDays;
 	
 	/** 最长连续打卡天数 **/
-	private String longestContinueDays = "0";
+	private String longestContinueDays;
 	
 	
 	public String getTotalParticipateDays() {
