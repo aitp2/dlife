@@ -54,7 +54,7 @@ public class MessageResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/messages")
-    @ApiOperation(value = "创建消息", response = MessageDTO.class, produces = "application/json")
+    @ApiOperation(value = "创建消息",notes = "目前无此功能，前端请忽略", response = MessageDTO.class, produces = "application/json")
     @Timed
     public ResponseEntity<MessageDTO> createMessage(@Valid @RequestBody MessageDTO messageDTO) throws URISyntaxException {
         log.debug("REST request to save Message : {}", messageDTO);
@@ -77,7 +77,7 @@ public class MessageResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/messages")
-    @ApiOperation(value = "修改消息", response = MessageDTO.class, produces = "application/json")
+    @ApiOperation(value = "修改消息",notes = "目前无此功能，前端请忽略", response = MessageDTO.class, produces = "application/json")
     @Timed
     public ResponseEntity<MessageDTO> updateMessage(@Valid @RequestBody MessageDTO messageDTO) throws URISyntaxException {
         log.debug("REST request to update Message : {}", messageDTO);
@@ -97,7 +97,7 @@ public class MessageResource {
      * @return the ResponseEntity with status 200 (OK) and the list of messages in body
      */
     @GetMapping("/messages")
-    @ApiOperation(value = "查询所有消息列表", response = MessageDTO.class, produces = "application/json")
+    @ApiOperation(value = "查询所有消息列表",notes = "目前无此功能，前端请忽略", response = MessageDTO.class, produces = "application/json")
     @Timed
     public ResponseEntity<List<MessageDTO>> getAllMessages(Pageable pageable) {
         log.debug("REST request to get a page of Messages");
@@ -113,7 +113,7 @@ public class MessageResource {
      * @return the ResponseEntity with status 200 (OK) and with body the messageDTO, or with status 404 (Not Found)
      */
     @GetMapping("/messages/{id}")
-    @ApiOperation(value = "查询单个消息", response = MessageDTO.class, produces = "application/json")
+    @ApiOperation(value = "查询单个消息",notes = "目前无此功能，前端请忽略", response = MessageDTO.class, produces = "application/json")
     @ApiImplicitParams({
         @ApiImplicitParam(paramType = "path", dataType = "Long", defaultValue = "", name = "id", value = "消息id", required = true)})
     @Timed
@@ -130,7 +130,7 @@ public class MessageResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/messages/{id}")
-    @ApiOperation(value = "删除单个消息", response = void.class, produces = "application/json")
+    @ApiOperation(value = "删除单个消息", notes = "目前无此功能，前端请忽略", response = void.class, produces = "application/json")
     @ApiImplicitParams({
         @ApiImplicitParam(paramType = "path", dataType = "Long", defaultValue = "", name = "id", value = "消息id", required = true)})
     @Timed
@@ -147,7 +147,7 @@ public class MessageResource {
      * @return the ResponseEntity with status 200 (OK) and with body the messageDTO, or with status 404 (Not Found)
      */
     @GetMapping("/messages/my-message")
-    @ApiOperation(value = "我的消息列表，先获取已读，再获取未读", response = MessageDTO.class, produces = "application/json")
+    @ApiOperation(value = "我的消息列表", notes = "先获取已读列表，再获取未读列表，当获取未读列表成功后，后台会把未读置为已读；前台根据消息channel和type来唯一区分消息模板", response = MessageDTO.class, produces = "application/json")
     @ApiImplicitParams({
         @ApiImplicitParam(paramType = "query", dataType = "String", defaultValue = "", name = "wechatUserId", value = "当前用户wechatUserId", required = true),
         @ApiImplicitParam(paramType = "query", dataType = "String", defaultValue = "0", name = "type", value = "消息类型：0=all,1=comment,2=event,3=like", required = true),
