@@ -6,6 +6,8 @@ import com.aitp.dlife.repository.AttendeeRepository;
 import com.aitp.dlife.repository.PinFanActivityRepository;
 import com.aitp.dlife.service.dto.PinFanActivityDTO;
 import com.aitp.dlife.service.mapper.PinFanActivityMapper;
+import com.aitp.dlife.service.mapper.PinFanActivityToOtherMapper;
+
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,11 +35,15 @@ public class PinFanActivityService {
     private final AttendeeRepository attendeeRepository;
 
     private final PinFanActivityMapper pinFanActivityMapper;
+    
+    private final PinFanActivityToOtherMapper pinFanActivityToOtherMapper;
 
-    public PinFanActivityService(PinFanActivityRepository pinFanActivityRepository, PinFanActivityMapper pinFanActivityMapper,AttendeeRepository attendeeRepository) {
+    public PinFanActivityService(PinFanActivityRepository pinFanActivityRepository, PinFanActivityMapper pinFanActivityMapper,AttendeeRepository attendeeRepository
+    		,PinFanActivityToOtherMapper pinFanActivityToOtherMapper) {
         this.pinFanActivityRepository = pinFanActivityRepository;
         this.pinFanActivityMapper = pinFanActivityMapper;
         this.attendeeRepository=attendeeRepository;
+        this.pinFanActivityToOtherMapper = pinFanActivityToOtherMapper;
     }
 
     /**
@@ -72,7 +78,7 @@ public class PinFanActivityService {
                 }
             }
         }
-        return all.map(pinFanActivityMapper::toDtoIgnoreAttendees);
+        return all.map(pinFanActivityToOtherMapper::toDto);
     }
     @Transactional(readOnly = true)
     public Page<PinFanActivityDTO> findAllByWechatUserId(Pageable pageable,String wechatUserId) {
