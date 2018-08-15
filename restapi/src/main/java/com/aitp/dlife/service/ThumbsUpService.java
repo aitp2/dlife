@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,9 +65,8 @@ public class ThumbsUpService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<ThumbsUpDTO> findAll(Pageable pageable,List<QueryDTO> queryDTOs) {
+    public Page<ThumbsUpDTO> findAll(Pageable pageable,Specification<ThumbsUp> spec) {
         log.debug("Request to get all ThumbsUps");
-        ThumbsUpSpecification spec = new ThumbsUpSpecification(queryDTOs);
         return thumbsUpRepository.findAll(spec,pageable)
             .map(thumbsUpMapper::toDto);
     }
@@ -79,10 +79,9 @@ public class ThumbsUpService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<ThumbsUpDTO> findAll(List<QueryDTO> queryDTOs) {
+    public List<ThumbsUpDTO> findAll(Specification<ThumbsUp> spec) {
         log.debug("Request to get all ThumbsUps");
         Sort sort = new Sort(Sort.Direction.DESC, "createTime");
-        ThumbsUpSpecification spec =  new ThumbsUpSpecification(queryDTOs);
         return thumbsUpRepository.findAll(spec,sort).stream()
             .map(thumbsUpMapper::toDto).collect(Collectors.toList());
     }

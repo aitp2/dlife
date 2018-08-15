@@ -1,6 +1,7 @@
 package com.aitp.dlife.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.aitp.dlife.domain.ThumbsUp;
 import com.aitp.dlife.service.CommentService;
 import com.aitp.dlife.service.ThumbsUpService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -19,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -110,10 +112,9 @@ public class ThumbsUpResource {
      */
     @GetMapping("/thumbs-ups")
     @Timed
-    public ResponseEntity<List<ThumbsUpDTO>> getAllThumbsUps(Pageable pageable) {
+    public ResponseEntity<List<ThumbsUpDTO>> getAllThumbsUps(Pageable pageable,Specification<ThumbsUp> spec) {
         log.debug("REST request to get a page of ThumbsUps");
-        List<QueryDTO> queryDTOs = new ArrayList<>();
-        Page<ThumbsUpDTO> page = thumbsUpService.findAll(pageable,queryDTOs);
+        Page<ThumbsUpDTO> page = thumbsUpService.findAll(pageable,spec);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/thumbs-ups");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

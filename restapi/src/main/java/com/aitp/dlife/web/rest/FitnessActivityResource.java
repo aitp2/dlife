@@ -11,6 +11,7 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
+import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.service.*;
@@ -21,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -214,15 +216,13 @@ public class FitnessActivityResource {
      */
     @GetMapping("/fitness-activities")
     @Timed
-    public ResponseEntity<List<FitnessActivityDTO>> getAllFitnessActivities(Pageable pageable,String wechatUserId, Integer eventCount) {
+    public ResponseEntity<List<FitnessActivityDTO>> getAllFitnessActivities(Pageable pageable,Specification<FitnessActivity> spec, Integer eventCount) {
         log.debug("REST request to get a page of FitnessActivities, event count:"+ eventCount);
-        List<QueryDTO> queryDTOs = new ArrayList<QueryDTO>();
-        queryDTOs.add(new QueryDTO("wechatUserId", wechatUserId));
         Page<FitnessActivityDTO> page;
         if (eventCount == null) {
-            page = fitnessActivityService.findAll(pageable,queryDTOs);
+            page = fitnessActivityService.findAll(pageable,spec);
         } else {
-            page = fitnessActivityService.findAllAndEvent(pageable,queryDTOs,eventCount);
+            page = fitnessActivityService.findAllAndEvent(pageable,spec,eventCount);
         }
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/fitness-activities");

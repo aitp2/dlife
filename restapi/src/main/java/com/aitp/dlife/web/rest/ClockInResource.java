@@ -1,17 +1,7 @@
 package com.aitp.dlife.web.rest;
 
-import com.aitp.dlife.domain.enumeration.EventChannel;
-import com.aitp.dlife.domain.enumeration.EventType;
-import com.aitp.dlife.service.*;
-import com.aitp.dlife.web.rest.util.HttpUtil;
-import com.codahale.metrics.annotation.Timed;
-import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
-import com.aitp.dlife.web.rest.util.DateUtil;
-import com.aitp.dlife.web.rest.util.HeaderUtil;
-import com.aitp.dlife.web.rest.util.PaginationUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -36,25 +26,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aitp.dlife.domain.enumeration.EventChannel;
+import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.repository.specification.ClockInSpecification;
 import com.aitp.dlife.service.ActivityParticipationService;
 import com.aitp.dlife.service.ClockInActivityService;
 import com.aitp.dlife.service.ClockInService;
 import com.aitp.dlife.service.ClockinSummaryService;
+import com.aitp.dlife.service.EventMessageService;
 import com.aitp.dlife.service.FitnessActivityService;
 import com.aitp.dlife.service.PicsService;
 import com.aitp.dlife.service.WechatUserService;
 import com.aitp.dlife.service.dto.ActivityParticipationDTO;
 import com.aitp.dlife.service.dto.ClockInDTO;
 import com.aitp.dlife.service.dto.ClockinSummaryDTO;
-import com.aitp.dlife.service.dto.CommentDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.dto.PicsDTO;
-import com.aitp.dlife.service.dto.QueryDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
+import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
+import com.aitp.dlife.web.rest.util.DateUtil;
+import com.aitp.dlife.web.rest.util.HeaderUtil;
+import com.aitp.dlife.web.rest.util.HttpUtil;
+import com.aitp.dlife.web.rest.util.PaginationUtil;
+import com.codahale.metrics.annotation.Timed;
 
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 
 /**
  * REST controller for managing ClockIn.
@@ -206,13 +203,9 @@ public class ClockInResource {
     @GetMapping("/clock-ins")
     @Timed
     @ApiOperation(value = "打卡信息列表查询方法", notes = "根据不同传入参数获取打卡信息，具有分页功能，查询条件可传可不传", response = ClockInDTO.class)
-    public ResponseEntity<List<ClockInDTO>> getAllClockIns(Pageable pageable,@ApiParam(value = "用户ID") String wechatUserId,@ApiParam(value = "报名ID")String activityParticipationId,@ApiParam(value = "活动ID")String activityId) {
+    public ResponseEntity<List<ClockInDTO>> getAllClockIns(Pageable pageable,ClockInSpecification spec) {
         log.debug("REST request to get a page of ClockIns");
-        List<QueryDTO> queryDTOs = new ArrayList<>();
-        queryDTOs.add(new QueryDTO("wechatUserId",wechatUserId));
-        queryDTOs.add(new QueryDTO("activityParticipationId",activityParticipationId));
-        queryDTOs.add(new QueryDTO("activityId",activityId));
-        Page<ClockInDTO> page = clockInService.findAll(pageable,queryDTOs);
+        Page<ClockInDTO> page = clockInService.findAll(pageable,spec);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/clock-ins");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

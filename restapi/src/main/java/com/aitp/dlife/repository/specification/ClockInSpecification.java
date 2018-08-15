@@ -13,9 +13,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.ObjectUtils;
 
 import com.aitp.dlife.domain.ClockIn;
-import com.aitp.dlife.service.dto.QueryDTO;
+import com.aitp.dlife.web.rest.vm.ClockInVM;
 
-public class ClockInSpecification extends AbstractSpecifcation implements Specification<ClockIn>{
+public class ClockInSpecification extends AbstractSpecifcation<ClockInVM> implements Specification<ClockIn>{
 
 	
 	/**
@@ -25,31 +25,27 @@ public class ClockInSpecification extends AbstractSpecifcation implements Specif
 
 	
 
-	public ClockInSpecification(List<QueryDTO> querys) {
-		super(querys);
+		public ClockInSpecification(Long wechatUserId, Long activityParticipationId, Long activityId) {
+		super(new ClockInVM(wechatUserId,activityParticipationId,activityId));
 	}
-
 	/**
 	 * query list
 	 */
 	@Override
 	public Predicate toPredicate(Root<ClockIn> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
    
-        QueryDTO wechatUserQuery = querys.stream().filter(quz->quz.getQueryKey().equals("wechatUserId")).findFirst().orElse(null);
         List<Predicate> andPrediCate =new ArrayList<Predicate>();
-        if(!ObjectUtils.isEmpty(wechatUserQuery)&&!wechatUserQuery.isEmpty()){
+        if(!ObjectUtils.isEmpty(querys.getWechatUserId())){
             Path<String> wechatUserId = root.join("activityParticipation").get("wechatUserId");
-            andPrediCate.add(criteriaBuilder.equal(wechatUserId, wechatUserQuery.getQueryValue()));
+            andPrediCate.add(criteriaBuilder.equal(wechatUserId,querys.getWechatUserId()));
         }
-        QueryDTO activityParticipationIdQuery = querys.stream().filter(quz->quz.getQueryKey().equals("activityParticipationId")).findFirst().orElse(null);
-        if(!ObjectUtils.isEmpty(wechatUserQuery)&&!activityParticipationIdQuery.isEmpty()){
+        if(!ObjectUtils.isEmpty(querys.getActivityParticipationId())){
         	  Path<String> activityParticipationId = root.get("activityParticipation").get("id");
-        	  andPrediCate.add(criteriaBuilder.equal(activityParticipationId, activityParticipationIdQuery.getQueryValue()));
+        	  andPrediCate.add(criteriaBuilder.equal(activityParticipationId, querys.getActivityParticipationId()));
         }
-        QueryDTO activityId = querys.stream().filter(quz->quz.getQueryKey().equals("activityId")).findFirst().orElse(null);
-        if(!ObjectUtils.isEmpty(wechatUserQuery)&&!activityId.isEmpty()){
+        if(!ObjectUtils.isEmpty(querys.getActivityId())){
         	  Path<String> activityIdNode = root.get("activityId");
-        	  andPrediCate.add(criteriaBuilder.equal(activityIdNode, activityId.getQueryValue()));
+        	  andPrediCate.add(criteriaBuilder.equal(activityIdNode, querys.getActivityId()));
         }
         return criteriaBuilder.and(andPrediCate.toArray(new Predicate[andPrediCate.size()]));  
           

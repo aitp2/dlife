@@ -19,8 +19,9 @@ import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.service.dto.QueryDTO;
 import com.aitp.dlife.service.enums.Status;
 import com.aitp.dlife.web.rest.errors.CustomParameterizedException;
+import com.aitp.dlife.web.rest.vm.FitnessActivityVM;
 
-public class FitnessActivitySpecification extends AbstractSpecifcation implements Specification<FitnessActivity>{
+public class FitnessActivitySpecification extends AbstractSpecifcation<FitnessActivityVM> implements Specification<FitnessActivity>{
 
 	
 	/**
@@ -30,8 +31,8 @@ public class FitnessActivitySpecification extends AbstractSpecifcation implement
 
 	
 
-	public FitnessActivitySpecification(List<QueryDTO> querys) {
-		super(querys);
+	public FitnessActivitySpecification(Long wechatUserId, Integer status) {
+		super(new FitnessActivityVM(wechatUserId,status));
 	}
 
 	/**
@@ -40,19 +41,17 @@ public class FitnessActivitySpecification extends AbstractSpecifcation implement
 	@Override
 	public Predicate toPredicate(Root<FitnessActivity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
    
-        QueryDTO wechatUserQuery = querys.stream().filter(quz->quz.getQueryKey().equals("wechatUserId")).findFirst().orElse(null);
         List<Predicate> andPrediCate =new ArrayList<Predicate>();
-        if(!ObjectUtils.isEmpty(wechatUserQuery)&&!wechatUserQuery.isEmpty()){
+        if(!ObjectUtils.isEmpty(querys.getWechatUserId())){
             Path<String> wechatUserId = root.join("activityParticipations").get("wechatUserId");
-            andPrediCate.add(criteriaBuilder.equal(wechatUserId, wechatUserQuery.getQueryValue()));
+            andPrediCate.add(criteriaBuilder.equal(wechatUserId, querys.getWechatUserId()));
         }
-        QueryDTO status = querys.stream().filter(quz->quz.getQueryKey().equals("status")).findFirst().orElse(null);
-        if(!ObjectUtils.isEmpty(status)&&!status.isEmpty()){
+        if(!ObjectUtils.isEmpty(querys.getStatus())){
         	  Expression<String> activityStartTime = root.get("activityStartTime").as(String.class);
         	  Expression<String> activityEndTime = root.get("activityEndTime").as(String.class);
         	  SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     		  String nowDateString =   sdf.format(new Date());
-        	  switch (Status.prease(Integer.valueOf(status.getQueryValue().toString()))) {
+        	  switch (Status.prease(querys.getStatus())) {
 			case OPEND:
 				  andPrediCate.add(criteriaBuilder.greaterThanOrEqualTo(activityStartTime, nowDateString));
 				break;
@@ -64,7 +63,7 @@ public class FitnessActivitySpecification extends AbstractSpecifcation implement
 				  andPrediCate.add(criteriaBuilder.lessThan(activityEndTime, nowDateString));
 				break;
 			default:
-				throw new CustomParameterizedException("not have the status "+status.getQueryValue()+" code.","status");
+				throw new CustomParameterizedException("not have the status "+querys.getStatus()+" code.","status");
 			}
         }
      

@@ -64,9 +64,8 @@ public class ClockInService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<ClockInDTO> findAll(Pageable pageable,List<QueryDTO> queryDTOs) {
+    public Page<ClockInDTO> findAll(Pageable pageable,Specification<ClockIn> spec) {
         log.debug("Request to get all ClockIns");
-        Specification<ClockIn> spec = new ClockInSpecification(queryDTOs);
         return clockInRepository.findAll(spec,pageable)
             .map(clockInMapper::toDto);
     }

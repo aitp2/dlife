@@ -1,6 +1,5 @@
 package com.aitp.dlife.repository.specification;
 
-import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -9,11 +8,12 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.ObjectUtils;
 
 import com.aitp.dlife.domain.ThumbsUp;
-import com.aitp.dlife.service.dto.QueryDTO;
+import com.aitp.dlife.web.rest.vm.ThumbsUpVM;
 
-public class ThumbsUpSpecification extends AbstractSpecifcation implements Specification<ThumbsUp>{
+public class ThumbsUpSpecification extends AbstractSpecifcation<ThumbsUpVM> implements Specification<ThumbsUp>{
 
 	
 	/**
@@ -22,9 +22,8 @@ public class ThumbsUpSpecification extends AbstractSpecifcation implements Speci
 	private static final long serialVersionUID = 1L;
 
 	
-
-	public ThumbsUpSpecification(List<QueryDTO> querys) {
-		super(querys);
+	public ThumbsUpSpecification(String objectId) {
+		super(new ThumbsUpVM(objectId));
 	}
 
 	/**
@@ -33,15 +32,12 @@ public class ThumbsUpSpecification extends AbstractSpecifcation implements Speci
 	@Override
 	public Predicate toPredicate(Root<ThumbsUp> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         Path<String> keyName_1 = root.get("keyName_1");
-        QueryDTO objectId = querys.stream().filter(quz->quz.getQueryKey().equals("objectId")).findFirst().orElse(null);
         Predicate p = null;
-        if(objectId!=null&&!objectId.isEmpty()){
-        	   p = criteriaBuilder.equal(keyName_1, objectId.getQueryValue());
+        if(ObjectUtils.isEmpty(querys.getObjectId())){
+        	   p = criteriaBuilder.equal(keyName_1, querys.getObjectId());
         }
-        
         return p;  
           
-
 	}
 
 }

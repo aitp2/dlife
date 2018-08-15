@@ -1,7 +1,5 @@
 package com.aitp.dlife.repository.specification;
 
-import java.util.List;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
@@ -9,11 +7,12 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.ObjectUtils;
 
 import com.aitp.dlife.domain.Comment;
-import com.aitp.dlife.service.dto.QueryDTO;
+import com.aitp.dlife.web.rest.vm.CommentVM;
 
-public class CommentSpecification extends AbstractSpecifcation implements Specification<Comment>{
+public class CommentSpecification extends AbstractSpecifcation<CommentVM> implements Specification<Comment>{
 
 	
 	/**
@@ -24,8 +23,8 @@ public class CommentSpecification extends AbstractSpecifcation implements Specif
 	
 	
 
-	public CommentSpecification(List<QueryDTO> querys) {
-		super(querys);
+	public CommentSpecification(String objectId, String channel) {
+		super(new CommentVM(objectId, channel));
 	}
 
 	/**
@@ -33,18 +32,15 @@ public class CommentSpecification extends AbstractSpecifcation implements Specif
 	 */
 	@Override
 	public Predicate toPredicate(Root<Comment> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-      
-        QueryDTO objectId = querys.stream().filter(quz->quz.getQueryKey().equals("objectId")).findFirst().orElse(null);
-        QueryDTO channel = querys.stream().filter(quz->quz.getQueryKey().equals("channel")).findFirst().orElse(null);
         Predicate objectPredicate = null;
         Predicate channelPredicate = null;
-        if(null!=objectId&&!objectId.isEmpty()){
+        if(ObjectUtils.isEmpty(querys.getObjectId())){
         	Path<String> idPath = root.get("objectId");
-        	objectPredicate = criteriaBuilder.equal(idPath, objectId.getQueryValue());
+        	objectPredicate = criteriaBuilder.equal(idPath, querys.getObjectId());
         }
-        if(null!=channel&&!channel.isEmpty()){
+        if(ObjectUtils.isEmpty(querys.getChannel())){
         	Path<String> channelPath = root.get("channel");
-        	channelPredicate = criteriaBuilder.equal(channelPath, channel.getQueryValue());
+        	channelPredicate = criteriaBuilder.equal(channelPath, querys.getChannel());
         }
         Predicate predicate = criteriaBuilder.and(objectPredicate,channelPredicate);
         return predicate;  

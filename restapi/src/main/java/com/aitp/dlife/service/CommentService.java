@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -90,9 +91,8 @@ public class CommentService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<CommentDTO> findAll(Pageable pageable,List<QueryDTO> queryDTOs) {
+    public Page<CommentDTO> findAll(Pageable pageable,Specification<Comment> spec) {
     	log.debug("Request to get all Comments");
-    	CommentSpecification spec = new CommentSpecification(queryDTOs);
         return commentRepository.findAll(spec, pageable)
             .map(commentMapper::toDto);
     }

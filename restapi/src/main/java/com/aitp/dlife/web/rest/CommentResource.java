@@ -6,11 +6,13 @@ import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.repository.PinFanActivityRepository;
+import com.aitp.dlife.repository.specification.CommentSpecification;
 import com.aitp.dlife.service.*;
 import com.aitp.dlife.service.dto.*;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.Lists;
+import com.aitp.dlife.domain.Comment;
 import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.repository.FitnessActivityRepository;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -28,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -206,16 +209,13 @@ public class CommentResource {
 	@GetMapping("/comments")
 	@Timed
 	@ApiOperation(value = "获取评论信息列表", notes = "根据不同条件进行分页查查询和排序", response = CommentDTO.class)
-	public ResponseEntity<List<CommentDTO>> getAllComments(Pageable pageable, @ApiParam(value = "渠道") String channel,
-			@ApiParam(value = "活动Id") Integer objectId) {
+	public ResponseEntity<List<CommentDTO>> getAllComments(Pageable pageable, CommentSpecification spec) {
 		log.debug("REST request to get a page of Comments");
 		List<QueryDTO> queryDTOs = Lists.newArrayList();
-		queryDTOs.add(new QueryDTO("objectId", objectId.toString()));
-		queryDTOs.add(new QueryDTO("channel", CommentChannel.valueIn(channel)));
-		Page<CommentDTO> page = commentService.findAll(pageable, queryDTOs);
-		List<ThumbsUpDTO> thumbsUpDTOs = thumbsUpService.findAll(queryDTOs);
-		page.getContent().parallelStream().forEach(comment -> comment.setThumbsUpDTOs(thumbsUpDTOs.stream()
-				.filter(thb -> thb.getObjectId().equals(comment.getId())).collect(Collectors.toSet())));
+		Page<CommentDTO> page = commentService.findAll(pageable, spec);
+		//List<ThumbsUpDTO> thumbsUpDTOs = thumbsUpService.findAll(spec);
+//		page.getContent().parallelStream().forEach(comment -> comment.setThumbsUpDTOs(thumbsUpDTOs.stream()
+//				.filter(thb -> thb.getObjectId().equals(comment.getId())).collect(Collectors.toSet())));
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/comments");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}

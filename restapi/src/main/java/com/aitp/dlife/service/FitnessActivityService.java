@@ -69,16 +69,14 @@ public class FitnessActivityService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<FitnessActivityDTO> findAll(Pageable pageable,List<QueryDTO> queryDTOs) {
+    public Page<FitnessActivityDTO> findAll(Pageable pageable,Specification<FitnessActivity> spec) {
         log.debug("Request to get all FitnessActivities");
-        Specification<FitnessActivity> spec = new FitnessActivitySpecification(queryDTOs);
         return fitnessActivityRepository.findAll(spec,pageable)
             .map(fitnessActivityMapper::toDto);
     }
 
-    public List<FitnessActivityDTO> findAll(List<QueryDTO> queryDTOs){
+    public List<FitnessActivityDTO> findAll(Specification<FitnessActivity> spec){
     	  log.debug("Request to get all FitnessActivities");
-    	  Specification<FitnessActivity> spec = new FitnessActivitySpecification(queryDTOs);
     	return fitnessActivityRepository.findAll(spec).stream().map(fitnessActivityMapper::toDto).collect(Collectors.toList());
     }
     /**
@@ -89,9 +87,8 @@ public class FitnessActivityService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<FitnessActivityDTO> findAllAndEvent(Pageable pageable,List<QueryDTO> queryDTOs, Integer eventCount) {
+    public Page<FitnessActivityDTO> findAllAndEvent(Pageable pageable,Specification<FitnessActivity> spec, Integer eventCount) {
         log.debug("Request to get all FitnessActivities");
-        Specification<FitnessActivity> spec = new FitnessActivitySpecification(queryDTOs);
         Page<FitnessActivityDTO> result = fitnessActivityRepository.findAll(spec,pageable)
             .map(fitnessActivityMapper::toDto);
         if(result!=null){
