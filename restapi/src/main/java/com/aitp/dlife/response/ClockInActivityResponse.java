@@ -13,19 +13,19 @@ public class ClockInActivityResponse implements Serializable{
 	private boolean completed;
 	
 	/** 活动排名 **/
-	private String ranking = "0";
+	private String ranking;
 	
 	/** 最长连续打卡天数 **/
-	private String longestContinueDays = "0";
+	private String longestContinueDays;
 	
 	/** 总共打卡天数 **/
-	private String totalClockInDays = "0";
+	private String totalClockInDays;
 	
 	/** 最早打卡时间 **/
-	private String earliestClockInTime = "无";
+	private String earliestClockInTime;
 	
 	/** 最晚打卡时间 **/
-	private String latestClockInTime = "无";
+	private String latestClockInTime;
 
 	public String getRanking() {
 		return ranking;
