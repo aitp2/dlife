@@ -102,7 +102,7 @@ public class QuestionResource {
      * @return the ResponseEntity with status 200 (OK) and the list of questions in body
      */
     @GetMapping("/questions")
-    @ApiOperation(value = "查询问题列表", response = QuestionDTO.class, produces = "application/json")
+    @ApiOperation(value = "查询所有问题列表", response = QuestionDTO.class, produces = "application/json")
     @Timed
     public ResponseEntity<List<QuestionDTO>> getAllQuestions(Pageable pageable) {
         log.debug("REST request to get a page of Questions");
@@ -180,5 +180,28 @@ public class QuestionResource {
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * GET  /questions : get all the questions.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of questions in body
+     */
+    @GetMapping("/questions/mineQuestions/{wechatUserId}")
+    @ApiOperation(value = "查询我的问题列表", response = QuestionDTO.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "wechatUserId", value = "我的wechatUserId", required = true) })
+    @Timed
+    public ResponseEntity<List<QuestionDTO>> getAllMineQuestions(Pageable pageable, @PathVariable String wechatUserId) {
+        log.debug("REST request to get a page of mine Questions");
+
+        if (wechatUserId == null) {
+            throw new BadRequestAlertException("Invalid wechatUserId", ENTITY_NAME, "wechatUserIdNull");
+        }
+
+        Page<QuestionDTO> page = questionService.findAllByWechatUserId(pageable, wechatUserId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/questions");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 }
