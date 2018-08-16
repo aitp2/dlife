@@ -11,18 +11,10 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
-import com.aitp.dlife.domain.FitnessActivity;
-import com.aitp.dlife.domain.enumeration.EventChannel;
-import com.aitp.dlife.domain.enumeration.EventType;
-import com.aitp.dlife.service.*;
-import com.aitp.dlife.service.dto.*;
-import com.aitp.dlife.web.rest.util.HttpUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +28,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aitp.dlife.domain.enumeration.EventChannel;
+import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.repository.specification.FitnessActivitySpecification;
+import com.aitp.dlife.service.EventMessageService;
+import com.aitp.dlife.service.FitnessActivityService;
+import com.aitp.dlife.service.MessageService;
+import com.aitp.dlife.service.PicsService;
 import com.aitp.dlife.service.WechatUserService;
+import com.aitp.dlife.service.dto.EventMessageDTO;
+import com.aitp.dlife.service.dto.FitnessActivityDTO;
+import com.aitp.dlife.service.dto.PicsDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.DateUtil;
@@ -216,7 +218,7 @@ public class FitnessActivityResource {
      */
     @GetMapping("/fitness-activities")
     @Timed
-    public ResponseEntity<List<FitnessActivityDTO>> getAllFitnessActivities(Pageable pageable,Specification<FitnessActivity> spec, Integer eventCount) {
+    public ResponseEntity<List<FitnessActivityDTO>> getAllFitnessActivities(Pageable pageable,FitnessActivitySpecification spec, Integer eventCount) {
         log.debug("REST request to get a page of FitnessActivities, event count:"+ eventCount);
         Page<FitnessActivityDTO> page;
         if (eventCount == null) {
