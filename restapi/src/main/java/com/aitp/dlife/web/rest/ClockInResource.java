@@ -43,6 +43,7 @@ import com.aitp.dlife.service.dto.ClockinSummaryDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.dto.PicsDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
+import com.aitp.dlife.service.dto.builder.EventMessageBuilder;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
@@ -162,8 +163,7 @@ public class ClockInResource {
         //log for markting end
 
         //record the activity participation event start
-        eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()), EventType.CLOCKIN,
-            result.getWechatUserId(),participationDTO.getActivityTitle(),participationDTO.getActivityId(),wechatUserDTO.getAvatar(),wechatUserDTO.getNickName());
+        eventMessageService.save(EventMessageBuilder.buildEventMessageDTO(participationDTO).get());
         //record the activity participation event end
 
         return ResponseEntity.created(new URI("/api/clock-ins/" + result.getId()))

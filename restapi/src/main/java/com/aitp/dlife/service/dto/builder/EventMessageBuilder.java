@@ -6,6 +6,7 @@ import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.service.dto.ActivityParticipationDTO;
 import com.aitp.dlife.service.dto.AttendeeDTO;
+import com.aitp.dlife.service.dto.CommentDTO;
 import com.aitp.dlife.service.dto.EventMessageDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.dto.PinFanActivityDTO;
@@ -46,10 +47,16 @@ public class EventMessageBuilder {
 				pinFanActivityDTO.getNickName(), EventType.UPDATE, EventChannel.PINFAN, pinFanActivityDTO.getId(),
 				pinFanActivityDTO.getActivitiyTile(), DateUtil.getYMDDateString(new Date()), null));
 	}
-	
+
+	public static  EventMessageBuilder buildEventMessageDTO(CommentDTO commentDTO) {
+		return new EventMessageBuilder(new EventMessageDTO(commentDTO.getWechatUserId(), commentDTO.getAvatar(),
+				commentDTO.getNickName(), EventType.UPDATE, EventChannel.PINFAN, commentDTO.getObjectId(),
+				null, DateUtil.getYMDDateString(new Date()), commentDTO.getContent()));
+	}
 	
 	
 	public EventMessageDTO get() {
+		
 		return eventMessageDTO;
 	}
 
@@ -60,6 +67,12 @@ public class EventMessageBuilder {
 		return this;
 	}
 
+	public EventMessageBuilder title(String title) {
+		this.eventMessageDTO.setObjectTitle(title);
+		return this;
+	}
+	
+	
 	public EventMessageBuilder Channel(EventChannel channel) {
 		this.eventMessageDTO.setChannel(channel);
 		return this;

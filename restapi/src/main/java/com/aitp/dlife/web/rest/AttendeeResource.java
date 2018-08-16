@@ -6,6 +6,7 @@ import com.aitp.dlife.service.*;
 import com.aitp.dlife.service.dto.EventMessageDTO;
 import com.aitp.dlife.service.dto.PinFanActivityDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
+import com.aitp.dlife.service.dto.builder.EventMessageBuilder;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.aitp.dlife.web.rest.util.HttpUtil;
 import com.codahale.metrics.annotation.Timed;
@@ -39,152 +40,165 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class AttendeeResource {
 
-    private final Logger log = LoggerFactory.getLogger(AttendeeResource.class);
+	private final Logger log = LoggerFactory.getLogger(AttendeeResource.class);
 
-    private static final String ENTITY_NAME = "attendee";
+	private static final String ENTITY_NAME = "attendee";
 
-    private final AttendeeService attendeeService;
-    private final PinFanActivityService pinFanActivityService;
-    private final WechatUserService wechatUserService;
-    private final EventMessageService eventMessageService;
-    private final MessageService messageService;
+	private final AttendeeService attendeeService;
+	private final PinFanActivityService pinFanActivityService;
+	private final WechatUserService wechatUserService;
+	private final EventMessageService eventMessageService;
+	private final MessageService messageService;
 
-    public AttendeeResource(AttendeeService attendeeService,PinFanActivityService pinFanActivityService,WechatUserService wechatUserService,
-                            EventMessageService eventMessageService,MessageService messageService) {
-        this.attendeeService = attendeeService;
-        this.pinFanActivityService=pinFanActivityService;
-        this.wechatUserService=wechatUserService;
-        this.eventMessageService = eventMessageService;
-        this.messageService = messageService;
-    }
+	public AttendeeResource(AttendeeService attendeeService, PinFanActivityService pinFanActivityService,
+			WechatUserService wechatUserService, EventMessageService eventMessageService,
+			MessageService messageService) {
+		this.attendeeService = attendeeService;
+		this.pinFanActivityService = pinFanActivityService;
+		this.wechatUserService = wechatUserService;
+		this.eventMessageService = eventMessageService;
+		this.messageService = messageService;
+	}
 
-    /**
-     * POST  /attendees : Create a new attendee.
-     *
-     * @param attendeeDTO the attendeeDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new attendeeDTO, or with status 400 (Bad Request) if the attendee has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PostMapping("/attendees")
-    @Timed
-    public ResponseEntity createAttendee(@Valid @RequestBody AttendeeDTO attendeeDTO) throws URISyntaxException {
-        log.debug("REST request to save Attendee : {}", attendeeDTO);
-        if (attendeeDTO.getId() != null) {
-            throw new BadRequestAlertException("A new attendee cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        if(StringUtils.isEmpty(attendeeDTO.getParticipationTime())){
-            attendeeDTO.setParticipationTime(DateUtil.getYMDDateString(new Date()));
-        }
-        PinFanActivityDTO activityDTO = pinFanActivityService.findOne(attendeeDTO.getPinFanActivityId());
-        if(activityDTO.getAttendees()!=null && activityDTO.getUpperLimit() != null && activityDTO.getAttendees().size()>=activityDTO.getUpperLimit()){
-            throw new BadRequestAlertException("活动人数已达上限", ENTITY_NAME, "活动人数已达上限");
-        }
-        attendeeDTO.setActivitiyTile(activityDTO.getActivitiyTile());
-        AttendeeDTO result = attendeeService.save(attendeeDTO);
+	/**
+	 * POST /attendees : Create a new attendee.
+	 *
+	 * @param attendeeDTO
+	 *            the attendeeDTO to create
+	 * @return the ResponseEntity with status 201 (Created) and with body the
+	 *         new attendeeDTO, or with status 400 (Bad Request) if the attendee
+	 *         has already an ID
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 */
+	@PostMapping("/attendees")
+	@Timed
+	public ResponseEntity createAttendee(@Valid @RequestBody AttendeeDTO attendeeDTO) throws URISyntaxException {
+		log.debug("REST request to save Attendee : {}", attendeeDTO);
+		if (attendeeDTO.getId() != null) {
+			throw new BadRequestAlertException("A new attendee cannot already have an ID", ENTITY_NAME, "idexists");
+		}
+		if (StringUtils.isEmpty(attendeeDTO.getParticipationTime())) {
+			attendeeDTO.setParticipationTime(DateUtil.getYMDDateString(new Date()));
+		}
+		PinFanActivityDTO activityDTO = pinFanActivityService.findOne(attendeeDTO.getPinFanActivityId());
+		if (activityDTO.getAttendees() != null && activityDTO.getUpperLimit() != null
+				&& activityDTO.getAttendees().size() >= activityDTO.getUpperLimit()) {
+			throw new BadRequestAlertException("活动人数已达上限", ENTITY_NAME, "活动人数已达上限");
+		}
+		attendeeDTO.setActivitiyTile(activityDTO.getActivitiyTile());
+		AttendeeDTO result = attendeeService.save(attendeeDTO);
 
-        //record the activity participation event start
-        EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.PINFAN,DateUtil.getYMDDateString(new Date()), EventType.ATTEND,
-            attendeeDTO.getWechatUserId(),attendeeDTO.getActivitiyTile(),result.getPinFanActivityId(),attendeeDTO.getAvatar(),attendeeDTO.getNickName());
-        if (null!=eventMessageDTO.getId()){
-            messageService.createMessageForEvent(eventMessageDTO);
-        }
+		// record the activity participation event start
+		EventMessageDTO eventMessageDTO = eventMessageService
+				.save(EventMessageBuilder.buildEventMessageDTO(attendeeDTO).get());
+		if (null != eventMessageDTO.getId()) {
+			messageService.createMessageForEvent(eventMessageDTO);
+		}
 
-        //record the activity participation event end
+		// record the activity participation event end
 
-        //log for markting start
-        WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(attendeeDTO.getWechatUserId()));
-        String sexString="";
-        if (null!=wechatUserDTO && null!=wechatUserDTO.getSex()){
-            Integer sex = wechatUserDTO.getSex();
-            if (sex==1) {
-                sexString = "male";
-            }else if(sex==2){
-                sexString = "female";
-            }else{
-                sexString="";
-            }
-        }
-        log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan",activityDTO.getId(),HttpUtil.baseEncoder(activityDTO.getActivitiyTile()),"attend",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
-        //log for markting end
+		// log for markting start
+		WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(attendeeDTO.getWechatUserId()));
+		String sexString = "";
+		if (null != wechatUserDTO && null != wechatUserDTO.getSex()) {
+			Integer sex = wechatUserDTO.getSex();
+			if (sex == 1) {
+				sexString = "male";
+			} else if (sex == 2) {
+				sexString = "female";
+			} else {
+				sexString = "";
+			}
+		}
+		log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}",
+				"pinfan", activityDTO.getId(), HttpUtil.baseEncoder(activityDTO.getActivitiyTile()), "attend",
+				DateUtil.getYMDDateString(new Date()), wechatUserDTO.getNickName(), sexString);
+		// log for markting end
 
+		return ResponseEntity.ok().body(result);
+	}
 
-        return ResponseEntity.ok().body(result);
-    }
+	/**
+	 * PUT /attendees : Updates an existing attendee.
+	 *
+	 * @param attendeeDTO
+	 *            the attendeeDTO to update
+	 * @return the ResponseEntity with status 200 (OK) and with body the updated
+	 *         attendeeDTO, or with status 400 (Bad Request) if the attendeeDTO
+	 *         is not valid, or with status 500 (Internal Server Error) if the
+	 *         attendeeDTO couldn't be updated
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 */
+	@PutMapping("/attendees")
+	@Timed
+	public ResponseEntity<AttendeeDTO> updateAttendee(@Valid @RequestBody AttendeeDTO attendeeDTO)
+			throws URISyntaxException {
+		log.debug("REST request to update Attendee : {}", attendeeDTO);
+		if (attendeeDTO.getId() == null) {
+			return createAttendee(attendeeDTO);
+		}
+		AttendeeDTO result = attendeeService.save(attendeeDTO);
+		return ResponseEntity.ok()
+				.headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, attendeeDTO.getId().toString())).body(result);
+	}
 
-    /**
-     * PUT  /attendees : Updates an existing attendee.
-     *
-     * @param attendeeDTO the attendeeDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated attendeeDTO,
-     * or with status 400 (Bad Request) if the attendeeDTO is not valid,
-     * or with status 500 (Internal Server Error) if the attendeeDTO couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/attendees")
-    @Timed
-    public ResponseEntity<AttendeeDTO> updateAttendee(@Valid @RequestBody AttendeeDTO attendeeDTO) throws URISyntaxException {
-        log.debug("REST request to update Attendee : {}", attendeeDTO);
-        if (attendeeDTO.getId() == null) {
-            return createAttendee(attendeeDTO);
-        }
-        AttendeeDTO result = attendeeService.save(attendeeDTO);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, attendeeDTO.getId().toString()))
-            .body(result);
-    }
+	/**
+	 * GET /attendees : get all the attendees.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @return the ResponseEntity with status 200 (OK) and the list of attendees
+	 *         in body
+	 */
+	@GetMapping("/attendees")
+	@Timed
+	public ResponseEntity<List<AttendeeDTO>> getAllAttendees(Pageable pageable) {
+		log.debug("REST request to get a page of Attendees");
+		Page<AttendeeDTO> page = attendeeService.findAll(pageable);
+		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/attendees");
+		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	}
 
-    /**
-     * GET  /attendees : get all the attendees.
-     *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of attendees in body
-     */
-    @GetMapping("/attendees")
-    @Timed
-    public ResponseEntity<List<AttendeeDTO>> getAllAttendees(Pageable pageable) {
-        log.debug("REST request to get a page of Attendees");
-        Page<AttendeeDTO> page = attendeeService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/attendees");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
+	/**
+	 * GET /attendees/:id : get the "id" attendee.
+	 *
+	 * @param id
+	 *            the id of the attendeeDTO to retrieve
+	 * @return the ResponseEntity with status 200 (OK) and with body the
+	 *         attendeeDTO, or with status 404 (Not Found)
+	 */
+	@GetMapping("/attendees/{id}")
+	@Timed
+	public ResponseEntity<AttendeeDTO> getAttendee(@PathVariable Long id) {
+		log.debug("REST request to get Attendee : {}", id);
+		AttendeeDTO attendeeDTO = attendeeService.findOne(id);
+		return ResponseUtil.wrapOrNotFound(Optional.ofNullable(attendeeDTO));
+	}
 
-    /**
-     * GET  /attendees/:id : get the "id" attendee.
-     *
-     * @param id the id of the attendeeDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the attendeeDTO, or with status 404 (Not Found)
-     */
-    @GetMapping("/attendees/{id}")
-    @Timed
-    public ResponseEntity<AttendeeDTO> getAttendee(@PathVariable Long id) {
-        log.debug("REST request to get Attendee : {}", id);
-        AttendeeDTO attendeeDTO = attendeeService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(attendeeDTO));
-    }
-
-    /**
-     * DELETE  /attendees/:id : delete the "id" attendee.
-     *
-     * @param id the id of the attendeeDTO to delete
-     * @return the ResponseEntity with status 200 (OK)
-     */
-    @DeleteMapping("/attendees/{id}")
-    @Timed
-    public ResponseEntity<Void> deleteAttendee(@PathVariable Long id) {
-        log.debug("REST request to delete Attendee : {}", id);
-        AttendeeDTO attendeeDTO = attendeeService.findOne(id);
-        if (null != attendeeDTO){
-            //record the activity quit event start
-            EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.PINFAN,DateUtil.getYMDDateString(new Date()),EventType.QUIT,
-                attendeeDTO.getWechatUserId(),attendeeDTO.getActivitiyTile(),
-                attendeeDTO.getPinFanActivityId(),attendeeDTO.getAvatar(),
-                attendeeDTO.getNickName());
-            if (null!=eventMessageDTO.getId()){
-                messageService.createMessageForEvent(eventMessageDTO);
-            }
-            //record the activity quit event end
-        }
-        attendeeService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
+	/**
+	 * DELETE /attendees/:id : delete the "id" attendee.
+	 *
+	 * @param id
+	 *            the id of the attendeeDTO to delete
+	 * @return the ResponseEntity with status 200 (OK)
+	 */
+	@DeleteMapping("/attendees/{id}")
+	@Timed
+	public ResponseEntity<Void> deleteAttendee(@PathVariable Long id) {
+		log.debug("REST request to delete Attendee : {}", id);
+		AttendeeDTO attendeeDTO = attendeeService.findOne(id);
+		if (null != attendeeDTO) {
+			// record the activity quit event start
+			EventMessageDTO eventMessageDTO = eventMessageService
+					.save(EventMessageBuilder.buildEventMessageDTO(attendeeDTO).type(EventType.QUIT).get());
+			if (null != eventMessageDTO.getId()) {
+				messageService.createMessageForEvent(eventMessageDTO);
+			}
+			// record the activity quit event end
+		}
+		attendeeService.delete(id);
+		return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+	}
 }

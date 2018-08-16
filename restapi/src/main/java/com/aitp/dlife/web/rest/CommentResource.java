@@ -9,6 +9,7 @@ import com.aitp.dlife.repository.PinFanActivityRepository;
 import com.aitp.dlife.repository.specification.CommentSpecification;
 import com.aitp.dlife.service.*;
 import com.aitp.dlife.service.dto.*;
+import com.aitp.dlife.service.dto.builder.EventMessageBuilder;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.Lists;
@@ -159,10 +160,8 @@ public class CommentResource {
 
 		if (eventChannel != null) {
 			// record the activity participation event start
-			EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(eventChannel,
-					DateUtil.getYMDDateString(new Date()), EventType.COMMENT, commentDTO.getWechatUserId(), objectTitle,
-					objectId, commentDTO.getAvatar(), commentDTO.getNickName(), commentDTO.getContent());
-
+			EventMessageDTO eventMessageDTO = eventMessageService
+					.save(EventMessageBuilder.buildEventMessageDTO(commentDTO).title(objectTitle).get());
 			if (null != eventMessageDTO.getId()) {
 				messageService.createMessageForEvent(eventMessageDTO);
 			}
@@ -213,9 +212,11 @@ public class CommentResource {
 		log.debug("REST request to get a page of Comments");
 		List<QueryDTO> queryDTOs = Lists.newArrayList();
 		Page<CommentDTO> page = commentService.findAll(pageable, spec);
-		//List<ThumbsUpDTO> thumbsUpDTOs = thumbsUpService.findAll(spec);
-//		page.getContent().parallelStream().forEach(comment -> comment.setThumbsUpDTOs(thumbsUpDTOs.stream()
-//				.filter(thb -> thb.getObjectId().equals(comment.getId())).collect(Collectors.toSet())));
+		// List<ThumbsUpDTO> thumbsUpDTOs = thumbsUpService.findAll(spec);
+		// page.getContent().parallelStream().forEach(comment ->
+		// comment.setThumbsUpDTOs(thumbsUpDTOs.stream()
+		// .filter(thb ->
+		// thb.getObjectId().equals(comment.getId())).collect(Collectors.toSet())));
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/comments");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}

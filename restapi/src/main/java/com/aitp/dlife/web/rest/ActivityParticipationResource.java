@@ -262,7 +262,7 @@ public class ActivityParticipationResource {
 		if (activityParticipationDTO.isPresent()) {
 			// record the activity quit event start
 			 EventMessageDTO eventMessageDTO = EventMessageBuilder
-			.buildEventMessageDTO(activityParticipationDTO.get()).build(EventType.QUIT).get();
+			.buildEventMessageDTO(activityParticipationDTO.get()).type(EventType.QUIT).get();
 			 eventMessageDTO = eventMessageService.save(eventMessageDTO);
 			if (null != eventMessageDTO.getId()) {
 				messageService.createMessageForEvent(eventMessageDTO);
