@@ -6,24 +6,28 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import com.aitp.dlife.domain.enumeration.CommentChannel;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.ObjectUtils;
 
 import com.aitp.dlife.domain.Comment;
 import com.aitp.dlife.web.rest.vm.CommentVM;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CommentSpecification extends AbstractSpecifcation<CommentVM> implements Specification<Comment>{
 
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
-	
-	
 
-	public CommentSpecification(String objectId, String channel) {
+
+
+	public CommentSpecification(String objectId, CommentChannel channel) {
 		super(new CommentVM(objectId, channel));
 	}
 
@@ -32,19 +36,20 @@ public class CommentSpecification extends AbstractSpecifcation<CommentVM> implem
 	 */
 	@Override
 	public Predicate toPredicate(Root<Comment> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        Predicate objectPredicate = null;
-        Predicate channelPredicate = null;
-        if(ObjectUtils.isEmpty(querys.getObjectId())){
+        List<Predicate> predicates = new ArrayList<>();
+        if(!ObjectUtils.isEmpty(querys.getObjectId())){
         	Path<String> idPath = root.get("objectId");
-        	objectPredicate = criteriaBuilder.equal(idPath, querys.getObjectId());
+            Predicate objectPredicate = criteriaBuilder.equal(idPath, querys.getObjectId());
+            predicates.add(objectPredicate);
         }
-        if(ObjectUtils.isEmpty(querys.getChannel())){
-        	Path<String> channelPath = root.get("channel");
-        	channelPredicate = criteriaBuilder.equal(channelPath, querys.getChannel());
+        if(!ObjectUtils.isEmpty(querys.getChannel())){
+        	Path<CommentChannel> channelPath = root.get("channel");
+            Predicate	channelPredicate = criteriaBuilder.equal(channelPath, querys.getChannel());
+            predicates.add(channelPredicate);
         }
-        Predicate predicate = criteriaBuilder.and(objectPredicate,channelPredicate);
-        return predicate;  
-          
+        Predicate predicate = criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        return predicate;
+
 
 	}
 

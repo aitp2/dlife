@@ -1,16 +1,19 @@
 package com.aitp.dlife.web.rest.vm;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class ThumbsUpVM {
 
+    @ApiModelProperty(value = "活动ID")
 	private String objectId;
 
-	
+
 	public ThumbsUpVM(String objectId) {
 		super();
 		this.objectId = objectId;
 	}
-	
-	
+
+
 	public String getObjectId() {
 		return objectId;
 	}
@@ -51,5 +54,5 @@ public class ThumbsUpVM {
 		return "ThumbsUpVM [objectId=" + objectId + "]";
 	}
 
-	
+
 }

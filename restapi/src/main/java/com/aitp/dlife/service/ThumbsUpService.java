@@ -79,14 +79,14 @@ public class ThumbsUpService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<ThumbsUpDTO> findAll(Specification<ThumbsUp> spec) {
+    public List<ThumbsUpDTO> findAll(ThumbsUpSpecification spec) {
         log.debug("Request to get all ThumbsUps");
         Sort sort = new Sort(Sort.Direction.DESC, "createTime");
         return thumbsUpRepository.findAll(spec,sort).stream()
             .map(thumbsUpMapper::toDto).collect(Collectors.toList());
     }
-    
-    
+
+
     /**
      * Get one thumbsUp by id.
      *

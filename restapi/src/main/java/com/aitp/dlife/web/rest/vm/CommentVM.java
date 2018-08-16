@@ -1,19 +1,21 @@
 package com.aitp.dlife.web.rest.vm;
 
+import com.aitp.dlife.domain.enumeration.CommentChannel;
+
 public class CommentVM {
 
 	private String objectId;
-	
-	private String channel;
 
-	
-	
-	
+	private CommentChannel channel;
+
+
+
+
 	public CommentVM() {
 		super();
 	}
 
-	public CommentVM(String objectId, String channel) {
+	public CommentVM(String objectId, CommentChannel channel) {
 		super();
 		this.objectId = objectId;
 		this.channel = channel;
@@ -27,18 +29,18 @@ public class CommentVM {
 		this.objectId = objectId;
 	}
 
-	public String getChannel() {
+	public CommentChannel getChannel() {
 		return channel;
 	}
 
-	public void setChannel(String channel) {
+	public void setChannel(CommentChannel channel) {
 		this.channel = channel;
 	}
 
-	
-	
-	
-	
+
+
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -74,6 +76,6 @@ public class CommentVM {
 	public String toString() {
 		return "CommentVM [objectId=" + objectId + ", channel=" + channel + "]";
 	}
-	
-	
+
+
 }

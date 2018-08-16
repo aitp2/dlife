@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * ClockInActivityResource controller
  */
-@Api(value = "小目标参与活动API", tags = "小目标参与活动API")
+@Api(value = "小目标报名统计API", tags = "小目标报名统计API")
 @RestController
 @RequestMapping("/api/activity-participations")
 public class ActivityParticipationReferenceResource {
@@ -32,7 +32,7 @@ public class ActivityParticipationReferenceResource {
 	private ActivityParticipationReferenceService activityParticipationReferenceService;
 
 
-	
+
 	@GetMapping("/summary/{wechatUserId}/{activityId}")
 	@ApiOperation(value = "查询用户参与活动情况", response = ParticipationSummaryResponse.class, produces = "application/json")
 	@ApiImplicitParams({

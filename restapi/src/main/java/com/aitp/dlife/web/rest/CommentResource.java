@@ -7,6 +7,7 @@ import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.repository.PinFanActivityRepository;
 import com.aitp.dlife.repository.specification.CommentSpecification;
+import com.aitp.dlife.repository.specification.ThumbsUpSpecification;
 import com.aitp.dlife.service.*;
 import com.aitp.dlife.service.dto.*;
 import com.aitp.dlife.web.rest.util.DateUtil;
@@ -213,11 +214,11 @@ public class CommentResource {
 	@ApiOperation(value = "获取评论信息列表", notes = "根据不同条件进行分页查查询和排序", response = CommentDTO.class)
 	public ResponseEntity<List<CommentDTO>> getAllComments(Pageable pageable, CommentSpecification spec) {
 		log.debug("REST request to get a page of Comments");
-		List<QueryDTO> queryDTOs = Lists.newArrayList();
 		Page<CommentDTO> page = commentService.findAll(pageable, spec);
-		//List<ThumbsUpDTO> thumbsUpDTOs = thumbsUpService.findAll(spec);
-//		page.getContent().parallelStream().forEach(comment -> comment.setThumbsUpDTOs(thumbsUpDTOs.stream()
-//				.filter(thb -> thb.getObjectId().equals(comment.getId())).collect(Collectors.toSet())));
+		ThumbsUpSpecification thumbsUpSpecification  = new ThumbsUpSpecification(spec.getQuerys().getObjectId());
+		List<ThumbsUpDTO> thumbsUpDTOs = thumbsUpService.findAll(thumbsUpSpecification);
+		page.getContent().parallelStream().forEach(comment -> comment.setThumbsUpDTOs(thumbsUpDTOs.stream()
+				.filter(thb -> thb.getObjectId().equals(comment.getId())).collect(Collectors.toSet())));
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/comments");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}

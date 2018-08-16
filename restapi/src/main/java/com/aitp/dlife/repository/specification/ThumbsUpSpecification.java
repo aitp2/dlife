@@ -15,13 +15,13 @@ import com.aitp.dlife.web.rest.vm.ThumbsUpVM;
 
 public class ThumbsUpSpecification extends AbstractSpecifcation<ThumbsUpVM> implements Specification<ThumbsUp>{
 
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
-	
+
 	public ThumbsUpSpecification(String objectId) {
 		super(new ThumbsUpVM(objectId));
 	}
@@ -36,8 +36,8 @@ public class ThumbsUpSpecification extends AbstractSpecifcation<ThumbsUpVM> impl
         if(ObjectUtils.isEmpty(querys.getObjectId())){
         	   p = criteriaBuilder.equal(keyName_1, querys.getObjectId());
         }
-        return p;  
-          
+        return p;
+
 	}
 
 }

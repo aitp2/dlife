@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -58,6 +59,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @RestController
 @RequestMapping("/api")
+@Api(value = "小目标打卡API", tags = "小目标打卡API")
 public class ClockInResource {
 
     private final Logger log = LoggerFactory.getLogger(ClockInResource.class);

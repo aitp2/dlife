@@ -1,5 +1,6 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.repository.specification.ThumbsUpSpecification;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.domain.ThumbsUp;
 import com.aitp.dlife.service.CommentService;
@@ -38,6 +39,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
+@Api(value = "点赞API", tags = "点赞API")
 public class ThumbsUpResource {
 
     private final Logger log = LoggerFactory.getLogger(ThumbsUpResource.class);
@@ -62,7 +64,6 @@ public class ThumbsUpResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @ApiOperation(value="点赞" ,notes ="根据用户信息通道，数据进行点赞.", produces="application/json")
-    
     @PostMapping("/thumbs-ups")
     @Timed
     public ResponseEntity<ThumbsUpDTO> createThumbsUp(@Valid @RequestBody ThumbsUpDTO thumbsUpDTO) throws URISyntaxException {
@@ -93,6 +94,7 @@ public class ThumbsUpResource {
      */
     @PutMapping("/thumbs-ups")
     @Timed
+    @ApiOperation(value="修改点赞" ,notes ="目前无用", produces="application/json")
     public ResponseEntity<ThumbsUpDTO> updateThumbsUp(@Valid @RequestBody ThumbsUpDTO thumbsUpDTO) throws URISyntaxException {
         log.debug("REST request to update ThumbsUp : {}", thumbsUpDTO);
         if (thumbsUpDTO.getId() == null) {
@@ -112,7 +114,8 @@ public class ThumbsUpResource {
      */
     @GetMapping("/thumbs-ups")
     @Timed
-    public ResponseEntity<List<ThumbsUpDTO>> getAllThumbsUps(Pageable pageable,Specification<ThumbsUp> spec) {
+    @ApiOperation(value="点赞列表" ,notes ="目前无用", produces="application/json")
+    public ResponseEntity<List<ThumbsUpDTO>> getAllThumbsUps(Pageable pageable,ThumbsUpSpecification spec) {
         log.debug("REST request to get a page of ThumbsUps");
         Page<ThumbsUpDTO> page = thumbsUpService.findAll(pageable,spec);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/thumbs-ups");

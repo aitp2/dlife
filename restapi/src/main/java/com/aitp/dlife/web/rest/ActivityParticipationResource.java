@@ -19,6 +19,7 @@ import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.service.enums.Status;
 import com.aitp.dlife.web.rest.util.HttpUtil;
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -54,6 +55,7 @@ import io.swagger.annotations.ApiParam;
  * REST controller for managing ActivityParticipation.
  */
 @RestController
+@Api(value = "小目标报名API", tags = "小目标报名API")
 @RequestMapping("/api")
 public class ActivityParticipationResource {
 
