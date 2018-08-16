@@ -1,7 +1,9 @@
 package com.aitp.dlife.request;
 
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.constraints.NotEmpty;
@@ -40,7 +42,7 @@ public class ClockInRequest {
     /**
      * 打卡图片
      */
-    private Set<PicsRequest> pics = new HashSet<>();
+    private List<PicsRequest> pics = new ArrayList<>();
 
 
     public String getTitle() {
@@ -67,15 +69,16 @@ public class ClockInRequest {
         this.activityParticipationId = activityParticipationId;
     }
 
-    public Set<PicsRequest> getPics() {
+
+    public List<PicsRequest> getPics() {
 		return pics;
 	}
 
-	public void setPics(Set<PicsRequest> pics) {
+	public void setPics(List<PicsRequest> pics) {
 		this.pics = pics;
 	}
 
-    public String getWechatUserId() {
+	public String getWechatUserId() {
 		return wechatUserId;
 	}
 

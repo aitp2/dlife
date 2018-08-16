@@ -4,6 +4,7 @@ import com.aitp.dlife.domain.EventMessage;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.repository.EventMessageRepository;
+import com.aitp.dlife.request.ClockInRequest;
 import com.aitp.dlife.service.dto.*;
 import com.aitp.dlife.service.mapper.EventMessageMapper;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -123,64 +124,8 @@ public class EventMessageService {
         eventMessageRepository.deleteById(id);
     }
 
-    /**
-     * record the event message
-     *
-     * @param eventChannel the event channel
-     * @param createTime the event create time
-     * @param eventType the event type
-     * @param wechatUserId the event trigger user's wechat user id
-     * @param objectTitle the object title
-     * @param objectId the object id
-     * @param avatar the event trigger user's avatar
-     * @param nickName the event trigger user's nickName
-     * @return EventMessageDTO
-     */
-    public EventMessageDTO recordEventMessage(EventChannel eventChannel, String createTime, EventType eventType,
-                                   String wechatUserId, String objectTitle, Long objectId, String avatar,
-                                   String nickName){
-        EventMessageDTO eventMessageDTO = new EventMessageDTO();
-        eventMessageDTO.setChannel(eventChannel);
-        eventMessageDTO.setCreateTime(createTime);
-        eventMessageDTO.setType(eventType);
-        eventMessageDTO.setWechatUserId(wechatUserId);
-        eventMessageDTO.setObjectTitle(objectTitle);
-        eventMessageDTO.setObjectId(objectId);
-        eventMessageDTO.setAvatar(avatar);
-        eventMessageDTO.setNickName(nickName);
-        EventMessageDTO dto = save(eventMessageDTO);
-        return dto;
-    }
+  
 
-    /**
-     * record the event message for comment and FAQS
-     *
-     * @param eventChannel the event channel
-     * @param createTime the event create time
-     * @param eventType the event type
-     * @param wechatUserId the event trigger user's wechat user id
-     * @param objectTitle the object title
-     * @param objectId the object id
-     * @param avatar the event trigger user's avatar
-     * @param nickName the event trigger user's nickName
-     * @return EventMessageDTO
-     */
-    public EventMessageDTO recordEventMessage(EventChannel eventChannel, String createTime, EventType eventType,
-                                              String wechatUserId, String objectTitle, Long objectId, String avatar,
-                                              String nickName,String content){
-        EventMessageDTO eventMessageDTO = new EventMessageDTO();
-        eventMessageDTO.setChannel(eventChannel);
-        eventMessageDTO.setCreateTime(createTime);
-        eventMessageDTO.setType(eventType);
-        eventMessageDTO.setWechatUserId(wechatUserId);
-        eventMessageDTO.setObjectTitle(objectTitle);
-        eventMessageDTO.setObjectId(objectId);
-        eventMessageDTO.setAvatar(avatar);
-        eventMessageDTO.setNickName(nickName);
-        eventMessageDTO.setContent(content);
-        EventMessageDTO dto = save(eventMessageDTO);
-        return dto;
-    }
-
+    
 
 }

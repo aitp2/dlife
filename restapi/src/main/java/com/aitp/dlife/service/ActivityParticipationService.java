@@ -40,7 +40,7 @@ public class ActivityParticipationService {
     }
 
     /**
-     * Save a activityParticipation.
+     * Save a activityParticipation. 	
      *
      * @param activityParticipationDTO the entity to save
      * @return the persisted entity

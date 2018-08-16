@@ -15,7 +15,7 @@ import org.springframework.util.ObjectUtils;
 import com.aitp.dlife.domain.ClockIn;
 import com.aitp.dlife.web.rest.vm.ClockInVM;
 
-public class ClockInSpecification extends AbstractSpecifcation<ClockInVM> implements Specification<ClockIn>{
+public class ClockInSpecification extends AbstractSpecifcation<ClockInVM> implements Query<Specification<ClockIn>> ,Specification<ClockIn>{
 
 	
 	/**
@@ -50,6 +50,11 @@ public class ClockInSpecification extends AbstractSpecifcation<ClockInVM> implem
         return criteriaBuilder.and(andPrediCate.toArray(new Predicate[andPrediCate.size()]));  
           
 
+	}
+	@Override
+	public Specification<ClockIn> Convert() {
+		
+		return (Specification<ClockIn>)this;
 	}
 
 }

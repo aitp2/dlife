@@ -200,7 +200,7 @@ public class ClockInResource {
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of clockIns in body
      */
-    @GetMapping("/clock-ins")
+    @GetMapping("/clock-ins/")
     @Timed
     @ApiOperation(value = "打卡信息列表查询方法", notes = "根据不同传入参数获取打卡信息，具有分页功能，查询条件可传可不传", response = ClockInDTO.class)
     public ResponseEntity<List<ClockInDTO>> getAllClockIns(Pageable pageable,ClockInSpecification spec) {

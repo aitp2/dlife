@@ -1,18 +1,24 @@
 package com.aitp.dlife.service.dto;
 
-import java.time.Instant;
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
-import com.aitp.dlife.domain.enumeration.EventType;
+
+import javax.validation.constraints.Size;
+
 import com.aitp.dlife.domain.enumeration.EventChannel;
+import com.aitp.dlife.domain.enumeration.EventType;
 
 /**
  * A DTO for the EventMessage entity.
  */
 public class EventMessageDTO implements Serializable {
 
-    private Long id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
 
     @Size(max = 128)
     private String wechatUserId;
@@ -35,8 +41,35 @@ public class EventMessageDTO implements Serializable {
     private String createTime;
 
     private String content;
+    
+    
+    
+    
+    public EventMessageDTO() {
+		super();
+	}
 
-    public Long getId() {
+
+	public EventMessageDTO(@Size(max = 128) String wechatUserId, @Size(max = 1024) String avatar,
+			@Size(max = 128) String nickName, EventType type, EventChannel channel, Long objectId,
+			@Size(max = 256) String objectTitle, String createTime, String content) {
+		super();
+		this.wechatUserId = wechatUserId;
+		this.avatar = avatar;
+		this.nickName = nickName;
+		this.type = type;
+		this.channel = channel;
+		this.objectId = objectId;
+		this.objectTitle = objectTitle;
+		this.createTime = createTime;
+		this.content = content;
+	}
+
+
+
+    
+
+	public Long getId() {
         return id;
     }
 

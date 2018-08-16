@@ -14,7 +14,12 @@ import java.util.Objects;
  */
 public class PinFanActivityDTO implements Serializable {
 
-    private Long id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
 
     @Size(max = 128)
     private String wechatUserId;

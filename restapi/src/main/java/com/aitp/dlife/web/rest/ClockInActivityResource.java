@@ -1,5 +1,7 @@
 package com.aitp.dlife.web.rest;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -15,7 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aitp.dlife.request.ClockInRequest;
 import com.aitp.dlife.response.ClockInActivityResponse;
 import com.aitp.dlife.response.ClockInResponse;
+import com.aitp.dlife.service.ActivityParticipationService;
 import com.aitp.dlife.service.ClockInActivityService;
+import com.aitp.dlife.service.EventMessageService;
+import com.aitp.dlife.service.dto.ActivityParticipationDTO;
+import com.aitp.dlife.service.dto.EventMessageDTO;
+import com.aitp.dlife.service.dto.builder.EventMessageBuilder;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.codahale.metrics.annotation.Timed;
 
@@ -38,6 +45,11 @@ public class ClockInActivityResource {
 
 	@Autowired
 	private ClockInActivityService clockInActivityService;
+	
+	@Autowired
+	private ActivityParticipationService activityParticipationService;
+	
+	@Autowired EventMessageService eventMessageService;
 
 	@PostMapping("/clock-ins")
 	@ApiOperation(value = "用户打卡", response = ClockInResponse.class, produces = "application/json")
@@ -50,6 +62,10 @@ public class ClockInActivityResource {
 					"请不要重复打卡哦");
 		}
 		response.setClockInSuccess(clockInActivityService.clockIn(request));
+		Optional<ActivityParticipationDTO> activityParticipationDTO  =  activityParticipationService.findOne(request.getActivityParticipationId());
+		if (activityParticipationDTO.isPresent()) {
+		eventMessageService.save(EventMessageBuilder.buildEventMessageDTO(activityParticipationDTO.get()).get());
+		}
 		return response;
 	}
 

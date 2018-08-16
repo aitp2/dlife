@@ -28,11 +28,11 @@ import com.aitp.dlife.repository.ClockinSummaryRepository;
 import com.aitp.dlife.repository.PicsRepository;
 import com.aitp.dlife.repository.WechatUserRepository;
 import com.aitp.dlife.request.ClockInRequest;
-import com.aitp.dlife.request.PicsRequest;
 import com.aitp.dlife.response.ClockInActivityResponse;
-import com.aitp.dlife.service.mapper.ActivityParticipationMapper;
+import com.aitp.dlife.service.mapper.ClockInForRequestMapper;
 import com.aitp.dlife.service.mapper.ClockInMapper;
 import com.aitp.dlife.service.mapper.InstantMapper;
+import com.aitp.dlife.service.mapper.PicsForRequestMapper;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.aitp.dlife.web.rest.util.HttpUtil;
 
@@ -53,11 +53,13 @@ public class ClockInActivityService {
 	@Autowired
 	private WechatUserRepository wechatUserRepository;
 	@Autowired
-	private ActivityParticipationMapper activityParticipationMapper;
-	@Autowired
 	private ClockInMapper clockInMapper;
 	@Autowired
 	private EventMessageService eventMessageService;
+	@Autowired
+	private ClockInForRequestMapper cclockInForRequestMapper;
+	@Autowired
+	private PicsForRequestMapper picsForRequstMapper;
 
 	/**
 	 * 用户打卡
@@ -70,8 +72,6 @@ public class ClockInActivityService {
 		log.debug("start to saveClockInRecord");
 		saveClockInRecord(request);
 		// save the event message
-		log.debug("保存Event message记录");
-		saveEnventMessage(request);
 		// 更新打卡记录汇总
 		log.debug("start to updateClockInSummary");
 		updateClockInSummary(request);
@@ -85,22 +85,6 @@ public class ClockInActivityService {
 		return true;
 	}
 
-	protected void saveEnventMessage(ClockInRequest request) {
-
-		Optional<ActivityParticipation> activityParticipation = activityParticipationRepository
-				.findById(request.getActivityParticipationId());
-
-		if (activityParticipation.isPresent()) {
-			// record the activity participation event start
-			eventMessageService.recordEventMessage(EventChannel.FITNESS, DateUtil.getYMDDateString(new Date()),
-					EventType.CLOCKIN, request.getWechatUserId(),
-					activityParticipation.get().getFitnessActivity().getTitle(),
-					activityParticipation.get().getFitnessActivity().getId(), activityParticipation.get().getAvatar(),
-					activityParticipation.get().getNickName());
-			// record the activity participation event end
-		}
-
-	}
 
 	/**
 	 * 根据用户参与活动关系查询活动完成用户的打卡情况
@@ -236,23 +220,15 @@ public class ClockInActivityService {
 	 * @param request
 	 */
 	private void saveClockInRecord(ClockInRequest request) {
-		ClockIn clockIn = new ClockIn();
-		clockIn.setActivityParticipation(activityParticipationMapper.fromId(request.getActivityParticipationId()));
-		clockIn.setTitle(request.getTitle());
-		clockIn.setSignNote(request.getSignNote());
-		clockIn.setPunchDateTime(Instant.now());
+		ClockIn clockIn = cclockInForRequestMapper.toEntity(request);
 		ActivityParticipation activityParticipation = activityParticipationRepository.getOne(request.getActivityParticipationId());
 		clockIn.setActivityId(Integer.valueOf(activityParticipation.getFitnessActivity().getId().toString()));
 		ClockIn clockInResult = clockInRepository.save(clockIn);
 		// 保存打卡图片
 		if (!CollectionUtils.isEmpty(request.getPics())) {
-			for (PicsRequest picsDTO : request.getPics()) {
-				Pics pics = new Pics();
-				pics.setOssPath(picsDTO.getOssPath());
-				pics.setClockIn(clockInMapper.fromId(clockInResult.getId()));
-				pics.setCreateTime(Instant.now());
-				picsRepository.save(pics);
-			}
+			 List<Pics> list = picsForRequstMapper.toEntity(request.getPics());
+			   list.parallelStream().forEach(a->{a.setClockIn(clockInResult);});
+				picsRepository.saveAll(list);
 		}
 	}
 

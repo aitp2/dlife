@@ -17,6 +17,7 @@ import com.aitp.dlife.service.*;
 import com.aitp.dlife.service.dto.EventMessageDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
+import com.aitp.dlife.service.dto.builder.EventMessageBuilder;
 import com.aitp.dlife.service.enums.Status;
 import com.aitp.dlife.web.rest.util.HttpUtil;
 import org.slf4j.Logger;
@@ -69,21 +70,21 @@ public class ActivityParticipationResource {
 
 	private final FitnessActivityService fitnessActivityService;
 
-    private final EventMessageService eventMessageService;
+	private final EventMessageService eventMessageService;
 
-    private final MessageService messageService;
+	private final MessageService messageService;
 
 	public ActivityParticipationResource(ActivityParticipationService activityParticipationService,
-                                         FitnessActivityRepository fitnessActivityRepository, WechatUserService wechatUserService,
-                                         FitnessActivityService fitnessActivityService, EventMessageService eventMessageService,
-                                         MessageService messageService) {
+			FitnessActivityRepository fitnessActivityRepository, WechatUserService wechatUserService,
+			FitnessActivityService fitnessActivityService, EventMessageService eventMessageService,
+			MessageService messageService) {
 		this.activityParticipationService = activityParticipationService;
 		this.fitnessActivityRepository = fitnessActivityRepository;
 		this.wechatUserService = wechatUserService;
 		this.fitnessActivityService = fitnessActivityService;
-        this.eventMessageService = eventMessageService;
-        this.messageService = messageService;
-    }
+		this.eventMessageService = eventMessageService;
+		this.messageService = messageService;
+	}
 
 	/**
 	 * POST /activity-participations : Create a new activityParticipation.
@@ -108,7 +109,8 @@ public class ActivityParticipationResource {
 		}
 		activityParticipationDTO.setParticipationTime(DateUtil.getYMDDateString(new Date()));
 
-		FitnessActivity fitnessActivity = fitnessActivityRepository.findById(activityParticipationDTO.getActivityId()).get();
+		FitnessActivity fitnessActivity = fitnessActivityRepository.findById(activityParticipationDTO.getActivityId())
+				.get();
 		fitnessActivity.setModifyTime(Instant.now());
 		fitnessActivityRepository.save(fitnessActivity);
 
@@ -116,16 +118,16 @@ public class ActivityParticipationResource {
 		WechatUserDTO wechatUserDTO = wechatUserService
 				.findOne(Long.valueOf(activityParticipationDTO.getWechatUserId()));
 		String sexString = "";
-        if (null!=wechatUserDTO && null!=wechatUserDTO.getSex()){
-            Integer sex = wechatUserDTO.getSex();
-            if (sex==1) {
-                sexString = "male";
-            }else if(sex==2){
-                sexString = "female";
-            }else{
-                sexString="";
-            }
-        }
+		if (null != wechatUserDTO && null != wechatUserDTO.getSex()) {
+			Integer sex = wechatUserDTO.getSex();
+			if (sex == 1) {
+				sexString = "male";
+			} else if (sex == 2) {
+				sexString = "female";
+			} else {
+				sexString = "";
+			}
+		}
 		FitnessActivityDTO dto = fitnessActivityService.findOne(activityParticipationDTO.getActivityId());
 
 		log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}",
@@ -135,13 +137,13 @@ public class ActivityParticipationResource {
 
 		ActivityParticipationDTO result = activityParticipationService.save(activityParticipationDTO);
 
-        //record the activity participation event start
-        EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()), EventType.ATTEND,
-            result.getWechatUserId(),dto.getTitle(),dto.getId(),wechatUserDTO.getAvatar(),wechatUserDTO.getNickName());
-        if (null!=eventMessageDTO.getId()){
-            messageService.createMessageForEvent(eventMessageDTO);
-        }
-        //record the activity participation event end
+		// record the activity participation event start
+		EventMessageDTO eventMessageDTO = eventMessageService
+				.save(EventMessageBuilder.buildEventMessageDTO(wechatUserDTO, dto).get());
+		if (null != eventMessageDTO.getId()) {
+			messageService.createMessageForEvent(eventMessageDTO);
+		}
+		// record the activity participation event end
 
 		return ResponseEntity.created(new URI("/api/activity-participations/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
@@ -193,37 +195,36 @@ public class ActivityParticipationResource {
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}
 
-
-
 	/**
 	 * GET /activity-participations : get all the activityParticipations.
 	 *
 	 * @param isClockIn
-     * @param clockinDate
+	 * @param clockinDate
 	 * @return the ResponseEntity with status 200 (OK) and the list of
 	 *         activityParticipations in body
 	 */
 	@GetMapping("/activity-participations/getNonClock")
 	@Timed
 	@ApiOperation(value = "获取未打卡信息", notes = "根据传入数据查询未打卡的报名人(即将过时)", response = ActivityParticipationDTO.class)
-	public List<ActivityParticipationDTO> getAllActivityParticipations(
-			@RequestParam Long isClockIn,
-			 @RequestParam  String clockinDate) {
+	public List<ActivityParticipationDTO> getAllActivityParticipations(@RequestParam Long isClockIn,
+			@RequestParam String clockinDate) {
 		log.debug("REST request to get a page of ActivityParticipations");
-		List<FitnessActivityDTO> faActivityDTOs = fitnessActivityService.getActivitiesByState(Status.IN_PROGRESS.getValue());
+		List<FitnessActivityDTO> faActivityDTOs = fitnessActivityService
+				.getActivitiesByState(Status.IN_PROGRESS.getValue());
 		List<Long> ids = new ArrayList<>();
-		List<ActivityParticipationDTO> activityParticipationDTOs= new ArrayList<>();
+		List<ActivityParticipationDTO> activityParticipationDTOs = new ArrayList<>();
 		for (FitnessActivityDTO fitnessActivityDTO : faActivityDTOs) {
-			 activityParticipationDTOs.addAll(fitnessActivityDTO.getActivityParticipations());
-			 ids.addAll(fitnessActivityDTO.getActivityParticipations().stream().map(ActivityParticipationDTO::getId).collect(Collectors.toList()));
+			activityParticipationDTOs.addAll(fitnessActivityDTO.getActivityParticipations());
+			ids.addAll(fitnessActivityDTO.getActivityParticipations().stream().map(ActivityParticipationDTO::getId)
+					.collect(Collectors.toList()));
 		}
-		List<ActivityParticipationDTO> nonclockActivityParticipationDTO  =  activityParticipationService.findTodayClockActivityParticipation(ids,clockinDate,isClockIn);
+		List<ActivityParticipationDTO> nonclockActivityParticipationDTO = activityParticipationService
+				.findTodayClockActivityParticipation(ids, clockinDate, isClockIn);
 		System.out.println(nonclockActivityParticipationDTO.toString());
-		List<ActivityParticipationDTO> nonclockActivityParticipationDTOa = activityParticipationDTOs.stream().filter(i-> nonclockActivityParticipationDTO.contains(i)).collect(Collectors.toList());
+		List<ActivityParticipationDTO> nonclockActivityParticipationDTOa = activityParticipationDTOs.stream()
+				.filter(i -> nonclockActivityParticipationDTO.contains(i)).collect(Collectors.toList());
 		return nonclockActivityParticipationDTOa;
 	}
-
-
 
 	/**
 	 * GET /activity-participations/:id : get the "id" activityParticipation.
@@ -238,11 +239,9 @@ public class ActivityParticipationResource {
 	@ApiOperation(value = "获取报名资源信息", notes = "根据报名ID获取报名信息", response = ActivityParticipationDTO.class)
 	public ResponseEntity<ActivityParticipationDTO> getActivityParticipation(@PathVariable Long id) {
 		log.debug("REST request to get ActivityParticipation : {}", id);
-        Optional<ActivityParticipationDTO> activityParticipationDTO = activityParticipationService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(activityParticipationDTO);
+		Optional<ActivityParticipationDTO> activityParticipationDTO = activityParticipationService.findOne(id);
+		return ResponseUtil.wrapOrNotFound(activityParticipationDTO);
 	}
-
-
 
 	/**
 	 * DELETE /activity-participations/:id : delete the "id"
@@ -258,29 +257,28 @@ public class ActivityParticipationResource {
 	public ResponseEntity<Void> deleteActivityParticipation(@PathVariable Long id) {
 		log.debug("REST request to delete ActivityParticipation : {}", id);
 
-        Optional<ActivityParticipationDTO> activityParticipationDTO = activityParticipationService.findOne(id);
+		Optional<ActivityParticipationDTO> activityParticipationDTO = activityParticipationService.findOne(id);
 
-        if (activityParticipationDTO.isPresent()){
-            //record the activity quit event start
-            EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()),EventType.QUIT,
-                activityParticipationDTO.get().getWechatUserId(),activityParticipationDTO.get().getActivityTitle(),
-                activityParticipationDTO.get().getActivityId(),activityParticipationDTO.get().getAvatar(),
-                activityParticipationDTO.get().getNickName());
-            if (null!=eventMessageDTO.getId()){
-                messageService.createMessageForEvent(eventMessageDTO);
-            }
-            //record the activity quit event end
+		if (activityParticipationDTO.isPresent()) {
+			// record the activity quit event start
+			 EventMessageDTO eventMessageDTO = EventMessageBuilder
+			.buildEventMessageDTO(activityParticipationDTO.get()).build(EventType.QUIT).get();
+			 eventMessageDTO = eventMessageService.save(eventMessageDTO);
+			if (null != eventMessageDTO.getId()) {
+				messageService.createMessageForEvent(eventMessageDTO);
+			}
+			// record the activity quit event end
 
-        }
+		}
 
-        activityParticipationService.delete(id);
+		activityParticipationService.delete(id);
 		return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
 	}
 
 	@GetMapping("/activity-participations/getParticipationsByActivityId")
 	@Timed
 	@ApiOperation(value = "根据活动ID获取报名信息", notes = "即将过时", response = ActivityParticipationDTO.class)
-	public List<ActivityParticipationDTO> getParticipationsByActivityId(@ApiParam(value="活动id") Long activityId) {
+	public List<ActivityParticipationDTO> getParticipationsByActivityId(@ApiParam(value = "活动id") Long activityId) {
 		log.debug("REST request to get ActivityParticipation : {}", activityId);
 		if (null == activityId) {
 			throw new BadRequestAlertException("activityId can not be null", ENTITY_NAME, "activityIdNULL");
@@ -291,8 +289,6 @@ public class ActivityParticipationResource {
 				: (b1.getClockinCount() > b2.getClockinCount() ? -1 : 1));
 		return result;
 	}
-
-
 
 	@GetMapping("/activity-participations/{wechatUserId}/{activityId}")
 	@Timed
@@ -307,16 +303,16 @@ public class ActivityParticipationResource {
 		FitnessActivityDTO dto = fitnessActivityService.findOne(activityId);
 		WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(wechatUserId));
 		String sexString = "";
-        if (null!=wechatUserDTO && null!=wechatUserDTO.getSex()){
-            Integer sex = wechatUserDTO.getSex();
-            if (sex==1) {
-                sexString = "male";
-            }else if(sex==2){
-                sexString = "female";
-            }else{
-                sexString="";
-            }
-        }
+		if (null != wechatUserDTO && null != wechatUserDTO.getSex()) {
+			Integer sex = wechatUserDTO.getSex();
+			if (sex == 1) {
+				sexString = "male";
+			} else if (sex == 2) {
+				sexString = "female";
+			} else {
+				sexString = "";
+			}
+		}
 		log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}",
 				"fit", dto.getId(), HttpUtil.baseEncoder(dto.getTitle()), "PDP", DateUtil.getYMDDateString(new Date()),
 				wechatUserDTO.getNickName(), sexString);
