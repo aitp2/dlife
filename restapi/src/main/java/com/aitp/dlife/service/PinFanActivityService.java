@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -183,5 +184,16 @@ public class PinFanActivityService {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return formatter.format(date);
     }
+    
+	public PinFanActivity updateModifyTime(Long id) {
+		// update modify time
+		PinFanActivity pinFanActivity = pinFanActivityRepository.findById(id).orElse(null);
+		if (null != pinFanActivity) {
+			pinFanActivity.setModifyTime(Instant.now());
+			pinFanActivityRepository.save(pinFanActivity);
+		}
+		
+		return pinFanActivity;
+	}
 
 }

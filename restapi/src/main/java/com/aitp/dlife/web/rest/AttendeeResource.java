@@ -1,19 +1,13 @@
 package com.aitp.dlife.web.rest;
 
-import com.aitp.dlife.domain.enumeration.EventChannel;
-import com.aitp.dlife.domain.enumeration.EventType;
-import com.aitp.dlife.service.*;
-import com.aitp.dlife.service.dto.EventMessageDTO;
-import com.aitp.dlife.service.dto.PinFanActivityDTO;
-import com.aitp.dlife.service.dto.WechatUserDTO;
-import com.aitp.dlife.web.rest.util.DateUtil;
-import com.aitp.dlife.web.rest.util.HttpUtil;
-import com.codahale.metrics.annotation.Timed;
-import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
-import com.aitp.dlife.web.rest.util.HeaderUtil;
-import com.aitp.dlife.web.rest.util.PaginationUtil;
-import com.aitp.dlife.service.dto.AttendeeDTO;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URISyntaxException;
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,15 +16,36 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.aitp.dlife.domain.PinFanActivity;
+import com.aitp.dlife.domain.enumeration.EventChannel;
+import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.repository.PinFanActivityRepository;
+import com.aitp.dlife.service.AttendeeService;
+import com.aitp.dlife.service.EventMessageService;
+import com.aitp.dlife.service.MessageService;
+import com.aitp.dlife.service.PinFanActivityService;
+import com.aitp.dlife.service.WechatUserService;
+import com.aitp.dlife.service.dto.AttendeeDTO;
+import com.aitp.dlife.service.dto.EventMessageDTO;
+import com.aitp.dlife.service.dto.PinFanActivityDTO;
+import com.aitp.dlife.service.dto.WechatUserDTO;
+import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
+import com.aitp.dlife.web.rest.util.DateUtil;
+import com.aitp.dlife.web.rest.util.HeaderUtil;
+import com.aitp.dlife.web.rest.util.HttpUtil;
+import com.aitp.dlife.web.rest.util.PaginationUtil;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing Attendee.
@@ -81,6 +96,9 @@ public class AttendeeResource {
         }
         attendeeDTO.setActivitiyTile(activityDTO.getActivitiyTile());
         AttendeeDTO result = attendeeService.save(attendeeDTO);
+        
+		// update modify time
+		pinFanActivityService.updateModifyTime(attendeeDTO.getPinFanActivityId());
 
         //record the activity participation event start
         EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.PINFAN,DateUtil.getYMDDateString(new Date()), EventType.ATTEND,

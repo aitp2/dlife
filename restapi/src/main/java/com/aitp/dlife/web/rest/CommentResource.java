@@ -143,10 +143,12 @@ public class CommentResource {
 			objectTitle = fitnessActivity.getTitle();
 			objectId = fitnessActivity.getId();
 		} else if (CommentChannel.PIN.equals(commentDTO.getChannel())) {
-			PinFanActivityDTO pinFanActivity = pinFanActivityService.findOne(commentDTO.getObjectId());
-			eventChannel = EventChannel.PINFAN;
-			objectTitle = pinFanActivity.getActivitiyTile();
-			objectId = pinFanActivity.getId();
+			PinFanActivity pinFanActivity = pinFanActivityService.updateModifyTime(commentDTO.getObjectId());
+			if (null != pinFanActivity) {
+				eventChannel = EventChannel.PINFAN;
+				objectTitle = pinFanActivity.getActivitiyTile();
+				objectId = pinFanActivity.getId();
+			}
 		} else if (CommentChannel.FAQS.equals(commentDTO.getChannel())) {
 			Optional<QuestionDTO> questionDTO = questionService.findOne(commentDTO.getObjectId());
 			if (questionDTO.isPresent()) {
