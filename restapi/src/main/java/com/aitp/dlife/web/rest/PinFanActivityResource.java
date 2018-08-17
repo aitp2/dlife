@@ -131,6 +131,7 @@ public class PinFanActivityResource {
         if (null!=oldDto){
             pinFanActivityDTO.setCommentCount(oldDto.getCommentCount());
             pinFanActivityDTO.setStatus(oldDto.getStatus());
+            pinFanActivityDTO.setReadingCount(oldDto.getReadingCount());
         }
         PinFanActivityDTO result = pinFanActivityService.save(pinFanActivityDTO);
 
