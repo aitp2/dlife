@@ -45,4 +45,11 @@ public interface ClockInNotesRepository extends JpaRepository<ClockIn, Long> {
 	List<ClockIn> getColckInNotesByWechatUserIdAndAcitivityIdAndYearMonthDay(@Param("wechatUserId") String wechatUserId,
 			@Param("activityId") Long activityId, @Param("ymd") String ymd);
 
+	
+	@Query(value = "SELECT DISTINCT DATE_FORMAT(clock_in.punch_date_time,'%Y-%m-%d') FROM clock_in "
+			+ " LEFT JOIN activity_participation "
+			+ " ON clock_in.activity_participation_id = activity_participation.id " + " where "
+			+ " activity_participation.wechat_user_id =?1 " + " and activity_participation.fitness_activity_id =?2 ", nativeQuery = true)
+	List<String> getColckInCalendarByWechatUserIdAndAcitivityId(String wechatUserId, Long activityId);
+
 }

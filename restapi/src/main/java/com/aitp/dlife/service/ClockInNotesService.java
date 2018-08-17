@@ -116,5 +116,17 @@ public class ClockInNotesService {
 		}
 	}
 
+	/**
+	 * 查询用户指定活动指定月份的打卡日历
+	 * @param wechatUserId
+	 * @param activityId
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	public List<String> getColckInCalendarByWechatUserIdAndAcitivityId(String wechatUserId, Long activityId) {
+		// TODO Auto-generated method stub
+		return clockInNotesRepository.getColckInCalendarByWechatUserIdAndAcitivityId(wechatUserId,activityId);
+	}
+
 
 }
