@@ -31,9 +31,8 @@ public class FitnessActivitySpecification extends AbstractSpecifcation<FitnessAc
 	private static final long serialVersionUID = 1L;
 
 	
-
-	public FitnessActivitySpecification(Long wechatUserId, Integer status) {
-		super(new FitnessActivityVM(wechatUserId,status));
+	public FitnessActivitySpecification(Integer participantId, Integer status,Integer createId) {
+		super(new FitnessActivityVM(participantId,status,createId));
 	}
 
 	/**
@@ -43,9 +42,13 @@ public class FitnessActivitySpecification extends AbstractSpecifcation<FitnessAc
 	public Predicate toPredicate(Root<FitnessActivity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
    
         List<Predicate> andPrediCate =new ArrayList<Predicate>();
-        if(!ObjectUtils.isEmpty(querys.getWechatUserId())){
-            Path<String> wechatUserId = root.join("activityParticipations",JoinType.LEFT).get("wechatUserId");
-            andPrediCate.add(criteriaBuilder.equal(wechatUserId, querys.getWechatUserId()));
+        if(!ObjectUtils.isEmpty(querys.getParticipantId())){
+            Path<String> participantId = root.join("activityParticipations",JoinType.LEFT).get("wechatUserId");
+            andPrediCate.add(criteriaBuilder.equal(participantId, querys.getParticipantId()));
+        }
+        if(!ObjectUtils.isEmpty(querys.getParticipantId())){
+            Path<String> createId = root.get("wechatUserId");
+            andPrediCate.add(criteriaBuilder.equal(createId, querys.getCreateId()));
         }
         if(!ObjectUtils.isEmpty(querys.getStatus())){
         	  Expression<String> activityStartTime = root.get("activityStartTime").as(String.class);
