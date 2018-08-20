@@ -65,8 +65,9 @@ public class PinFanActivityDTO implements Serializable {
     private Integer commentCount;
     
     private Integer readingCount;
-
     
+    private String modifyTime;
+
     private boolean attended = false;
 
     private Set<AttendeeDTO> attendees = new HashSet<>();
@@ -278,6 +279,15 @@ public class PinFanActivityDTO implements Serializable {
 	public void setReadingCount(Integer readingCount) {
 		this.readingCount = readingCount;
 	}
+	
+
+	public String getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(String modifyTime) {
+		this.modifyTime = modifyTime;
+	}
 
 	@Override
     public boolean equals(Object o) {
@@ -301,30 +311,17 @@ public class PinFanActivityDTO implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "PinFanActivityDTO{" +
-            "id=" + getId() +
-            ", wechatUserId='" + getWechatUserId() + "'" +
-            ", avatar='" + getAvatar() + "'" +
-            ", nickName='" + getNickName() + "'" +
-            ", activitiyType=" + getActivitiyType() +
-            ", activitiyTile='" + getActivitiyTile() + "'" +
-            ", budget=" + getBudget() +
-            ", activitiyAddre='" + getActivitiyAddre() + "'" +
-            ", descrption='" + getDescrption() + "'" +
-            ", organizeUser='" + getOrganizeUser() + "'" +
-            ", coverPicture='" + getCoverPicture() + "'" +
-            ", appointDatetime='" + getAppointDatetime() + "'" +
-            ", appointEndDatetime='" + getAppointEndDatetime() + "'" +
-            ", salerUrl='" + getSalerUrl() + "'" +
-            ", lowerLimit=" + getLowerLimit() +
-            ", upperLimit=" + getUpperLimit() +
-            ", payType='" + getPayType() + "'" +
-            ", deadline='" + getDeadline() + "'" +
-            ", comment='" + getComment() + "'" +
-            ", status='" + getStatus() + "'" +
-            "}";
-    }
+	public String toString() {
+		return "PinFanActivityDTO [id=" + id + ", wechatUserId=" + wechatUserId + ", avatar=" + avatar + ", nickName="
+				+ nickName + ", activitiyType=" + activitiyType + ", activitiyTile=" + activitiyTile + ", budget="
+				+ budget + ", activitiyAddre=" + activitiyAddre + ", descrption=" + descrption + ", organizeUser="
+				+ organizeUser + ", coverPicture=" + coverPicture + ", appointDatetime=" + appointDatetime
+				+ ", appointEndDatetime=" + appointEndDatetime + ", salerUrl=" + salerUrl + ", lowerLimit=" + lowerLimit
+				+ ", upperLimit=" + upperLimit + ", payType=" + payType + ", deadline=" + deadline + ", comment="
+				+ comment + ", commentCount=" + commentCount + ", readingCount=" + readingCount + ", modifyTime="
+				+ modifyTime + ", attended=" + attended + ", attendees=" + attendees + ", pinfanPics=" + pinfanPics
+				+ ", rates=" + rates + ", status=" + status + "]";
+	}
 
     public Integer getCommentCount() {
         return commentCount;
