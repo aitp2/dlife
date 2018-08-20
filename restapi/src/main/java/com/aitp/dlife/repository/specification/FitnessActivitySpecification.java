@@ -46,7 +46,7 @@ public class FitnessActivitySpecification extends AbstractSpecifcation<FitnessAc
             Path<String> participantId = root.join("activityParticipations",JoinType.LEFT).get("wechatUserId");
             andPrediCate.add(criteriaBuilder.equal(participantId, querys.getParticipantId()));
         }
-        if(!ObjectUtils.isEmpty(querys.getParticipantId())){
+        if(!ObjectUtils.isEmpty(querys.getCreateId())){
             Path<String> createId = root.get("wechatUserId");
             andPrediCate.add(criteriaBuilder.equal(createId, querys.getCreateId()));
         }
