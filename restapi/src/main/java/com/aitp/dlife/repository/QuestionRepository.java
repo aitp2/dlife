@@ -15,5 +15,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-    Page<Question> findAllByWechatUserId(Pageable pageable, @Param("wechatUserId")String wechatUserId);
+    @Query(value = "select qu from Question as qu " + "where qu.wechatUserId =:wechatUserId",nativeQuery = false)
+    Page<Question> findAllQuestionsByWechatUserId(Pageable pageable, @Param("wechatUserId")String wechatUserId);
+
+    @Query(value = "select qu from Question as qu left join Comment as cm on qu.id = cm.objectId" + " where cm.wechatUserId =:wechatUserId",nativeQuery = false)
+    Page<Question> findAllAnswersByWechatUserId(Pageable pageable, @Param("wechatUserId")String wechatUserId);
 }
