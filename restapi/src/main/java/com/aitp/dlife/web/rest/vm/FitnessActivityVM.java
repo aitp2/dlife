@@ -1,9 +1,12 @@
 package com.aitp.dlife.web.rest.vm;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class FitnessActivityVM {
 
 	private Integer participantId;
 	
+	@ApiModelProperty(value="状态（0-结束，1-未开始,2-进行中）")
     private Integer	status;
     
     private Integer createId;

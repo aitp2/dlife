@@ -10,13 +10,13 @@ public class FitnessActivityUtil {
 	public static Integer getStatus(Instant start, Instant end){
 		  Instant now = Instant.now();
         if (start.isBefore(now) && end.isAfter(now)) {
-            return Status.OPEND.getValue();
+            return Status.IN_PROGRESS.getValue();
         }
         else if (end.isBefore(now)){
-        	 return Status.IN_PROGRESS.getValue();
+        	 return Status.END.getValue();
         }else
         {
-        	 return Status.END.getValue();
+        	 return Status.OPEND.getValue();
         }
 	}
 }
