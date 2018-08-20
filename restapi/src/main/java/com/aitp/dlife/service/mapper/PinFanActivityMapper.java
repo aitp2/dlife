@@ -8,7 +8,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity PinFanActivity and its DTO PinFanActivityDTO.
  */
-@Mapper(componentModel = "spring", uses = {InstantMapper.class,PinfanPicsMapper.class})
+@Mapper(componentModel = "spring", uses = {InstantMapper.class,PinfanPicsMapper.class,FitnessActivityUtil.class})
 public interface PinFanActivityMapper extends EntityMapper<PinFanActivityDTO, PinFanActivity> {
 
     @Mapping(target = "appointDatetime",expression = "java(InstantMapper.toDateString(entity.getAppointDatetime()))")

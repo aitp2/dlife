@@ -19,10 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.repository.FitnessActivityRepository;
-import com.aitp.dlife.repository.specification.FitnessActivitySpecification;
 import com.aitp.dlife.service.dto.EventMessageDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
-import com.aitp.dlife.service.dto.QueryDTO;
 import com.aitp.dlife.service.enums.Status;
 import com.aitp.dlife.service.mapper.FitnessActivityMapper;
 import com.aitp.dlife.web.rest.errors.CustomParameterizedException;

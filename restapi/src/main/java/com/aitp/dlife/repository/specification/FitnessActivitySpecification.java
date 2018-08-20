@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -43,7 +44,7 @@ public class FitnessActivitySpecification extends AbstractSpecifcation<FitnessAc
    
         List<Predicate> andPrediCate =new ArrayList<Predicate>();
         if(!ObjectUtils.isEmpty(querys.getWechatUserId())){
-            Path<String> wechatUserId = root.join("activityParticipations").get("wechatUserId");
+            Path<String> wechatUserId = root.join("activityParticipations",JoinType.LEFT).get("wechatUserId");
             andPrediCate.add(criteriaBuilder.equal(wechatUserId, querys.getWechatUserId()));
         }
         if(!ObjectUtils.isEmpty(querys.getStatus())){
