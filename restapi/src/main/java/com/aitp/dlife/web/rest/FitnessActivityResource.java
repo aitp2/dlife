@@ -155,6 +155,7 @@ public class FitnessActivityResource {
         if(null!=oldDto){
             fitnessActivityDTO.setStatus(oldDto.getStatus());
             fitnessActivityDTO.setCommentCount(oldDto.getCommentCount());
+            fitnessActivityDTO.setReadingCount(oldDto.getReadingCount());
         }
 
         FitnessActivityDTO result = fitnessActivityService.save(fitnessActivityDTO);

@@ -98,5 +98,20 @@ public class ClockInNotesResource {
 				.getColckInCalendarByWechatUserIdAndAcitivityIdAndYearMonth(wechatUserId, activityId, ym));
 		return response;
 	}
+	
+	@GetMapping("/calendar/{wechatUserId}/{activityId}")
+	@ApiOperation(value = "查询用户指定活动的打卡日记日历", response = ClockInNotesCalendarResponse.class, produces = "application/json")
+	@ApiImplicitParams({
+			@ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "wechatUserId", value = "用户id", required = true),
+			@ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "activityId", value = "活动id", required = true)})
+	@Timed
+	public ClockInNotesCalendarResponse getColckInCalendarByWechatUserIdAndAcitivityId(
+			@PathVariable("wechatUserId") String wechatUserId, @PathVariable("activityId") Long activityId) {
+		log.info("REST request to get clock-in-notes-calendar : {},{}", wechatUserId, activityId);
+		ClockInNotesCalendarResponse response = new ClockInNotesCalendarResponse();
+		response.setClockInNotesCalendars(clockInNotesService
+				.getColckInCalendarByWechatUserIdAndAcitivityId(wechatUserId, activityId));
+		return response;
+	}
 
 }

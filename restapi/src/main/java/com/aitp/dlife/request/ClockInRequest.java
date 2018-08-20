@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -34,7 +35,7 @@ public class ClockInRequest {
     /**
      * 用户参与活动id
      */
-    @NotEmpty
+    @NotNull
     private Long activityParticipationId;
 
     /**

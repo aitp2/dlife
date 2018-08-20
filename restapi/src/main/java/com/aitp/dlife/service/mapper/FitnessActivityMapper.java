@@ -17,6 +17,7 @@ public interface FitnessActivityMapper extends EntityMapper<FitnessActivityDTO, 
 	@Mapping(target = "signEndTime", expression = "java(InstantMapper.toDateString(fitnessActivity.getSignEndTime()))")
 	@Mapping(target = "activityStartTime", expression = "java(InstantMapper.toDateString(fitnessActivity.getActivityStartTime()))")
 	@Mapping(target = "activityEndTime", expression = "java(InstantMapper.toDateString(fitnessActivity.getActivityEndTime()))")
+	@Mapping(target = "modifyTime", expression = "java(InstantMapper.toDateString(fitnessActivity.getModifyTime()))")
 	@Mapping(target = "attendCount", expression = "java(fitnessActivity.getActivityParticipations() == null ? 0 : fitnessActivity.getActivityParticipations().size())")
 	@Mapping(source="activityParticipations",target ="activityParticipations")
 	@Mapping(target="status",expression="java(FitnessActivityUtil.getStatus(fitnessActivity.getActivityStartTime(),fitnessActivity.getActivityEndTime()))")
@@ -29,6 +30,7 @@ public interface FitnessActivityMapper extends EntityMapper<FitnessActivityDTO, 
 	@Mapping(target = "signEndTime", expression = "java(InstantMapper.fromString(fitnessActivityDTO.getSignEndTime()))")
 	@Mapping(target = "activityStartTime", expression = "java(InstantMapper.fromString(fitnessActivityDTO.getActivityStartTime()))")
 	@Mapping(target = "activityEndTime", expression = "java(InstantMapper.fromString(fitnessActivityDTO.getActivityEndTime()))")
+	@Mapping(target = "modifyTime", expression = "java(InstantMapper.fromString(fitnessActivityDTO.getModifyTime()))")
 	FitnessActivity toEntity(FitnessActivityDTO fitnessActivityDTO);
 
 	default FitnessActivity fromId(Long id) {
