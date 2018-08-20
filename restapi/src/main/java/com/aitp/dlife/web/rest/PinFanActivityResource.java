@@ -88,7 +88,7 @@ public class PinFanActivityResource {
             }
         }
         result.setPinfanPics(pinfanPicsDTOS);
-
+        
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(pinFanActivityDTO.getWechatUserId()));
         String sexString="";
@@ -135,6 +135,13 @@ public class PinFanActivityResource {
         }
         PinFanActivityDTO result = pinFanActivityService.save(pinFanActivityDTO);
 
+        // deal with completedSequence
+        // 1 已完成
+        // 注意：如果抽出该逻辑 请考虑事务问题
+		if (pinFanActivityDTO.getStatus() == 1) {
+			result.setCompletedSequence(pinFanActivityService.getCompletedSequence(pinFanActivityDTO.getWechatUserId()));
+		}
+        
         //record the activity modify event start
         EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.PINFAN,DateUtil.getYMDDateString(new Date()),EventType.UPDATE,
             result.getWechatUserId(),result.getActivitiyTile(),result.getId(),result.getAvatar(),result.getNickName());

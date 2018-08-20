@@ -67,6 +67,8 @@ public class PinFanActivityDTO implements Serializable {
     private Integer readingCount;
     
     private String modifyTime;
+    
+    private String completedSequence;
 
     private boolean attended = false;
 
@@ -287,6 +289,14 @@ public class PinFanActivityDTO implements Serializable {
 
 	public void setModifyTime(String modifyTime) {
 		this.modifyTime = modifyTime;
+	}
+	
+	public String getCompletedSequence() {
+		return completedSequence;
+	}
+
+	public void setCompletedSequence(String completedSequence) {
+		this.completedSequence = completedSequence;
 	}
 
 	@Override

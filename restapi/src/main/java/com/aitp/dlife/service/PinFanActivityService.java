@@ -196,4 +196,8 @@ public class PinFanActivityService {
 		return pinFanActivity;
 	}
 
+	public String getCompletedSequence(String wechatUserId) {
+		return pinFanActivityRepository.getCompletedSequence(wechatUserId);
+	}
+
 }
