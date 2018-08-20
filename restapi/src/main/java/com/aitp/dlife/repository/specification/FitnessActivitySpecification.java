@@ -40,7 +40,7 @@ public class FitnessActivitySpecification extends AbstractSpecifcation<FitnessAc
 	 */
 	@Override
 	public Predicate toPredicate(Root<FitnessActivity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-   
+		query.distinct(true);
         List<Predicate> andPrediCate =new ArrayList<Predicate>();
         if(!ObjectUtils.isEmpty(querys.getParticipantId())){
             Path<String> participantId = root.join("activityParticipations",JoinType.LEFT).get("wechatUserId");
@@ -70,10 +70,7 @@ public class FitnessActivitySpecification extends AbstractSpecifcation<FitnessAc
 				throw new CustomParameterizedException("not have the status "+querys.getStatus()+" code.","status");
 			}
         }
-     
         return criteriaBuilder.and(andPrediCate.toArray(new Predicate[andPrediCate.size()]));  
-          
-
 	}
 
 }
