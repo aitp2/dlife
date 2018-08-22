@@ -4,6 +4,7 @@ import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.service.*;
 import com.aitp.dlife.service.dto.*;
+import com.aitp.dlife.web.rest.util.BeanPropertiesUtils;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.aitp.dlife.web.rest.util.HttpUtil;
 import com.codahale.metrics.annotation.Timed;
@@ -17,6 +18,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -131,7 +133,7 @@ public class PinFanActivityResource {
      */
     @PutMapping("/pin-fan-activities")
     @Timed
-	@ApiOperation(value = "修改拼饭活动", notes = "传递拼饭数据进行创建，其中ID不填", response = PinFanActivityDTO.class)
+	@ApiOperation(value = "修改拼饭活动", notes = "传递拼饭数据进行修改，对不修改的数据可以不用填充 ID必填", response = PinFanActivityDTO.class)
     public ResponseEntity<PinFanActivityDTO> updatePinFanActivity(@Valid @RequestBody PinFanActivityDTO pinFanActivityDTO) throws URISyntaxException, IllegalAccessException, InvocationTargetException {
         log.debug("REST request to update PinFanActivity : {}", pinFanActivityDTO);
         if (pinFanActivityDTO.getId() == null) {
@@ -139,11 +141,9 @@ public class PinFanActivityResource {
         }
         PinFanActivityDTO oldDto = pinFanActivityService.findOne(pinFanActivityDTO.getId());
         if (null!=oldDto){
-            pinFanActivityDTO.setCommentCount(oldDto.getCommentCount());
-            pinFanActivityDTO.setStatus(oldDto.getStatus());
-            pinFanActivityDTO.setReadingCount(oldDto.getReadingCount());
+        	BeanUtils.copyProperties(pinFanActivityDTO, oldDto, BeanPropertiesUtils.getNullProperties(pinFanActivityDTO));
         }
-        PinFanActivityDTO result = pinFanActivityService.save(pinFanActivityDTO);
+        PinFanActivityDTO result = pinFanActivityService.save(oldDto);
 
         // deal with completedSequence
         // 1 已完成

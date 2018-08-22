@@ -17,7 +17,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.ObjectUtils;
 
 import com.aitp.dlife.domain.FitnessActivity;
-import com.aitp.dlife.service.dto.QueryDTO;
 import com.aitp.dlife.service.enums.Status;
 import com.aitp.dlife.web.rest.errors.CustomParameterizedException;
 import com.aitp.dlife.web.rest.vm.FitnessActivityVM;

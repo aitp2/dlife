@@ -3,6 +3,9 @@ package com.aitp.dlife.service.dto;
 
 
 import javax.validation.constraints.*;
+
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -76,6 +79,8 @@ public class PinFanActivityDTO implements Serializable {
     private String completedSequence;
 
     private boolean attended = false;
+    @ApiModelProperty(value="报名状态（0-截至，1-开始）")
+    private Integer joinStatus;
 
     private Set<AttendeeDTO> attendees = new HashSet<>();
 
@@ -90,7 +95,7 @@ public class PinFanActivityDTO implements Serializable {
     public void setStatus(Integer status) {
         this.status = status;
     }
-
+    @ApiModelProperty(value="活动状态（0-创建，1-完成,2-取消）")
     private Integer status;
 
     public boolean isAttended() {
@@ -302,6 +307,14 @@ public class PinFanActivityDTO implements Serializable {
 
 	public void setCompletedSequence(String completedSequence) {
 		this.completedSequence = completedSequence;
+	}
+	
+	public Integer getJoinStatus() {
+		return joinStatus;
+	}
+
+	public void setJoinStatus(Integer joinStatus) {
+		this.joinStatus = joinStatus;
 	}
 
 	@Override
