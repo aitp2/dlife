@@ -17,10 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -192,7 +189,14 @@ public class MessageService {
             //场景：回答小问答，消息对象：提问者
             if (EventType.COMMENT.equals(type)){
                 userIds.add(questionDTO.getWechatUserId());
-                return userIds;
+            }
+        }
+        //消息的触发人和接收人相同时不用发送消息
+        Iterator<String> it =  userIds.iterator();
+        while (it.hasNext()){
+            String id = it.next();
+            if (dto.getWechatUserId().equals(id)){
+                it.remove();
             }
         }
         return  userIds;
