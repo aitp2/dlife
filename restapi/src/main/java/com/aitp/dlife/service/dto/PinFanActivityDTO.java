@@ -80,7 +80,7 @@ public class PinFanActivityDTO implements Serializable {
 
     private boolean attended = false;
     @ApiModelProperty(value="报名状态（0-截至，1-开始）")
-    private Integer joinStatus;
+    private Integer joinStatus = 1;
 
     private Set<AttendeeDTO> attendees = new HashSet<>();
 

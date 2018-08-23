@@ -148,8 +148,8 @@ public class PinFanActivityResource {
         // deal with completedSequence
         // 1 已完成
         // 注意：如果抽出该逻辑 请考虑事务问题
-		if (pinFanActivityDTO.getStatus() == 1) {
-			result.setCompletedSequence(pinFanActivityService.getCompletedSequence(pinFanActivityDTO.getWechatUserId()));
+		if (result.getStatus() == 1) {
+			result.setCompletedSequence(pinFanActivityService.getCompletedSequence(result.getWechatUserId()));
 		}
         
         //record the activity modify event start
