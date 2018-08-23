@@ -1,5 +1,6 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.repository.specification.CommentSpecification;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.QuestionService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -211,20 +212,17 @@ public class QuestionResource {
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of questions in body
      */
-    @GetMapping("/questions/mineAnswers/{wechatUserId}")
+    @GetMapping("/questions/mineAnswers")
     @ApiOperation(value = "查询我的回答列表", response = QuestionDTO.class, produces = "application/json")
-    @ApiImplicitParams({
-        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "wechatUserId", value = "我的wechatUserId", required = true) })
     @Timed
-    public ResponseEntity<List<QuestionDTO>> getAllMineAnswers(Pageable pageable, @PathVariable String wechatUserId) {
+    public ResponseEntity<List<QuestionDTO>> getAllMineAnswers(Pageable pageable, CommentSpecification spec) {
         log.debug("REST request to get a page of mine Answers");
 
-        if (wechatUserId == null) {
+        if (spec == null) {
             throw new BadRequestAlertException("Invalid wechatUserId", ENTITY_NAME, "wechatUserIdNull");
         }
 
-        Page<QuestionDTO> page = questionService.findAllAnswersByWechatUserId(pageable, wechatUserId);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/questions");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        List<QuestionDTO> page = questionService.findAllAnswersByWechatUserId(pageable, spec);
+        return new ResponseEntity<>(page, HttpStatus.OK);
     }
 }

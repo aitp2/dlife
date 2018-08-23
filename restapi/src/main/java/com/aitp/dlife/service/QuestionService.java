@@ -1,5 +1,6 @@
 package com.aitp.dlife.service;
 
+import com.aitp.dlife.domain.Comment;
 import com.aitp.dlife.domain.Question;
 import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.repository.QuestionRepository;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -157,27 +159,29 @@ public class QuestionService {
      * Get all the mine questions.
      *
      * @param pageable the pagination information
-     * @param wechatUserId the wechatUserId
+     * @param specComment the specComment
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<QuestionDTO> findAllAnswersByWechatUserId(Pageable pageable, String wechatUserId) {
+    public List<QuestionDTO> findAllAnswersByWechatUserId(Pageable pageable, Specification<Comment> specComment) {
         log.debug("Request to get all mine Questions");
-        Page<QuestionDTO> result = questionRepository.findAllAnswersByWechatUserId(pageable, wechatUserId)
-            .map(questionMapper::toDto);
+        Page<CommentDTO> commentDTOS = commentService.findAll(pageable, specComment);
 
-        if(result!=null){
-            Sort.Order order = new Sort.Order(Sort.Direction.DESC,"createTime");
-            Sort sort = new Sort(order);
-            PageRequest eventPageable = new PageRequest(0,10,sort);
-            for(QuestionDTO questionDTO:result){
-                List<CommentDTO> commentDTOList = commentService.findAllForOneObjectAndWechatUserId(eventPageable, CommentChannel.FAQS.toString(),
-                    questionDTO.getId()+"", wechatUserId).stream().collect(Collectors.toList());
-                questionDTO.setAnswers(commentDTOList);
+        if(commentDTOS!=null){
+            List<QuestionDTO> questionDTOS = new ArrayList<>();
+            for(CommentDTO commentDTO:commentDTOS){
+                Optional<QuestionDTO> questionDTO = findOne(commentDTO.getObjectId());
+                if (questionDTO.isPresent()){
+                    List<CommentDTO> thisComment = new ArrayList<>();
+                    thisComment.add(commentDTO);
+                    questionDTO.get().setAnswers(thisComment);
+                    questionDTOS.add(questionDTO.get());
+                }
+
             }
+            return questionDTOS;
         }
-
-        return result;
+        return Collections.emptyList();
     }
 
     /**
