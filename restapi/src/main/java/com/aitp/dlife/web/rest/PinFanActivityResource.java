@@ -186,15 +186,6 @@ public class PinFanActivityResource {
                 }
             }
         }
-        else
-        {
-            for(PinfanPicsDTO oldImage : oldImages)
-            {
-                pinfanPicsService.delete(oldImage.getId());
-            }
-        }
-
-
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, pinFanActivityDTO.getId().toString()))
             .body(result);
