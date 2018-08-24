@@ -27,8 +27,8 @@ public class CommentSpecification extends AbstractSpecifcation<CommentVM> implem
 
 
 
-	public CommentSpecification(String objectId, CommentChannel channel) {
-		super(new CommentVM(objectId, channel));
+	public CommentSpecification(String objectId, CommentChannel channel, String wechatUserId) {
+		super(new CommentVM(objectId, channel, wechatUserId));
 	}
 
 	/**
@@ -46,6 +46,11 @@ public class CommentSpecification extends AbstractSpecifcation<CommentVM> implem
         	Path<CommentChannel> channelPath = root.get("channel");
             Predicate	channelPredicate = criteriaBuilder.equal(channelPath, querys.getChannel());
             predicates.add(channelPredicate);
+        }
+        if(!ObjectUtils.isEmpty(querys.getWechatUserId())){
+            Path<CommentChannel> wechatUserIdPath = root.get("wechatUserId");
+            Predicate wechatUserIdPredicate = criteriaBuilder.equal(wechatUserIdPath, querys.getWechatUserId());
+            predicates.add(wechatUserIdPredicate);
         }
         Predicate predicate = criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
         return predicate;

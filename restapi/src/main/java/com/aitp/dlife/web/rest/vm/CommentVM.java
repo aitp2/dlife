@@ -8,6 +8,8 @@ public class CommentVM {
 
 	private CommentChannel channel;
 
+    private String wechatUserId;
+
 
 
 
@@ -15,11 +17,12 @@ public class CommentVM {
 		super();
 	}
 
-	public CommentVM(String objectId, CommentChannel channel) {
+	public CommentVM(String objectId, CommentChannel channel, String wechatUserId) {
 		super();
 		this.objectId = objectId;
 		this.channel = channel;
-	}
+        this.wechatUserId = wechatUserId;
+    }
 
 	public String getObjectId() {
 		return objectId;
@@ -37,16 +40,21 @@ public class CommentVM {
 		this.channel = channel;
 	}
 
+    public String getWechatUserId() {
+        return wechatUserId;
+    }
 
+    public void setWechatUserId(String wechatUserId) {
+        this.wechatUserId = wechatUserId;
+    }
 
-
-
-	@Override
+    @Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((channel == null) ? 0 : channel.hashCode());
 		result = prime * result + ((objectId == null) ? 0 : objectId.hashCode());
+        result = prime * result + ((wechatUserId == null) ? 0 : wechatUserId.hashCode());
 		return result;
 	}
 
@@ -69,12 +77,18 @@ public class CommentVM {
 				return false;
 		} else if (!objectId.equals(other.objectId))
 			return false;
+
+        if (wechatUserId == null) {
+            if (other.wechatUserId != null)
+                return false;
+        } else if (!wechatUserId.equals(other.wechatUserId))
+            return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "CommentVM [objectId=" + objectId + ", channel=" + channel + "]";
+		return "CommentVM [objectId=" + objectId + ", channel=" + channel + ", wechatUserId=" + wechatUserId + "]";
 	}
 
 

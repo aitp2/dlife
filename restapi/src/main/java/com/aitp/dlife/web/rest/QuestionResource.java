@@ -1,5 +1,7 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.domain.enumeration.CommentChannel;
+import com.aitp.dlife.repository.specification.CommentSpecification;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.QuestionService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
@@ -222,9 +224,9 @@ public class QuestionResource {
         if (wechatUserId == null) {
             throw new BadRequestAlertException("Invalid wechatUserId", ENTITY_NAME, "wechatUserIdNull");
         }
+        final CommentSpecification spec = new CommentSpecification(null, CommentChannel.FAQS,wechatUserId);
 
-        Page<QuestionDTO> page = questionService.findAllAnswersByWechatUserId(pageable, wechatUserId);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/questions");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        List<QuestionDTO> page = questionService.findAllAnswersByWechatUserId(pageable, spec);
+        return new ResponseEntity<>(page, HttpStatus.OK);
     }
 }

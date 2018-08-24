@@ -118,25 +118,6 @@ public class CommentService {
     }
 
     /**
-     * Get all the comments.
-     *
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public Page<CommentDTO> findAllForOneObjectAndWechatUserId(Pageable pageable,String channel, String objectId, String wechatUserId) {
-        log.debug("Request to get all Comments");
-
-        for(CommentChannel channel1:CommentChannel.values()){
-            if(channel.toUpperCase().equals(channel1.toString())){
-                return commentRepository.findAllForOneObjectAndWechatUserId(pageable,channel1,Long.valueOf(objectId),wechatUserId)
-                    .map(commentMapper::toDto);
-            }
-        }
-        throw new BadRequestAlertException("There is no comment for current request","Comment","暂无评论");
-    }
-
-    /**
      * Get one comment by id.
      *
      * @param id the id of the entity
