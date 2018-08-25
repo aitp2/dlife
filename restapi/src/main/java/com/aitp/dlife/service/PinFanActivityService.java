@@ -70,27 +70,15 @@ public class PinFanActivityService {
     public Page<PinFanActivityDTO> findAll(Pageable pageable) {
         log.debug("Request to get all PinFanActivities");
         Page<PinFanActivity> all = pinFanActivityRepository.findAll(pageable);
-
-        if(all!=null){
-            for(PinFanActivity activity:all){
-                if(activity.getAppointEndDatetime() != null && (new Date().toInstant()).compareTo(activity.getAppointEndDatetime()) >= 0
-                    &&0==activity.getStatus()){
-                    activity.setStatus(1);
-                }
-            }
-        }
         return all.map(pinFanActivityMapper::toDto);
     }
+      
     @Transactional(readOnly = true)
     public Page<PinFanActivityDTO> findAllByWechatUserId(Pageable pageable,String wechatUserId) {
         log.debug("Request to get all PinFanActivities");
         Page<PinFanActivity> all = pinFanActivityRepository.findAllByWechatUserId(pageable,wechatUserId);
         if(all!=null){
             for(PinFanActivity activity:all){
-                if(activity.getAppointEndDatetime() != null && (new Date().toInstant()).compareTo(activity.getAppointEndDatetime()) >= 0
-                    &&0==activity.getStatus()){
-                    activity.setStatus(1);
-                }
                 activity.setPinfanPics(null);
                 if(!Hibernate.isInitialized(activity.getAttendees())){
                     Hibernate.initialize(activity.getAttendees());
@@ -112,10 +100,6 @@ public class PinFanActivityService {
         List<PinFanActivity> activities = pinFanActivityRepository.findAllByIdIn(actIds);
         if(activities!=null){
             for(PinFanActivity activity:activities){
-                if(activity.getAppointEndDatetime() != null && (new Date().toInstant()).compareTo(activity.getAppointEndDatetime()) >= 0
-                    &&0==activity.getStatus()){
-                    activity.setStatus(1);
-                }
                 activity.setPinfanPics(null);
                 if(!Hibernate.isInitialized(activity.getAttendees())){
                     Hibernate.initialize(activity.getAttendees());
@@ -134,11 +118,6 @@ public class PinFanActivityService {
     public PinFanActivityDTO findOne(Long id) {
         log.debug("Request to get PinFanActivity : {}", id);
         PinFanActivity pinFanActivity = pinFanActivityRepository.findById(id).get();
-        if(pinFanActivity.getAppointEndDatetime() != null &&
-            (new Date().toInstant()).compareTo(pinFanActivity.getAppointEndDatetime()) >= 0
-            &&0==pinFanActivity.getStatus()){
-            pinFanActivity.setStatus(1);
-        }
         if(pinFanActivity!=null){
             if(!Hibernate.isInitialized(pinFanActivity.getPinfanPics())){
                 Hibernate.initialize(pinFanActivity.getPinfanPics());
