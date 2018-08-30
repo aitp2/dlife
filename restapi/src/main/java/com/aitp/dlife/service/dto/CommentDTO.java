@@ -36,7 +36,6 @@ public class CommentDTO implements Serializable {
     @Size(max = 128)
     private String nickName;
 
-
     private String content;
 
     private Integer rating1;
@@ -48,9 +47,7 @@ public class CommentDTO implements Serializable {
     private String createTime;
 
     private String modifyTime;
-
  
-    
     private Set<CommentPicDTO> commentPics = new HashSet<>();
     
     private Set<ThumbsUpDTO> thumbsUpDTOs = new HashSet<>();
@@ -191,7 +188,7 @@ public class CommentDTO implements Serializable {
         }
         return Objects.equals(getId(), commentDTO.getId());
     }
-    
+   
 
 	@Override
     public int hashCode() {

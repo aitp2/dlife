@@ -1,53 +1,65 @@
 package com.aitp.dlife.web.rest;
 
-import com.aitp.dlife.domain.PinFanActivity;
-import com.aitp.dlife.domain.Question;
-import com.aitp.dlife.domain.enumeration.CommentChannel;
-import com.aitp.dlife.domain.enumeration.EventChannel;
-import com.aitp.dlife.domain.enumeration.EventType;
-import com.aitp.dlife.repository.PinFanActivityRepository;
-import com.aitp.dlife.repository.specification.CommentSpecification;
-import com.aitp.dlife.repository.specification.ThumbsUpSpecification;
-import com.aitp.dlife.service.*;
-import com.aitp.dlife.service.dto.*;
-import com.aitp.dlife.web.rest.util.DateUtil;
-import com.codahale.metrics.annotation.Timed;
-import com.google.common.collect.Lists;
-import com.aitp.dlife.domain.Comment;
-import com.aitp.dlife.domain.FitnessActivity;
-import com.aitp.dlife.repository.FitnessActivityRepository;
-import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
-import com.aitp.dlife.web.rest.util.HeaderUtil;
-import com.aitp.dlife.web.rest.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.Instant;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
+import com.aitp.dlife.domain.FitnessActivity;
+import com.aitp.dlife.domain.PinFanActivity;
+import com.aitp.dlife.domain.enumeration.CommentChannel;
+import com.aitp.dlife.domain.enumeration.EventChannel;
+import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.repository.FitnessActivityRepository;
+import com.aitp.dlife.repository.specification.CommentSpecification;
+import com.aitp.dlife.repository.specification.ThumbsUpSpecification;
+import com.aitp.dlife.service.CommentPicService;
+import com.aitp.dlife.service.CommentService;
+import com.aitp.dlife.service.EventMessageService;
+import com.aitp.dlife.service.MessageService;
+import com.aitp.dlife.service.PinFanActivityService;
+import com.aitp.dlife.service.QuestionService;
+import com.aitp.dlife.service.ThumbsUpService;
+import com.aitp.dlife.service.dto.CommentDTO;
+import com.aitp.dlife.service.dto.CommentPicDTO;
+import com.aitp.dlife.service.dto.EventMessageDTO;
+import com.aitp.dlife.service.dto.QuestionDTO;
+import com.aitp.dlife.service.dto.ThumbsUpDTO;
+import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
+import com.aitp.dlife.web.rest.util.DateUtil;
+import com.aitp.dlife.web.rest.util.HeaderUtil;
+import com.aitp.dlife.web.rest.util.PaginationUtil;
+import com.codahale.metrics.annotation.Timed;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import java.util.*;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * REST controller for managing Comment.

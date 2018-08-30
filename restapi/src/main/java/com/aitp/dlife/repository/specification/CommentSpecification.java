@@ -27,7 +27,7 @@ public class CommentSpecification extends AbstractSpecifcation<CommentVM> implem
 
 
 
-	public CommentSpecification(String objectId, CommentChannel channel, String wechatUserId) {
+	public CommentSpecification(String objectId, CommentChannel channel, String wechatUserId,String praentId) {
 		super(new CommentVM(objectId, channel, wechatUserId));
 	}
 
@@ -38,7 +38,7 @@ public class CommentSpecification extends AbstractSpecifcation<CommentVM> implem
 	public Predicate toPredicate(Root<Comment> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
         if(!ObjectUtils.isEmpty(querys.getObjectId())){
-        	Path<String> idPath = root.get("objectId");
+        	Path<Long> idPath = root.get("objectId");
             Predicate objectPredicate = criteriaBuilder.equal(idPath, querys.getObjectId());
             predicates.add(objectPredicate);
         }
@@ -47,11 +47,19 @@ public class CommentSpecification extends AbstractSpecifcation<CommentVM> implem
             Predicate	channelPredicate = criteriaBuilder.equal(channelPath, querys.getChannel());
             predicates.add(channelPredicate);
         }
+        
         if(!ObjectUtils.isEmpty(querys.getWechatUserId())){
-            Path<CommentChannel> wechatUserIdPath = root.get("wechatUserId");
+            Path<Long> wechatUserIdPath = root.get("wechatUserId");
             Predicate wechatUserIdPredicate = criteriaBuilder.equal(wechatUserIdPath, querys.getWechatUserId());
             predicates.add(wechatUserIdPredicate);
         }
+        
+        if(!ObjectUtils.isEmpty(querys.getWechatUserId())){
+            Path<Long> parentId = root.get("parentId");
+            Predicate wechatUserIdPredicate = criteriaBuilder.equal(parentId, querys.getParentId());
+            predicates.add(wechatUserIdPredicate);
+        }
+        
         Predicate predicate = criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
         return predicate;
 

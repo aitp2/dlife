@@ -9,6 +9,8 @@ public class CommentVM {
 	private CommentChannel channel;
 
     private String wechatUserId;
+    
+    private String parentId;
 
 
 
@@ -48,7 +50,19 @@ public class CommentVM {
         this.wechatUserId = wechatUserId;
     }
 
-    @Override
+    
+    
+    public String getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
+
+	
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

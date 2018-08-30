@@ -224,7 +224,7 @@ public class QuestionResource {
         if (wechatUserId == null) {
             throw new BadRequestAlertException("Invalid wechatUserId", ENTITY_NAME, "wechatUserIdNull");
         }
-        final CommentSpecification spec = new CommentSpecification(null, CommentChannel.FAQS,wechatUserId);
+        final CommentSpecification spec = new CommentSpecification(null, CommentChannel.FAQS,wechatUserId,null);
 
         List<QuestionDTO> page = questionService.findAllAnswersByWechatUserId(pageable, spec);
         return new ResponseEntity<>(page, HttpStatus.OK);
