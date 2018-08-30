@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
+import org.h2.command.ddl.CreateAggregate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -131,6 +132,7 @@ public class CommentResource {
 
 		CommentDTO result = commentService.save(commentDTO);
 
+
 		Set<CommentPicDTO> picDTOS = new HashSet<>();
 		if (commentDTO.getCommentPics() != null && !commentDTO.getCommentPics().isEmpty()) {
 
@@ -143,7 +145,63 @@ public class CommentResource {
 			}
 			result.setCommentPics(picDTOS);
 		}
+		updateDateTime(commentDTO);
+		return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
+				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
+	}
 
+	
+
+	/**
+	 * POST /comments : Create a new comment.
+	 *
+	 * @param commentDTO
+	 *            the commentDTO to create
+	 * @return the ResponseEntity with status 201 (Created) and with body the
+	 *         new commentDTO, or with status 400 (Bad Request) if the comment
+	 *         has already an ID
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 */
+	@PostMapping("/comments")
+	@ApiOperation(value = "创建评论，创建小问答的回答", response = CommentDTO.class, produces = "application/json")
+	@ApiImplicitParams({
+			@ApiImplicitParam(paramType = "body", dataType = "String", defaultValue = "", name = "commentDTO", value = "评论的内容", required = true) })
+	@Timed
+	public ResponseEntity<CommentDTO> createReply(@Valid @RequestBody CommentDTO commentDTO)
+			throws URISyntaxException {
+		log.debug("REST request to save Comment : {}", commentDTO);
+		if (commentDTO.getId() != null) {
+			throw new BadRequestAlertException("A new comment cannot already have an ID", ENTITY_NAME, "idexists");
+		}
+
+		commentDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
+		commentDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
+
+		CommentDTO result = commentService.save(commentDTO);
+
+
+		Set<CommentPicDTO> picDTOS = new HashSet<>();
+		if (commentDTO.getCommentPics() != null && !commentDTO.getCommentPics().isEmpty()) {
+
+			for (CommentPicDTO pics : commentDTO.getCommentPics()) {
+				if (!StringUtils.isEmpty(pics.getCreateTime())) {
+					pics.setCreateTime(DateUtil.getYMDDateString(new Date()));
+				}
+				pics.setCommentId(result.getId());
+				picDTOS.add(commentPicService.save(pics));
+			}
+			result.setCommentPics(picDTOS);
+		}
+		updateDateTime(commentDTO);
+		return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
+				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
+	}
+
+	
+	
+	
+	private void updateDateTime(CommentDTO commentDTO){
 		EventChannel eventChannel = null;
 		String objectTitle = null;
 		Long objectId = null;
@@ -171,7 +229,6 @@ public class CommentResource {
 				objectId = dto.getId();
 			}
 		}
-
 		if (eventChannel != null) {
 			// record the activity participation event start
 			EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(eventChannel,
@@ -183,10 +240,7 @@ public class CommentResource {
 			}
 			// record the activity participation event end
 		}
-		return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
-				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
 	}
-
 	/**
 	 * PUT /comments : Updates an existing comment.
 	 *
