@@ -121,6 +121,14 @@
                     <input type="text" class="form-control" name="rp_nick_name" id="field_rp_nick_name"
                         [(ngModel)]="comment.rp_nick_name" />
                 </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_module">Module</label>
+                    <select class="form-control" name="module" [(ngModel)]="comment.module" id="field_module" >
+                        <option value="COMMENT">COMMENT</option>
+                        <option value="ACTIVITY">ACTIVITY</option>
+                        <option value="USERCENTER">USERCENTER</option>
+                    </select>
+                </div>
 
             </div>
             <div>

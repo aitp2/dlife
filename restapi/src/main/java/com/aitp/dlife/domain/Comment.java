@@ -15,6 +15,8 @@ import java.util.Objects;
 
 import com.aitp.dlife.domain.enumeration.CommentChannel;
 
+import com.aitp.dlife.domain.enumeration.CommentModule;
+
 /**
  * 评论信息
  */
@@ -121,6 +123,10 @@ public class Comment implements Serializable {
 
     @Column(name = "rp_nick_name")
     private String rp_nick_name;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "module")
+    private CommentModule module;
 
     @OneToMany(mappedBy = "comment")
     private Set<CommentPic> commentPics = new HashSet<>();
@@ -342,6 +348,19 @@ public class Comment implements Serializable {
         this.rp_nick_name = rp_nick_name;
     }
 
+    public CommentModule getModule() {
+        return module;
+    }
+
+    public Comment module(CommentModule module) {
+        this.module = module;
+        return this;
+    }
+
+    public void setModule(CommentModule module) {
+        this.module = module;
+    }
+
     public Set<CommentPic> getCommentPics() {
         return commentPics;
     }
@@ -408,6 +427,7 @@ public class Comment implements Serializable {
             ", rp_wechat_user_id=" + getRp_wechat_user_id() +
             ", rp_avatar='" + getRp_avatar() + "'" +
             ", rp_nick_name='" + getRp_nick_name() + "'" +
+            ", module='" + getModule() + "'" +
             "}";
     }
 }
