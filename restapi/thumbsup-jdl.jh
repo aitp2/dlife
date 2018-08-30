@@ -1,0 +1,57 @@
+/**
+ * 点赞渠道枚举
+ */   
+enum ThumbsUpChannel {
+  COOK,
+  FIT,
+  PIN,
+  FAQS
+}
+
+/**
+ * 点赞模块枚举
+ */
+enum ThumbsUpModule {
+  COMMENT,
+  ACTIVITY,
+  USERCENTER  
+}
+
+/**
+ * 点赞信息
+ */
+entity ThumbsUp (thumbs_up) {
+  /**
+   * 点赞对象id
+   */
+  objectId Long,
+  /**
+   * 点赞渠道
+   */
+  channel ThumbsUpChannel,  
+  /**
+   * 点赞模块
+   */
+  module ThumbsUpModule,
+  /**
+   * 点赞人id
+   */
+  wechatUserId String maxlength(128),
+  /**
+   * 点赞人头像
+   */
+  avatar String maxlength(1024),
+  /**
+   * 点赞人昵称
+   */
+  nickName String maxlength(128), 
+  /**
+   * 创建时间
+   */
+  createTime Instant 
+}
+
+paginate * with infinite-scroll
+paginate * with pagination
+service * with serviceClass
+dto * with mapstruct

@@ -22,6 +22,10 @@ export interface IComment {
     rating3?: number;
     createTime?: Moment;
     modifyTime?: Moment;
+    reply_count?: number;
+    rp_wechat_user_id?: number;
+    rp_avatar?: string;
+    rp_nick_name?: string;
     commentPics?: ICommentPic[];
 }
 
@@ -40,6 +44,10 @@ export class Comment implements IComment {
         public rating3?: number,
         public createTime?: Moment,
         public modifyTime?: Moment,
+        public reply_count?: number,
+        public rp_wechat_user_id?: number,
+        public rp_avatar?: string,
+        public rp_nick_name?: string,
         public commentPics?: ICommentPic[]
     ) {}
 }

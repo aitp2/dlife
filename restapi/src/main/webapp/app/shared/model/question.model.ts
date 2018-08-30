@@ -11,6 +11,8 @@ export interface IQuestion {
     createTime?: Moment;
     answerCount?: number;
     readingCount?: number;
+    thumbsup_count?: number;
+    reply_count?: number;
     questionPics?: IQuestionPic[];
 }
 
@@ -25,6 +27,8 @@ export class Question implements IQuestion {
         public createTime?: Moment,
         public answerCount?: number,
         public readingCount?: number,
+        public thumbsup_count?: number,
+        public reply_count?: number,
         public questionPics?: IQuestionPic[]
     ) {}
 }

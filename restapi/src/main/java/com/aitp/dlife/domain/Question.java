@@ -86,6 +86,12 @@ public class Question implements Serializable {
     @Column(name = "reading_count")
     private Integer readingCount;
 
+    @Column(name = "thumbsup_count")
+    private Integer thumbsup_count;
+
+    @Column(name = "reply_count")
+    private Integer reply_count;
+
     @OneToMany(mappedBy = "question")
     private Set<QuestionPic> questionPics = new HashSet<>();
 
@@ -202,6 +208,32 @@ public class Question implements Serializable {
         this.readingCount = readingCount;
     }
 
+    public Integer getThumbsup_count() {
+        return thumbsup_count;
+    }
+
+    public Question thumbsup_count(Integer thumbsup_count) {
+        this.thumbsup_count = thumbsup_count;
+        return this;
+    }
+
+    public void setThumbsup_count(Integer thumbsup_count) {
+        this.thumbsup_count = thumbsup_count;
+    }
+
+    public Integer getReply_count() {
+        return reply_count;
+    }
+
+    public Question reply_count(Integer reply_count) {
+        this.reply_count = reply_count;
+        return this;
+    }
+
+    public void setReply_count(Integer reply_count) {
+        this.reply_count = reply_count;
+    }
+
     public Set<QuestionPic> getQuestionPics() {
         return questionPics;
     }
@@ -260,6 +292,8 @@ public class Question implements Serializable {
             ", createTime='" + getCreateTime() + "'" +
             ", answerCount=" + getAnswerCount() +
             ", readingCount=" + getReadingCount() +
+            ", thumbsup_count=" + getThumbsup_count() +
+            ", reply_count=" + getReply_count() +
             "}";
     }
 }

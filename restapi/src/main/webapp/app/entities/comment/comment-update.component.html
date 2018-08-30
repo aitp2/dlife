@@ -101,6 +101,26 @@
                         />
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_reply_count">Reply Count</label>
+                    <input type="number" class="form-control" name="reply_count" id="field_reply_count"
+                        [(ngModel)]="comment.reply_count" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_rp_wechat_user_id">Rp Wechat User Id</label>
+                    <input type="number" class="form-control" name="rp_wechat_user_id" id="field_rp_wechat_user_id"
+                        [(ngModel)]="comment.rp_wechat_user_id" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_rp_avatar">Rp Avatar</label>
+                    <input type="text" class="form-control" name="rp_avatar" id="field_rp_avatar"
+                        [(ngModel)]="comment.rp_avatar" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_rp_nick_name">Rp Nick Name</label>
+                    <input type="text" class="form-control" name="rp_nick_name" id="field_rp_nick_name"
+                        [(ngModel)]="comment.rp_nick_name" />
+                </div>
 
             </div>
             <div>

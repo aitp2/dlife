@@ -1,5 +1,14 @@
 {
-    "name": "Question",
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "questionPic",
+            "otherEntityName": "questionPic",
+            "otherEntityRelationshipName": "question"
+        }
+    ],
     "fields": [
         {
             "fieldName": "wechatUserId",
@@ -60,23 +69,21 @@
             "fieldName": "readingCount",
             "javadoc": "浏览数",
             "fieldType": "Integer"
-        }
-    ],
-    "relationships": [
+        },
         {
-            "relationshipType": "one-to-many",
-            "relationshipName": "questionPic",
-            "otherEntityName": "questionPic",
-            "otherEntityRelationshipName": "question"
+            "fieldName": "thumbsup_count",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "reply_count",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180802115505",
-    "entityTableName": "question",
     "dto": "mapstruct",
-    "pagination": "pagination",
+    "searchEngine": false,
     "service": "serviceClass",
+    "entityTableName": "question",
     "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "clientRootFolder": "",
-    "applications": "*"
+    "pagination": "pagination"
 }
