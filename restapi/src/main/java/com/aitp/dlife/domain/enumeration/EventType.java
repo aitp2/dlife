@@ -7,7 +7,7 @@ import java.util.List;
  * The EventType enumeration.
  */
 public enum EventType {
-    CREATE, ATTEND, QUIT, CANCEL, UPDATE, COMMENT, CLOCKIN;
+    CREATE, ATTEND, QUIT, CANCEL, UPDATE, COMMENT, CLOCKIN,THUMBSUP;
 
 
     public static List<EventType> getMessageTypeList(String code){
@@ -22,6 +22,7 @@ public enum EventType {
                 eventTypes.add(EventType.QUIT);
                 eventTypes.add(EventType.CANCEL);
                 eventTypes.add(EventType.UPDATE);
+                eventTypes.add(EventType.THUMBSUP);
                 break;
              }
              case "1": {
@@ -36,7 +37,8 @@ public enum EventType {
                  break;
              }
              case "3": {
-                     break;
+            	 eventTypes.add(EventType.THUMBSUP);
+                 break;
              }
          }
         return eventTypes;

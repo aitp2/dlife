@@ -21,7 +21,6 @@ public class CommentDTO implements Serializable {
 
 	private Long id;
 
-    private Long parentId;
 
     private Long objectId;
 
@@ -44,6 +43,8 @@ public class CommentDTO implements Serializable {
 
     private Integer rating3;
 
+    private Integer replyCount;
+    
     private String createTime;
 
     private String modifyTime;
@@ -58,14 +59,6 @@ public class CommentDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
     }
 
     public Long getObjectId() {
@@ -190,6 +183,14 @@ public class CommentDTO implements Serializable {
     }
    
 
+	public Integer getReplyCount() {
+		return replyCount;
+	}
+
+	public void setReplyCount(Integer replyCount) {
+		this.replyCount = replyCount;
+	}
+
 	@Override
     public int hashCode() {
         return Objects.hashCode(getId());
@@ -199,7 +200,6 @@ public class CommentDTO implements Serializable {
     public String toString() {
         return "CommentDTO{" +
             "id=" + getId() +
-            ", parentId=" + getParentId() +
             ", objectId=" + getObjectId() +
             ", channel='" + getChannel() + "'" +
             ", wechatUserId='" + getWechatUserId() + "'" +

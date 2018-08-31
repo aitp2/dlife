@@ -8,6 +8,12 @@ export const enum CommentChannel {
     FAQS = 'FAQS'
 }
 
+export const enum CommentModule {
+    COMMENT = 'COMMENT',
+    ACTIVITY = 'ACTIVITY',
+    USERCENTER = 'USERCENTER'
+}
+
 export interface IComment {
     id?: number;
     parentId?: number;
@@ -26,6 +32,7 @@ export interface IComment {
     rp_wechat_user_id?: number;
     rp_avatar?: string;
     rp_nick_name?: string;
+    module?: CommentModule;
     commentPics?: ICommentPic[];
 }
 
@@ -48,6 +55,7 @@ export class Comment implements IComment {
         public rp_wechat_user_id?: number,
         public rp_avatar?: string,
         public rp_nick_name?: string,
+        public module?: CommentModule,
         public commentPics?: ICommentPic[]
     ) {}
 }

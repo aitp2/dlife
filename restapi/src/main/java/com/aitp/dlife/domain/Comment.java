@@ -1,26 +1,21 @@
 package com.aitp.dlife.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+import javax.persistence.*;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
+import java.util.Objects;
 
 import com.aitp.dlife.domain.enumeration.CommentChannel;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import com.aitp.dlife.domain.enumeration.CommentModule;
 
 /**
  * 评论信息
@@ -128,6 +123,10 @@ public class Comment implements Serializable {
 
     @Column(name = "rp_nick_name")
     private String rp_nick_name;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "module")
+    private CommentModule module;
 
     @OneToMany(mappedBy = "comment")
     private Set<CommentPic> commentPics = new HashSet<>();
@@ -349,6 +348,19 @@ public class Comment implements Serializable {
         this.rp_nick_name = rp_nick_name;
     }
 
+    public CommentModule getModule() {
+        return module;
+    }
+
+    public Comment module(CommentModule module) {
+        this.module = module;
+        return this;
+    }
+
+    public void setModule(CommentModule module) {
+        this.module = module;
+    }
+
     public Set<CommentPic> getCommentPics() {
         return commentPics;
     }
@@ -415,6 +427,7 @@ public class Comment implements Serializable {
             ", rp_wechat_user_id=" + getRp_wechat_user_id() +
             ", rp_avatar='" + getRp_avatar() + "'" +
             ", rp_nick_name='" + getRp_nick_name() + "'" +
+            ", module='" + getModule() + "'" +
             "}";
     }
 }

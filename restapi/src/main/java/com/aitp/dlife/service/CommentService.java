@@ -1,10 +1,12 @@
 package com.aitp.dlife.service;
 
+import com.aitp.dlife.domain.ClockIn;
 import com.aitp.dlife.domain.Comment;
 import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.domain.PinFanActivity;
 import com.aitp.dlife.domain.Question;
 import com.aitp.dlife.domain.enumeration.CommentChannel;
+import com.aitp.dlife.repository.ClockInRepository;
 import com.aitp.dlife.repository.CommentRepository;
 import com.aitp.dlife.repository.FitnessActivityRepository;
 import com.aitp.dlife.repository.PinFanActivityRepository;
@@ -12,7 +14,9 @@ import com.aitp.dlife.repository.QuestionRepository;
 import com.aitp.dlife.repository.specification.CommentSpecification;
 import com.aitp.dlife.service.dto.CommentDTO;
 import com.aitp.dlife.service.dto.QueryDTO;
+import com.aitp.dlife.service.dto.ReplyDTO;
 import com.aitp.dlife.service.mapper.CommentMapper;
+import com.aitp.dlife.service.mapper.ReplyMapper;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 
 import java.util.List;
@@ -38,20 +42,26 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     private final CommentMapper commentMapper;
+    
+    private final ReplyMapper replyMapper;
 
     private final FitnessActivityRepository fitnessActivityRepository;
 
+    private final ClockInRepository clockInRepository;
+    
     private final PinFanActivityRepository pinFanActivityRepository;
 
     private final QuestionRepository questionRepository;
 
-    public CommentService(CommentRepository commentRepository, CommentMapper commentMapper, FitnessActivityRepository fitnessActivityRepository, PinFanActivityRepository pinFanActivityRepository, QuestionRepository questionRepository) {
+    public CommentService(CommentRepository commentRepository, CommentMapper commentMapper, FitnessActivityRepository fitnessActivityRepository, PinFanActivityRepository pinFanActivityRepository, 
+    		QuestionRepository questionRepository,ReplyMapper replyMapper,ClockInRepository clockInRepository) {
         this.commentRepository = commentRepository;
         this.commentMapper = commentMapper;
-
+        this.clockInRepository = clockInRepository;
         this.fitnessActivityRepository = fitnessActivityRepository;
         this.pinFanActivityRepository = pinFanActivityRepository;
         this.questionRepository = questionRepository;
+        this.replyMapper = replyMapper;
     }
 
     /**
@@ -83,6 +93,38 @@ public class CommentService {
         return commentMapper.toDto(comment);
     }
 
+    
+
+    /**
+     * Save a comment.
+     *
+     * @param commentDTO the entity to save
+     * @return the persisted entity
+     */
+    public ReplyDTO save(ReplyDTO replyDTO) {
+        log.debug("Request to save Comment : {}", replyDTO);
+        CommentChannel commentChannel = null;
+        switch (replyDTO.getModule()) {
+		case COMMENT:
+		    Comment comment = commentRepository.getOne(replyDTO.getParentId());
+	        comment.setReply_count(comment.getReply_count() == null? 1:comment.getReply_count() + 1);
+	        commentChannel = comment.getChannel();
+	        commentRepository.save(comment);
+			break;
+		case ACTIVITY:
+			ClockIn clockIn = clockInRepository.getOne(replyDTO.getParentId());
+			commentChannel = CommentChannel.FIT;
+			clockInRepository.save(clockIn);
+			break;
+		default:
+			break;
+		}
+        Comment reply = replyMapper.toEntity(replyDTO);
+        reply.setChannel(commentChannel);
+        reply = commentRepository.save(reply);
+        return replyMapper.toDto(reply);
+    }
+    
 
     /**
      * Get all the comments.

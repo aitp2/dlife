@@ -100,6 +100,11 @@
         {
             "fieldName": "rp_nick_name",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "module",
+            "fieldType": "CommentModule",
+            "fieldValues": "COMMENT,ACTIVITY,USERCENTER"
         }
     ],
     "changelogDate": "20180802115450",

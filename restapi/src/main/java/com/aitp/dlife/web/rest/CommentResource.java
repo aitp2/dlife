@@ -49,6 +49,7 @@ import com.aitp.dlife.service.dto.CommentDTO;
 import com.aitp.dlife.service.dto.CommentPicDTO;
 import com.aitp.dlife.service.dto.EventMessageDTO;
 import com.aitp.dlife.service.dto.QuestionDTO;
+import com.aitp.dlife.service.dto.ReplyDTO;
 import com.aitp.dlife.service.dto.ThumbsUpDTO;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.DateUtil;
@@ -163,36 +164,17 @@ public class CommentResource {
 	 * @throws URISyntaxException
 	 *             if the Location URI syntax is incorrect
 	 */
-	@PostMapping("/comments")
-	@ApiOperation(value = "创建评论，创建小问答的回答", response = CommentDTO.class, produces = "application/json")
-	@ApiImplicitParams({
-			@ApiImplicitParam(paramType = "body", dataType = "String", defaultValue = "", name = "commentDTO", value = "评论的内容", required = true) })
+	@PostMapping("/comments/{id}/reply")
+	@ApiOperation(value = "创建创建回复", response = CommentDTO.class, produces = "application/json")
 	@Timed
-	public ResponseEntity<CommentDTO> createReply(@Valid @RequestBody CommentDTO commentDTO)
+	public ResponseEntity<CommentDTO> createReply(@Valid @RequestBody ReplyDTO replyDTO)
 			throws URISyntaxException {
-		log.debug("REST request to save Comment : {}", commentDTO);
-		if (commentDTO.getId() != null) {
-			throw new BadRequestAlertException("A new comment cannot already have an ID", ENTITY_NAME, "idexists");
-		}
-
-		commentDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
-		commentDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
-
-		CommentDTO result = commentService.save(commentDTO);
+		log.debug("REST request to save Comment : {}", replyDTO);
 
 
+		CommentDTO result = commentService.save(replyDTO);
+		CommentDTO commentDTO = commentService.findOne(replyDTO.getParentId());
 		Set<CommentPicDTO> picDTOS = new HashSet<>();
-		if (commentDTO.getCommentPics() != null && !commentDTO.getCommentPics().isEmpty()) {
-
-			for (CommentPicDTO pics : commentDTO.getCommentPics()) {
-				if (!StringUtils.isEmpty(pics.getCreateTime())) {
-					pics.setCreateTime(DateUtil.getYMDDateString(new Date()));
-				}
-				pics.setCommentId(result.getId());
-				picDTOS.add(commentPicService.save(pics));
-			}
-			result.setCommentPics(picDTOS);
-		}
 		updateDateTime(commentDTO);
 		return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
