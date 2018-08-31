@@ -19,6 +19,8 @@
             <th jhiSortBy="signNote"><span>Sign Note</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="punchDateTime"><span>Punch Date Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="activityId"><span>Activity Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="replyCount"><span>Reply Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="thumbsUpCount"><span>Thumbs Up Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="activityParticipationId"><span>Activity Participation</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
@@ -30,6 +32,8 @@
                 <td>{{clockIn.signNote}}</td>
                 <td>{{clockIn.punchDateTime | date:'medium'}}</td>
                 <td>{{clockIn.activityId}}</td>
+                <td>{{clockIn.replyCount}}</td>
+                <td>{{clockIn.thumbsUpCount}}</td>
                 <td>
                     <div *ngIf="clockIn.activityParticipationId">
                         <a [routerLink]="['../activity-participation', clockIn.activityParticipationId , 'view' ]" >{{clockIn.activityParticipationId}}</a>

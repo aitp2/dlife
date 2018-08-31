@@ -38,6 +38,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="reply_count" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="thumbs_up_count" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="activity_participation_id" type="bigint">
                 <constraints nullable="true" />
             </column>

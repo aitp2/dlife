@@ -1,5 +1,20 @@
 {
-    "name": "ClockIn",
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "pics",
+            "otherEntityName": "pics",
+            "otherEntityRelationshipName": "clockIn"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "activityParticipation",
+            "otherEntityName": "activityParticipation",
+            "otherEntityField": "id"
+        }
+    ],
     "fields": [
         {
             "fieldName": "title",
@@ -28,30 +43,22 @@
             "fieldName": "activityId",
             "javadoc": "活动id",
             "fieldType": "Integer"
-        }
-    ],
-    "relationships": [
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "pics",
-            "otherEntityName": "pics",
-            "otherEntityRelationshipName": "clockIn"
         },
         {
-            "relationshipType": "many-to-one",
-            "relationshipName": "activityParticipation",
-            "otherEntityName": "activityParticipation",
-            "otherEntityField": "id"
+            "fieldName": "replyCount",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "thumbsUpCount",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180802115502",
-    "javadoc": "打卡信息",
-    "entityTableName": "clock_in",
     "dto": "mapstruct",
-    "pagination": "pagination",
+    "searchEngine": false,
     "service": "serviceClass",
+    "entityTableName": "clock_in",
     "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "clientRootFolder": "",
-    "applications": "*"
+    "pagination": "pagination",
+    "javadoc": "打卡信息"
 }
