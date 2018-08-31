@@ -1,5 +1,13 @@
 package com.aitp.dlife.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.aitp.dlife.domain.ClockIn;
 import com.aitp.dlife.domain.Comment;
 import com.aitp.dlife.domain.FitnessActivity;
@@ -11,23 +19,11 @@ import com.aitp.dlife.repository.CommentRepository;
 import com.aitp.dlife.repository.FitnessActivityRepository;
 import com.aitp.dlife.repository.PinFanActivityRepository;
 import com.aitp.dlife.repository.QuestionRepository;
-import com.aitp.dlife.repository.specification.CommentSpecification;
 import com.aitp.dlife.service.dto.CommentDTO;
-import com.aitp.dlife.service.dto.QueryDTO;
 import com.aitp.dlife.service.dto.ReplyDTO;
 import com.aitp.dlife.service.mapper.CommentMapper;
 import com.aitp.dlife.service.mapper.ReplyMapper;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
-
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -44,14 +40,17 @@ public class CommentService {
     private final CommentMapper commentMapper;
     
     private final ReplyMapper replyMapper;
+    
 
     private final FitnessActivityRepository fitnessActivityRepository;
 
     private final ClockInRepository clockInRepository;
     
+    
     private final PinFanActivityRepository pinFanActivityRepository;
 
     private final QuestionRepository questionRepository;
+    
 
     public CommentService(CommentRepository commentRepository, CommentMapper commentMapper, FitnessActivityRepository fitnessActivityRepository, PinFanActivityRepository pinFanActivityRepository, 
     		QuestionRepository questionRepository,ReplyMapper replyMapper,ClockInRepository clockInRepository) {
@@ -107,12 +106,12 @@ public class CommentService {
         switch (replyDTO.getModule()) {
 		case COMMENT:
 		    Comment comment = commentRepository.getOne(replyDTO.getParentId());
-	        comment.setReply_count(comment.getReply_count() == null? 1:comment.getReply_count() + 1);
-	        commentChannel = comment.getChannel();
+	        comment.setReplyCount(comment.getReplyCount() == null? 1:comment.getReplyCount() + 1);
 	        commentRepository.save(comment);
 			break;
 		case ACTIVITY:
 			ClockIn clockIn = clockInRepository.getOne(replyDTO.getParentId());
+			clockIn.setReplyCount(clockIn.getReplyCount() == null? 1:clockIn.getReplyCount() + 1);
 			commentChannel = CommentChannel.FIT;
 			clockInRepository.save(clockIn);
 			break;

@@ -86,25 +86,25 @@
             "fieldType": "Instant"
         },
         {
-            "fieldName": "reply_count",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "rp_wechat_user_id",
-            "fieldType": "Long"
-        },
-        {
-            "fieldName": "rp_avatar",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "rp_nick_name",
-            "fieldType": "String"
-        },
-        {
             "fieldName": "module",
             "fieldType": "CommentModule",
             "fieldValues": "COMMENT,ACTIVITY,USERCENTER"
+        },
+        {
+            "fieldName": "replyCount",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "rpWechatUserId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "rpAvatar",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "rpNickName",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180802115450",

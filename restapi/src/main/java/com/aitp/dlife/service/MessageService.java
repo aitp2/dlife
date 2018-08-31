@@ -1,8 +1,11 @@
 package com.aitp.dlife.service;
 
+import com.aitp.dlife.domain.Comment;
 import com.aitp.dlife.domain.Message;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.repository.ClockInRepository;
+import com.aitp.dlife.repository.CommentRepository;
 import com.aitp.dlife.repository.MessageRepository;
 import com.aitp.dlife.service.dto.*;
 import com.aitp.dlife.service.mapper.MessageMapper;
@@ -38,12 +41,14 @@ public class MessageService {
     private final FitnessActivityService fitnessActivityService;
 
     private final ActivityParticipationService activityParticipationService;
+    
+    private final CommentRepository commentRepository;
 
     private final QuestionService questionService;
 
     public MessageService(MessageRepository messageRepository, MessageMapper messageMapper,PinFanActivityService pinFanActivityService,
                           FitnessActivityService fitnessActivityService,ActivityParticipationService activityParticipationService,
-                          QuestionService questionService)
+                          QuestionService questionService,CommentRepository commentRepository)
     {
         this.messageRepository = messageRepository;
         this.messageMapper = messageMapper;
@@ -51,6 +56,7 @@ public class MessageService {
         this.fitnessActivityService = fitnessActivityService;
         this.activityParticipationService = activityParticipationService;
         this.questionService = questionService;
+        this.commentRepository = commentRepository;
     }
 
     /**
@@ -190,6 +196,11 @@ public class MessageService {
             if (EventType.COMMENT.equals(type)){
                 userIds.add(questionDTO.getWechatUserId());
             }
+        }
+        //场景：回答小问答，消息对象：提问者
+        if (EventType.REPLY.equals(type)){
+         	Comment comment = commentRepository.getOne(dto.getReplyId());
+            userIds.add(comment.getRpWechatUserId().toString());
         }
         //消息的触发人和接收人相同时不用发送消息
         Iterator<String> it =  userIds.iterator();

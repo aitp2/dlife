@@ -27,11 +27,11 @@
             <th jhiSortBy="rating3"><span>Rating 3</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="createTime"><span>Create Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="modifyTime"><span>Modify Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="reply_count"><span>Reply Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="rp_wechat_user_id"><span>Rp Wechat User Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="rp_avatar"><span>Rp Avatar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="rp_nick_name"><span>Rp Nick Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="module"><span>Module</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="replyCount"><span>Reply Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="rpWechatUserId"><span>Rp Wechat User Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="rpAvatar"><span>Rp Avatar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="rpNickName"><span>Rp Nick Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -50,11 +50,11 @@
                 <td>{{comment.rating3}}</td>
                 <td>{{comment.createTime | date:'medium'}}</td>
                 <td>{{comment.modifyTime | date:'medium'}}</td>
-                <td>{{comment.reply_count}}</td>
-                <td>{{comment.rp_wechat_user_id}}</td>
-                <td>{{comment.rp_avatar}}</td>
-                <td>{{comment.rp_nick_name}}</td>
                 <td>{{comment.module}}</td>
+                <td>{{comment.replyCount}}</td>
+                <td>{{comment.rpWechatUserId}}</td>
+                <td>{{comment.rpAvatar}}</td>
+                <td>{{comment.rpNickName}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

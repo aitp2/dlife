@@ -1,18 +1,24 @@
 package com.aitp.dlife.web.rest.vm;
 
 import com.aitp.dlife.domain.enumeration.CommentChannel;
+import com.aitp.dlife.domain.enumeration.CommentModule;
+
+import io.swagger.annotations.ApiModelProperty;
 
 public class CommentVM {
 
+	@ApiModelProperty(value="活动ID")
 	private String objectId;
 
+	@ApiModelProperty(value="渠道或APP CODE",required=true)
 	private CommentChannel channel;
 
     private String wechatUserId;
-    
+    @ApiModelProperty(value="评论ID或动态（打卡）ID")
     private String parentId;
 
-
+    @ApiModelProperty(value="模块类型（COMMENT-评论,ACTIVITY-动态）",required=true)
+	private CommentModule model;
 
 
 	public CommentVM() {
@@ -61,6 +67,14 @@ public class CommentVM {
 	}
 
 	
+
+	public CommentModule getModel() {
+		return model;
+	}
+
+	public void setModel(CommentModule model) {
+		this.model = model;
+	}
 
 	@Override
 	public int hashCode() {

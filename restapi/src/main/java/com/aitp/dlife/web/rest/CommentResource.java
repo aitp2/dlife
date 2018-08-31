@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
-import org.h2.command.ddl.CreateAggregate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -45,6 +44,7 @@ import com.aitp.dlife.service.MessageService;
 import com.aitp.dlife.service.PinFanActivityService;
 import com.aitp.dlife.service.QuestionService;
 import com.aitp.dlife.service.ThumbsUpService;
+import com.aitp.dlife.service.builder.EventMessageBuilder;
 import com.aitp.dlife.service.dto.CommentDTO;
 import com.aitp.dlife.service.dto.CommentPicDTO;
 import com.aitp.dlife.service.dto.EventMessageDTO;
@@ -146,7 +146,7 @@ public class CommentResource {
 			}
 			result.setCommentPics(picDTOS);
 		}
-		updateDateTime(commentDTO);
+		updateDateTime(commentDTO,EventMessageBuilder.buildEventMessageDTO(commentDTO).type(EventType.COMMENT).get());
 		return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
 	}
@@ -164,43 +164,40 @@ public class CommentResource {
 	 * @throws URISyntaxException
 	 *             if the Location URI syntax is incorrect
 	 */
-	@PostMapping("/comments/{id}/reply")
-	@ApiOperation(value = "创建创建回复", response = CommentDTO.class, produces = "application/json")
+	@PostMapping("/comments/reply")
+	@ApiOperation(value = "创建回复", response = CommentDTO.class, produces = "application/json")
 	@Timed
-	public ResponseEntity<CommentDTO> createReply(@Valid @RequestBody ReplyDTO replyDTO)
+	public ResponseEntity<ReplyDTO> createReply(@Valid @RequestBody ReplyDTO replyDTO)
 			throws URISyntaxException {
 		log.debug("REST request to save Comment : {}", replyDTO);
 
 
-		CommentDTO result = commentService.save(replyDTO);
+		ReplyDTO result = commentService.save(replyDTO);
 		CommentDTO commentDTO = commentService.findOne(replyDTO.getParentId());
-		Set<CommentPicDTO> picDTOS = new HashSet<>();
-		updateDateTime(commentDTO);
+		updateDateTime(commentDTO,EventMessageBuilder.buildEventMessageDTO(result).type(EventType.REPLY).object(commentDTO.getObjectId()).get());
 		return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
 	}
-
 	
 	
 	
-	private void updateDateTime(CommentDTO commentDTO){
+	
+	
+	
+	private void updateDateTime(CommentDTO commentDTO,EventMessageDTO eventMessageDTO){
 		EventChannel eventChannel = null;
 		String objectTitle = null;
-		Long objectId = null;
 		if (CommentChannel.FIT.equals(commentDTO.getChannel())) {
 			FitnessActivity fitnessActivity = fitnessActivityRepository.findById(commentDTO.getObjectId()).get();
 			fitnessActivity.setModifyTime(Instant.now());
 			fitnessActivityRepository.save(fitnessActivity);
-
 			eventChannel = EventChannel.FITNESS;
 			objectTitle = fitnessActivity.getTitle();
-			objectId = fitnessActivity.getId();
 		} else if (CommentChannel.PIN.equals(commentDTO.getChannel())) {
 			PinFanActivity pinFanActivity = pinFanActivityService.updateModifyTime(commentDTO.getObjectId());
 			if (null != pinFanActivity) {
 				eventChannel = EventChannel.PINFAN;
 				objectTitle = pinFanActivity.getActivitiyTile();
-				objectId = pinFanActivity.getId();
 			}
 		} else if (CommentChannel.FAQS.equals(commentDTO.getChannel())) {
 			Optional<QuestionDTO> questionDTO = questionService.findOne(commentDTO.getObjectId());
@@ -208,15 +205,13 @@ public class CommentResource {
 				QuestionDTO dto = questionDTO.get();
 				eventChannel = EventChannel.FAQS;
 				objectTitle = dto.getTitle();
-				objectId = dto.getId();
 			}
 		}
 		if (eventChannel != null) {
+			eventMessageDTO.setObjectTitle(objectTitle);
+			eventMessageDTO.setChannel(eventChannel);
+			eventMessageService.save(eventMessageDTO);
 			// record the activity participation event start
-			EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(eventChannel,
-					DateUtil.getYMDDateString(new Date()), EventType.COMMENT, commentDTO.getWechatUserId(), objectTitle,
-					objectId, commentDTO.getAvatar(), commentDTO.getNickName(), commentDTO.getContent());
-
 			if (null != eventMessageDTO.getId()) {
 				messageService.createMessageForEvent(eventMessageDTO);
 			}

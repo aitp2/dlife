@@ -93,8 +93,15 @@ public class EventMessage implements Serializable {
     @Column(name = "create_time")
     private Instant createTime;
 
-    @Column(name = "content")
+    @Size(max = 1024)
+    @Column(name = "content", length = 1024)
     private String content;
+
+    @Column(name = "paragraph_id")
+    private Long paragraphId;
+
+    @Column(name = "reply_id")
+    private Long replyId;
 
     @OneToMany(mappedBy = "eventMessage")
     private Set<Message> messages = new HashSet<>();
@@ -225,6 +232,32 @@ public class EventMessage implements Serializable {
         this.content = content;
     }
 
+    public Long getParagraphId() {
+        return paragraphId;
+    }
+
+    public EventMessage paragraphId(Long paragraphId) {
+        this.paragraphId = paragraphId;
+        return this;
+    }
+
+    public void setParagraphId(Long paragraphId) {
+        this.paragraphId = paragraphId;
+    }
+
+    public Long getReplyId() {
+        return replyId;
+    }
+
+    public EventMessage replyId(Long replyId) {
+        this.replyId = replyId;
+        return this;
+    }
+
+    public void setReplyId(Long replyId) {
+        this.replyId = replyId;
+    }
+
     public Set<Message> getMessages() {
         return messages;
     }
@@ -284,6 +317,8 @@ public class EventMessage implements Serializable {
             ", objectTitle='" + getObjectTitle() + "'" +
             ", createTime='" + getCreateTime() + "'" +
             ", content='" + getContent() + "'" +
+            ", paragraphId=" + getParagraphId() +
+            ", replyId=" + getReplyId() +
             "}";
     }
 }

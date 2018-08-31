@@ -70,6 +70,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="module" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="reply_count" type="integer">
                 <constraints nullable="true" />
             </column>
@@ -83,10 +87,6 @@
             </column>
 
             <column name="rp_nick_name" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="module" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 

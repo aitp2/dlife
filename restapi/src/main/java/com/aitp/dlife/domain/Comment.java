@@ -112,21 +112,21 @@ public class Comment implements Serializable {
     @Column(name = "modify_time")
     private Instant modifyTime;
 
-    @Column(name = "reply_count")
-    private Integer reply_count;
-
-    @Column(name = "rp_wechat_user_id")
-    private Long rp_wechat_user_id;
-
-    @Column(name = "rp_avatar")
-    private String rp_avatar;
-
-    @Column(name = "rp_nick_name")
-    private String rp_nick_name;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "module")
     private CommentModule module;
+
+    @Column(name = "reply_count")
+    private Integer replyCount;
+
+    @Column(name = "rp_wechat_user_id")
+    private Long rpWechatUserId;
+
+    @Column(name = "rp_avatar")
+    private String rpAvatar;
+
+    @Column(name = "rp_nick_name")
+    private String rpNickName;
 
     @OneToMany(mappedBy = "comment")
     private Set<CommentPic> commentPics = new HashSet<>();
@@ -296,58 +296,6 @@ public class Comment implements Serializable {
         this.modifyTime = modifyTime;
     }
 
-    public Integer getReply_count() {
-        return reply_count;
-    }
-
-    public Comment reply_count(Integer reply_count) {
-        this.reply_count = reply_count;
-        return this;
-    }
-
-    public void setReply_count(Integer reply_count) {
-        this.reply_count = reply_count;
-    }
-
-    public Long getRp_wechat_user_id() {
-        return rp_wechat_user_id;
-    }
-
-    public Comment rp_wechat_user_id(Long rp_wechat_user_id) {
-        this.rp_wechat_user_id = rp_wechat_user_id;
-        return this;
-    }
-
-    public void setRp_wechat_user_id(Long rp_wechat_user_id) {
-        this.rp_wechat_user_id = rp_wechat_user_id;
-    }
-
-    public String getRp_avatar() {
-        return rp_avatar;
-    }
-
-    public Comment rp_avatar(String rp_avatar) {
-        this.rp_avatar = rp_avatar;
-        return this;
-    }
-
-    public void setRp_avatar(String rp_avatar) {
-        this.rp_avatar = rp_avatar;
-    }
-
-    public String getRp_nick_name() {
-        return rp_nick_name;
-    }
-
-    public Comment rp_nick_name(String rp_nick_name) {
-        this.rp_nick_name = rp_nick_name;
-        return this;
-    }
-
-    public void setRp_nick_name(String rp_nick_name) {
-        this.rp_nick_name = rp_nick_name;
-    }
-
     public CommentModule getModule() {
         return module;
     }
@@ -359,6 +307,58 @@ public class Comment implements Serializable {
 
     public void setModule(CommentModule module) {
         this.module = module;
+    }
+
+    public Integer getReplyCount() {
+        return replyCount;
+    }
+
+    public Comment replyCount(Integer replyCount) {
+        this.replyCount = replyCount;
+        return this;
+    }
+
+    public void setReplyCount(Integer replyCount) {
+        this.replyCount = replyCount;
+    }
+
+    public Long getRpWechatUserId() {
+        return rpWechatUserId;
+    }
+
+    public Comment rpWechatUserId(Long rpWechatUserId) {
+        this.rpWechatUserId = rpWechatUserId;
+        return this;
+    }
+
+    public void setRpWechatUserId(Long rpWechatUserId) {
+        this.rpWechatUserId = rpWechatUserId;
+    }
+
+    public String getRpAvatar() {
+        return rpAvatar;
+    }
+
+    public Comment rpAvatar(String rpAvatar) {
+        this.rpAvatar = rpAvatar;
+        return this;
+    }
+
+    public void setRpAvatar(String rpAvatar) {
+        this.rpAvatar = rpAvatar;
+    }
+
+    public String getRpNickName() {
+        return rpNickName;
+    }
+
+    public Comment rpNickName(String rpNickName) {
+        this.rpNickName = rpNickName;
+        return this;
+    }
+
+    public void setRpNickName(String rpNickName) {
+        this.rpNickName = rpNickName;
     }
 
     public Set<CommentPic> getCommentPics() {
@@ -423,11 +423,11 @@ public class Comment implements Serializable {
             ", rating3=" + getRating3() +
             ", createTime='" + getCreateTime() + "'" +
             ", modifyTime='" + getModifyTime() + "'" +
-            ", reply_count=" + getReply_count() +
-            ", rp_wechat_user_id=" + getRp_wechat_user_id() +
-            ", rp_avatar='" + getRp_avatar() + "'" +
-            ", rp_nick_name='" + getRp_nick_name() + "'" +
             ", module='" + getModule() + "'" +
+            ", replyCount=" + getReplyCount() +
+            ", rpWechatUserId=" + getRpWechatUserId() +
+            ", rpAvatar='" + getRpAvatar() + "'" +
+            ", rpNickName='" + getRpNickName() + "'" +
             "}";
     }
 }

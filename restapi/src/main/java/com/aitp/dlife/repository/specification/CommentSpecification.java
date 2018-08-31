@@ -7,6 +7,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import com.aitp.dlife.domain.enumeration.CommentChannel;
+import com.aitp.dlife.domain.enumeration.CommentModule;
+
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.ObjectUtils;
 
@@ -47,7 +49,11 @@ public class CommentSpecification extends AbstractSpecifcation<CommentVM> implem
             Predicate	channelPredicate = criteriaBuilder.equal(channelPath, querys.getChannel());
             predicates.add(channelPredicate);
         }
-        
+        if(!ObjectUtils.isEmpty(querys.getModel())){
+        	Path<CommentModule> modelPath = root.get("module");
+            Predicate	channelPredicate = criteriaBuilder.equal(modelPath, querys.getModel());
+            predicates.add(channelPredicate);
+        }
         if(!ObjectUtils.isEmpty(querys.getWechatUserId())){
             Path<Long> wechatUserIdPath = root.get("wechatUserId");
             Predicate wechatUserIdPredicate = criteriaBuilder.equal(wechatUserIdPath, querys.getWechatUserId());

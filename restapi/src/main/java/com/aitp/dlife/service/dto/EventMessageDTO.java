@@ -27,16 +27,73 @@ public class EventMessageDTO implements Serializable {
 
     private EventChannel channel;
 
+    private Long paragraphId;
+    
     private Long objectId;
 
     @Size(max = 256)
     private String objectTitle;
 
+    private Long replyId;
+    
     private String createTime;
 
     private String content;
 
-    public Long getId() {
+    
+    
+    
+
+	public EventMessageDTO() {
+		super();
+	}
+
+	
+
+	public EventMessageDTO(@Size(max = 128) String wechatUserId, @Size(max = 1024) String avatar,
+			@Size(max = 128) String nickName, EventType type, EventChannel channel, Long objectId,
+			@Size(max = 256) String objectTitle, String createTime, String content, Long paragraphId) {
+		super();
+		this.wechatUserId = wechatUserId;
+		this.avatar = avatar;
+		this.nickName = nickName;
+		this.type = type;
+		this.channel = channel;
+		this.paragraphId = paragraphId;
+		this.objectId = objectId;
+		this.objectTitle = objectTitle;
+		this.createTime = createTime;
+		this.content = content;
+	}
+
+	
+	
+    public EventMessageDTO( @Size(max = 128) String wechatUserId, @Size(max = 1024) String avatar,
+			@Size(max = 128) String nickName, EventType type, EventChannel channel, Long objectId,
+			@Size(max = 256) String objectTitle, String createTime, String content, Long paragraphId, Long replyId) {
+		super();
+		this.wechatUserId = wechatUserId;
+		this.avatar = avatar;
+		this.nickName = nickName;
+		this.type = type;
+		this.channel = channel;
+		this.paragraphId = paragraphId;
+		this.objectId = objectId;
+		this.objectTitle = objectTitle;
+		this.replyId = replyId;
+		this.createTime = createTime;
+		this.content = content;
+	}
+    
+	public Long getReplyId() {
+		return replyId;
+	}
+
+	public void setReplyId(Long replyId) {
+		this.replyId = replyId;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -68,7 +125,15 @@ public class EventMessageDTO implements Serializable {
         this.nickName = nickName;
     }
 
-    public EventType getType() {
+    public Long getParagraphId() {
+		return paragraphId;
+	}
+
+	public void setParagraphId(Long paragraphId) {
+		this.paragraphId = paragraphId;
+	}
+
+	public EventType getType() {
         return type;
     }
 

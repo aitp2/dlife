@@ -75,6 +75,14 @@
                 "maxlength"
             ],
             "fieldValidateRulesMaxlength": "1024"
+        },
+        {
+            "fieldName": "paragraphId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "replyId",
+            "fieldType": "Long"
         }
     ],
     "changelogDate": "20180802115452",

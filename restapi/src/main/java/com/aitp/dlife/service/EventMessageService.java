@@ -1,12 +1,21 @@
 package com.aitp.dlife.service;
 
 import com.aitp.dlife.domain.EventMessage;
+import com.aitp.dlife.domain.FitnessActivity;
+import com.aitp.dlife.domain.PinFanActivity;
+import com.aitp.dlife.domain.Question;
+import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.repository.EventMessageRepository;
+import com.aitp.dlife.repository.FitnessActivityRepository;
+import com.aitp.dlife.repository.PinFanActivityRepository;
+import com.aitp.dlife.repository.QuestionRepository;
 import com.aitp.dlife.service.dto.*;
 import com.aitp.dlife.service.mapper.EventMessageMapper;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
+import com.google.common.base.FinalizablePhantomReference;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import java.time.Instant;
 import java.util.*;
 
 /**
@@ -29,15 +38,23 @@ public class EventMessageService {
 
     private final EventMessageRepository eventMessageRepository;
 
+    private final FitnessActivityRepository fitnessActivityRepository;
+    
     private final EventMessageMapper eventMessageMapper;
 
+    private final QuestionRepository questionRepository; 
+    
+    private final PinFanActivityRepository pinFanActivityRepository;
 
 
 
     public EventMessageService(EventMessageRepository eventMessageRepository, EventMessageMapper eventMessageMapper
-                              ) {
+          ,QuestionRepository questionRepository,PinFanActivityRepository pinFanActivityRepository,FitnessActivityRepository fitnessActivityRepository) {
         this.eventMessageRepository = eventMessageRepository;
         this.eventMessageMapper = eventMessageMapper;
+        this.questionRepository = questionRepository;
+        this.pinFanActivityRepository = pinFanActivityRepository;
+        this.fitnessActivityRepository = fitnessActivityRepository;
     }
 
     /**
@@ -66,6 +83,10 @@ public class EventMessageService {
             .map(eventMessageMapper::toDto);
     }
 
+    
+    
+    
+    
     /**
      * Get all the event message by channel.
      *
@@ -167,13 +188,14 @@ public class EventMessageService {
      */
     public EventMessageDTO recordEventMessage(EventChannel eventChannel, String createTime, EventType eventType,
                                               String wechatUserId, String objectTitle, Long objectId, String avatar,
-                                              String nickName,String content){
+                                              String nickName,String content,Long paragraphId){
         EventMessageDTO eventMessageDTO = new EventMessageDTO();
         eventMessageDTO.setChannel(eventChannel);
         eventMessageDTO.setCreateTime(createTime);
         eventMessageDTO.setType(eventType);
         eventMessageDTO.setWechatUserId(wechatUserId);
         eventMessageDTO.setObjectTitle(objectTitle);
+        eventMessageDTO.setParagraphId(paragraphId);
         eventMessageDTO.setObjectId(objectId);
         eventMessageDTO.setAvatar(avatar);
         eventMessageDTO.setNickName(nickName);

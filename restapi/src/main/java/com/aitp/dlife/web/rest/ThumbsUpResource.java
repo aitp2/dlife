@@ -2,15 +2,32 @@ package com.aitp.dlife.web.rest;
 
 import com.aitp.dlife.repository.specification.ThumbsUpSpecification;
 import com.codahale.metrics.annotation.Timed;
+import com.aitp.dlife.domain.EventMessage;
+import com.aitp.dlife.domain.FitnessActivity;
+import com.aitp.dlife.domain.PinFanActivity;
 import com.aitp.dlife.domain.ThumbsUp;
+import com.aitp.dlife.domain.enumeration.CommentChannel;
+import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.service.CommentService;
+import com.aitp.dlife.service.EventMessageService;
+import com.aitp.dlife.service.FitnessActivityService;
+import com.aitp.dlife.service.MessageService;
+import com.aitp.dlife.service.PinFanActivityService;
+import com.aitp.dlife.service.QuestionService;
 import com.aitp.dlife.service.ThumbsUpService;
+import com.aitp.dlife.service.builder.EventMessageBuilder;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import com.aitp.dlife.service.dto.CommentDTO;
+import com.aitp.dlife.service.dto.EventMessageDTO;
+import com.aitp.dlife.service.dto.FitnessActivityDTO;
+import com.aitp.dlife.service.dto.PinFanActivityDTO;
 import com.aitp.dlife.service.dto.QueryDTO;
+import com.aitp.dlife.service.dto.QuestionDTO;
 import com.aitp.dlife.service.dto.ThumbsUpDTO;
+import com.aitp.dlife.service.mapper.InstantMapper;
+
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,6 +47,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,11 +67,27 @@ public class ThumbsUpResource {
     private final ThumbsUpService thumbsUpService;
 
     private final CommentService commentService;
+    
+    private final MessageService messageService;
+    
+    private final EventMessageService eventMessageService;
 
-
-    public ThumbsUpResource(ThumbsUpService thumbsUpService,CommentService commentService) {
+    private final FitnessActivityService fitnessActivityService;
+    
+    private final PinFanActivityService pinFanActivityService;
+    
+    private final QuestionService questionService;
+    
+    
+    public ThumbsUpResource(ThumbsUpService thumbsUpService,CommentService commentService,FitnessActivityService fitnessActivityService
+    		,PinFanActivityService pinFanActivityService,QuestionService questionService,EventMessageService eventMessageService,MessageService messageService) {
         this.thumbsUpService = thumbsUpService;
         this.commentService = commentService;
+        this.fitnessActivityService =fitnessActivityService;
+        this.pinFanActivityService =pinFanActivityService;
+        this.questionService =questionService;
+        this.eventMessageService =eventMessageService;
+        this.messageService =messageService;
     }
 
     /**
@@ -77,7 +111,9 @@ public class ThumbsUpResource {
         commentDTO.setRating1(thumbsUp);
         thumbsUpDTO.setKeyName_1(commentDTO.getObjectId().toString());
         ThumbsUpDTO result = thumbsUpService.save(thumbsUpDTO);
-        commentService.save(commentDTO);
+        commentDTO = commentService.save(commentDTO);
+        updateDateTime(commentDTO,EventMessageBuilder.buildEventMessageDTO(thumbsUpDTO).object(commentDTO.getObjectId()).get());
+        
         return ResponseEntity.created(new URI("/api/thumbs-ups/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -135,6 +171,42 @@ public class ThumbsUpResource {
         Optional<ThumbsUpDTO> thumbsUpDTO = thumbsUpService.findOne(id);
         return ResponseUtil.wrapOrNotFound(thumbsUpDTO);
     }
+    
+    
+
+	
+	private void updateDateTime(CommentDTO commentDTO,EventMessageDTO eventMessageDTO){
+		EventChannel eventChannel = null;
+		String objectTitle = null;
+		if (CommentChannel.FIT.equals(commentDTO.getChannel())) {
+			FitnessActivityDTO fitnessActivity = fitnessActivityService.findOne(commentDTO.getObjectId());
+			eventChannel = EventChannel.FITNESS;
+			objectTitle = fitnessActivity.getTitle();
+		} else if (CommentChannel.PIN.equals(commentDTO.getChannel())) {
+			PinFanActivityDTO pinFanActivity = pinFanActivityService.findOne(commentDTO.getObjectId());
+			if (null != pinFanActivity) {
+				eventChannel = EventChannel.PINFAN;
+				objectTitle = pinFanActivity.getActivitiyTile();
+			}
+		} else if (CommentChannel.FAQS.equals(commentDTO.getChannel())) {
+			Optional<QuestionDTO> questionDTO = questionService.findOne(commentDTO.getObjectId());
+			if (questionDTO.isPresent()) {
+				QuestionDTO dto = questionDTO.get();
+				eventChannel = EventChannel.FAQS;
+				objectTitle = dto.getTitle();
+			}
+		}
+		if (eventChannel != null) {
+			eventMessageDTO.setObjectTitle(objectTitle);
+			eventMessageDTO.setChannel(eventChannel);
+			eventMessageService.save(eventMessageDTO);
+			// record the activity participation event start
+			if (null != eventMessageDTO.getId()) {
+				messageService.createMessageForEvent(eventMessageDTO);
+			}
+			// record the activity participation event end
+		}
+	}
 
     /**
      * DELETE  /thumbs-ups/:id : delete the "id" thumbsUp.

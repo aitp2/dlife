@@ -28,6 +28,8 @@ export interface IEventMessage {
     objectTitle?: string;
     createTime?: Moment;
     content?: string;
+    paragraphId?: number;
+    replyId?: number;
     messages?: IMessage[];
 }
 
@@ -43,6 +45,8 @@ export class EventMessage implements IEventMessage {
         public objectTitle?: string,
         public createTime?: Moment,
         public content?: string,
+        public paragraphId?: number,
+        public replyId?: number,
         public messages?: IMessage[]
     ) {}
 }
