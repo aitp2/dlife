@@ -7,6 +7,8 @@ export interface IClockIn {
     signNote?: string;
     punchDateTime?: Moment;
     activityId?: number;
+    replyCount?: number;
+    thumbsUpCount?: number;
     pics?: IPics[];
     activityParticipationId?: number;
 }
@@ -18,6 +20,8 @@ export class ClockIn implements IClockIn {
         public signNote?: string,
         public punchDateTime?: Moment,
         public activityId?: number,
+        public replyCount?: number,
+        public thumbsUpCount?: number,
         public pics?: IPics[],
         public activityParticipationId?: number
     ) {}
