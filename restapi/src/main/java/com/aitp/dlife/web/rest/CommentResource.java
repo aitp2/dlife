@@ -118,8 +118,6 @@ public class CommentResource {
 	 */
 	@PostMapping("/comments")
 	@ApiOperation(value = "创建评论，创建小问答的回答", response = CommentDTO.class, produces = "application/json")
-	@ApiImplicitParams({
-			@ApiImplicitParam(paramType = "body", dataType = "String", defaultValue = "", name = "commentDTO", value = "评论的内容", required = true) })
 	@Timed
 	public ResponseEntity<CommentDTO> createComment(@Valid @RequestBody CommentDTO commentDTO)
 			throws URISyntaxException {

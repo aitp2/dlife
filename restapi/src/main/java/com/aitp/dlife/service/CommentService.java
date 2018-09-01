@@ -107,6 +107,7 @@ public class CommentService {
 		case COMMENT:
 		    Comment comment = commentRepository.getOne(replyDTO.getParentId());
 	        comment.setReplyCount(comment.getReplyCount() == null? 1:comment.getReplyCount() + 1);
+	        commentChannel = comment.getChannel();
 	        commentRepository.save(comment);
 			break;
 		case ACTIVITY:
