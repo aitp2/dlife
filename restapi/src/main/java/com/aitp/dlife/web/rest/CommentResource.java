@@ -36,6 +36,7 @@ import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.repository.FitnessActivityRepository;
 import com.aitp.dlife.repository.specification.CommentSpecification;
+import com.aitp.dlife.repository.specification.ReplySpecification;
 import com.aitp.dlife.repository.specification.ThumbsUpSpecification;
 import com.aitp.dlife.service.CommentPicService;
 import com.aitp.dlife.service.CommentService;
@@ -162,7 +163,7 @@ public class CommentResource {
 	 * @throws URISyntaxException
 	 *             if the Location URI syntax is incorrect
 	 */
-	@PostMapping("/comments/reply")
+	@PostMapping("/reply")
 	@ApiOperation(value = "创建回复", response = CommentDTO.class, produces = "application/json")
 	@Timed
 	public ResponseEntity<ReplyDTO> createReply(@Valid @RequestBody ReplyDTO replyDTO)
@@ -178,6 +179,28 @@ public class CommentResource {
 	}
 	
 	
+
+	/**
+	 * POST /comments : Create a new comment.
+	 *
+	 * @param commentDTO
+	 *            the commentDTO to create
+	 * @return the ResponseEntity with status 201 (Created) and with body the
+	 *         new commentDTO, or with status 400 (Bad Request) if the comment
+	 *         has already an ID
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 */
+	@GetMapping("/replys")
+	@ApiOperation(value = "回复列表查询功能", response = CommentDTO.class, produces = "application/json")
+	@Timed
+	public ResponseEntity<List<ReplyDTO>> getReplay(Pageable pageable, ReplySpecification spec)
+			 {
+		log.debug("REST request to get a page of Comments");
+		Page<ReplyDTO> page = commentService.findAll(pageable, spec);
+		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/comments");
+		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	}
 	
 	
 	

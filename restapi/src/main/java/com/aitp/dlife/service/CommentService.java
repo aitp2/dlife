@@ -19,6 +19,7 @@ import com.aitp.dlife.repository.CommentRepository;
 import com.aitp.dlife.repository.FitnessActivityRepository;
 import com.aitp.dlife.repository.PinFanActivityRepository;
 import com.aitp.dlife.repository.QuestionRepository;
+import com.aitp.dlife.repository.specification.ReplySpecification;
 import com.aitp.dlife.service.dto.CommentDTO;
 import com.aitp.dlife.service.dto.ReplyDTO;
 import com.aitp.dlife.service.mapper.CommentMapper;
@@ -137,6 +138,21 @@ public class CommentService {
     	log.debug("Request to get all Comments");
         return commentRepository.findAll(spec, pageable)
             .map(commentMapper::toDto);
+    }
+    
+    
+
+    /**
+     * Get all the comments.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public Page<ReplyDTO> findAll(Pageable pageable,ReplySpecification spec) {
+    	log.debug("Request to get all Comments");
+        return commentRepository.findAll(spec, pageable)
+            .map(replyMapper::toDto);
     }
 
     /**

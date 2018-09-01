@@ -1,24 +1,23 @@
 package com.aitp.dlife.repository.specification;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import com.aitp.dlife.domain.enumeration.CommentChannel;
-import com.aitp.dlife.domain.enumeration.CommentModule;
-
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.ObjectUtils;
 
 import com.aitp.dlife.domain.Comment;
-import com.aitp.dlife.web.rest.vm.CommentVM;
+import com.aitp.dlife.domain.enumeration.CommentChannel;
+import com.aitp.dlife.domain.enumeration.CommentModule;
+import com.aitp.dlife.web.rest.vm.ReplyVM;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class CommentSpecification extends AbstractSpecifcation<CommentVM> implements Specification<Comment>{
+public class ReplySpecification extends AbstractSpecifcation<ReplyVM> implements Specification<Comment>{
 
 
 	/**
@@ -29,8 +28,8 @@ public class CommentSpecification extends AbstractSpecifcation<CommentVM> implem
 
 
 
-	public CommentSpecification(String objectId, CommentChannel channel, String wechatUserId,CommentModule module) {
-		super(new CommentVM(objectId, channel, wechatUserId,module));
+	public ReplySpecification(CommentChannel channel, String wechatUserId, String praentId,CommentModule module) {
+		super(new ReplyVM(channel, wechatUserId,praentId, module));
 	}
 
 	/**
@@ -39,14 +38,9 @@ public class CommentSpecification extends AbstractSpecifcation<CommentVM> implem
 	@Override
 	public Predicate toPredicate(Root<Comment> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
-        Path<Long> parentId = root.get("parentId");
-        Predicate parentIdPredicate = criteriaBuilder.isNull(parentId);
-        predicates.add(parentIdPredicate);
-        if(!ObjectUtils.isEmpty(querys.getObjectId())){
-        	Path<Long> idPath = root.get("objectId");
-            Predicate objectPredicate = criteriaBuilder.equal(idPath, querys.getObjectId());
-            predicates.add(objectPredicate);
-        }
+        Path<Long> objectId = root.get("objectId");
+        Predicate objectIdPredicate = criteriaBuilder.isNull(objectId);
+        predicates.add(objectIdPredicate);
         if(!ObjectUtils.isEmpty(querys.getChannel())){
         	Path<CommentChannel> channelPath = root.get("channel");
             Predicate	channelPredicate = criteriaBuilder.equal(channelPath, querys.getChannel());
@@ -61,6 +55,11 @@ public class CommentSpecification extends AbstractSpecifcation<CommentVM> implem
             Path<Long> wechatUserIdPath = root.get("wechatUserId");
             Predicate wechatUserIdPredicate = criteriaBuilder.equal(wechatUserIdPath, querys.getWechatUserId());
             predicates.add(wechatUserIdPredicate);
+        }
+        if(!ObjectUtils.isEmpty(querys.getParentId())){
+            Path<Long> parentId = root.get("parentId");
+            Predicate parentIdPredicate = criteriaBuilder.equal(parentId, querys.getParentId());
+            predicates.add(parentIdPredicate);
         }
         
         Predicate predicate = criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
