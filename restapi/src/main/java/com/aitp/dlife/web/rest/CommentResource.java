@@ -192,7 +192,7 @@ public class CommentResource {
 	 *             if the Location URI syntax is incorrect
 	 */
 	@GetMapping("/replys")
-	@ApiOperation(value = "回复列表查询功能", response = CommentDTO.class, produces = "application/json")
+	@ApiOperation(value = "回复列表查询功能", response = ReplyDTO.class, produces = "application/json")
 	@Timed
 	public ResponseEntity<List<ReplyDTO>> getReplay(Pageable pageable, ReplySpecification spec)
 			 {
