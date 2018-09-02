@@ -1,6 +1,5 @@
 package com.aitp.dlife.service.dto;
 
-import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -24,6 +23,7 @@ public class EventMessageDTO implements Serializable {
     private String nickName;
 
     private EventType type;
+    
 
     private EventChannel channel;
 

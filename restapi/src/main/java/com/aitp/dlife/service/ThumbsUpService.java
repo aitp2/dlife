@@ -1,6 +1,8 @@
 package com.aitp.dlife.service;
 
 import com.aitp.dlife.domain.ThumbsUp;
+import com.aitp.dlife.repository.ClockInRepository;
+import com.aitp.dlife.repository.CommentRepository;
 import com.aitp.dlife.repository.ThumbsUpRepository;
 import com.aitp.dlife.repository.specification.CommentSpecification;
 import com.aitp.dlife.repository.specification.ThumbsUpSpecification;
@@ -34,11 +36,17 @@ public class ThumbsUpService {
 
     private final ThumbsUpRepository thumbsUpRepository;
 
+    private  final CommentRepository commentRepository;
+    
+    private final ClockInRepository clockInRepository;
+    
     private final ThumbsUpMapper thumbsUpMapper;
 
-    public ThumbsUpService(ThumbsUpRepository thumbsUpRepository, ThumbsUpMapper thumbsUpMapper) {
+    public ThumbsUpService(ThumbsUpRepository thumbsUpRepository, ThumbsUpMapper thumbsUpMapper,ClockInRepository clockInRepository,CommentRepository commentRepository) {
         this.thumbsUpRepository = thumbsUpRepository;
         this.thumbsUpMapper = thumbsUpMapper;
+        this.commentRepository = commentRepository;
+        this.clockInRepository = clockInRepository;
     }
 
     /**

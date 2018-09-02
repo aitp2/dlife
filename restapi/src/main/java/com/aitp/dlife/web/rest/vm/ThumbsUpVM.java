@@ -1,25 +1,44 @@
 package com.aitp.dlife.web.rest.vm;
 
+import com.aitp.dlife.domain.enumeration.ThumbsUpModule;
+
 import io.swagger.annotations.ApiModelProperty;
 
 public class ThumbsUpVM {
 
     @ApiModelProperty(value = "活动ID")
-	private String objectId;
+	private Long objectId;
+    
+    @ApiModelProperty(value = "活动类型")
+	private ThumbsUpModule model;
 
 
-	public ThumbsUpVM(String objectId) {
+	public ThumbsUpVM(Long objectId) {
 		super();
 		this.objectId = objectId;
 	}
 
 
-	public String getObjectId() {
+	public Long getObjectId() {
 		return objectId;
 	}
 
-	public void setObjectId(String objectId) {
+	public void setObjectId(Long objectId) {
 		this.objectId = objectId;
+	}
+
+	
+	
+
+	public ThumbsUpModule getModel() {
+		return model;
+	}
+
+
+	public ThumbsUpVM(Long objectId, ThumbsUpModule model) {
+		super();
+		this.objectId = objectId;
+		this.model = model;
 	}
 
 
@@ -27,6 +46,7 @@ public class ThumbsUpVM {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((model == null) ? 0 : model.hashCode());
 		result = prime * result + ((objectId == null) ? 0 : objectId.hashCode());
 		return result;
 	}
@@ -41,6 +61,8 @@ public class ThumbsUpVM {
 		if (getClass() != obj.getClass())
 			return false;
 		ThumbsUpVM other = (ThumbsUpVM) obj;
+		if (model != other.model)
+			return false;
 		if (objectId == null) {
 			if (other.objectId != null)
 				return false;
@@ -51,7 +73,7 @@ public class ThumbsUpVM {
 
 	@Override
 	public String toString() {
-		return "ThumbsUpVM [objectId=" + objectId + "]";
+		return "ThumbsUpVM [objectId=" + objectId + ", model=" + model + "]";
 	}
 
 

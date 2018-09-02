@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
@@ -15,6 +17,7 @@ import java.util.Objects;
  */
 @ApiModel(description = "打卡汇总表")
 @Entity
+@DynamicInsert
 @Table(name = "clockin_summary")
 public class ClockinSummary implements Serializable {
 

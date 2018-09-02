@@ -1,17 +1,14 @@
 package com.aitp.dlife.service;
 
-import com.aitp.dlife.domain.Comment;
-import com.aitp.dlife.domain.Message;
-import com.aitp.dlife.domain.enumeration.EventChannel;
-import com.aitp.dlife.domain.enumeration.EventType;
-import com.aitp.dlife.repository.ClockInRepository;
-import com.aitp.dlife.repository.CommentRepository;
-import com.aitp.dlife.repository.MessageRepository;
-import com.aitp.dlife.service.dto.*;
-import com.aitp.dlife.service.mapper.MessageMapper;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
@@ -19,9 +16,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-
-import java.util.*;
-import java.util.stream.Collectors;
+import com.aitp.dlife.domain.ClockIn;
+import com.aitp.dlife.domain.Comment;
+import com.aitp.dlife.domain.Message;
+import com.aitp.dlife.domain.enumeration.EventChannel;
+import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.repository.ClockInRepository;
+import com.aitp.dlife.repository.CommentRepository;
+import com.aitp.dlife.repository.MessageRepository;
+import com.aitp.dlife.service.dto.ActivityParticipationDTO;
+import com.aitp.dlife.service.dto.AttendeeDTO;
+import com.aitp.dlife.service.dto.EventMessageDTO;
+import com.aitp.dlife.service.dto.FitnessActivityDTO;
+import com.aitp.dlife.service.dto.MessageDTO;
+import com.aitp.dlife.service.dto.PinFanActivityDTO;
+import com.aitp.dlife.service.dto.QuestionDTO;
+import com.aitp.dlife.service.mapper.MessageMapper;
 
 /**
  * Service Implementation for managing Message.
@@ -43,12 +53,16 @@ public class MessageService {
     private final ActivityParticipationService activityParticipationService;
     
     private final CommentRepository commentRepository;
+    
+    private final ClockInRepository clockInRepository;
 
+    
     private final QuestionService questionService;
 
     public MessageService(MessageRepository messageRepository, MessageMapper messageMapper,PinFanActivityService pinFanActivityService,
                           FitnessActivityService fitnessActivityService,ActivityParticipationService activityParticipationService,
-                          QuestionService questionService,CommentRepository commentRepository)
+                          QuestionService questionService,CommentRepository commentRepository,
+                          ClockInRepository clockInRepository)
     {
         this.messageRepository = messageRepository;
         this.messageMapper = messageMapper;
@@ -57,6 +71,7 @@ public class MessageService {
         this.activityParticipationService = activityParticipationService;
         this.questionService = questionService;
         this.commentRepository = commentRepository;
+        this.clockInRepository = clockInRepository;
     }
 
     /**
@@ -197,10 +212,20 @@ public class MessageService {
                 userIds.add(questionDTO.getWechatUserId());
             }
         }
-        //场景：回答小问答，消息对象：提问者
+        //场景：回复场景任何回复信息提示
         if (EventType.REPLY.equals(type)){
          	Comment comment = commentRepository.getOne(dto.getReplyId());
             userIds.add(comment.getRpWechatUserId().toString());
+        }
+        //场景：回答小问答，消息对象：提问者
+        if (EventType.COMMENTTHUMBSUP.equals(type)){
+        	Comment comment = commentRepository.getOne(dto.getParagraphId());
+            userIds.add(comment.getRpWechatUserId().toString());
+        }
+        if (EventType.CLOCKTHUMBSUP.equals(type)){
+        	ClockIn clockIn = clockInRepository.getOne(dto.getParagraphId());
+        	ActivityParticipationDTO activityParticipationDTO = activityParticipationService.findOne(clockIn.getActivityParticipation().getId()).get();
+            userIds.add(activityParticipationDTO.getWechatUserId());
         }
         //消息的触发人和接收人相同时不用发送消息
         Iterator<String> it =  userIds.iterator();

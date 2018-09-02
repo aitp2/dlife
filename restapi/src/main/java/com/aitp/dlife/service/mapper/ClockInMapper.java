@@ -13,6 +13,7 @@ public interface ClockInMapper extends EntityMapper<ClockInDTO, ClockIn> {
 
     @Mapping(source = "activityParticipation.id", target = "activityParticipationId")
     @Mapping(source = "pics", target = "pics")
+    @Mapping(source = "activityParticipation.wechatUserId", target = "wechatUserId")
     @Mapping(target = "punchDateTime", expression = "java(InstantMapper.toDateString(clockIn.getPunchDateTime()))")
     @Mapping(source = "activityParticipation.nickName", target = "nickName")
     @Mapping(source = "activityParticipation.avatar", target = "avatar")

@@ -39,7 +39,7 @@ public class ThumbsUpDTO implements Serializable {
     @ApiModelProperty(value="昵称", required=true)
     private String nickName;
     @ApiModelProperty(hidden=true)
-    private Instant createTime;
+    private Instant createTime = Instant.now();
     @ApiModelProperty(hidden=true)
     private String keyName_1;
     @ApiModelProperty(hidden=true)

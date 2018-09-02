@@ -7,6 +7,7 @@ import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.service.dto.ActivityParticipationDTO;
 import com.aitp.dlife.service.dto.AttendeeDTO;
+import com.aitp.dlife.service.dto.ClockInDTO;
 import com.aitp.dlife.service.dto.CommentDTO;
 import com.aitp.dlife.service.dto.EventMessageDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
@@ -67,7 +68,7 @@ public class EventMessageBuilder {
 	
 	public static  EventMessageBuilder buildEventMessageDTO(ThumbsUpDTO thumbsUpDTO) {
 		return new EventMessageBuilder(new EventMessageDTO(thumbsUpDTO.getWechatUserId(), thumbsUpDTO.getAvatar(),
-				thumbsUpDTO.getNickName(), EventType.THUMBSUP, EventChannel.PINFAN,null ,
+				thumbsUpDTO.getNickName(), EventType.COMMENTTHUMBSUP, EventChannel.FITNESS,null ,
 				null, DateUtil.getYMDDateString(new Date()), null,thumbsUpDTO.getObjectId(),null));
 	}
 	

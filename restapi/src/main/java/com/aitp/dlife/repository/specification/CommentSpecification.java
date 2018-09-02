@@ -29,7 +29,7 @@ public class CommentSpecification extends AbstractSpecifcation<CommentVM> implem
 
 
 
-	public CommentSpecification(String objectId, CommentChannel channel, String wechatUserId,CommentModule module) {
+	public CommentSpecification(Long objectId, CommentChannel channel, String wechatUserId,CommentModule module) {
 		super(new CommentVM(objectId, channel, wechatUserId,module));
 	}
 

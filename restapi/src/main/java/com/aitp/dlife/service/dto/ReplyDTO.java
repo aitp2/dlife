@@ -32,13 +32,11 @@ public class ReplyDTO implements Serializable {
     @Size(max = 128)
     private String nickName;
 
-
     private Long rpWechatUserId;
 
     private String rpAvatar;
 
     private String rpNickName;
-    
     
     private String content;
 

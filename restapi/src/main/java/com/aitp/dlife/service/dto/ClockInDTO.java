@@ -1,10 +1,8 @@
 package com.aitp.dlife.service.dto;
 
 
-import java.time.Instant;
 import javax.validation.constraints.*;
 
-import com.aitp.dlife.domain.Pics;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -32,9 +30,17 @@ public class ClockInDTO implements Serializable {
 
     private Set<PicsDTO> pics = new HashSet<>();
 
+    private Integer activityId;
+    
+    private Integer thumbsUpCount;
+    
+    private Integer replyCount;
+    
     private String nickName;
 
     private String avatar;
+    
+    private Set<ThumbsUpDTO> thumbsUpDTOs = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -126,18 +132,51 @@ public class ClockInDTO implements Serializable {
         return Objects.equals(getId(), clockInDTO.getId());
     }
 
-    @Override
+	
+	
+    public Integer getActivityId() {
+		return activityId;
+	}
+
+	public void setActivityId(Integer activityId) {
+		this.activityId = activityId;
+	}
+
+	public Integer getThumbsUpCount() {
+		return thumbsUpCount;
+	}
+
+	public void setThumbsUpCount(Integer thumbsUpCount) {
+		this.thumbsUpCount = thumbsUpCount;
+	}
+
+	@Override
     public int hashCode() {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "ClockInDTO{" +
-            "id=" + getId() +
-            ", title='" + getTitle() + "'" +
-            ", signNote='" + getSignNote() + "'" +
-            ", punchDateTime='" + getPunchDateTime() + "'" +
-            "}";
-    }
+	
+    public Set<ThumbsUpDTO> getThumbsUpDTOs() {
+		return thumbsUpDTOs;
+	}
+
+	public void setThumbsUpDTOs(Set<ThumbsUpDTO> thumbsUpDTOs) {
+		this.thumbsUpDTOs = thumbsUpDTOs;
+	}
+
+	public Integer getReplyCount() {
+		return replyCount;
+	}
+
+	public void setReplyCount(Integer replyCount) {
+		this.replyCount = replyCount;
+	}
+
+	@Override
+	public String toString() {
+		return "ClockInDTO [id=" + id + ", title=" + title + ", wechatUserId=" + wechatUserId + ", signNote=" + signNote
+				+ ", punchDateTime=" + punchDateTime + ", activityParticipationId=" + activityParticipationId
+				+ ", pics=" + pics + ", activityId=" + activityId + ", thumbsUpCount=" + thumbsUpCount + ", replyCount="
+				+ replyCount + ", nickName=" + nickName + ", avatar=" + avatar + ", thumbsUpDTOs=" + thumbsUpDTOs + "]";
+	}
 }

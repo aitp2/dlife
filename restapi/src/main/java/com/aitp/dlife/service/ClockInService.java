@@ -16,9 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.aitp.dlife.domain.ClockIn;
 import com.aitp.dlife.repository.ClockInRepository;
-import com.aitp.dlife.repository.specification.ClockInSpecification;
 import com.aitp.dlife.service.dto.ClockInDTO;
-import com.aitp.dlife.service.dto.QueryDTO;
 import com.aitp.dlife.service.mapper.ClockInMapper;
 import org.springframework.util.CollectionUtils;
 

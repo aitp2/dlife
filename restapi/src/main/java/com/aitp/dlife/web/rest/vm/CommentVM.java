@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class CommentVM {
 
 	@ApiModelProperty(value="活动ID")
-	private String objectId;
+	private Long objectId;
 
 	@ApiModelProperty(value="渠道或APP CODE",required=true)
 	private CommentChannel channel;
@@ -25,7 +25,7 @@ public class CommentVM {
 
 
 
-	public CommentVM(String objectId, CommentChannel channel, String wechatUserId, CommentModule model) {
+	public CommentVM(Long objectId, CommentChannel channel, String wechatUserId, CommentModule model) {
 		super();
 		this.objectId = objectId;
 		this.channel = channel;
@@ -35,11 +35,11 @@ public class CommentVM {
 
 
 
-	public String getObjectId() {
+	public Long getObjectId() {
 		return objectId;
 	}
 
-	public void setObjectId(String objectId) {
+	public void setObjectId(Long objectId) {
 		this.objectId = objectId;
 	}
 

@@ -34,6 +34,7 @@ import com.aitp.dlife.domain.PinFanActivity;
 import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.domain.enumeration.ThumbsUpModule;
 import com.aitp.dlife.repository.FitnessActivityRepository;
 import com.aitp.dlife.repository.specification.CommentSpecification;
 import com.aitp.dlife.repository.specification.ReplySpecification;
@@ -279,10 +280,10 @@ public class CommentResource {
 	public ResponseEntity<List<CommentDTO>> getAllComments(Pageable pageable, CommentSpecification spec) {
 		log.debug("REST request to get a page of Comments");
 		Page<CommentDTO> page = commentService.findAll(pageable, spec);
-		ThumbsUpSpecification thumbsUpSpecification  = new ThumbsUpSpecification(spec.getQuerys().getObjectId());
+		ThumbsUpSpecification thumbsUpSpecification  = new ThumbsUpSpecification(spec.getQuerys().getObjectId(),ThumbsUpModule.COMMENT);
 		List<ThumbsUpDTO> thumbsUpDTOs = thumbsUpService.findAll(thumbsUpSpecification);
 		page.getContent().parallelStream().forEach(comment -> comment.setThumbsUpDTOs(thumbsUpDTOs.stream()
-				.filter(thb -> thb.getObjectId().equals(comment.getId())).collect(Collectors.toSet())));
+				.filter(thb -> thb.getObjectId().equals(comment.getId())&&ThumbsUpModule.COMMENT.equals(thb.getModule())).collect(Collectors.toSet())));
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/comments");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}

@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -29,7 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.domain.enumeration.ThumbsUpModule;
 import com.aitp.dlife.repository.specification.ClockInSpecification;
+import com.aitp.dlife.repository.specification.ThumbsUpSpecification;
 import com.aitp.dlife.service.ActivityParticipationService;
 import com.aitp.dlife.service.ClockInActivityService;
 import com.aitp.dlife.service.ClockInService;
@@ -37,12 +40,14 @@ import com.aitp.dlife.service.ClockinSummaryService;
 import com.aitp.dlife.service.EventMessageService;
 import com.aitp.dlife.service.FitnessActivityService;
 import com.aitp.dlife.service.PicsService;
+import com.aitp.dlife.service.ThumbsUpService;
 import com.aitp.dlife.service.WechatUserService;
 import com.aitp.dlife.service.dto.ActivityParticipationDTO;
 import com.aitp.dlife.service.dto.ClockInDTO;
 import com.aitp.dlife.service.dto.ClockinSummaryDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.dto.PicsDTO;
+import com.aitp.dlife.service.dto.ThumbsUpDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.DateUtil;
@@ -70,13 +75,15 @@ public class ClockInResource {
     private final PicsService picsService;
     private final ClockinSummaryService clockinSummaryService;
     private final WechatUserService wechatUserService;
+	private final ThumbsUpService thumbsUpService;
     private final FitnessActivityService fitnessActivityService;
     private final ActivityParticipationService activityParticipationService;
     private final EventMessageService eventMessageService;
     private final ClockInActivityService clockInActivityService;
 
 	public ClockInResource(ClockInService clockInService, PicsService picsService,
-                           ClockinSummaryService clockinSummaryService, WechatUserService wechatUserService, FitnessActivityService fitnessActivityService, ActivityParticipationService activityParticipationService, EventMessageService eventMessageService, ClockInActivityService clockInActivityService) {
+                           ClockinSummaryService clockinSummaryService, WechatUserService wechatUserService, FitnessActivityService fitnessActivityService, ActivityParticipationService activityParticipationService,
+                           EventMessageService eventMessageService, ClockInActivityService clockInActivityService,ThumbsUpService thumbsUpService) {
 		this.clockInService = clockInService;
 		this.picsService = picsService;
 		this.clockinSummaryService = clockinSummaryService;
@@ -85,6 +92,7 @@ public class ClockInResource {
 		this.activityParticipationService=activityParticipationService;
         this.eventMessageService = eventMessageService;
         this.clockInActivityService = clockInActivityService;
+        this.thumbsUpService = thumbsUpService;
     }
 
     /**
@@ -208,6 +216,10 @@ public class ClockInResource {
     public ResponseEntity<List<ClockInDTO>> getAllClockIns(Pageable pageable,ClockInSpecification spec) {
         log.debug("REST request to get a page of ClockIns");
         Page<ClockInDTO> page = clockInService.findAll(pageable,spec);
+    	ThumbsUpSpecification thumbsUpSpecification  = new ThumbsUpSpecification(spec.getQuerys().getActivityId(),ThumbsUpModule.ACTIVITY);
+		List<ThumbsUpDTO> thumbsUpDTOs = thumbsUpService.findAll(thumbsUpSpecification);
+		page.getContent().parallelStream().forEach(clockin -> clockin.setThumbsUpDTOs(thumbsUpDTOs.stream()
+				.filter(thb -> thb.getObjectId().equals(clockin.getId())&&ThumbsUpModule.ACTIVITY.equals(thb.getModule())).collect(Collectors.toSet())));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/clock-ins");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
