@@ -220,7 +220,7 @@ public class MessageService {
         //场景：回答小问答，消息对象：提问者
         if (EventType.COMMENTTHUMBSUP.equals(type)){
         	Comment comment = commentRepository.getOne(dto.getParagraphId());
-            userIds.add(comment.getRpWechatUserId().toString());
+            userIds.add(comment.getWechatUserId().toString());
         }
         if (EventType.CLOCKTHUMBSUP.equals(type)){
         	ClockIn clockIn = clockInRepository.getOne(dto.getParagraphId());

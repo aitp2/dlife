@@ -232,7 +232,7 @@ public class ThumbsUpResource {
 		if (eventChannel != null) {
 			eventMessageDTO.setObjectTitle(objectTitle);
 			eventMessageDTO.setChannel(eventChannel);
-			eventMessageService.save(eventMessageDTO);
+			eventMessageDTO = eventMessageService.save(eventMessageDTO);
 			// record the activity participation event start
 			if (null != eventMessageDTO.getId()) {
 				messageService.createMessageForEvent(eventMessageDTO);
