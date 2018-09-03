@@ -229,7 +229,9 @@ public class CommentResource {
 				eventChannel = EventChannel.FAQS;
 				objectTitle = dto.getTitle();
 				questionDTO.get().setModifyTime(InstantMapper.toDateString(Instant.now()));
+				questionService.save(questionDTO.get());
 			}
+			
 		}
 		if (eventChannel != null) {
 			eventMessageDTO.setObjectTitle(objectTitle);
