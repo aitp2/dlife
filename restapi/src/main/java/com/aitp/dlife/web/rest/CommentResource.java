@@ -53,6 +53,7 @@ import com.aitp.dlife.service.dto.EventMessageDTO;
 import com.aitp.dlife.service.dto.QuestionDTO;
 import com.aitp.dlife.service.dto.ReplyDTO;
 import com.aitp.dlife.service.dto.ThumbsUpDTO;
+import com.aitp.dlife.service.mapper.InstantMapper;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
@@ -227,12 +228,13 @@ public class CommentResource {
 				QuestionDTO dto = questionDTO.get();
 				eventChannel = EventChannel.FAQS;
 				objectTitle = dto.getTitle();
+				questionDTO.get().setModifyTime(InstantMapper.toDateString(Instant.now()));
 			}
 		}
 		if (eventChannel != null) {
 			eventMessageDTO.setObjectTitle(objectTitle);
 			eventMessageDTO.setChannel(eventChannel);
-			eventMessageService.save(eventMessageDTO);
+			eventMessageDTO = eventMessageService.save(eventMessageDTO);
 			// record the activity participation event start
 			if (null != eventMessageDTO.getId()) {
 				messageService.createMessageForEvent(eventMessageDTO);

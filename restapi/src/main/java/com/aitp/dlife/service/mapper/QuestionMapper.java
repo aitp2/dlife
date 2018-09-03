@@ -12,6 +12,7 @@ import org.mapstruct.*;
 public interface QuestionMapper extends EntityMapper<QuestionDTO, Question> {
 
     @Mapping(target = "createTime", expression = "java(InstantMapper.toDateString(question.getCreateTime()))")
+    @Mapping(target = "modifyTime", expression = "java(InstantMapper.toDateString(question.getModifyTime()))")
     QuestionDTO toDto(Question question);
 
     @Mapping(target = "questionPics", ignore = true)

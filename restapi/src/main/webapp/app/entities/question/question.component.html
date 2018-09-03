@@ -25,6 +25,7 @@
             <th jhiSortBy="readingCount"><span>Reading Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="thumbsup_count"><span>Thumbsup Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="reply_count"><span>Reply Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="modifyTime"><span>Modify Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -41,6 +42,7 @@
                 <td>{{question.readingCount}}</td>
                 <td>{{question.thumbsup_count}}</td>
                 <td>{{question.reply_count}}</td>
+                <td>{{question.modifyTime | date:'medium'}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

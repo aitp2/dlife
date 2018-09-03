@@ -32,6 +32,8 @@ public class QuestionDTO implements Serializable {
     private String description;
 
     private String createTime;
+    
+    private String modifyTime;
 
     private Integer answerCount;
 
@@ -145,7 +147,16 @@ public class QuestionDTO implements Serializable {
         return Objects.equals(getId(), questionDTO.getId());
     }
 
-    @Override
+    
+    public String getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(String modifyTime) {
+		this.modifyTime = modifyTime;
+	}
+
+	@Override
     public int hashCode() {
         return Objects.hashCode(getId());
     }

@@ -77,6 +77,10 @@
         {
             "fieldName": "reply_count",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "modifyTime",
+            "fieldType": "Instant"
         }
     ],
     "changelogDate": "20180802115505",

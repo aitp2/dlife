@@ -13,6 +13,7 @@ export interface IQuestion {
     readingCount?: number;
     thumbsup_count?: number;
     reply_count?: number;
+    modifyTime?: Moment;
     questionPics?: IQuestionPic[];
 }
 
@@ -29,6 +30,7 @@ export class Question implements IQuestion {
         public readingCount?: number,
         public thumbsup_count?: number,
         public reply_count?: number,
+        public modifyTime?: Moment,
         public questionPics?: IQuestionPic[]
     ) {}
 }

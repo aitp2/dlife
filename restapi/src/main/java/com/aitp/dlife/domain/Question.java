@@ -92,6 +92,9 @@ public class Question implements Serializable {
     @Column(name = "reply_count")
     private Integer reply_count;
 
+    @Column(name = "modify_time")
+    private Instant modifyTime;
+
     @OneToMany(mappedBy = "question")
     private Set<QuestionPic> questionPics = new HashSet<>();
 
@@ -234,6 +237,19 @@ public class Question implements Serializable {
         this.reply_count = reply_count;
     }
 
+    public Instant getModifyTime() {
+        return modifyTime;
+    }
+
+    public Question modifyTime(Instant modifyTime) {
+        this.modifyTime = modifyTime;
+        return this;
+    }
+
+    public void setModifyTime(Instant modifyTime) {
+        this.modifyTime = modifyTime;
+    }
+
     public Set<QuestionPic> getQuestionPics() {
         return questionPics;
     }
@@ -294,6 +310,7 @@ public class Question implements Serializable {
             ", readingCount=" + getReadingCount() +
             ", thumbsup_count=" + getThumbsup_count() +
             ", reply_count=" + getReply_count() +
+            ", modifyTime='" + getModifyTime() + "'" +
             "}";
     }
 }

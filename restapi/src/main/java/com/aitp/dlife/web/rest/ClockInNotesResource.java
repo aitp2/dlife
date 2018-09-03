@@ -48,7 +48,7 @@ public class ClockInNotesResource {
 		response = clockInNotesService.getColckInNotesByWechatUserId(pageable, wechatUserId);
 		return response;
 	}
-
+	@Deprecated
 	@GetMapping("/{wechatUserId}/{activityId}")
 	@ApiOperation(value = "查询用户指定活动的打卡日记", produces = "application/json")
 	@ApiImplicitParams({
@@ -62,7 +62,7 @@ public class ClockInNotesResource {
 		response = clockInNotesService.getColckInNotesByWechatUserIdAndAcitivityId(pageable, wechatUserId, activityId);
 		return response;
 	}
-
+	@Deprecated
 	@ApiIgnore
 	@GetMapping("/{wechatUserId}/{activityId}/{ymd}")
 	@ApiOperation(value = "查询用户指定活动指定时间的打卡日记", produces = "application/json")
@@ -82,6 +82,7 @@ public class ClockInNotesResource {
 		return response;
 	}
 
+	@Deprecated
 	@GetMapping("/calendar/{wechatUserId}/{activityId}/{ym}")
 	@ApiOperation(value = "查询用户指定活动指定月份的打卡日记日历", response = ClockInNotesCalendarResponse.class, produces = "application/json")
 	@ApiImplicitParams({
@@ -99,6 +100,7 @@ public class ClockInNotesResource {
 		return response;
 	}
 	
+	@Deprecated
 	@GetMapping("/calendar/{wechatUserId}/{activityId}")
 	@ApiOperation(value = "查询用户指定活动的打卡日记日历", response = ClockInNotesCalendarResponse.class, produces = "application/json")
 	@ApiImplicitParams({

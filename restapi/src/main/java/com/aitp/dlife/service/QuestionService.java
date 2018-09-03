@@ -126,7 +126,7 @@ public class QuestionService {
             .map(questionMapper::toDto);
 
         if(result!=null){
-            Sort.Order order = new Sort.Order(Sort.Direction.DESC,"createTime");
+            Sort.Order order = new Sort.Order(Sort.Direction.DESC,"modifyTime");
             Sort sort = new Sort(order);
             PageRequest eventPageable = new PageRequest(0,1,sort);
             for(QuestionDTO questionDTO:result){
