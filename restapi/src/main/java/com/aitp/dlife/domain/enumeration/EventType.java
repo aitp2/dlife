@@ -18,8 +18,10 @@ public enum EventType {
 
              case "0": {
                 eventTypes.add(EventType.COMMENT);
+                eventTypes.add(EventType.REPLY);
                 eventTypes.add(EventType.ATTEND);
                 eventTypes.add(EventType.QUIT);
+                eventTypes.add(EventType.CLOCKIN);
                 eventTypes.add(EventType.CANCEL);
                 eventTypes.add(EventType.UPDATE);
                 eventTypes.add(EventType.COMMENTTHUMBSUP);

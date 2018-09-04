@@ -131,6 +131,7 @@ public class ThumbsUpResource {
 			clockInDTO.setThumbsUpCount(clockInDTO.getThumbsUpCount() == null ? 1 : clockInDTO.getThumbsUpCount() + 1);
 			thumbsUpDTO.setKeyName_1(clockInDTO.getActivityId().toString());
 			result=  thumbsUpService.save(thumbsUpDTO);
+			clockInService.save(clockInDTO);
 			FitnessActivityDTO fitnessActivityDTO = fitnessActivityService
 					.findOne((long) clockInDTO.getActivityId().intValue());
 			EventMessageDTO eventMessageDTO = EventMessageBuilder.buildEventMessageDTO(thumbsUpDTO)

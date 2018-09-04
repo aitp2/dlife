@@ -26,7 +26,7 @@ import springfox.documentation.annotations.ApiIgnore;
 /**
  * ClockInNotesResource controller
  */
-@Api(value = "小目标打卡日记API", tags = "小目标打卡日记API")
+@Api(value = "小目标打卡日记API(整体废弃1.4版本将删除)", tags = "小目标打卡日记API")
 @RestController
 @RequestMapping("/api/clock-in-notes")
 public class ClockInNotesResource {
@@ -36,6 +36,8 @@ public class ClockInNotesResource {
 	@Autowired
 	private ClockInNotesService clockInNotesService;
 
+	
+	@Deprecated
 	@GetMapping("/{wechatUserId}")
 	@ApiOperation(value = "查询用户所有活动的打卡日记", produces = "application/json")
 	@ApiImplicitParams({
