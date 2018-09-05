@@ -147,7 +147,7 @@ public class CommentResource {
 			}
 			result.setCommentPics(picDTOS);
 		}
-		updateDateTime(commentDTO,EventMessageBuilder.buildEventMessageDTO(commentDTO).type(EventType.COMMENT).get());
+		updateDateTime(commentDTO,EventMessageBuilder.buildEventMessageDTO(result).type(EventType.COMMENT).get());
 		return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
 	}
