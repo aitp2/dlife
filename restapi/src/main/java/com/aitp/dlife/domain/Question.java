@@ -6,6 +6,10 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
@@ -16,6 +20,9 @@ import java.util.Objects;
  * A Question.
  */
 @Entity
+@DynamicInsert
+@DynamicUpdate
+@SelectBeforeUpdate
 @Table(name = "question")
 public class Question implements Serializable {
 

@@ -7,7 +7,6 @@ import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.service.dto.ActivityParticipationDTO;
 import com.aitp.dlife.service.dto.AttendeeDTO;
-import com.aitp.dlife.service.dto.ClockInDTO;
 import com.aitp.dlife.service.dto.CommentDTO;
 import com.aitp.dlife.service.dto.EventMessageDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;

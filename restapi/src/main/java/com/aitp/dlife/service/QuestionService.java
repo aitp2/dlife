@@ -76,10 +76,10 @@ public class QuestionService {
     public QuestionDTO createNewQuestion(QuestionDTO questionDTO) {
         log.debug("Request to create new Question : {}", questionDTO);
 
-        // set the creation date
-        if (StringUtils.isEmpty(questionDTO.getCreateTime())){
-            questionDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
-        }
+//        // set the creation date
+//        if (StringUtils.isEmpty(questionDTO.getCreateTime())){
+//            questionDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
+//        }
 
         // set the default value
         questionDTO.setAnswerCount(Integer.valueOf(0));
