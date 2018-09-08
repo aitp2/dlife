@@ -159,7 +159,7 @@ public class QuestionResource {
     @PutMapping("/questions/readingCount")
     @ApiOperation(value = "更新问题浏览量", response = QuestionDTO.class, produces = "application/json")
     @ApiImplicitParams({
-        @ApiImplicitParam(paramType = "param", dataType = "String", defaultValue = "", name = "id", value = "问题的ID", required = true) })
+        @ApiImplicitParam(paramType = "param", dataType = "Long", defaultValue = "", name = "id", value = "问题的ID", required = true) })
     @Timed
     public ResponseEntity<QuestionDTO> updateQuestionReadingCount(Long id) throws URISyntaxException {
         log.debug("REST request to update Question : {}", id);

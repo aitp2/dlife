@@ -17,6 +17,7 @@ public interface QuestionMapper extends EntityMapper<QuestionDTO, Question> {
 
     @Mapping(target = "questionPics", ignore = true)
     @Mapping(target = "createTime", expression = "java(InstantMapper.fromString(questionDTO.getCreateTime()))")
+    @Mapping(target = "modifyTime", expression = "java(InstantMapper.fromString(questionDTO.getModifyTime()))")
     Question toEntity(QuestionDTO questionDTO);
 
     default Question fromId(Long id) {
