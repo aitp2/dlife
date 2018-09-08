@@ -39,17 +39,21 @@ import com.aitp.dlife.repository.FitnessActivityRepository;
 import com.aitp.dlife.repository.specification.CommentSpecification;
 import com.aitp.dlife.repository.specification.ReplySpecification;
 import com.aitp.dlife.repository.specification.ThumbsUpSpecification;
+import com.aitp.dlife.service.ClockInService;
 import com.aitp.dlife.service.CommentPicService;
 import com.aitp.dlife.service.CommentService;
 import com.aitp.dlife.service.EventMessageService;
+import com.aitp.dlife.service.FitnessActivityService;
 import com.aitp.dlife.service.MessageService;
 import com.aitp.dlife.service.PinFanActivityService;
 import com.aitp.dlife.service.QuestionService;
 import com.aitp.dlife.service.ThumbsUpService;
 import com.aitp.dlife.service.builder.EventMessageBuilder;
+import com.aitp.dlife.service.dto.ClockInDTO;
 import com.aitp.dlife.service.dto.CommentDTO;
 import com.aitp.dlife.service.dto.CommentPicDTO;
 import com.aitp.dlife.service.dto.EventMessageDTO;
+import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.dto.QuestionDTO;
 import com.aitp.dlife.service.dto.ReplyDTO;
 import com.aitp.dlife.service.dto.ThumbsUpDTO;
@@ -86,8 +90,12 @@ public class CommentResource {
 
 	private final ThumbsUpService thumbsUpService;
 
+	private final ClockInService clockInService;
+	
 	private final EventMessageService eventMessageService;
 
+	private final FitnessActivityService fitnessActivityService;
+	
 	private final PinFanActivityService pinFanActivityService;
 
 	private final MessageService messageService;
@@ -97,7 +105,7 @@ public class CommentResource {
 	public CommentResource(CommentService commentService, CommentPicService commentPicService,
 			FitnessActivityRepository fitnessActivityRepository, EventMessageService eventMessageService,
 			PinFanActivityService pinFanActivityService, ThumbsUpService thumbsUpService,
-			QuestionService questionService, MessageService messageService) {
+			QuestionService questionService, MessageService messageService,ClockInService clockInService,FitnessActivityService fitnessActivityService) {
 		this.commentService = commentService;
 		this.commentPicService = commentPicService;
 		this.fitnessActivityRepository = fitnessActivityRepository;
@@ -106,6 +114,8 @@ public class CommentResource {
 		this.pinFanActivityService = pinFanActivityService;
 		this.questionService = questionService;
 		this.messageService = messageService;
+		this.clockInService = clockInService;
+		this.fitnessActivityService = fitnessActivityService;
 	}
 
 	/**
@@ -171,11 +181,28 @@ public class CommentResource {
 	public ResponseEntity<ReplyDTO> createReply(@Valid @RequestBody ReplyDTO replyDTO)
 			throws URISyntaxException {
 		log.debug("REST request to save Comment : {}", replyDTO);
-
-
 		ReplyDTO result = commentService.save(replyDTO);
-		CommentDTO commentDTO = commentService.findOne(replyDTO.getParentId());
-		updateDateTime(commentDTO,EventMessageBuilder.buildEventMessageDTO(result).type(EventType.REPLY).object(commentDTO.getObjectId()).get());
+		switch (replyDTO.getModule()) {
+		case COMMENT:
+			CommentDTO commentDTO = commentService.findOne(replyDTO.getParentId());
+			updateDateTime(commentDTO,EventMessageBuilder.buildEventMessageDTO(result).type(EventType.REPLY).object(commentDTO.getObjectId()).get());
+			break;
+		case ACTIVITY:
+			ClockInDTO clockInDTO = clockInService.findOne(replyDTO.getParentId());
+			FitnessActivityDTO fitnessActivityDTO  = fitnessActivityService.findOne(Long.valueOf((long)clockInDTO.getActivityId().intValue()));
+			EventMessageDTO eventMessageDTO = EventMessageBuilder.buildEventMessageDTO(result)
+					.type(EventType.REPLY).
+					object(Long.valueOf((long)clockInDTO.
+							getActivityId().
+							intValue())).title(fitnessActivityDTO.getTitle()).Channel(EventChannel.FITNESS).get();
+			eventMessageDTO = eventMessageService.save(eventMessageDTO);
+			if (null != eventMessageDTO.getId()) {
+				messageService.createMessageForEvent(eventMessageDTO);
+			}
+			break;
+		default:
+			break;
+		}
 		return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
 	}
