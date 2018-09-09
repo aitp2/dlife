@@ -72,6 +72,19 @@ public class CommentService {
      */
     public CommentDTO save(CommentDTO commentDTO) {
         log.debug("Request to save Comment : {}", commentDTO);
+        Comment comment = commentMapper.toEntity(commentDTO);
+        comment = commentRepository.save(comment);
+        return commentMapper.toDto(comment);
+    }
+
+    /**
+     * add a comment.
+     *
+     * @param commentDTO the entity to save
+     * @return the persisted entity
+     */
+    public CommentDTO add(CommentDTO commentDTO) {
+        log.debug("Request to save Comment : {}", commentDTO);
         if(CommentChannel.FIT.equals(commentDTO.getChannel())&&null==commentDTO.getId())
         {
             FitnessActivity fitnessActivity = fitnessActivityRepository.findById(commentDTO.getObjectId()).get();
@@ -93,7 +106,6 @@ public class CommentService {
         return commentMapper.toDto(comment);
     }
 
-    
 
     /**
      * Save a comment.

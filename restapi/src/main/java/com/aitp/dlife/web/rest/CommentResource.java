@@ -142,7 +142,7 @@ public class CommentResource {
 		commentDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
 		commentDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
 
-		CommentDTO result = commentService.save(commentDTO);
+		CommentDTO result = commentService.add(commentDTO);
 
 
 		Set<CommentPicDTO> picDTOS = new HashSet<>();

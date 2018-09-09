@@ -256,12 +256,22 @@ public class ThumbsUpResource {
 	public ResponseEntity<String> deleteThumbsUp(@PathVariable @ApiParam(value = "点赞ID", required = true) Long id) {
 		log.debug("REST request to delete ThumbsUp : {}", id);
 		ThumbsUpDTO thumbsUpDTO = thumbsUpService.findOne(id).get();
-		CommentDTO commentDTO = commentService.findOne(thumbsUpDTO.getObjectId());
-		Integer thumbsUp = commentDTO.getRating1() == null ? 0 : commentDTO.getRating1();
-		thumbsUp--;
-		commentDTO.setRating1(thumbsUp);
+		switch (thumbsUpDTO.getModule()) {
+		case COMMENT:
+			CommentDTO commentDTO = commentService.findOne(thumbsUpDTO.getObjectId());
+			Integer thumbsUp = commentDTO.getRating1() == null ? 0 : commentDTO.getRating1();
+			thumbsUp--;
+			commentDTO.setRating1(thumbsUp);
+			commentService.save(commentDTO);
+			break;
+		case ACTIVITY:
+		    ClockInDTO clockInDTO = clockInService.findOne(thumbsUpDTO.getObjectId());
+		    clockInDTO.setThumbsUpCount(clockInDTO.getThumbsUpCount() == null ? 0 : clockInDTO.getThumbsUpCount()-1);
+		    clockInService.save(clockInDTO);
+		default:
+			break;
+		}
 		thumbsUpService.delete(id);
-		commentService.save(commentDTO);
 		return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).body("ok");
 	}
 }
