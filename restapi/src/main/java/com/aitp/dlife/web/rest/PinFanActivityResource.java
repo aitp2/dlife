@@ -1,22 +1,24 @@
 package com.aitp.dlife.web.rest;
 
-import com.aitp.dlife.service.PinfanPicsService;
-import com.aitp.dlife.service.WechatUserService;
-import com.aitp.dlife.service.dto.AttendeeDTO;
-import com.aitp.dlife.service.dto.PinfanPicsDTO;
-import com.aitp.dlife.service.dto.WechatUserDTO;
+import com.aitp.dlife.domain.enumeration.EventChannel;
+import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.service.*;
+import com.aitp.dlife.service.dto.*;
+import com.aitp.dlife.web.rest.util.BeanPropertiesUtils;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.aitp.dlife.web.rest.util.HttpUtil;
 import com.codahale.metrics.annotation.Timed;
-import com.aitp.dlife.service.PinFanActivityService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
-import com.aitp.dlife.service.dto.PinFanActivityDTO;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -26,16 +28,18 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.time.Instant;
 import java.util.*;
 
 /**
  * REST controller for managing PinFanActivity.
  */
 @RestController
+@Api(value = "小邀约活动API", tags = "小邀约活动API")
 @RequestMapping("/api")
 public class PinFanActivityResource {
 
@@ -48,10 +52,17 @@ public class PinFanActivityResource {
     private final PinfanPicsService pinfanPicsService;
 
     private final WechatUserService wechatUserService;
-    public PinFanActivityResource(PinFanActivityService pinFanActivityService,PinfanPicsService pinfanPicsService,WechatUserService wechatUserService) {
+
+    private final EventMessageService eventMessageService;
+
+    private final MessageService messageService;
+    public PinFanActivityResource(PinFanActivityService pinFanActivityService,PinfanPicsService pinfanPicsService,WechatUserService wechatUserService,
+                                  EventMessageService eventMessageService,MessageService messageService) {
         this.pinFanActivityService = pinFanActivityService;
         this.pinfanPicsService=pinfanPicsService;
         this.wechatUserService = wechatUserService;
+        this.eventMessageService = eventMessageService;
+        this.messageService = messageService;
     }
 
     /**
@@ -63,6 +74,7 @@ public class PinFanActivityResource {
      */
     @PostMapping("/pin-fan-activities")
     @Timed
+	@ApiOperation(value = "创建拼饭活动", notes = "传递拼饭数据进行创建，其中ID不填", response = PinFanActivityDTO.class)
     public ResponseEntity<PinFanActivityDTO> createPinFanActivity(@Valid @RequestBody PinFanActivityDTO pinFanActivityDTO) throws URISyntaxException {
         log.debug("REST request to save PinFanActivity : {}", pinFanActivityDTO);
         if (pinFanActivityDTO.getId() != null) {
@@ -85,7 +97,7 @@ public class PinFanActivityResource {
             }
         }
         result.setPinfanPics(pinfanPicsDTOS);
-
+        
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(pinFanActivityDTO.getWechatUserId()));
         String sexString="";
@@ -113,29 +125,45 @@ public class PinFanActivityResource {
      *
      * @param pinFanActivityDTO the pinFanActivityDTO to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated pinFanActivityDTO,
-     * or with status 400 (Bad Request) if the pinFanActivityDTO is not valid,
+     * or with status 400 (Bad Request) if the p65	inFanActivityDTO is not valid,
      * or with status 500 (Internal Server Error) if the pinFanActivityDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws InvocationTargetException 
+     * @throws IllegalAccessException 
      */
     @PutMapping("/pin-fan-activities")
     @Timed
-    public ResponseEntity<PinFanActivityDTO> updatePinFanActivity(@Valid @RequestBody PinFanActivityDTO pinFanActivityDTO) throws URISyntaxException {
+	@ApiOperation(value = "修改拼饭活动", notes = "传递拼饭数据进行修改，对不修改的数据可以不用填充 ID必填", response = PinFanActivityDTO.class)
+    public ResponseEntity<PinFanActivityDTO> updatePinFanActivity(@Valid @RequestBody PinFanActivityDTO pinFanActivityDTO) throws URISyntaxException, IllegalAccessException, InvocationTargetException {
         log.debug("REST request to update PinFanActivity : {}", pinFanActivityDTO);
         if (pinFanActivityDTO.getId() == null) {
             return createPinFanActivity(pinFanActivityDTO);
         }
         PinFanActivityDTO oldDto = pinFanActivityService.findOne(pinFanActivityDTO.getId());
         if (null!=oldDto){
-            pinFanActivityDTO.setCommentCount(oldDto.getCommentCount());
-            pinFanActivityDTO.setStatus(oldDto.getStatus());
+        	BeanUtils.copyProperties(pinFanActivityDTO, oldDto, BeanPropertiesUtils.getNullProperties(pinFanActivityDTO));
         }
-        PinFanActivityDTO result = pinFanActivityService.save(pinFanActivityDTO);
+        PinFanActivityDTO result = pinFanActivityService.save(oldDto);
+
+        // deal with completedSequence
+        // 1 已完成
+        // 注意：如果抽出该逻辑 请考虑事务问题
+		if (result.getStatus() == 1) {
+			result.setCompletedSequence(pinFanActivityService.getCompletedSequence(result.getWechatUserId()));
+		}
+        
+        //record the activity modify event start
+        EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.PINFAN,DateUtil.getYMDDateString(new Date()),EventType.UPDATE,
+            result.getWechatUserId(),result.getActivitiyTile(),result.getId(),result.getAvatar(),result.getNickName());
+        if (null!=eventMessageDTO.getId()){
+            messageService.createMessageForEvent(eventMessageDTO);
+        }
+        //record the activity modify event end
 
         //we need to compar image with the new image,
         List<PinfanPicsDTO> oldImages = pinfanPicsService.findPicsByActivityId(pinFanActivityDTO.getId());
         if (!CollectionUtils.isEmpty(pinFanActivityDTO.getPinfanPics()))
         {
-
             List<Long> oldIds = new ArrayList<>();
 
             for(PinfanPicsDTO newImage : pinFanActivityDTO.getPinfanPics())
@@ -147,7 +175,6 @@ public class PinFanActivityResource {
                     pinfanPicsService.save(newImage);
                     continue;
                 }
-
                 oldIds.add(newImage.getId());
             }
 
@@ -159,15 +186,6 @@ public class PinFanActivityResource {
                 }
             }
         }
-        else
-        {
-            for(PinfanPicsDTO oldImage : oldImages)
-            {
-                pinfanPicsService.delete(oldImage.getId());
-            }
-        }
-
-
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, pinFanActivityDTO.getId().toString()))
             .body(result);
@@ -185,11 +203,23 @@ public class PinFanActivityResource {
      */
     @PutMapping("/pin-fan-activities/cancel/{id}")
     @Timed
+	@ApiOperation(value = "取消拼饭活动", notes = "取消拼饭活动")
     public ResponseEntity<Void> cancelPinFanActivity(@PathVariable Long id) throws URISyntaxException {
         log.debug("REST request to cancel PinFanActivity : {}", id);
         PinFanActivityDTO pinFanActivityDTO = pinFanActivityService.findOne(id);
         pinFanActivityDTO.setStatus(2);
         pinFanActivityService.save(pinFanActivityDTO);
+
+        //record the activity quit event start
+        EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.PINFAN,DateUtil.getYMDDateString(new Date()),EventType.CANCEL,
+            pinFanActivityDTO.getWechatUserId(),pinFanActivityDTO.getActivitiyTile(),
+            pinFanActivityDTO.getId(),pinFanActivityDTO.getAvatar(),
+            pinFanActivityDTO.getNickName());
+        if (null!=eventMessageDTO.getId()){
+            messageService.createMessageForEvent(eventMessageDTO);
+        }
+        //record the activity quit event end
+
         return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -201,6 +231,7 @@ public class PinFanActivityResource {
      */
     @GetMapping("/pin-fan-activities/user/{wechatUserId}")
     @Timed
+	@ApiOperation(value = "取消拼饭活动", notes = "取消拼饭活动", response = PinFanActivityDTO.class)
     public ResponseEntity<List<PinFanActivityDTO>> getAllPinFanActivities(Pageable pageable,@PathVariable String wechatUserId) {
         log.debug("REST request to get a page of PinFanActivities");
 
@@ -234,6 +265,7 @@ public class PinFanActivityResource {
     }
     @GetMapping("/pin-fan-activities/mine/{wechatUserId}")
     @Timed
+	@ApiOperation(value = "我创建的小邀约", notes = "我创建的小邀约", response = PinFanActivityDTO.class)
     public ResponseEntity<List<PinFanActivityDTO>> getAllPinFanActivitiesByUserId(Pageable pageable,@PathVariable String wechatUserId) {
         log.debug("REST request to get a page of PinFanActivities");
         Page<PinFanActivityDTO> page = pinFanActivityService.findAllByWechatUserId(pageable,wechatUserId);
@@ -261,6 +293,7 @@ public class PinFanActivityResource {
     }
     @GetMapping("/pin-fan-activities/attended/{wechatUserId}")
     @Timed
+	@ApiOperation(value = "查询我参与小邀约", notes = "我参与的小邀约", response = PinFanActivityDTO.class)
     public ResponseEntity<List<PinFanActivityDTO>> getAllAttendedPinFanActivitiesByUserId(@PathVariable String wechatUserId) {
         log.debug("REST request to get a page of PinFanActivities");
         List<PinFanActivityDTO> page = pinFanActivityService.findAllAttendedByWechatUserId(wechatUserId);
@@ -275,6 +308,7 @@ public class PinFanActivityResource {
      */
     @GetMapping("/pin-fan-activities/{id}")
     @Timed
+    @ApiOperation(value = "获取小邀约", notes = "获取小邀约", response = PinFanActivityDTO.class)
     public ResponseEntity<PinFanActivityDTO> getPinFanActivity(@PathVariable Long id) {
         log.debug("REST request to get PinFanActivity : {}", id);
         PinFanActivityDTO pinFanActivityDTO = pinFanActivityService.findOne(id);
@@ -282,6 +316,7 @@ public class PinFanActivityResource {
     }
     @GetMapping("/pin-fan-activities/{id}/{wechatUserId}")
     @Timed
+    @ApiOperation(value = "获取小邀约动态", notes = "获取小邀约动态", response = PinFanActivityDTO.class)
     public ResponseEntity<PinFanActivityDTO> getPinFanActivityAndIsAttend(@PathVariable Long id,@PathVariable String wechatUserId ) {
         PinFanActivityDTO pinFanActivityDTO = pinFanActivityService.findOne(id);
         if(pinFanActivityDTO != null){
@@ -313,6 +348,7 @@ public class PinFanActivityResource {
      */
     @DeleteMapping("/pin-fan-activities/{id}")
     @Timed
+    @ApiOperation(value = "删除小邀约", notes = "删除小邀约")
     public ResponseEntity<Void> deletePinFanActivity(@PathVariable Long id) {
         log.debug("REST request to delete PinFanActivity : {}", id);
         pinFanActivityService.delete(id);
@@ -321,6 +357,7 @@ public class PinFanActivityResource {
 
     @GetMapping("/pin-fan-activities/createView/{wechatUserId}")
     @Timed
+    @ApiOperation(value = "创建页面日志打印", notes = "创建页面日志打印")
     public ResponseEntity<Void> viewCreatePinFanActivity(@PathVariable String wechatUserId) {
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(wechatUserId));
@@ -343,7 +380,7 @@ public class PinFanActivityResource {
     /**
      * PUT  /pin-fan-activities : Updates an existing pinFanActivity.
      *
-     * @param pinFanActivityDTO the pinFanActivityDTO to update
+     * @param id the pinFanActivityDTO to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated pinFanActivityDTO,
      * or with status 400 (Bad Request) if the pinFanActivityDTO is not valid,
      * or with status 500 (Internal Server Error) if the pinFanActivityDTO couldn't be updated
@@ -351,6 +388,7 @@ public class PinFanActivityResource {
      */
     @PutMapping("/pin-fan-activities/readingCount")
     @Timed
+    @ApiOperation(value = "删除小邀约", notes = "删除小邀约", response = PinFanActivityDTO.class)
     public ResponseEntity<PinFanActivityDTO> updateReadingCount(Long id) throws URISyntaxException {
 		log.debug("REST request to update PinFanActivity : {}", id);
 		if (id == null) {
@@ -373,6 +411,7 @@ public class PinFanActivityResource {
 
     @GetMapping("/pin-fan-activities/getActivityForTomorrow")
     @Timed
+    @ApiOperation(value = "获取明天开始的小邀约", notes = "获取明天开始的小邀约", response = PinFanActivityDTO.class)
     public List<PinFanActivityDTO> getActivityByStartTime(){
         log.debug("REST request to get PinFanActivity for tomorrow");
         return pinFanActivityService.getPinFanActivityForTomorrow();

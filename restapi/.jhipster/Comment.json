@@ -1,5 +1,14 @@
 {
-    "name": "Comment",
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "commentPic",
+            "otherEntityName": "commentPic",
+            "otherEntityRelationshipName": "comment"
+        }
+    ],
     "fields": [
         {
             "fieldName": "parentId",
@@ -75,24 +84,35 @@
         {
             "fieldName": "modifyTime",
             "fieldType": "Instant"
-        }
-    ],
-    "relationships": [
+        },
         {
-            "relationshipType": "one-to-many",
-            "relationshipName": "commentPic",
-            "otherEntityName": "commentPic",
-            "otherEntityRelationshipName": "comment"
+            "fieldName": "module",
+            "fieldType": "CommentModule",
+            "fieldValues": "COMMENT,ACTIVITY,USERCENTER"
+        },
+        {
+            "fieldName": "replyCount",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "rpWechatUserId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "rpAvatar",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "rpNickName",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180802115450",
-    "javadoc": "评论信息",
-    "entityTableName": "comment",
     "dto": "mapstruct",
-    "pagination": "pagination",
+    "searchEngine": false,
     "service": "serviceClass",
+    "entityTableName": "comment",
     "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "clientRootFolder": "",
-    "applications": "*"
+    "pagination": "pagination",
+    "javadoc": "评论信息"
 }

@@ -2,12 +2,6 @@ package com.aitp.dlife.response;
 
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.validation.constraints.Size;
-
-import com.aitp.dlife.service.dto.PicsDTO;
 
 
 public class ClockInResponse implements Serializable {
@@ -24,7 +18,11 @@ public class ClockInResponse implements Serializable {
 
 	public void setClockInSuccess(boolean clockInSuccess) {
 		this.clockInSuccess = clockInSuccess;
+	}
+
+	@Override
+	public String toString() {
+		return "ClockInResponse [clockInSuccess=" + clockInSuccess + "]";
 	} 
-	
 	
 }

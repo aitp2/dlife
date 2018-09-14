@@ -11,12 +11,6 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
-import com.aitp.dlife.domain.enumeration.EventChannel;
-import com.aitp.dlife.domain.enumeration.EventType;
-import com.aitp.dlife.service.*;
-import com.aitp.dlife.service.dto.*;
-import com.aitp.dlife.web.rest.util.HttpUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -34,7 +28,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aitp.dlife.domain.enumeration.EventChannel;
+import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.repository.specification.FitnessActivitySpecification;
+import com.aitp.dlife.service.EventMessageService;
+import com.aitp.dlife.service.FitnessActivityService;
+import com.aitp.dlife.service.MessageService;
+import com.aitp.dlife.service.PicsService;
 import com.aitp.dlife.service.WechatUserService;
+import com.aitp.dlife.service.dto.EventMessageDTO;
+import com.aitp.dlife.service.dto.FitnessActivityDTO;
+import com.aitp.dlife.service.dto.PicsDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.DateUtil;
@@ -64,11 +68,15 @@ public class FitnessActivityResource {
 
     private final EventMessageService eventMessageService;
 
-    public FitnessActivityResource(FitnessActivityService fitnessActivityService,PicsService picsService,WechatUserService wechatUserService, EventMessageService eventMessageService) {
+    private final MessageService messageService;
+
+    public FitnessActivityResource(FitnessActivityService fitnessActivityService,PicsService picsService,WechatUserService wechatUserService, EventMessageService eventMessageService,
+                                   MessageService messageService) {
         this.fitnessActivityService = fitnessActivityService;
         this.picsService = picsService;
         this.wechatUserService=wechatUserService;
         this.eventMessageService = eventMessageService;
+        this.messageService = messageService;
     }
 
     /**
@@ -147,6 +155,7 @@ public class FitnessActivityResource {
         if(null!=oldDto){
             fitnessActivityDTO.setStatus(oldDto.getStatus());
             fitnessActivityDTO.setCommentCount(oldDto.getCommentCount());
+            fitnessActivityDTO.setReadingCount(oldDto.getReadingCount());
         }
 
         FitnessActivityDTO result = fitnessActivityService.save(fitnessActivityDTO);
@@ -189,8 +198,11 @@ public class FitnessActivityResource {
         }
 
         //record the activity modify event start
-        eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()),EventType.UPDATE,
+        EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()),EventType.UPDATE,
             result.getWechatUserId(),result.getTitle(),result.getId(),result.getAvatar(),result.getNickName());
+        if (null!=eventMessageDTO.getId()){
+            messageService.createMessageForEvent(eventMessageDTO);
+        }
         //record the activity modify event end
 
         return ResponseEntity.ok()
@@ -202,18 +214,18 @@ public class FitnessActivityResource {
      * GET  /fitness-activities : get all the fitnessActivities.
      *
      * @param pageable the pagination information
+     * @param eventCount the request count of the activity's envent message, default is 0
      * @return the ResponseEntity with status 200 (OK) and the list of fitnessActivities in body
      */
     @GetMapping("/fitness-activities")
     @Timed
-    public ResponseEntity<List<FitnessActivityDTO>> getAllFitnessActivities(Pageable pageable, Integer eventCount) {
+    public ResponseEntity<List<FitnessActivityDTO>> getAllFitnessActivities(Pageable pageable,FitnessActivitySpecification spec, Integer eventCount) {
         log.debug("REST request to get a page of FitnessActivities, event count:"+ eventCount);
-
         Page<FitnessActivityDTO> page;
         if (eventCount == null) {
-            page = fitnessActivityService.findAll(pageable);
+            page = fitnessActivityService.findAll(pageable,spec);
         } else {
-            page = fitnessActivityService.findAllAndEvent(pageable,eventCount);
+            page = fitnessActivityService.findAllAndEvent(pageable,spec,eventCount);
         }
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/fitness-activities");

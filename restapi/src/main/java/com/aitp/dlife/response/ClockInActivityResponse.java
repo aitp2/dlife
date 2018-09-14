@@ -1,7 +1,14 @@
 package com.aitp.dlife.response;
 
-public class ClockInActivityResponse {
+import java.io.Serializable;
+
+public class ClockInActivityResponse implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6547652834940893058L;
+
 	/** 活动是否完成  **/
 	private boolean completed;
 	
@@ -66,6 +73,13 @@ public class ClockInActivityResponse {
 
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
+	}
+
+	@Override
+	public String toString() {
+		return "ClockInActivityResponse [completed=" + completed + ", ranking=" + ranking + ", longestContinueDays="
+				+ longestContinueDays + ", totalClockInDays=" + totalClockInDays + ", earliestClockInTime="
+				+ earliestClockInTime + ", latestClockInTime=" + latestClockInTime + "]";
 	}
 	
 	

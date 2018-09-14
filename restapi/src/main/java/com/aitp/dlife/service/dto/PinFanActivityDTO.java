@@ -3,6 +3,9 @@ package com.aitp.dlife.service.dto;
 
 
 import javax.validation.constraints.*;
+
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -14,7 +17,12 @@ import java.util.Objects;
  */
 public class PinFanActivityDTO implements Serializable {
 
-    private Long id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
 
     @Size(max = 128)
     private String wechatUserId;
@@ -65,7 +73,21 @@ public class PinFanActivityDTO implements Serializable {
     private Integer commentCount;
     
     private Integer readingCount;
+    
+    private String modifyTime;
+    
+    private String completedSequence;
 
+    private boolean attended = false;
+    @ApiModelProperty(value="报名状态（0-截至，1-开始）")
+    private Integer joinStatus = 1;
+
+    private Set<AttendeeDTO> attendees = new HashSet<>();
+
+    private Set<PinfanPicsDTO> pinfanPics = new HashSet<>();
+
+    private Set<RatesDTO> rates = new HashSet<>();
+    
     public Integer getStatus() {
         return status;
     }
@@ -73,7 +95,7 @@ public class PinFanActivityDTO implements Serializable {
     public void setStatus(Integer status) {
         this.status = status;
     }
-
+    @ApiModelProperty(value="活动状态（0-创建，1-完成,2-取消）")
     private Integer status;
 
     public boolean isAttended() {
@@ -84,13 +106,6 @@ public class PinFanActivityDTO implements Serializable {
         this.attended = attended;
     }
 
-    private boolean attended = false;
-
-    private Set<AttendeeDTO> attendees = new HashSet<>();
-
-    private Set<PinfanPicsDTO> pinfanPics = new HashSet<>();
-
-    private Set<RatesDTO> rates = new HashSet<>();
 
     public Set<AttendeeDTO> getAttendees() {
         return attendees;
@@ -276,6 +291,31 @@ public class PinFanActivityDTO implements Serializable {
 	public void setReadingCount(Integer readingCount) {
 		this.readingCount = readingCount;
 	}
+	
+
+	public String getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(String modifyTime) {
+		this.modifyTime = modifyTime;
+	}
+	
+	public String getCompletedSequence() {
+		return completedSequence;
+	}
+
+	public void setCompletedSequence(String completedSequence) {
+		this.completedSequence = completedSequence;
+	}
+	
+	public Integer getJoinStatus() {
+		return joinStatus;
+	}
+
+	public void setJoinStatus(Integer joinStatus) {
+		this.joinStatus = joinStatus;
+	}
 
 	@Override
     public boolean equals(Object o) {
@@ -299,30 +339,17 @@ public class PinFanActivityDTO implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "PinFanActivityDTO{" +
-            "id=" + getId() +
-            ", wechatUserId='" + getWechatUserId() + "'" +
-            ", avatar='" + getAvatar() + "'" +
-            ", nickName='" + getNickName() + "'" +
-            ", activitiyType=" + getActivitiyType() +
-            ", activitiyTile='" + getActivitiyTile() + "'" +
-            ", budget=" + getBudget() +
-            ", activitiyAddre='" + getActivitiyAddre() + "'" +
-            ", descrption='" + getDescrption() + "'" +
-            ", organizeUser='" + getOrganizeUser() + "'" +
-            ", coverPicture='" + getCoverPicture() + "'" +
-            ", appointDatetime='" + getAppointDatetime() + "'" +
-            ", appointEndDatetime='" + getAppointEndDatetime() + "'" +
-            ", salerUrl='" + getSalerUrl() + "'" +
-            ", lowerLimit=" + getLowerLimit() +
-            ", upperLimit=" + getUpperLimit() +
-            ", payType='" + getPayType() + "'" +
-            ", deadline='" + getDeadline() + "'" +
-            ", comment='" + getComment() + "'" +
-            ", status='" + getStatus() + "'" +
-            "}";
-    }
+	public String toString() {
+		return "PinFanActivityDTO [id=" + id + ", wechatUserId=" + wechatUserId + ", avatar=" + avatar + ", nickName="
+				+ nickName + ", activitiyType=" + activitiyType + ", activitiyTile=" + activitiyTile + ", budget="
+				+ budget + ", activitiyAddre=" + activitiyAddre + ", descrption=" + descrption + ", organizeUser="
+				+ organizeUser + ", coverPicture=" + coverPicture + ", appointDatetime=" + appointDatetime
+				+ ", appointEndDatetime=" + appointEndDatetime + ", salerUrl=" + salerUrl + ", lowerLimit=" + lowerLimit
+				+ ", upperLimit=" + upperLimit + ", payType=" + payType + ", deadline=" + deadline + ", comment="
+				+ comment + ", commentCount=" + commentCount + ", readingCount=" + readingCount + ", modifyTime="
+				+ modifyTime + ", attended=" + attended + ", attendees=" + attendees + ", pinfanPics=" + pinfanPics
+				+ ", rates=" + rates + ", status=" + status + "]";
+	}
 
     public Integer getCommentCount() {
         return commentCount;

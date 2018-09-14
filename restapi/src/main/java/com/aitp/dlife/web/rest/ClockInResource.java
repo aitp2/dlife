@@ -1,14 +1,5 @@
 package com.aitp.dlife.web.rest;
 
-import com.aitp.dlife.domain.enumeration.EventChannel;
-import com.aitp.dlife.domain.enumeration.EventType;
-import com.aitp.dlife.service.*;
-import com.aitp.dlife.web.rest.util.HttpUtil;
-import com.codahale.metrics.annotation.Timed;
-import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
-import com.aitp.dlife.web.rest.util.DateUtil;
-import com.aitp.dlife.web.rest.util.HeaderUtil;
-import com.aitp.dlife.web.rest.util.PaginationUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
@@ -16,9 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -35,27 +28,43 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aitp.dlife.domain.enumeration.EventChannel;
+import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.domain.enumeration.ThumbsUpModule;
+import com.aitp.dlife.repository.specification.ClockInSpecification;
+import com.aitp.dlife.repository.specification.ThumbsUpSpecification;
 import com.aitp.dlife.service.ActivityParticipationService;
 import com.aitp.dlife.service.ClockInActivityService;
 import com.aitp.dlife.service.ClockInService;
 import com.aitp.dlife.service.ClockinSummaryService;
+import com.aitp.dlife.service.EventMessageService;
 import com.aitp.dlife.service.FitnessActivityService;
 import com.aitp.dlife.service.PicsService;
+import com.aitp.dlife.service.ThumbsUpService;
 import com.aitp.dlife.service.WechatUserService;
 import com.aitp.dlife.service.dto.ActivityParticipationDTO;
 import com.aitp.dlife.service.dto.ClockInDTO;
 import com.aitp.dlife.service.dto.ClockinSummaryDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.dto.PicsDTO;
+import com.aitp.dlife.service.dto.ThumbsUpDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
+import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
+import com.aitp.dlife.web.rest.util.DateUtil;
+import com.aitp.dlife.web.rest.util.HeaderUtil;
+import com.aitp.dlife.web.rest.util.HttpUtil;
+import com.aitp.dlife.web.rest.util.PaginationUtil;
+import com.codahale.metrics.annotation.Timed;
 
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * REST controller for managing ClockIn.
  */
 @RestController
 @RequestMapping("/api")
+@Api(value = "小目标打卡API", tags = "小目标打卡API")
 public class ClockInResource {
 
     private final Logger log = LoggerFactory.getLogger(ClockInResource.class);
@@ -66,13 +75,15 @@ public class ClockInResource {
     private final PicsService picsService;
     private final ClockinSummaryService clockinSummaryService;
     private final WechatUserService wechatUserService;
+	private final ThumbsUpService thumbsUpService;
     private final FitnessActivityService fitnessActivityService;
     private final ActivityParticipationService activityParticipationService;
     private final EventMessageService eventMessageService;
     private final ClockInActivityService clockInActivityService;
 
 	public ClockInResource(ClockInService clockInService, PicsService picsService,
-                           ClockinSummaryService clockinSummaryService, WechatUserService wechatUserService, FitnessActivityService fitnessActivityService, ActivityParticipationService activityParticipationService, EventMessageService eventMessageService, ClockInActivityService clockInActivityService) {
+                           ClockinSummaryService clockinSummaryService, WechatUserService wechatUserService, FitnessActivityService fitnessActivityService, ActivityParticipationService activityParticipationService,
+                           EventMessageService eventMessageService, ClockInActivityService clockInActivityService,ThumbsUpService thumbsUpService) {
 		this.clockInService = clockInService;
 		this.picsService = picsService;
 		this.clockinSummaryService = clockinSummaryService;
@@ -81,6 +92,7 @@ public class ClockInResource {
 		this.activityParticipationService=activityParticipationService;
         this.eventMessageService = eventMessageService;
         this.clockInActivityService = clockInActivityService;
+        this.thumbsUpService = thumbsUpService;
     }
 
     /**
@@ -93,6 +105,7 @@ public class ClockInResource {
     @PostMapping("/clock-ins")
     @Deprecated
     @Timed
+    @ApiOperation(value = "创建打卡", notes = "根据ClockDTO传入打卡信息", response = ClockInDTO.class)
     public ResponseEntity<ClockInDTO> createClockIn(@Valid @RequestBody ClockInDTO clockInDTO) throws URISyntaxException {
         log.debug("REST request to save ClockIn : {}", clockInDTO);
         if (clockInDTO.getId() != null) {
@@ -179,6 +192,7 @@ public class ClockInResource {
      */
     @PutMapping("/clock-ins")
     @Timed
+    @ApiOperation(value = "更新打卡方法", notes = "根据ClockDTO传入打卡信息", response = ClockInDTO.class)
     public ResponseEntity<ClockInDTO> updateClockIn(@Valid @RequestBody ClockInDTO clockInDTO) throws URISyntaxException {
         log.debug("REST request to update ClockIn : {}", clockInDTO);
         if (clockInDTO.getId() == null) {
@@ -198,9 +212,14 @@ public class ClockInResource {
      */
     @GetMapping("/clock-ins")
     @Timed
-    public ResponseEntity<List<ClockInDTO>> getAllClockIns(Pageable pageable) {
+    @ApiOperation(value = "打卡信息列表查询方法", notes = "根据不同传入参数获取打卡信息，具有分页功能，查询条件可传可不传", response = ClockInDTO.class)
+    public ResponseEntity<List<ClockInDTO>> getAllClockIns(Pageable pageable,ClockInSpecification spec) {
         log.debug("REST request to get a page of ClockIns");
-        Page<ClockInDTO> page = clockInService.findAll(pageable);
+        Page<ClockInDTO> page = clockInService.findAll(pageable,spec);
+    	ThumbsUpSpecification thumbsUpSpecification  = new ThumbsUpSpecification(spec.getQuerys().getActivityId(),ThumbsUpModule.ACTIVITY);
+		List<ThumbsUpDTO> thumbsUpDTOs = thumbsUpService.findAll(thumbsUpSpecification);
+		page.getContent().parallelStream().forEach(clockin -> clockin.setThumbsUpDTOs(thumbsUpDTOs.stream()
+				.filter(thb -> thb.getObjectId().equals(clockin.getId())&&ThumbsUpModule.ACTIVITY.equals(thb.getModule())).collect(Collectors.toSet())));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/clock-ins");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -213,6 +232,7 @@ public class ClockInResource {
      */
     @GetMapping("/clock-ins/{id}")
     @Timed
+    @ApiOperation(value = "获取打卡信息方法", notes = "根据打卡ID获取打卡信息", response = ClockInDTO.class)
     public ResponseEntity<ClockInDTO> getClockIn(@PathVariable Long id) {
         log.debug("REST request to get ClockIn : {}", id);
         ClockInDTO clockInDTO = clockInService.findOne(id);
@@ -227,14 +247,17 @@ public class ClockInResource {
      */
     @DeleteMapping("/clock-ins/{id}")
     @Timed
-    public ResponseEntity<Void> deleteClockIn(@PathVariable Long id) {
+    @ApiOperation(value = "删除打卡信息方法", notes = "根据打卡ID删除打卡信息, 正确返回ok")
+    public ResponseEntity<String> deleteClockIn(@PathVariable Long id) {
         log.debug("REST request to delete ClockIn : {}", id);
         clockInService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).body("ok");
     }
 
     @GetMapping("/clock-ins/getClockinsByActivityParticipationId")
     @Timed
+    @Deprecated
+    @ApiOperation(value = "根据报名信息查询打卡信息", notes = "已过时", response = ClockInDTO.class)
     public List<ClockInDTO>  getClockinsByActivityParticipationId(Long activityParticipationId) {
         log.debug("REST request to get Clockins : {}", activityParticipationId);
         return clockInService.findClockinsByActivityParticipationId(activityParticipationId);
@@ -242,6 +265,8 @@ public class ClockInResource {
 
     @GetMapping("/clock-ins/getClockinsDateByWechatUserIdAndMonth")
     @Timed
+    @Deprecated
+    @ApiOperation(value = "获取根据用户和月份获取打卡信息", notes = "已过时", response = ClockInDTO.class)
     public List<String>  getClockinsDateByWechatUserIdAndMonth(String wechatUserId,String yearMonth) {
         log.debug("REST request to get Clockins : {}", wechatUserId,yearMonth);
         return clockInService.getClockinsDateByWechatUserIdAndMonth(wechatUserId,yearMonth);
@@ -249,6 +274,8 @@ public class ClockInResource {
 
     @GetMapping("/clock-ins/getClockinsByWechatUserIdAndDate")
     @Timed
+    @Deprecated
+    @ApiOperation(value = "获取根据用户和日期获取打卡信息", notes = "已过时", response = ClockInDTO.class)
     public List<ClockInDTO>  getClockinsByWechatUserIdAndDate(String wechatUserId,String yearMonthDate) {
         log.debug("REST request to get Clockins : {}", wechatUserId,yearMonthDate);
         return clockInService.getClockinsByWechatUserIdAndDate(wechatUserId,yearMonthDate);
@@ -256,6 +283,8 @@ public class ClockInResource {
 
     @GetMapping("/clock-ins/getClockinsByActivityId")
     @Timed
+    @Deprecated
+    @ApiOperation(value = "获取根活动获取打卡信息", notes = "已过时", response = ClockInDTO.class)
     public List<ClockInDTO>  getClockinsByActivityId(String activityId) {
         log.debug("REST request to get Clockins by activity id: {}", activityId);
         return clockInService.getClockinsByActivityId(activityId);

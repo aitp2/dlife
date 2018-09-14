@@ -9,19 +9,26 @@ import java.util.Objects;
 import com.aitp.dlife.domain.enumeration.ThumbsUpChannel;
 import com.aitp.dlife.domain.enumeration.ThumbsUpModule;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * A DTO for the ThumbsUp entity.
  */
+@ApiModel(value="ThumbsUp", description="点赞对象")		 
 public class ThumbsUpDTO implements Serializable {
 
     private Long id;
-
+    @ApiModelProperty(value="评论id",required=true)
     private Long objectId;
-
+    
+    @ApiModelProperty(value="通道含有( COOK, FIT, PIN, FAQS)",required=true)
     private ThumbsUpChannel channel;
 
+    @ApiModelProperty(value="通道含有( COMMENT, ACTIVITY, USERCENTER)",required=true)
     private ThumbsUpModule module;
 
+    @ApiModelProperty(value="用户wechatID", required=true)
     @Size(max = 128)
     private String wechatUserId;
 
@@ -29,12 +36,13 @@ public class ThumbsUpDTO implements Serializable {
     private String avatar;
 
     @Size(max = 128)
+    @ApiModelProperty(value="昵称", required=true)
     private String nickName;
-
-    private Instant createTime;
-
+    @ApiModelProperty(hidden=true)
+    private Instant createTime = Instant.now();
+    @ApiModelProperty(hidden=true)
     private String keyName_1;
-
+    @ApiModelProperty(hidden=true)
     private String keyName_2;
     
     public Long getId() {

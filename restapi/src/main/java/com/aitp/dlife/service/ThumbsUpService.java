@@ -1,6 +1,8 @@
 package com.aitp.dlife.service;
 
 import com.aitp.dlife.domain.ThumbsUp;
+import com.aitp.dlife.repository.ClockInRepository;
+import com.aitp.dlife.repository.CommentRepository;
 import com.aitp.dlife.repository.ThumbsUpRepository;
 import com.aitp.dlife.repository.specification.CommentSpecification;
 import com.aitp.dlife.repository.specification.ThumbsUpSpecification;
@@ -13,7 +15,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,11 +36,17 @@ public class ThumbsUpService {
 
     private final ThumbsUpRepository thumbsUpRepository;
 
+    private  final CommentRepository commentRepository;
+    
+    private final ClockInRepository clockInRepository;
+    
     private final ThumbsUpMapper thumbsUpMapper;
 
-    public ThumbsUpService(ThumbsUpRepository thumbsUpRepository, ThumbsUpMapper thumbsUpMapper) {
+    public ThumbsUpService(ThumbsUpRepository thumbsUpRepository, ThumbsUpMapper thumbsUpMapper,ClockInRepository clockInRepository,CommentRepository commentRepository) {
         this.thumbsUpRepository = thumbsUpRepository;
         this.thumbsUpMapper = thumbsUpMapper;
+        this.commentRepository = commentRepository;
+        this.clockInRepository = clockInRepository;
     }
 
     /**
@@ -62,9 +73,8 @@ public class ThumbsUpService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<ThumbsUpDTO> findAll(Pageable pageable,List<QueryDTO> queryDTOs) {
+    public Page<ThumbsUpDTO> findAll(Pageable pageable,Specification<ThumbsUp> spec) {
         log.debug("Request to get all ThumbsUps");
-        ThumbsUpSpecification spec = new ThumbsUpSpecification(queryDTOs);
         return thumbsUpRepository.findAll(spec,pageable)
             .map(thumbsUpMapper::toDto);
     }
@@ -77,14 +87,14 @@ public class ThumbsUpService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<ThumbsUpDTO> findAll(List<QueryDTO> queryDTOs) {
+    public List<ThumbsUpDTO> findAll(ThumbsUpSpecification spec) {
         log.debug("Request to get all ThumbsUps");
-        ThumbsUpSpecification spec = new ThumbsUpSpecification(queryDTOs);
-        return thumbsUpRepository.findAll(spec).stream()
+        Sort sort = new Sort(Sort.Direction.DESC, "createTime");
+        return thumbsUpRepository.findAll(spec,sort).stream()
             .map(thumbsUpMapper::toDto).collect(Collectors.toList());
     }
-    
-    
+
+
     /**
      * Get one thumbsUp by id.
      *

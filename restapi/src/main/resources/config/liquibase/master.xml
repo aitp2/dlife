@@ -9,8 +9,8 @@
     <include file="config/liquibase/changelog/20180802115449_added_entity_Follow.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180802115450_added_entity_Comment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180802115451_added_entity_CommentPic.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180802115452_added_entity_EventMessage.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180802115453_added_entity_Message.xml" relativeToChangelogFile="false"/>
+	<include file="config/liquibase/changelog/20180802115452_added_entity_EventMessage.xml" relativeToChangelogFile="false"/>
+   <include file="config/liquibase/changelog/20180802115453_added_entity_Message.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180802115454_added_entity_Recipe.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180802115455_added_entity_Image.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180802115456_added_entity_RecipeOrder.xml" relativeToChangelogFile="false"/>
@@ -45,6 +45,10 @@
 	<include file="config/liquibase/changelog/20180804005713_changelog.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20180807082732_changelog.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20180808103735_changelog.xml" relativeToChangelogFile="false"/>
-    -->
+	<include file="config/liquibase/changelog/20180830060635_changelog.xml" relativeToChangelogFile="false"/>
+	<include file="config/liquibase/changelog/20180830075007_changelog.xml" relativeToChangelogFile="false"/>
+	<include file="config/liquibase/changelog/20180831023801_changelog.xml" relativeToChangelogFile="false"/>
+	<include file="config/liquibase/changelog/20180831105653_changelog.xml" relativeToChangelogFile="false"/> 
+	<include file="config/liquibase/changelog/20180903135055_changelog.xml" relativeToChangelogFile="false"/> -->
 
 </databaseChangeLog>

@@ -51,19 +51,22 @@ export class QuestionService {
 
     private convertDateFromClient(question: IQuestion): IQuestion {
         const copy: IQuestion = Object.assign({}, question, {
-            createTime: question.createTime != null && question.createTime.isValid() ? question.createTime.toJSON() : null
+            createTime: question.createTime != null && question.createTime.isValid() ? question.createTime.toJSON() : null,
+            modifyTime: question.modifyTime != null && question.modifyTime.isValid() ? question.modifyTime.toJSON() : null
         });
         return copy;
     }
 
     private convertDateFromServer(res: EntityResponseType): EntityResponseType {
         res.body.createTime = res.body.createTime != null ? moment(res.body.createTime) : null;
+        res.body.modifyTime = res.body.modifyTime != null ? moment(res.body.modifyTime) : null;
         return res;
     }
 
     private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
         res.body.forEach((question: IQuestion) => {
             question.createTime = question.createTime != null ? moment(question.createTime) : null;
+            question.modifyTime = question.modifyTime != null ? moment(question.modifyTime) : null;
         });
         return res;
     }

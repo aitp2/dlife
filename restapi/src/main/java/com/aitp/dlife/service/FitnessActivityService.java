@@ -1,20 +1,10 @@
 package com.aitp.dlife.service;
 
-import com.aitp.dlife.domain.FitnessActivity;
-import com.aitp.dlife.repository.FitnessActivityRepository;
-import com.aitp.dlife.service.dto.EventMessageDTO;
-import com.aitp.dlife.service.dto.FitnessActivityDTO;
-import com.aitp.dlife.service.enums.Status;
-import com.aitp.dlife.service.mapper.FitnessActivityMapper;
-import com.aitp.dlife.web.rest.errors.CustomParameterizedException;
-
-
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -23,8 +13,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.aitp.dlife.domain.FitnessActivity;
+import com.aitp.dlife.repository.FitnessActivityRepository;
+import com.aitp.dlife.service.dto.EventMessageDTO;
+import com.aitp.dlife.service.dto.FitnessActivityDTO;
+import com.aitp.dlife.service.enums.Status;
+import com.aitp.dlife.service.mapper.FitnessActivityMapper;
+import com.aitp.dlife.web.rest.errors.CustomParameterizedException;
 
 
 /**
@@ -68,12 +67,16 @@ public class FitnessActivityService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<FitnessActivityDTO> findAll(Pageable pageable) {
+    public Page<FitnessActivityDTO> findAll(Pageable pageable,Specification<FitnessActivity> spec) {
         log.debug("Request to get all FitnessActivities");
-        return fitnessActivityRepository.findAll(pageable)
+        return fitnessActivityRepository.findAll(spec,pageable)
             .map(fitnessActivityMapper::toDto);
     }
 
+    public List<FitnessActivityDTO> findAll(Specification<FitnessActivity> spec){
+    	  log.debug("Request to get all FitnessActivities");
+    	return fitnessActivityRepository.findAll(spec).stream().map(fitnessActivityMapper::toDto).collect(Collectors.toList());
+    }
     /**
      * Get all the fitnessActivities.
      *
@@ -82,11 +85,10 @@ public class FitnessActivityService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<FitnessActivityDTO> findAllAndEvent(Pageable pageable, Integer eventCount) {
+    public Page<FitnessActivityDTO> findAllAndEvent(Pageable pageable,Specification<FitnessActivity> spec, Integer eventCount) {
         log.debug("Request to get all FitnessActivities");
-        Page<FitnessActivityDTO> result = fitnessActivityRepository.findAll(pageable)
+        Page<FitnessActivityDTO> result = fitnessActivityRepository.findAll(spec,pageable)
             .map(fitnessActivityMapper::toDto);
-
         if(result!=null){
             Sort.Order order = new Sort.Order(Sort.Direction.DESC,"createTime");
             Sort sort = new Sort(order);
@@ -136,6 +138,7 @@ public class FitnessActivityService {
 	 * @param state
 	 * @return
 	 */
+	@Deprecated
 	public List<FitnessActivityDTO> getActivitiesByState(Integer state){
 		 Date nowDate = new Date();
 		 SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

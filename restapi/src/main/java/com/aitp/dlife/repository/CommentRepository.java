@@ -20,4 +20,5 @@ public interface CommentRepository extends JpaSpecificationExecutor<Comment>, Jp
     @Query(value = "select cm from Comment cm "
         + "where cm.objectId =:objectId and cm.channel=:channel",nativeQuery = false)
     Page<Comment> findAllForOneObject(Pageable pageable, @Param("channel")CommentChannel channel, @Param("objectId")Long objectId);
+
 }

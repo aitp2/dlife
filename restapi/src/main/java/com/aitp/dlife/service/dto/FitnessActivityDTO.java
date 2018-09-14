@@ -54,6 +54,8 @@ public class FitnessActivityDTO implements Serializable {
     private Integer commentCount;
 
     private Integer readingCount;
+    
+    private String modifyTime;
 
     private Set<PicsDTO> images = new HashSet<>();
 
@@ -206,6 +208,22 @@ public class FitnessActivityDTO implements Serializable {
 		this.readingCount = readingCount;
 	}
 
+    public Integer getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(Integer commentCount) {
+        this.commentCount = commentCount;
+    }
+
+	public String getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(String modifyTime) {
+		this.modifyTime = modifyTime;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -227,29 +245,16 @@ public class FitnessActivityDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "FitnessActivityDTO{" +
-            "id=" + getId() +
-            ", title='" + getTitle() + "'" +
-            ", descrption='" + getDescrption() + "'" +
-            ", wechatUserId='" + getWechatUserId() + "'" +
-            ", nickName='" + getNickName() + "'" +
-            ", avatar='" + getAvatar() + "'" +
-            ", project='" + getProject() + "'" +
-            ", companyRole='" + getCompanyRole() + "'" +
-            ", signStartTime='" + getSignStartTime() + "'" +
-            ", signEndTime='" + getSignEndTime() + "'" +
-            ", activityStartTime='" + getActivityStartTime() + "'" +
-            ", activityEndTime='" + getActivityEndTime() + "'" +
-            "}";
-    }
-
-    public Integer getCommentCount() {
-        return commentCount;
-    }
-
-    public void setCommentCount(Integer commentCount) {
-        this.commentCount = commentCount;
-    }
+	@Override
+	public String toString() {
+		return "FitnessActivityDTO [id=" + id + ", title=" + title + ", descrption=" + descrption + ", wechatUserId="
+				+ wechatUserId + ", nickName=" + nickName + ", avatar=" + avatar + ", project=" + project
+				+ ", companyRole=" + companyRole + ", signStartTime=" + signStartTime + ", signEndTime=" + signEndTime
+				+ ", activityStartTime=" + activityStartTime + ", activityEndTime=" + activityEndTime + ", attendCount="
+				+ attendCount + ", status=" + status + ", activityParticipations=" + activityParticipations
+				+ ", commentCount=" + commentCount + ", readingCount=" + readingCount + ", modifyTime=" + modifyTime
+				+ ", images=" + images + ", eventMessages=" + eventMessages + "]";
+	}
+    
+    
 }

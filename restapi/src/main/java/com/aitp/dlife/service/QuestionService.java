@@ -1,19 +1,32 @@
 package com.aitp.dlife.service;
 
+import com.aitp.dlife.domain.Comment;
 import com.aitp.dlife.domain.Question;
+import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.repository.QuestionRepository;
+import com.aitp.dlife.service.dto.CommentDTO;
 import com.aitp.dlife.service.dto.QuestionDTO;
+import com.aitp.dlife.service.dto.QuestionPicDTO;
+import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.service.mapper.QuestionMapper;
+import com.aitp.dlife.web.rest.util.DateUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+
 /**
  * Service Implementation for managing Question.
  */
@@ -27,9 +40,18 @@ public class QuestionService {
 
     private final QuestionMapper questionMapper;
 
-    public QuestionService(QuestionRepository questionRepository, QuestionMapper questionMapper) {
+    private final QuestionPicService questionPicService;
+
+    private final WechatUserService wechatUserService;
+
+    private final CommentService commentService;
+
+    public QuestionService(QuestionRepository questionRepository, QuestionMapper questionMapper, QuestionPicService questionPicService, WechatUserService wechatUserService, CommentService commentService) {
         this.questionRepository = questionRepository;
         this.questionMapper = questionMapper;
+        this.questionPicService = questionPicService;
+        this.wechatUserService = wechatUserService;
+        this.commentService = commentService;
     }
 
     /**
@@ -46,6 +68,53 @@ public class QuestionService {
     }
 
     /**
+     * Save a question.
+     *
+     * @param questionDTO the entity to save
+     * @return the persisted entity
+     */
+    public QuestionDTO createNewQuestion(QuestionDTO questionDTO) {
+        log.debug("Request to create new Question : {}", questionDTO);
+
+        // set the creation date
+        if (StringUtils.isEmpty(questionDTO.getCreateTime())){
+            questionDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
+            questionDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
+        }
+
+        // set the default value
+        questionDTO.setAnswerCount(Integer.valueOf(0));
+        questionDTO.setReadingCount(Integer.valueOf(0));
+
+        // set the user info
+        if (StringUtils.isEmpty(questionDTO.getAvatar()) || StringUtils.isEmpty(questionDTO.getNickName())){
+            WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(questionDTO.getWechatUserId()));
+            if (wechatUserDTO != null){
+                questionDTO.setAvatar(wechatUserDTO.getAvatar());
+                questionDTO.setNickName(wechatUserDTO.getNickName());
+            }
+        }
+
+        QuestionDTO result = save(questionDTO);
+
+        // save the pics
+        final Set<QuestionPicDTO> questionPicDTOs = new HashSet<>();
+        if(!CollectionUtils.isEmpty(questionDTO.getQuestionPics())){
+            for(QuestionPicDTO pic : questionDTO.getQuestionPics()){
+                if(!StringUtils.isEmpty(pic.getCreateTime())){
+                    pic.setCreateTime(DateUtil.getYMDDateString(new Date()));
+                }
+                pic.setQuestionId(result.getId());
+                questionPicDTOs.add(questionPicService.save(pic));
+            }
+        }
+        result.setQuestionPics(questionPicDTOs);
+
+
+        return result;
+    }
+
+    /**
      * Get all the questions.
      *
      * @param pageable the pagination information
@@ -54,10 +123,67 @@ public class QuestionService {
     @Transactional(readOnly = true)
     public Page<QuestionDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Questions");
-        return questionRepository.findAll(pageable)
+        Page<QuestionDTO> result = questionRepository.findAll(pageable)
             .map(questionMapper::toDto);
+
+        if(result!=null){
+            Sort.Order order = new Sort.Order(Sort.Direction.DESC,"createTime");
+            Sort sort = new Sort(order);
+            PageRequest eventPageable = new PageRequest(0,1,sort);
+            for(QuestionDTO questionDTO:result){
+                List<CommentDTO> commentDTOList = commentService.findAllForOneObject(eventPageable, CommentChannel.FAQS.toString(),
+                    questionDTO.getId()+"").stream().collect(Collectors.toList());
+                questionDTO.setAnswers(commentDTOList);
+            }
+        }
+
+        return result;
     }
 
+    /**
+     * Get all the mine questions.
+     *
+     * @param pageable the pagination information
+     * @param wechatUserId the wechatUserId
+     * @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public Page<QuestionDTO> findAllQuestionsByWechatUserId(Pageable pageable, String wechatUserId) {
+        log.debug("Request to get all mine Questions");
+        Page<QuestionDTO> result = questionRepository.findAllQuestionsByWechatUserId(pageable, wechatUserId)
+            .map(questionMapper::toDto);
+
+        return result;
+    }
+
+    /**
+     * Get all the mine questions.
+     *
+     * @param pageable the pagination information
+     * @param specComment the specComment
+     * @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public List<QuestionDTO> findAllAnswersByWechatUserId(Pageable pageable, Specification<Comment> specComment) {
+        log.debug("Request to get all mine Questions");
+        Page<CommentDTO> commentDTOS = commentService.findAll(pageable, specComment);
+
+        if(commentDTOS!=null){
+            List<QuestionDTO> questionDTOS = new ArrayList<>();
+            for(CommentDTO commentDTO:commentDTOS){
+                Optional<QuestionDTO> questionDTO = findOne(commentDTO.getObjectId());
+                if (questionDTO.isPresent()){
+                    List<CommentDTO> thisComment = new ArrayList<>();
+                    thisComment.add(commentDTO);
+                    questionDTO.get().setAnswers(thisComment);
+                    questionDTOS.add(questionDTO.get());
+                }
+
+            }
+            return questionDTOS;
+        }
+        return Collections.emptyList();
+    }
 
     /**
      * Get one question by id.

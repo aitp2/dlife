@@ -1,12 +1,13 @@
 package com.aitp.dlife.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
+import org.hibernate.annotations.DynamicInsert;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -19,6 +20,7 @@ import java.util.Objects;
  */
 @ApiModel(description = "打卡信息")
 @Entity
+@DynamicInsert
 @Table(name = "clock_in")
 public class ClockIn implements Serializable {
 
@@ -57,6 +59,12 @@ public class ClockIn implements Serializable {
     @ApiModelProperty(value = "活动id")
     @Column(name = "activity_id")
     private Integer activityId;
+
+    @Column(name = "reply_count")
+    private Integer replyCount;
+
+    @Column(name = "thumbs_up_count")
+    private Integer thumbsUpCount;
 
     @OneToMany(mappedBy = "clockIn")
     private Set<Pics> pics = new HashSet<>();
@@ -126,6 +134,32 @@ public class ClockIn implements Serializable {
         this.activityId = activityId;
     }
 
+    public Integer getReplyCount() {
+        return replyCount;
+    }
+
+    public ClockIn replyCount(Integer replyCount) {
+        this.replyCount = replyCount;
+        return this;
+    }
+
+    public void setReplyCount(Integer replyCount) {
+        this.replyCount = replyCount;
+    }
+
+    public Integer getThumbsUpCount() {
+        return thumbsUpCount;
+    }
+
+    public ClockIn thumbsUpCount(Integer thumbsUpCount) {
+        this.thumbsUpCount = thumbsUpCount;
+        return this;
+    }
+
+    public void setThumbsUpCount(Integer thumbsUpCount) {
+        this.thumbsUpCount = thumbsUpCount;
+    }
+
     public Set<Pics> getPics() {
         return pics;
     }
@@ -193,6 +227,8 @@ public class ClockIn implements Serializable {
             ", signNote='" + getSignNote() + "'" +
             ", punchDateTime='" + getPunchDateTime() + "'" +
             ", activityId=" + getActivityId() +
+            ", replyCount=" + getReplyCount() +
+            ", thumbsUpCount=" + getThumbsUpCount() +
             "}";
     }
 }

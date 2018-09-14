@@ -24,6 +24,8 @@
             <th jhiSortBy="objectTitle"><span>Object Title</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="createTime"><span>Create Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="content"><span>Content</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="paragraphId"><span>Paragraph Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="replyId"><span>Reply Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -39,6 +41,8 @@
                 <td>{{eventMessage.objectTitle}}</td>
                 <td>{{eventMessage.createTime | date:'medium'}}</td>
                 <td>{{eventMessage.content}}</td>
+                <td>{{eventMessage.paragraphId}}</td>
+                <td>{{eventMessage.replyId}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

@@ -8,11 +8,16 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Question and its DTO QuestionDTO.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {InstantMapper.class})
 public interface QuestionMapper extends EntityMapper<QuestionDTO, Question> {
 
+    @Mapping(target = "createTime", expression = "java(InstantMapper.toDateString(question.getCreateTime()))")
+    @Mapping(target = "modifyTime", expression = "java(InstantMapper.toDateString(question.getModifyTime()))")
+    QuestionDTO toDto(Question question);
 
     @Mapping(target = "questionPics", ignore = true)
+    @Mapping(target = "createTime", expression = "java(InstantMapper.fromString(questionDTO.getCreateTime()))")
+    @Mapping(target = "modifyTime", expression = "java(InstantMapper.fromString(questionDTO.getModifyTime()))")
     Question toEntity(QuestionDTO questionDTO);
 
     default Question fromId(Long id) {

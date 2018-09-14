@@ -8,12 +8,13 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity PinFanActivity and its DTO PinFanActivityDTO.
  */
-@Mapper(componentModel = "spring", uses = {InstantMapper.class})
+@Mapper(componentModel = "spring", uses = {InstantMapper.class,PinfanPicsMapper.class,FitnessActivityUtil.class})
 public interface PinFanActivityMapper extends EntityMapper<PinFanActivityDTO, PinFanActivity> {
 
     @Mapping(target = "appointDatetime",expression = "java(InstantMapper.toDateString(entity.getAppointDatetime()))")
     @Mapping(target = "appointEndDatetime",expression = "java(InstantMapper.toDateString(entity.getAppointEndDatetime()))")
     @Mapping(target = "deadline",expression = "java(InstantMapper.toDateString(entity.getDeadline()))")
+	@Mapping(target = "modifyTime", expression = "java(InstantMapper.toDateString(entity.getModifyTime()))")
     PinFanActivityDTO toDto(PinFanActivity entity);
 
     @Mapping(target = "attendees", ignore = true)
@@ -21,9 +22,10 @@ public interface PinFanActivityMapper extends EntityMapper<PinFanActivityDTO, Pi
     @Mapping(target = "deadline",expression = "java(InstantMapper.fromString(pinFanActivityDTO.getDeadline()))")
     @Mapping(target = "appointDatetime",expression = "java(InstantMapper.fromString(pinFanActivityDTO.getAppointDatetime()))")
     @Mapping(target = "appointEndDatetime",expression = "java(InstantMapper.fromString(pinFanActivityDTO.getAppointEndDatetime()))")
-
+	@Mapping(target = "modifyTime", expression = "java(InstantMapper.fromString(pinFanActivityDTO.getModifyTime()))")
     PinFanActivity toEntity(PinFanActivityDTO pinFanActivityDTO);
-
+    
+    
     default PinFanActivity fromId(Long id) {
         if (id == null) {
             return null;

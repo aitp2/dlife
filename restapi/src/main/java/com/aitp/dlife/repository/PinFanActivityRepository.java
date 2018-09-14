@@ -30,4 +30,10 @@ public interface PinFanActivityRepository extends JpaRepository<PinFanActivity, 
         ,nativeQuery = true)
     List<PinFanActivity> getPinFanActivitiesByStartTime(@Param("startTime")String startTime,@Param("endTime")String endTime);
 
+    @Query(value = "SELECT count(*) FROM pin_fan_activity "
+            + " where "
+            + "  pin_fan_activity.wechat_user_id =:wechatUserId and pin_fan_activity.status = 1"
+            ,nativeQuery = true)
+	String getCompletedSequence(@Param("wechatUserId")String wechatUserId);
+
 }

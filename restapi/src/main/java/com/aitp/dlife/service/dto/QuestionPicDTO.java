@@ -15,7 +15,7 @@ public class QuestionPicDTO implements Serializable {
     @Size(max = 255)
     private String ossPath;
 
-    private Instant createTime;
+    private String createTime;
 
     private Long questionId;
 
@@ -35,11 +35,11 @@ public class QuestionPicDTO implements Serializable {
         this.ossPath = ossPath;
     }
 
-    public Instant getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Instant createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 

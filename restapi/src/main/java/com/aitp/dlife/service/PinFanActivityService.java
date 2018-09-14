@@ -6,6 +6,8 @@ import com.aitp.dlife.repository.AttendeeRepository;
 import com.aitp.dlife.repository.PinFanActivityRepository;
 import com.aitp.dlife.service.dto.PinFanActivityDTO;
 import com.aitp.dlife.service.mapper.PinFanActivityMapper;
+import com.aitp.dlife.service.mapper.PinFanActivityToOtherMapper;
+
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,11 +36,15 @@ public class PinFanActivityService {
     private final AttendeeRepository attendeeRepository;
 
     private final PinFanActivityMapper pinFanActivityMapper;
+    
+    private final PinFanActivityToOtherMapper pinFanActivityToOtherMapper;
 
-    public PinFanActivityService(PinFanActivityRepository pinFanActivityRepository, PinFanActivityMapper pinFanActivityMapper,AttendeeRepository attendeeRepository) {
+    public PinFanActivityService(PinFanActivityRepository pinFanActivityRepository, PinFanActivityMapper pinFanActivityMapper,AttendeeRepository attendeeRepository
+    		,PinFanActivityToOtherMapper pinFanActivityToOtherMapper) {
         this.pinFanActivityRepository = pinFanActivityRepository;
         this.pinFanActivityMapper = pinFanActivityMapper;
         this.attendeeRepository=attendeeRepository;
+        this.pinFanActivityToOtherMapper = pinFanActivityToOtherMapper;
     }
 
     /**
@@ -63,31 +70,15 @@ public class PinFanActivityService {
     public Page<PinFanActivityDTO> findAll(Pageable pageable) {
         log.debug("Request to get all PinFanActivities");
         Page<PinFanActivity> all = pinFanActivityRepository.findAll(pageable);
-
-        if(all!=null){
-            for(PinFanActivity activity:all){
-                if(activity.getAppointEndDatetime() != null && (new Date().toInstant()).compareTo(activity.getAppointEndDatetime()) >= 0
-                    &&0==activity.getStatus()){
-                    activity.setStatus(1);
-                }
-                activity.setPinfanPics(null);
-                if(!Hibernate.isInitialized(activity.getAttendees())){
-                    Hibernate.initialize(activity.getAttendees());
-                }
-            }
-        }
         return all.map(pinFanActivityMapper::toDto);
     }
+      
     @Transactional(readOnly = true)
     public Page<PinFanActivityDTO> findAllByWechatUserId(Pageable pageable,String wechatUserId) {
         log.debug("Request to get all PinFanActivities");
         Page<PinFanActivity> all = pinFanActivityRepository.findAllByWechatUserId(pageable,wechatUserId);
         if(all!=null){
             for(PinFanActivity activity:all){
-                if(activity.getAppointEndDatetime() != null && (new Date().toInstant()).compareTo(activity.getAppointEndDatetime()) >= 0
-                    &&0==activity.getStatus()){
-                    activity.setStatus(1);
-                }
                 activity.setPinfanPics(null);
                 if(!Hibernate.isInitialized(activity.getAttendees())){
                     Hibernate.initialize(activity.getAttendees());
@@ -109,10 +100,6 @@ public class PinFanActivityService {
         List<PinFanActivity> activities = pinFanActivityRepository.findAllByIdIn(actIds);
         if(activities!=null){
             for(PinFanActivity activity:activities){
-                if(activity.getAppointEndDatetime() != null && (new Date().toInstant()).compareTo(activity.getAppointEndDatetime()) >= 0
-                    &&0==activity.getStatus()){
-                    activity.setStatus(1);
-                }
                 activity.setPinfanPics(null);
                 if(!Hibernate.isInitialized(activity.getAttendees())){
                     Hibernate.initialize(activity.getAttendees());
@@ -131,11 +118,6 @@ public class PinFanActivityService {
     public PinFanActivityDTO findOne(Long id) {
         log.debug("Request to get PinFanActivity : {}", id);
         PinFanActivity pinFanActivity = pinFanActivityRepository.findById(id).get();
-        if(pinFanActivity.getAppointEndDatetime() != null &&
-            (new Date().toInstant()).compareTo(pinFanActivity.getAppointEndDatetime()) >= 0
-            &&0==pinFanActivity.getStatus()){
-            pinFanActivity.setStatus(1);
-        }
         if(pinFanActivity!=null){
             if(!Hibernate.isInitialized(pinFanActivity.getPinfanPics())){
                 Hibernate.initialize(pinFanActivity.getPinfanPics());
@@ -181,5 +163,20 @@ public class PinFanActivityService {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return formatter.format(date);
     }
+    
+	public PinFanActivity updateModifyTime(Long id) {
+		// update modify time
+		PinFanActivity pinFanActivity = pinFanActivityRepository.findById(id).orElse(null);
+		if (null != pinFanActivity) {
+			pinFanActivity.setModifyTime(Instant.now());
+			pinFanActivityRepository.save(pinFanActivity);
+		}
+		
+		return pinFanActivity;
+	}
+
+	public String getCompletedSequence(String wechatUserId) {
+		return pinFanActivityRepository.getCompletedSequence(wechatUserId);
+	}
 
 }

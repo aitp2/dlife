@@ -16,6 +16,7 @@ export class QuestionUpdateComponent implements OnInit {
     private _question: IQuestion;
     isSaving: boolean;
     createTime: string;
+    modifyTime: string;
 
     constructor(private questionService: QuestionService, private activatedRoute: ActivatedRoute) {}
 
@@ -33,6 +34,7 @@ export class QuestionUpdateComponent implements OnInit {
     save() {
         this.isSaving = true;
         this.question.createTime = moment(this.createTime, DATE_TIME_FORMAT);
+        this.question.modifyTime = moment(this.modifyTime, DATE_TIME_FORMAT);
         if (this.question.id !== undefined) {
             this.subscribeToSaveResponse(this.questionService.update(this.question));
         } else {
@@ -59,5 +61,6 @@ export class QuestionUpdateComponent implements OnInit {
     set question(question: IQuestion) {
         this._question = question;
         this.createTime = moment(question.createTime).format(DATE_TIME_FORMAT);
+        this.modifyTime = moment(question.modifyTime).format(DATE_TIME_FORMAT);
     }
 }

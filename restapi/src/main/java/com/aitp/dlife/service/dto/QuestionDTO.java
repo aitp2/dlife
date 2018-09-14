@@ -1,9 +1,13 @@
 package com.aitp.dlife.service.dto;
 
+
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the Question entity.
@@ -27,11 +31,17 @@ public class QuestionDTO implements Serializable {
     @Size(max = 1024)
     private String description;
 
-    private Instant createTime;
+    private String createTime;
+    
+    private String modifyTime;
 
     private Integer answerCount;
 
     private Integer readingCount;
+
+    private Set<QuestionPicDTO> questionPics;
+
+    private List<CommentDTO> answers;
 
     public Long getId() {
         return id;
@@ -81,11 +91,11 @@ public class QuestionDTO implements Serializable {
         this.description = description;
     }
 
-    public Instant getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Instant createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -105,6 +115,22 @@ public class QuestionDTO implements Serializable {
         this.readingCount = readingCount;
     }
 
+    public Set<QuestionPicDTO> getQuestionPics() {
+        return questionPics;
+    }
+
+    public void setQuestionPics(Set<QuestionPicDTO> questionPics) {
+        this.questionPics = questionPics;
+    }
+
+    public List<CommentDTO> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<CommentDTO> answers) {
+        this.answers = answers;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -121,7 +147,16 @@ public class QuestionDTO implements Serializable {
         return Objects.equals(getId(), questionDTO.getId());
     }
 
-    @Override
+    
+    public String getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(String modifyTime) {
+		this.modifyTime = modifyTime;
+	}
+
+	@Override
     public int hashCode() {
         return Objects.hashCode(getId());
     }

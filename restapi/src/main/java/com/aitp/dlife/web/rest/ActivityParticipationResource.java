@@ -14,10 +14,12 @@ import javax.validation.Valid;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.service.*;
+import com.aitp.dlife.service.dto.EventMessageDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.service.enums.Status;
 import com.aitp.dlife.web.rest.util.HttpUtil;
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -38,6 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.repository.FitnessActivityRepository;
 import com.aitp.dlife.service.dto.ActivityParticipationDTO;
+import com.aitp.dlife.service.dto.ClockInDTO;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
@@ -45,11 +48,14 @@ import com.aitp.dlife.web.rest.util.PaginationUtil;
 import com.codahale.metrics.annotation.Timed;
 
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 /**
  * REST controller for managing ActivityParticipation.
  */
 @RestController
+@Api(value = "小目标报名API", tags = "小目标报名API")
 @RequestMapping("/api")
 public class ActivityParticipationResource {
 
@@ -67,14 +73,18 @@ public class ActivityParticipationResource {
 
     private final EventMessageService eventMessageService;
 
+    private final MessageService messageService;
+
 	public ActivityParticipationResource(ActivityParticipationService activityParticipationService,
                                          FitnessActivityRepository fitnessActivityRepository, WechatUserService wechatUserService,
-                                         FitnessActivityService fitnessActivityService, EventMessageService eventMessageService) {
+                                         FitnessActivityService fitnessActivityService, EventMessageService eventMessageService,
+                                         MessageService messageService) {
 		this.activityParticipationService = activityParticipationService;
 		this.fitnessActivityRepository = fitnessActivityRepository;
 		this.wechatUserService = wechatUserService;
 		this.fitnessActivityService = fitnessActivityService;
         this.eventMessageService = eventMessageService;
+        this.messageService = messageService;
     }
 
 	/**
@@ -90,6 +100,7 @@ public class ActivityParticipationResource {
 	 */
 	@PostMapping("/activity-participations")
 	@Timed
+	@ApiOperation(value = "创建报名信息", notes = "根据activityParticipationDTO传入打卡信息", response = ActivityParticipationDTO.class)
 	public ResponseEntity<ActivityParticipationDTO> createActivityParticipation(
 			@Valid @RequestBody ActivityParticipationDTO activityParticipationDTO) throws URISyntaxException {
 		log.debug("REST request to save ActivityParticipation : {}", activityParticipationDTO);
@@ -127,8 +138,11 @@ public class ActivityParticipationResource {
 		ActivityParticipationDTO result = activityParticipationService.save(activityParticipationDTO);
 
         //record the activity participation event start
-        eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()), EventType.ATTEND,
+        EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()), EventType.ATTEND,
             result.getWechatUserId(),dto.getTitle(),dto.getId(),wechatUserDTO.getAvatar(),wechatUserDTO.getNickName());
+        if (null!=eventMessageDTO.getId()){
+            messageService.createMessageForEvent(eventMessageDTO);
+        }
         //record the activity participation event end
 
 		return ResponseEntity.created(new URI("/api/activity-participations/" + result.getId()))
@@ -150,6 +164,7 @@ public class ActivityParticipationResource {
 	 */
 	@PutMapping("/activity-participations")
 	@Timed
+	@ApiOperation(value = "修改报名信息", notes = "根据activityParticipationDTO传入打卡信息", response = ActivityParticipationDTO.class)
 	public ResponseEntity<ActivityParticipationDTO> updateActivityParticipation(
 			@Valid @RequestBody ActivityParticipationDTO activityParticipationDTO) throws URISyntaxException {
 		log.debug("REST request to update ActivityParticipation : {}", activityParticipationDTO);
@@ -172,6 +187,7 @@ public class ActivityParticipationResource {
 	 */
 	@GetMapping("/activity-participations")
 	@Timed
+	@ApiOperation(value = "获取所有打卡信息", notes = "获取所有打卡信息，目前无查询条件", response = ActivityParticipationDTO.class)
 	public ResponseEntity<List<ActivityParticipationDTO>> getAllActivityParticipations(Pageable pageable) {
 		log.debug("REST request to get a page of ActivityParticipations");
 		Page<ActivityParticipationDTO> page = activityParticipationService.findAll(pageable);
@@ -191,6 +207,7 @@ public class ActivityParticipationResource {
 	 */
 	@GetMapping("/activity-participations/getNonClock")
 	@Timed
+	@ApiOperation(value = "获取未打卡信息", notes = "根据传入数据查询未打卡的报名人(即将过时)", response = ActivityParticipationDTO.class)
 	public List<ActivityParticipationDTO> getAllActivityParticipations(
 			@RequestParam Long isClockIn,
 			 @RequestParam  String clockinDate) {
@@ -220,6 +237,7 @@ public class ActivityParticipationResource {
 	 */
 	@GetMapping("/activity-participations/{id}")
 	@Timed
+	@ApiOperation(value = "获取报名资源信息", notes = "根据报名ID获取报名信息", response = ActivityParticipationDTO.class)
 	public ResponseEntity<ActivityParticipationDTO> getActivityParticipation(@PathVariable Long id) {
 		log.debug("REST request to get ActivityParticipation : {}", id);
         Optional<ActivityParticipationDTO> activityParticipationDTO = activityParticipationService.findOne(id);
@@ -238,6 +256,7 @@ public class ActivityParticipationResource {
 	 */
 	@DeleteMapping("/activity-participations/{id}")
 	@Timed
+	@ApiOperation(value = "删除出报名信息", notes = "根据报名ID删除报名信息", response = ActivityParticipationDTO.class)
 	public ResponseEntity<Void> deleteActivityParticipation(@PathVariable Long id) {
 		log.debug("REST request to delete ActivityParticipation : {}", id);
 
@@ -245,10 +264,13 @@ public class ActivityParticipationResource {
 
         if (activityParticipationDTO.isPresent()){
             //record the activity quit event start
-            eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()),EventType.QUIT,
+            EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()),EventType.QUIT,
                 activityParticipationDTO.get().getWechatUserId(),activityParticipationDTO.get().getActivityTitle(),
                 activityParticipationDTO.get().getActivityId(),activityParticipationDTO.get().getAvatar(),
                 activityParticipationDTO.get().getNickName());
+            if (null!=eventMessageDTO.getId()){
+                messageService.createMessageForEvent(eventMessageDTO);
+            }
             //record the activity quit event end
 
         }
@@ -259,7 +281,8 @@ public class ActivityParticipationResource {
 
 	@GetMapping("/activity-participations/getParticipationsByActivityId")
 	@Timed
-	public List<ActivityParticipationDTO> getParticipationsByActivityId(Long activityId) {
+	@ApiOperation(value = "根据活动ID获取报名信息", notes = "即将过时", response = ActivityParticipationDTO.class)
+	public List<ActivityParticipationDTO> getParticipationsByActivityId(@ApiParam(value="活动id") Long activityId) {
 		log.debug("REST request to get ActivityParticipation : {}", activityId);
 		if (null == activityId) {
 			throw new BadRequestAlertException("activityId can not be null", ENTITY_NAME, "activityIdNULL");

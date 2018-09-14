@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,9 +62,9 @@ public class ClockInService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<ClockInDTO> findAll(Pageable pageable) {
+    public Page<ClockInDTO> findAll(Pageable pageable,Specification<ClockIn> spec) {
         log.debug("Request to get all ClockIns");
-        return clockInRepository.findAll(pageable)
+        return clockInRepository.findAll(spec,pageable)
             .map(clockInMapper::toDto);
     }
 
@@ -114,30 +115,33 @@ public class ClockInService {
         delete(clockInId);
     }
 
+    @Deprecated
 	public List<ClockInDTO> findClockinsByActivityParticipationId(Long activityParticipationId) {
 
 		return clockInRepository.findClockinsByActivityParticipationId(activityParticipationId).stream()
 	            .map(clockInMapper::toDto)
 	            .collect(Collectors.toCollection(LinkedList::new));
 	}
-
+    @Deprecated
 	public List<String> getClockinsDateByWechatUserIdAndMonth(String wechatUserId,String yearMonth) {
 
 		return clockInRepository.findClockinsDateByWechatUserIdAndMonth(wechatUserId,yearMonth);
 	}
 
+    @Deprecated
 	public List<ClockInDTO> getClockinsByWechatUserIdAndDate(String wechatUserId, String yearMonthDate) {
 		return clockInRepository.getClockinsByWechatUserIdAndDate(wechatUserId,yearMonthDate).stream()
 	            .map(clockInMapper::toDto)
 	            .collect(Collectors.toCollection(LinkedList::new));
 	}
-
+    @Deprecated
     public List<ClockInDTO> getClockinsByWechatUserIdAndDateAndActivityId(String wechatUserId,Long activityParticipationId, String yearMonthDate) {
         return clockInRepository.getClockinsByWechatUserIdAndDateAndActivityId(wechatUserId,activityParticipationId,yearMonthDate).stream()
             .map(clockInMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+    @Deprecated
     public List<ClockInDTO> getClockinsByActivityId(String activityId) {
         return clockInRepository.getClockinsByActivityId(activityId).stream()
             .map(clockInMapper::toDto)
@@ -147,7 +151,6 @@ public class ClockInService {
     public boolean isClockIn(String wechatUserId,Long activityParticipationId)
     {
         String today = DateUtil.getYYMMDDDateString(new Date());
-        System.out.print("11111111" + today);
         if(CollectionUtils.isEmpty(getClockinsByWechatUserIdAndDateAndActivityId(wechatUserId,activityParticipationId,today)))
         {
             return false;

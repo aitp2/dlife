@@ -1,5 +1,7 @@
 package com.aitp.dlife.repository.specification;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -9,28 +11,23 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.ObjectUtils;
 
-import com.aitp.dlife.domain.Comment;
 import com.aitp.dlife.domain.ThumbsUp;
-import com.aitp.dlife.service.dto.QueryDTO;
+import com.aitp.dlife.domain.enumeration.ThumbsUpModule;
+import com.aitp.dlife.web.rest.vm.ThumbsUpVM;
 
-public class ThumbsUpSpecification implements Specification<ThumbsUp>{
+public class ThumbsUpSpecification extends AbstractSpecifcation<ThumbsUpVM> implements Specification<ThumbsUp>{
 
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
-	
-	private List<QueryDTO>  querys;
-	
-	
-	
 
-	public ThumbsUpSpecification(List<QueryDTO> querys) {
-		super();
-		this.querys = querys;
+	public ThumbsUpSpecification(Long objectId,ThumbsUpModule thumbsUpModule) {
+		super(new ThumbsUpVM(objectId,thumbsUpModule));
 	}
 
 	/**
@@ -38,16 +35,16 @@ public class ThumbsUpSpecification implements Specification<ThumbsUp>{
 	 */
 	@Override
 	public Predicate toPredicate(Root<ThumbsUp> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        Path<String> keyName_1 = root.get("keyName_1");
-        QueryDTO objectId = querys.stream().filter(quz->quz.getQueryKey().equals("objectId")).findFirst().orElse(null);
-        Predicate p = null;
-        if(objectId!=null){
-        	   p = criteriaBuilder.equal(keyName_1, objectId.getQueryValue());
+		  List<Predicate> predicates = new ArrayList<>();
+        if(ObjectUtils.isEmpty(querys.getObjectId())){
+        	  Path<String> keyName_1 = root.get("keyName_1");
+        	  predicates.add(criteriaBuilder.equal(keyName_1, querys.getObjectId()));
         }
-        
-        return p;  
-          
-
+        if(ObjectUtils.isEmpty(querys.getModel())){
+        	  Path<ThumbsUpModule> keyName_1 = root.get("module");
+        	  predicates.add(criteriaBuilder.equal(keyName_1, querys.getModel()));
+     }
+        Predicate predicate = criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        return predicate;
 	}
-
 }

@@ -15,6 +15,8 @@ import java.util.Objects;
 
 import com.aitp.dlife.domain.enumeration.CommentChannel;
 
+import com.aitp.dlife.domain.enumeration.CommentModule;
+
 /**
  * 评论信息
  */
@@ -78,12 +80,13 @@ public class Comment implements Serializable {
     /**
      * 评论内容
      */
+    @Size(max = 1024)
     @ApiModelProperty(value = "评论内容")
-    @Column(name = "content")
+    @Column(name = "content", length = 1024)
     private String content;
 
     /**
-     * 点赞数量
+     * 评价级别 1
      */
     @ApiModelProperty(value = "评价级别 1")
     @Column(name = "rating_1")
@@ -108,6 +111,22 @@ public class Comment implements Serializable {
 
     @Column(name = "modify_time")
     private Instant modifyTime;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "module")
+    private CommentModule module;
+
+    @Column(name = "reply_count")
+    private Integer replyCount;
+
+    @Column(name = "rp_wechat_user_id")
+    private Long rpWechatUserId;
+
+    @Column(name = "rp_avatar")
+    private String rpAvatar;
+
+    @Column(name = "rp_nick_name")
+    private String rpNickName;
 
     @OneToMany(mappedBy = "comment")
     private Set<CommentPic> commentPics = new HashSet<>();
@@ -277,6 +296,71 @@ public class Comment implements Serializable {
         this.modifyTime = modifyTime;
     }
 
+    public CommentModule getModule() {
+        return module;
+    }
+
+    public Comment module(CommentModule module) {
+        this.module = module;
+        return this;
+    }
+
+    public void setModule(CommentModule module) {
+        this.module = module;
+    }
+
+    public Integer getReplyCount() {
+        return replyCount;
+    }
+
+    public Comment replyCount(Integer replyCount) {
+        this.replyCount = replyCount;
+        return this;
+    }
+
+    public void setReplyCount(Integer replyCount) {
+        this.replyCount = replyCount;
+    }
+
+    public Long getRpWechatUserId() {
+        return rpWechatUserId;
+    }
+
+    public Comment rpWechatUserId(Long rpWechatUserId) {
+        this.rpWechatUserId = rpWechatUserId;
+        return this;
+    }
+
+    public void setRpWechatUserId(Long rpWechatUserId) {
+        this.rpWechatUserId = rpWechatUserId;
+    }
+
+    public String getRpAvatar() {
+        return rpAvatar;
+    }
+
+    public Comment rpAvatar(String rpAvatar) {
+        this.rpAvatar = rpAvatar;
+        return this;
+    }
+
+    public void setRpAvatar(String rpAvatar) {
+        this.rpAvatar = rpAvatar;
+    }
+
+    public String getRpNickName() {
+        return rpNickName;
+    }
+
+    public Comment rpNickName(String rpNickName) {
+        this.rpNickName = rpNickName;
+        return this;
+    }
+
+    public void setRpNickName(String rpNickName) {
+        this.rpNickName = rpNickName;
+    }
+
     public Set<CommentPic> getCommentPics() {
         return commentPics;
     }
@@ -339,6 +423,11 @@ public class Comment implements Serializable {
             ", rating3=" + getRating3() +
             ", createTime='" + getCreateTime() + "'" +
             ", modifyTime='" + getModifyTime() + "'" +
+            ", module='" + getModule() + "'" +
+            ", replyCount=" + getReplyCount() +
+            ", rpWechatUserId=" + getRpWechatUserId() +
+            ", rpAvatar='" + getRpAvatar() + "'" +
+            ", rpNickName='" + getRpNickName() + "'" +
             "}";
     }
 }
