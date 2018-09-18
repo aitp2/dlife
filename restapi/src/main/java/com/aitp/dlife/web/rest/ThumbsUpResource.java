@@ -2,11 +2,14 @@ package com.aitp.dlife.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.aitp.dlife.domain.FitnessActivity;
+import com.aitp.dlife.repository.FitnessActivityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -69,6 +72,8 @@ public class ThumbsUpResource {
 
 	private final CommentService commentService;
 
+	private final FitnessActivityRepository fitnessActivityRepository;
+
 	private final ClockInService clockInService;
 
 	private final MessageService messageService;
@@ -81,12 +86,13 @@ public class ThumbsUpResource {
 
 	private final QuestionService questionService;
 
-	public ThumbsUpResource(ThumbsUpService thumbsUpService, CommentService commentService,
+	public ThumbsUpResource(ThumbsUpService thumbsUpService, CommentService commentService, FitnessActivityRepository fitnessActivityRepository,
 			FitnessActivityService fitnessActivityService, PinFanActivityService pinFanActivityService,
 			QuestionService questionService, EventMessageService eventMessageService, MessageService messageService,
 			ClockInService clockInService) {
 		this.thumbsUpService = thumbsUpService;
 		this.commentService = commentService;
+		this.fitnessActivityRepository = fitnessActivityRepository;
 		this.fitnessActivityService = fitnessActivityService;
 		this.pinFanActivityService = pinFanActivityService;
 		this.questionService = questionService;
@@ -139,6 +145,11 @@ public class ThumbsUpResource {
 			eventMessageDTO = eventMessageService.save(eventMessageDTO);
 			if (null != eventMessageDTO.getId()) {
 			messageService.createMessageForEvent(eventMessageDTO);
+
+			FitnessActivity fitnessActivity = fitnessActivityRepository.findById(fitnessActivityDTO.getId()).get();
+			fitnessActivity.setModifyTime(Instant.now());
+			fitnessActivityRepository.save(fitnessActivity);
+
 			}
 			break;
 		default:
@@ -213,7 +224,9 @@ public class ThumbsUpResource {
 		EventChannel eventChannel = null;
 		String objectTitle = null;
 		if (CommentChannel.FIT.equals(commentDTO.getChannel())) {
-			FitnessActivityDTO fitnessActivity = fitnessActivityService.findOne(commentDTO.getObjectId());
+            FitnessActivity fitnessActivity = fitnessActivityRepository.findById(commentDTO.getObjectId()).get();
+            fitnessActivity.setModifyTime(Instant.now());
+            fitnessActivityRepository.save(fitnessActivity);
 			eventChannel = EventChannel.FITNESS;
 			objectTitle = fitnessActivity.getTitle();
 		} else if (CommentChannel.PIN.equals(commentDTO.getChannel())) {
