@@ -81,6 +81,8 @@ public class PinFanActivityDTO implements Serializable {
     private boolean attended = false;
     @ApiModelProperty(value="报名状态（0-截至，1-开始）")
     private Integer joinStatus = 1;
+    
+    private Boolean official;
 
     private Set<AttendeeDTO> attendees = new HashSet<>();
 
@@ -347,7 +349,8 @@ public class PinFanActivityDTO implements Serializable {
 				+ ", appointEndDatetime=" + appointEndDatetime + ", salerUrl=" + salerUrl + ", lowerLimit=" + lowerLimit
 				+ ", upperLimit=" + upperLimit + ", payType=" + payType + ", deadline=" + deadline + ", comment="
 				+ comment + ", commentCount=" + commentCount + ", readingCount=" + readingCount + ", modifyTime="
-				+ modifyTime + ", attended=" + attended + ", attendees=" + attendees + ", pinfanPics=" + pinfanPics
+				+ modifyTime + ", completedSequence=" + completedSequence + ", attended=" + attended + ", joinStatus="
+				+ joinStatus + ", official=" + official + ", attendees=" + attendees + ", pinfanPics=" + pinfanPics
 				+ ", rates=" + rates + ", status=" + status + "]";
 	}
 
@@ -358,4 +361,13 @@ public class PinFanActivityDTO implements Serializable {
     public void setCommentCount(Integer commentCount) {
         this.commentCount = commentCount;
     }
+
+	public Boolean getOfficial() {
+		return official;
+	}
+
+	public void setOfficial(Boolean official) {
+		this.official = official;
+	}
+    
 }

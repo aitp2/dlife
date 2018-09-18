@@ -3,9 +3,9 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-	<!--
-    <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180802115448_added_entity_WechatUser.xml" relativeToChangelogFile="false"/>
+	
+   <!--  <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+   <include file="config/liquibase/changelog/20180802115448_added_entity_WechatUser.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180802115449_added_entity_Follow.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180802115450_added_entity_Comment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180802115451_added_entity_CommentPic.xml" relativeToChangelogFile="false"/>
@@ -49,6 +49,9 @@
 	<include file="config/liquibase/changelog/20180830075007_changelog.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20180831023801_changelog.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20180831105653_changelog.xml" relativeToChangelogFile="false"/> 
-	<include file="config/liquibase/changelog/20180903135055_changelog.xml" relativeToChangelogFile="false"/> -->
+	<include file="config/liquibase/changelog/20180903135055_changelog.xml" relativeToChangelogFile="false"/> 
+	
+	<include file="config/liquibase/changelog/20180917082801_changelog.xml" relativeToChangelogFile="false"/> -->
+	
 
 </databaseChangeLog>

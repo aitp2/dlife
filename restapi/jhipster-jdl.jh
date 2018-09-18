@@ -339,6 +339,19 @@ entity PinFanActivity (pin_fan_activity) {
    * 最新评论/参与时间
    */
   modifyTime Instant,
+  /**
+   * 是否置顶
+   */
+  stick Boolean,
+   /**
+   * 置顶顺序
+   */
+  stickOrder String,
+  /**
+   * 是否官方
+   */
+  official Boolean
+   
 }
 /**
  * 拼饭活动参与信息
@@ -473,7 +486,7 @@ entity ActivityParticipation (activity_participation) {
   /**
    * 最新打卡时间
    */
-  latestClockinTime Instant,
+  latestClockinTime Instant
 }
 /**
  * 打卡信息
