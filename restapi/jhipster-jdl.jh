@@ -62,6 +62,11 @@ entity WechatUser (wechat_user) {
    * 擅长
    */
   skill String maxlength(1024),
+  
+  /**
+   * EID
+   */
+  eid String,
   /**
    * 创建时间
    */

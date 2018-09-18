@@ -1,5 +1,6 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.web.rest.util.BeanPropertiesUtils;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.WechatUserService;
@@ -10,6 +11,7 @@ import com.aitp.dlife.service.dto.WechatUserDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -84,10 +86,15 @@ public class WechatUserResource {
             return createWechatUser(wechatUserDTO);
         }
 
-        //set default messages
-        wechatUserDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
+        WechatUserDTO dbRecord =  wechatUserService.findOne(wechatUserDTO.getId());
+        if(null != dbRecord) {
+        	BeanUtils.copyProperties(wechatUserDTO, dbRecord, BeanPropertiesUtils.getNullProperties(wechatUserDTO));
+        	  //set default messages
+            dbRecord.setModifyTime(DateUtil.getYMDDateString(new Date()));
+        }
+      
 
-        WechatUserDTO result = wechatUserService.save(wechatUserDTO);
+        WechatUserDTO result = wechatUserService.save(dbRecord);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wechatUserDTO.getId().toString()))
             .body(result);
