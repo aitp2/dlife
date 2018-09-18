@@ -173,6 +173,18 @@
         {
             "fieldName": "joinStatus",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "stick",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "stickOrder",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "official",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20180802115457",

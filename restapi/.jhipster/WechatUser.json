@@ -1,5 +1,7 @@
 {
-    "name": "WechatUser",
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [],
     "fields": [
         {
             "fieldName": "openId",
@@ -137,17 +139,18 @@
             "fieldName": "modifyTime",
             "javadoc": "修改时间",
             "fieldType": "Instant"
+        },
+        {
+            "fieldName": "eid",
+            "fieldType": "String"
         }
     ],
-    "relationships": [],
     "changelogDate": "20180802115448",
-    "javadoc": "用户信息",
-    "entityTableName": "wechat_user",
     "dto": "mapstruct",
-    "pagination": "pagination",
+    "searchEngine": false,
     "service": "serviceClass",
+    "entityTableName": "wechat_user",
     "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "clientRootFolder": "",
-    "applications": "*"
+    "pagination": "pagination",
+    "javadoc": "用户信息"
 }

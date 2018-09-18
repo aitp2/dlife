@@ -153,6 +153,9 @@ public class WechatUser implements Serializable {
     @Column(name = "modify_time")
     private Instant modifyTime;
 
+    @Column(name = "eid")
+    private String eid;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -369,6 +372,19 @@ public class WechatUser implements Serializable {
     public void setModifyTime(Instant modifyTime) {
         this.modifyTime = modifyTime;
     }
+
+    public String getEid() {
+        return eid;
+    }
+
+    public WechatUser eid(String eid) {
+        this.eid = eid;
+        return this;
+    }
+
+    public void setEid(String eid) {
+        this.eid = eid;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -411,6 +427,7 @@ public class WechatUser implements Serializable {
             ", skill='" + getSkill() + "'" +
             ", createTime='" + getCreateTime() + "'" +
             ", modifyTime='" + getModifyTime() + "'" +
+            ", eid='" + getEid() + "'" +
             "}";
     }
 }

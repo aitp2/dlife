@@ -114,6 +114,18 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="stick" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="stick_order" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="official" type="bit">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="pin_fan_activity" columnName="appoint_datetime" columnDataType="datetime"/>

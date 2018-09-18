@@ -194,6 +194,15 @@ public class PinFanActivity implements Serializable {
     @Column(name = "join_status")
     private Integer joinStatus;
 
+    @Column(name = "stick")
+    private Boolean stick;
+
+    @Column(name = "stick_order")
+    private String stickOrder;
+
+    @Column(name = "official")
+    private Boolean official;
+
     @OneToMany(mappedBy = "pinFanActivity")
     private Set<Attendee> attendees = new HashSet<>();
 
@@ -508,6 +517,45 @@ public class PinFanActivity implements Serializable {
         this.joinStatus = joinStatus;
     }
 
+    public Boolean isStick() {
+        return stick;
+    }
+
+    public PinFanActivity stick(Boolean stick) {
+        this.stick = stick;
+        return this;
+    }
+
+    public void setStick(Boolean stick) {
+        this.stick = stick;
+    }
+
+    public String getStickOrder() {
+        return stickOrder;
+    }
+
+    public PinFanActivity stickOrder(String stickOrder) {
+        this.stickOrder = stickOrder;
+        return this;
+    }
+
+    public void setStickOrder(String stickOrder) {
+        this.stickOrder = stickOrder;
+    }
+
+    public Boolean isOfficial() {
+        return official;
+    }
+
+    public PinFanActivity official(Boolean official) {
+        this.official = official;
+        return this;
+    }
+
+    public void setOfficial(Boolean official) {
+        this.official = official;
+    }
+
     public Set<Attendee> getAttendees() {
         return attendees;
     }
@@ -606,6 +654,9 @@ public class PinFanActivity implements Serializable {
             ", readingCount=" + getReadingCount() +
             ", modifyTime='" + getModifyTime() + "'" +
             ", joinStatus=" + getJoinStatus() +
+            ", stick='" + isStick() + "'" +
+            ", stickOrder='" + getStickOrder() + "'" +
+            ", official='" + isOfficial() + "'" +
             "}";
     }
 }

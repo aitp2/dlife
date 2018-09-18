@@ -13,7 +13,6 @@ public class WechatUserDTO implements Serializable {
 
     private Long id;
 
-    @NotNull
     @Size(max = 255)
     private String openId;
 
@@ -53,6 +52,8 @@ public class WechatUserDTO implements Serializable {
 
     @Size(max = 1024)
     private String skill;
+    
+    private String eid;
 
     private String createTime;
 
@@ -193,8 +194,17 @@ public class WechatUserDTO implements Serializable {
     public void setModifyTime(String modifyTime) {
         this.modifyTime = modifyTime;
     }
+    
 
-    @Override
+    public String getEid() {
+		return eid;
+	}
+
+	public void setEid(String eid) {
+		this.eid = eid;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -216,25 +226,11 @@ public class WechatUserDTO implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "WechatUserDTO{" +
-            "id=" + getId() +
-            ", openId='" + getOpenId() + "'" +
-            ", wechatCode='" + getWechatCode() + "'" +
-            ", userName='" + getUserName() + "'" +
-            ", nickName='" + getNickName() + "'" +
-            ", avatar='" + getAvatar() + "'" +
-            ", mobileNum='" + getMobileNum() + "'" +
-            ", project='" + getProject() + "'" +
-            ", seat='" + getSeat() + "'" +
-            ", introduce='" + getIntroduce() + "'" +
-            ", sex='" + getSex() + "'" +
-            ", companyRole='" + getCompanyRole() + "'" +
-            ", cookFlag='" + getCookFlag() + "'" +
-            ", intesting='" + getIntesting() + "'" +
-            ", skill='" + getSkill() + "'" +
-            ", createTime='" + getCreateTime() + "'" +
-            ", modifyTime='" + getModifyTime() + "'" +
-            "}";
-    }
+	public String toString() {
+		return "WechatUserDTO [id=" + id + ", openId=" + openId + ", wechatCode=" + wechatCode + ", userName="
+				+ userName + ", nickName=" + nickName + ", avatar=" + avatar + ", mobileNum=" + mobileNum + ", project="
+				+ project + ", seat=" + seat + ", introduce=" + introduce + ", sex=" + sex + ", companyRole="
+				+ companyRole + ", cookFlag=" + cookFlag + ", intesting=" + intesting + ", skill=" + skill + ", eid="
+				+ eid + ", createTime=" + createTime + ", modifyTime=" + modifyTime + "]";
+	}
 }
