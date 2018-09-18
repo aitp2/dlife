@@ -27,9 +27,10 @@ public class StickActivitiesRepository {
 	public List<StickActivitiesResponse> getStickActivities() {
 		final String sql = "select pinFanActivity.id as id,"
 					+ "'PIN' as channel,"
-					+ "(select oss_path from pin_fan_activity left join pinfan_pics on pin_fan_activity.id = pinfan_pics.pin_fan_activity_id LIMIT 1) AS url "
+					+ "pics.oss_path AS url "
 					+ "from pin_fan_activity pinFanActivity "
-					+ "where pinFanActivity.stick =1 order by pinFanActivity.stick_order asc";
+					+ "LEFT JOIN pinfan_pics pics on pinFanActivity.id = pics.pin_fan_activity_id "
+					+ "where pinFanActivity.stick =1 GROUP BY id order by pinFanActivity.stick_order asc";
 		Session session = entityManager.unwrap(org.hibernate.Session.class);
 		NativeQuery query = session.createNativeQuery(sql);
 		query.addScalar("channel", StandardBasicTypes.STRING);
