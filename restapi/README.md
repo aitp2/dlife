@@ -178,3 +178,4 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 [OpenAPI-Generator]: https://openapi-generator.tech
 [Swagger-Editor]: http://editor.swagger.io
 [Doing API-First development]: https://www.jhipster.tech/documentation-archive/v5.0.2/doing-api-first-development/
+
