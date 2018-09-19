@@ -1,0 +1,6 @@
+task_code;name;status;period;priority;maxlimit;total_point;target_systems;event_type;conditions;strategy;apply_strategy
+task01;Login;1;DAILY;100;3;60;xiaomubiao,xiaowenda,xiaoyaoyue;LOGIN;{"conditions":[{"condition":"records == 0", "point": "10"}, {"condition":"records == 1", "point": "20"}, {"condition":"records == 2", "point": "30"}]};defautTaskStrategy;defaultApplyStrategy
+task02;Dianzang;1;DAILY;90;2;30;xiaomubiao;SALUTE;{"conditions":[{"condition":"records == 0", "point": "15"}, {"condition":"records == 1", "point": "15"}]};defautTaskStrategy;defaultApplyStrategy
+task03;huidawenti;1;DAILY;80;2;30;xiaowenda;REPLY;{"conditions":[{"condition":"records == 0", "point": "10"}, {"condition":"records == 1", "point": "20"}]};defautTaskStrategy;defaultApplyStrategy
+task04;Dianzang;1;WEEKLY;70;2;30;xiaomubiao;SALUTE;{"conditions":[{"condition":"records == 0", "point": "15"}, {"condition":"records == 1", "point": "15"}]};defautTaskStrategy;defaultApplyStrategy
+task05;complete task;1;FOREVER;60;1;30;xiaomubiao;FINISHACTION;{"conditions":[{"condition":"records == 0 && param1 > 10", "point": "30"}]};defautTaskStrategy;defaultApplyStrategy
