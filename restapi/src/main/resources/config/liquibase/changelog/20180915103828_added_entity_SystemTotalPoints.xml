@@ -23,7 +23,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="system_id" type="varchar(255)">
-                <constraints unique="true" nullable="false" uniqueConstraintName="ux_system_total_points_system_id"/>
+                <constraints nullable="false" />
             </column>
 
             <column name="total_point" type="integer">
