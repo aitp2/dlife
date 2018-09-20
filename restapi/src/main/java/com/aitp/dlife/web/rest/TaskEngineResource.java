@@ -68,11 +68,7 @@ public class TaskEngineResource {
     @Timed
     public ResponseEntity<EventResultDTO> notifyNewEvent(@Valid @RequestBody UserEventDTO userEventDTO) throws URISyntaxException {
         log.debug("REST request to notify NewEvent : {}", userEventDTO);
-        if (userEventDTO.getUuid() == null || userEventDTO.getUserid() == null ) {
-            throw new BadRequestAlertException("A new event must have userid and uuid", "UserEventDTO", "notnull");
-        }
-        EventResultDTO result = taskEngineService.saveNewEvent(userEventDTO);
-        return new ResponseEntity(result, HttpStatus.OK);
+        return new ResponseEntity(taskEngineService.saveNewEvent(userEventDTO), HttpStatus.OK);
     }
     
     /**

@@ -4,6 +4,8 @@ import java.time.ZonedDateTime;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.validation.constraints.NotNull;
+
 import com.aitp.dlife.domain.enumeration.PointEventType;
 
 /**
@@ -13,16 +15,21 @@ public class UserEventDTO implements Serializable {
 
     private Long id;
 
+    @NotNull
     private String userid;
 
+    @NotNull
     private String uuid;
 
+    @NotNull
     private String targetSystem;
 
+    @NotNull
     private PointEventType eventType;
 
 	private String eventName;
 
+	@NotNull
     private ZonedDateTime eventTime;
 
     private Boolean status;

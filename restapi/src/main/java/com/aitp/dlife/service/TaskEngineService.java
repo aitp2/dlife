@@ -111,9 +111,11 @@ public class TaskEngineService {
 		EventResultDTO dto = new EventResultDTO();
 		dto.setAccept(false);
 
+		boolean validated = validateUserEventDTO(userEventDTO);
+
 		List<UserEvent> events = userEventRepository.findByUseridAndUuid(userEventDTO.getUserid(),
 				userEventDTO.getUuid());
-		if (events.isEmpty()) {
+		if (validated && events.isEmpty()) {
 			// find task define
 			List<TaskDefine> defines = taskDefineRepository
 					.findByStatusAndEventTypeAndTargetSystemsLikeOrderByPriorityDesc(true, userEventDTO.getEventType(),
@@ -129,7 +131,6 @@ public class TaskEngineService {
 
 				dto.setAccept(true);
 				dto.setMessage("create new event");
-				return dto;
 			} else {
 				dto.setMessage("no task define for the event");
 			}
@@ -138,6 +139,20 @@ public class TaskEngineService {
 		}
 
 		return dto;
+	}
+
+	/**
+	 * Validate user event DTO.
+	 *
+	 * @param userEventDTO the user event DTO
+	 * @return true, if successful
+	 */
+	private boolean validateUserEventDTO(UserEventDTO userEventDTO) {
+		if (userEventDTO.getEventTime() == null || userEventDTO.getEventType() == null
+				|| userEventDTO.getUserid() == null || userEventDTO.getTargetSystem() == null) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -289,7 +304,8 @@ public class TaskEngineService {
 	/**
 	 * Apply point for user.
 	 *
-	 * @param cond the cond
+	 * @param cond
+	 *            the cond
 	 */
 	private void applyPointForUser(Conditions cond) {
 		log.info(cond.getUserEvent().getUserid() + " gant point " + cond.getPoint());
