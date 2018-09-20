@@ -14,7 +14,7 @@ public class TaskEngineRunner implements DisposableBean, Runnable {
 
     private Thread thread;
     private volatile boolean running;
-    private long waitTime = 2000L;
+    private long waitTime = 6000L;
     
     @Autowired
     private TaskEngineService taskEngineService;
