@@ -84,4 +84,10 @@ public class WechatUserService {
         WechatUser wechatUser = wechatUserRepository.findByOpenId(openId);
         return wechatUserMapper.toDto(wechatUser);
     }
+
+    public WechatUserDTO findByMobileNum(String mobileNum) {
+        log.debug("Request to findByMobileNum : {}", mobileNum);
+        WechatUser wechatUser = wechatUserRepository.findByMobileNum(mobileNum);
+        return wechatUserMapper.toDto(wechatUser);
+    }
 }

@@ -26,7 +26,7 @@ import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
+import io.swagger.annotations.ApiOperation;
 /**
  * REST controller for managing WechatUser.
  */
@@ -155,5 +155,20 @@ public class WechatUserResource {
         log.debug("REST request to delete WechatUser : {}", id);
         wechatUserService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    /**
+     * GET  /wechat-users/mobile/:mobilePhone : get the "mobilePhone" wechatUser.
+     *
+     * @param mobilePhone the mobilePhone of the wechatUserDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the wechatUserDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/wechat-users/mobile/{mobilePhone}")
+    @Timed
+    @ApiOperation(value = "根据手机号码查询用户信息", response = WechatUserDTO.class, produces = "application/json")
+    public ResponseEntity<WechatUserDTO> getWechatUser(@PathVariable String mobilePhone) {
+        log.debug("REST request to get WechatUser by mobilePhone : {}", mobilePhone);
+        WechatUserDTO wechatUserDTO = wechatUserService.findByMobileNum(mobilePhone);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(wechatUserDTO));
     }
 }
