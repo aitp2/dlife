@@ -225,6 +225,22 @@ public class ClockInResource {
     }
 
     /**
+     * GET  /clock-ins : get all the clockIns.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of clockIns in body
+     */
+    @GetMapping("/all-clock-ins")
+    @Timed
+    @ApiOperation(value = "小目标首页全部动态查询方法", notes = "根据开始时间和结束时间获取全部动态信息，具有分页功能，查询条件可传可不传，比如需要查询今天往前14天的动态，endTime传今天的日期，startTime传14天前的日期，排序字段可以传打卡时间：punchDateTime,desc", response = ClockInDTO.class)
+    public ResponseEntity<List<ClockInDTO>> getNewClockIns(Pageable pageable,ClockInSpecification spec) {
+        log.debug("REST request to get a page of ClockIns");
+        Page<ClockInDTO> page = clockInService.findAll(pageable,spec);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/clock-ins");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
      * GET  /clock-ins/:id : get the "id" clockIn.
      *
      * @param id the id of the clockInDTO to retrieve

@@ -16,6 +16,10 @@ public interface WechatUserRepository extends JpaRepository<WechatUser, Long> {
 	WechatUser findByOpenId(String openId);
 
 
+	@Query(value="select ifnull(sum(change_point),0) from user_point_details where to_days(apply_time) = to_days(now()) and userid = ?1", nativeQuery = true)
+	Integer sumTodayPointsByUserid(String userid);
+
+
     WechatUser findByMobileNum(String mobileNum);
 
 }

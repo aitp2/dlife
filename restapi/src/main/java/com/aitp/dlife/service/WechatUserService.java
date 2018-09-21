@@ -2,6 +2,7 @@ package com.aitp.dlife.service;
 
 import com.aitp.dlife.domain.WechatUser;
 import com.aitp.dlife.repository.WechatUserRepository;
+import com.aitp.dlife.service.dto.UserPointDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.service.mapper.WechatUserMapper;
 import org.slf4j.Logger;
@@ -90,4 +91,18 @@ public class WechatUserService {
         WechatUser wechatUser = wechatUserRepository.findByMobileNum(mobileNum);
         return wechatUserMapper.toDto(wechatUser);
     }
+
+	public UserPointDTO getWechatUserPointByID(Long id) {
+		UserPointDTO dto = new UserPointDTO();
+		WechatUser user = this.wechatUserRepository.getOne(id);
+		dto.setId(id);
+		dto.setTotalPoint(user.getTotalPoint());
+		if(dto.getTotalPoint() == null) {
+			dto.setTotalPoint(0);
+			dto.setTodayPoint(0);
+		} else {
+			dto.setTodayPoint(this.wechatUserRepository.sumTodayPointsByUserid(String.valueOf(id)));
+		}
+		return dto;
+	}
 }

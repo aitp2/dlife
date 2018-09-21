@@ -7,6 +7,7 @@ import com.aitp.dlife.service.WechatUserService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
+import com.aitp.dlife.service.dto.UserPointDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -170,5 +171,19 @@ public class WechatUserResource {
         log.debug("REST request to get WechatUser by mobilePhone : {}", mobilePhone);
         WechatUserDTO wechatUserDTO = wechatUserService.findByMobileNum(mobilePhone);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(wechatUserDTO));
+    }
+
+    /**
+     * GET  /wechat-users/userinfo/:openid : get the "openid" wechatUser.
+     *
+     * @param openid
+     * @return
+     */
+    @GetMapping("/wechat-users/user-point/{id}")
+    @Timed
+    public ResponseEntity<UserPointDTO> getWechatUserPointByID(@PathVariable Long id) {
+        log.debug("REST request to get points for user : {}", id);
+        UserPointDTO userpoint = wechatUserService.getWechatUserPointByID(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(userpoint));
     }
 }

@@ -132,6 +132,14 @@ public class WechatUser implements Serializable {
     private String intesting;
 
     /**
+     * 个人积分
+     */
+    @Max(value = Integer.MAX_VALUE)
+    @ApiModelProperty(value = "个人积分")
+    @Column(name = "total_point")
+    private Integer totalPoint;
+    
+    /**
      * 擅长
      */
     @Size(max = 1024)
@@ -400,6 +408,19 @@ public class WechatUser implements Serializable {
             return false;
         }
         return Objects.equals(getId(), wechatUser.getId());
+    }
+    
+    public Integer getTotalPoint() {
+        return totalPoint;
+    }
+
+    public WechatUser totalPoint(Integer totalPoint) {
+        this.totalPoint = totalPoint;
+        return this;
+    }
+
+    public void setTotalPoint(Integer totalPoint) {
+        this.totalPoint = totalPoint;
     }
 
     @Override
