@@ -9,17 +9,23 @@ public class ClockInVM {
 	private Long activityParticipationId;
 	@ApiParam(value = "活动ID")
 	private Long activityId;
+    @ApiParam(value = "动态开始时间（i.e. 2018-09-20 00:00:00）")
+    private String startTime;
+    @ApiParam(value = "动态结束时间（i.e. 2018-08-20 00:00:00）")
+    private String endTime;
 
-	
+
 	public ClockInVM() {
 		super();
 	}
 
-	public ClockInVM(Long wechatUserId, Long activityParticipationId, Long activityId) {
+	public ClockInVM(Long wechatUserId, Long activityParticipationId, Long activityId, String startTime, String endTime) {
 		super();
 		this.wechatUserId = wechatUserId;
 		this.activityParticipationId = activityParticipationId;
 		this.activityId = activityId;
+		this.startTime = startTime;
+		this.endTime = endTime;
 	}
 
 	public Long getWechatUserId() {
@@ -46,14 +52,27 @@ public class ClockInVM {
 		this.activityId = activityId;
 	}
 
-	
-	
-	
-	
-	@Override
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    @Override
 	public String toString() {
 		return "ClockInVM [wechatUserId=" + wechatUserId + ", activityParticipationId=" + activityParticipationId
-				+ ", activityId=" + activityId + "]";
+				+ ", activityId=" + activityId + ",startTime="+startTime+",endTime="+endTime+"]";
 	}
 
 	@Override
@@ -63,6 +82,8 @@ public class ClockInVM {
 		result = prime * result + ((activityId == null) ? 0 : activityId.hashCode());
 		result = prime * result + ((activityParticipationId == null) ? 0 : activityParticipationId.hashCode());
 		result = prime * result + ((wechatUserId == null) ? 0 : wechatUserId.hashCode());
+        result = prime * result + ((startTime == null) ? 0 : startTime.hashCode());
+        result = prime * result + ((endTime == null) ? 0 : endTime.hashCode());
 		return result;
 	}
 
@@ -90,11 +111,21 @@ public class ClockInVM {
 				return false;
 		} else if (!wechatUserId.equals(other.wechatUserId))
 			return false;
+        if (startTime == null) {
+            if (other.startTime != null)
+                return false;
+        } else if (!startTime.equals(other.startTime))
+            return false;
+        if (endTime == null) {
+            if (other.endTime != null)
+                return false;
+        } else if (!endTime.equals(other.endTime))
+            return false;
 		return true;
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 }
