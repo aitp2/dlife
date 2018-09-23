@@ -54,8 +54,10 @@ public class FitnessActivityDTO implements Serializable {
     private Integer commentCount;
 
     private Integer readingCount;
-    
+
     private String modifyTime;
+
+    private Integer clockStatus;
 
     private Set<PicsDTO> images = new HashSet<>();
 
@@ -125,7 +127,13 @@ public class FitnessActivityDTO implements Serializable {
         this.companyRole = companyRole;
     }
 
+    public Integer getClockStatus() {
+        return clockStatus;
+    }
 
+    public void setClockStatus(Integer clockStatus) {
+        this.clockStatus = clockStatus;
+    }
 
     public String getSignStartTime() {
 		return signStartTime;
@@ -255,6 +263,6 @@ public class FitnessActivityDTO implements Serializable {
 				+ ", commentCount=" + commentCount + ", readingCount=" + readingCount + ", modifyTime=" + modifyTime
 				+ ", images=" + images + ", eventMessages=" + eventMessages + "]";
 	}
-    
-    
+
+
 }

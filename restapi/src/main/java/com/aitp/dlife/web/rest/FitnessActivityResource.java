@@ -2,15 +2,14 @@ package com.aitp.dlife.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import javax.validation.Valid;
 
+import com.aitp.dlife.service.*;
+import com.aitp.dlife.service.dto.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -31,15 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.repository.specification.FitnessActivitySpecification;
-import com.aitp.dlife.service.EventMessageService;
-import com.aitp.dlife.service.FitnessActivityService;
-import com.aitp.dlife.service.MessageService;
-import com.aitp.dlife.service.PicsService;
-import com.aitp.dlife.service.WechatUserService;
-import com.aitp.dlife.service.dto.EventMessageDTO;
-import com.aitp.dlife.service.dto.FitnessActivityDTO;
-import com.aitp.dlife.service.dto.PicsDTO;
-import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
@@ -53,6 +43,7 @@ import io.github.jhipster.web.util.ResponseUtil;
  * REST controller for managing FitnessActivity.
  */
 @RestController
+@Api(value = "小目标活动API", tags = "小目标活动API")
 @RequestMapping("/api")
 public class FitnessActivityResource {
 
@@ -70,13 +61,19 @@ public class FitnessActivityResource {
 
     private final MessageService messageService;
 
+    private final ActivityParticipationService activityParticipationService;
+
+    private final ClockInActivityService clockInActivityService;
+
     public FitnessActivityResource(FitnessActivityService fitnessActivityService,PicsService picsService,WechatUserService wechatUserService, EventMessageService eventMessageService,
-                                   MessageService messageService) {
+                                   MessageService messageService, ActivityParticipationService activityParticipationService, ClockInActivityService clockInActivityService) {
         this.fitnessActivityService = fitnessActivityService;
         this.picsService = picsService;
         this.wechatUserService=wechatUserService;
         this.eventMessageService = eventMessageService;
         this.messageService = messageService;
+        this.activityParticipationService = activityParticipationService;
+        this.clockInActivityService = clockInActivityService;
     }
 
     /**
@@ -230,6 +227,31 @@ public class FitnessActivityResource {
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/fitness-activities");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /fitness-activities : get all the fitnessActivities.
+     *
+     * @param spec the FitnessActivitySpecification information
+     * @return the ResponseEntity with status 200 (OK) and the list of fitnessActivities in body
+     */
+    @GetMapping("/fitness-activities-today")
+    @ApiOperation(value = "获取当天的小目标", notes = "获取当天的小目标，传participantId=wechatuserid和status=2（进行中），根据ClockStatus来区分是否打过卡,未打卡（closkStatus=0），已打卡（closkStatus=1）", response = FitnessActivityDTO.class)
+    @Timed
+    public ResponseEntity<List<FitnessActivityDTO>> getFitnessActivitiesForToday(FitnessActivitySpecification spec) {
+        if (null == spec.getQuerys().getParticipantId()) {
+            throw new BadRequestAlertException("wechatUserId is null", ENTITY_NAME, "wechatUserIdNULL");
+        }
+        String userId = spec.getQuerys().getParticipantId().toString();
+        List<FitnessActivityDTO> list = fitnessActivityService.findAll(spec);
+        for(FitnessActivityDTO activityDTO : list){
+            activityDTO.setActivityParticipations(null);
+            activityDTO.setClockStatus(0);
+            ActivityParticipationDTO dto = activityParticipationService.getByUidAndActivityId(activityDTO.getId(),userId);
+            boolean flag = clockInActivityService.isClockedIn(userId,dto.getId());
+            activityDTO.setClockStatus(flag?1:0);
+        }
+        return ResponseEntity.ok(list);
     }
 
     /**
