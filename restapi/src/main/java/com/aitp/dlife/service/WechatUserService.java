@@ -86,6 +86,12 @@ public class WechatUserService {
         return wechatUserMapper.toDto(wechatUser);
     }
 
+    public WechatUserDTO findByMobileNum(String mobileNum) {
+        log.debug("Request to findByMobileNum : {}", mobileNum);
+        WechatUser wechatUser = wechatUserRepository.findByMobileNum(mobileNum);
+        return wechatUserMapper.toDto(wechatUser);
+    }
+
 	public UserPointDTO getWechatUserPointByID(Long id) {
 		UserPointDTO dto = new UserPointDTO();
 		WechatUser user = this.wechatUserRepository.getOne(id);
