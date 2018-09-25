@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -94,9 +95,13 @@ public class AttendeeResource {
         if(activityDTO.getAttendees()!=null && activityDTO.getUpperLimit() != null && activityDTO.getAttendees().size()>=activityDTO.getUpperLimit()){
             throw new BadRequestAlertException("活动人数已达上限", ENTITY_NAME, "活动人数已达上限");
         }
+
+        if (isAttend(attendeeDTO.getWechatUserId(),activityDTO.getAttendees())){
+            throw new BadRequestAlertException("请勿重复报名", ENTITY_NAME, "请勿重复报名");
+        }
         attendeeDTO.setActivitiyTile(activityDTO.getActivitiyTile());
         AttendeeDTO result = attendeeService.save(attendeeDTO);
-        
+
 		// update modify time
 		pinFanActivityService.updateModifyTime(attendeeDTO.getPinFanActivityId());
 
@@ -127,6 +132,18 @@ public class AttendeeResource {
 
 
         return ResponseEntity.ok().body(result);
+    }
+
+    private boolean isAttend(String wechatUserId,Set<AttendeeDTO> dtos){
+        if(dtos==null||dtos.isEmpty()){
+            return false;
+        }
+        for(AttendeeDTO attendeeDTO:dtos) {
+            if (wechatUserId.equals(attendeeDTO.getWechatUserId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
