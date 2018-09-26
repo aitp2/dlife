@@ -12,7 +12,7 @@
             "fieldName": "channel",
             "javadoc": "点赞渠道",
             "fieldType": "ThumbsUpChannel",
-            "fieldValues": "COOK,FIT,PIN,FAQS"
+            "fieldValues": "COOK,FIT,PIN,FAQS,POINT_PRODUCT"
         },
         {
             "fieldName": "module",
