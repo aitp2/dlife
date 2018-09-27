@@ -54,11 +54,6 @@ public class ClockInSpecification extends AbstractSpecifcation<ClockInVM> implem
         if (!ObjectUtils.isEmpty(querys.getStartTime())){
             Path<Instant> createTime = root.get("punchDateTime");
             andPrediCate.add(criteriaBuilder.greaterThanOrEqualTo(createTime,InstantMapper.fromString(querys.getStartTime())));
-        }else {
-            Path<Instant> createTime = root.get("punchDateTime");
-            SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String nowDateString =   sdf.format(new Date());
-            andPrediCate.add(criteriaBuilder.greaterThanOrEqualTo(createTime, InstantMapper.fromString(nowDateString)));
         }
         if (!ObjectUtils.isEmpty(querys.getEndTime())){
             Path<Instant> createTime = root.get("punchDateTime");
