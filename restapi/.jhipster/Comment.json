@@ -24,7 +24,7 @@
             "fieldName": "channel",
             "javadoc": "评论渠道",
             "fieldType": "CommentChannel",
-            "fieldValues": "COOK,FIT,PIN,FAQS"
+            "fieldValues": "COOK,FIT,PIN,FAQS,POINT_PRODUCT"
         },
         {
             "fieldName": "wechatUserId",
