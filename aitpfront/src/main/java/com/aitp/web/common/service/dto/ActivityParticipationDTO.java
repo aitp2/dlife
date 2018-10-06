@@ -8,6 +8,7 @@ public class ActivityParticipationDTO {
     
     private String activityTitle;
     
+    
     private String nickName;
     
   
@@ -41,7 +42,9 @@ public class ActivityParticipationDTO {
         return wechatUserId;
     }
 
-    public void setWechatUserId(String wechatUserId) {
+    
+
+	public void setWechatUserId(String wechatUserId) {
         this.wechatUserId = wechatUserId;
     }
 }
