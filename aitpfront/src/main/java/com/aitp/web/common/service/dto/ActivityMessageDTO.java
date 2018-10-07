@@ -9,6 +9,8 @@ public class ActivityMessageDTO {
 
 	private String templateID;
 
+	private String url;
+	
 	private List<WechatMessageData> wechatMessageDatas;
 
 	public String getTouser() {
@@ -42,5 +44,15 @@ public class ActivityMessageDTO {
 		wechatMessageDatas.add(wData);
 		return wechatMessageDatas;
 	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
+	
 
 }
