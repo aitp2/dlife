@@ -43,6 +43,8 @@ public class FitnessMessageServiceImpl implements FitnessMessageService{
                 if(null!= userData){
                     ActivityMessageDTO messageDTO = new ActivityMessageDTO();
                     messageDTO.setTemplateID(env.getProperty("wechat.messageTemp.update.id"));
+                    final String frontUrl = env.getProperty("service.url")+"pages/fit/index.html/detail/"+id;
+                    messageDTO.setUrl(frontUrl);
                     messageDTO.addMessageData(new WechatMessageData("first", "你报名的小目标已经被修改！", "#000000"));
                     messageDTO.addMessageData(new WechatMessageData("keyword1",dto.getTitle() ,"#000000"));
                     messageDTO.addMessageData(new WechatMessageData("keyword2", simpleDateFormat.format(new Date()), "#A4D3EE"));
