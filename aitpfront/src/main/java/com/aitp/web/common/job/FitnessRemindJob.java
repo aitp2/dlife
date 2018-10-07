@@ -41,21 +41,28 @@ public class FitnessRemindJob {
 	@Scheduled(cron="${cron.fitness.remind}")
 	public void start(){
 		List<ActivityParticipationDTO> activityList = activityParticipationService.getNonClockParticipation();
-		for (ActivityParticipationDTO activityParticipationDTO : activityList) {
+		if(!activityList.isEmpty()){
 			ActivityMessageDTO activityMessageDTO = new ActivityMessageDTO();
-			JSONObject userData =  userService.getUserByWechatUserId(restApiUrl, activityParticipationDTO.getWechatUserId());
-			buildMessage(activityParticipationDTO,activityMessageDTO,userData.getString("openId"));
+			JSONObject userData =  userService.getUserByWechatUserId(restApiUrl, activityList.get(0).getWechatUserId());
+			buildMessage(activityList.get(0),activityMessageDTO,userData.getString("openId"),activityList.size());
 			messageService.SendMessage(activityMessageDTO);
 		}
+//		for (ActivityParticipationDTO activityParticipationDTO : activityList) {
+//			ActivityMessageDTO activityMessageDTO = new ActivityMessageDTO();
+//			JSONObject userData =  userService.getUserByWechatUserId(restApiUrl, activityParticipationDTO.getWechatUserId());
+//			buildMessage(activityParticipationDTO,activityMessageDTO,userData.getString("openId"));
+//			messageService.SendMessage(activityMessageDTO);
+//		}
 	}
 	
-    private void buildMessage(ActivityParticipationDTO activityParticipationDTO,ActivityMessageDTO activityMessageDTO,String openId){
+    private void buildMessage(ActivityParticipationDTO activityParticipationDTO,ActivityMessageDTO activityMessageDTO,String openId,int size
+    		){
     	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     	activityMessageDTO.setTouser(openId);
 		StringBuffer context = new StringBuffer();
-		context.append("您所报名的");
-		context.append(activityParticipationDTO.getActivityTitle());
-		context.append("小目标还没有打卡，请尽快打卡哦！");
+		context.append("您还有");
+		context.append(size);
+		context.append("个参与的下下小目标尚未打卡，快去我完成今日的目标吧。");
 		activityMessageDTO.setTemplateID(clockTempId);
 		activityMessageDTO.addMessageData(new WechatMessageData("first", context.toString(), "#000000"));
 		activityMessageDTO.addMessageData(new WechatMessageData("keyword1", HttpUtil.baseDecoder(activityParticipationDTO.getNickName()), "#000000"));

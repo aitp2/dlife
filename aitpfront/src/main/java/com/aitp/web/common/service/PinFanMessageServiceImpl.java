@@ -50,6 +50,7 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
         if (null!=dto.getAttendees()){
             for(AttendeeDTO attendeeDTO:dto.getAttendees()) {
                 final String restApiPath=env.getProperty("rest_api_url");
+                final String frontUrl = env.getProperty("service.url")+"pages/pin/index.html/detail/"+id;
                 JSONObject userData = userService.getUserByWechatUserId(restApiPath,attendeeDTO.getWechatUserId());
                 if(null!= userData){
                     ActivityMessageDTO messageDTO = new ActivityMessageDTO();
@@ -59,7 +60,7 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
                     messageDTO.addMessageData(new WechatMessageData("keyword2", simpleDateFormat.format(new Date()), "#A4D3EE"));
                     messageDTO.addMessageData(new WechatMessageData("remark", "", "#000000"));
                     messageDTO.setTouser(userData.getString("openId"));
-                    
+                    messageDTO.setUrl(frontUrl);
                     boolean flag = messageService.SendMessage(messageDTO);
                     if (!flag){
                         logger.debug("send message to {} failed",userData.getString("nickName"));
@@ -77,6 +78,7 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
         if (null!=dto.getAttendees()){
             for (AttendeeDTO attendeeDTO:dto.getAttendees()) {
                 final String restApiPath=env.getProperty("rest_api_url");
+                final String frontUrl = env.getProperty("service.url")+"pages/pin/index.html/detail/"+id;
                 JSONObject userData = userService.getUserByWechatUserId(restApiPath,attendeeDTO.getWechatUserId());
                 if(null!= userData){
                     ActivityMessageDTO messageDTO = new ActivityMessageDTO();
@@ -94,6 +96,7 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
                     data.add(data4);
                     data.add(data5);
                     messageDTO.setWechatMessageDatas(data);
+                    messageDTO.setUrl(frontUrl);
                     messageDTO.setTouser(userData.getString("openId"));
                     messageDTO.setTemplateID(cancelTempId);
                     boolean flag = messageService.SendMessage(messageDTO);
@@ -112,7 +115,7 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
         if (null!=dto.getAttendees()){
             for (AttendeeDTO attendeeDTO:dto.getAttendees()) {
                 final String restApiPath=env.getProperty("rest_api_url");
-                final String frontUrl = env.getProperty("service.url");
+                final String frontUrl = env.getProperty("service.url")+"pages/pin/index.html/detail/"+dto.getId();
                 JSONObject userData = userService.getUserByWechatUserId(restApiPath,attendeeDTO.getWechatUserId());
                 if(null!= userData){
                     ActivityMessageDTO messageDTO = new ActivityMessageDTO();
@@ -131,7 +134,7 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
                     data.add(data4);
                     data.add(data5);
                     data.add(data6);
-                  //  messageDTO.setUrl(frontUrl);
+                    messageDTO.setUrl(frontUrl);
                     messageDTO.setWechatMessageDatas(data);
                     messageDTO.setTouser(userData.getString("openId"));
                     messageDTO.setTemplateID(remindTempId);
