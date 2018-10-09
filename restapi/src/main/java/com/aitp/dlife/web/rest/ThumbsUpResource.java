@@ -3,8 +3,12 @@ package com.aitp.dlife.web.rest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -29,6 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.domain.enumeration.PointEventType;
+import com.aitp.dlife.domain.enumeration.ThumbsUpChannel;
 import com.aitp.dlife.repository.specification.ThumbsUpSpecification;
 import com.aitp.dlife.service.ClockInService;
 import com.aitp.dlife.service.CommentService;
@@ -37,6 +43,7 @@ import com.aitp.dlife.service.FitnessActivityService;
 import com.aitp.dlife.service.MessageService;
 import com.aitp.dlife.service.PinFanActivityService;
 import com.aitp.dlife.service.QuestionService;
+import com.aitp.dlife.service.TaskEngineService;
 import com.aitp.dlife.service.ThumbsUpService;
 import com.aitp.dlife.service.builder.EventMessageBuilder;
 import com.aitp.dlife.service.dto.ClockInDTO;
@@ -46,6 +53,7 @@ import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.dto.PinFanActivityDTO;
 import com.aitp.dlife.service.dto.QuestionDTO;
 import com.aitp.dlife.service.dto.ThumbsUpDTO;
+import com.aitp.dlife.service.dto.UserEventDTO;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
@@ -85,11 +93,13 @@ public class ThumbsUpResource {
 	private final PinFanActivityService pinFanActivityService;
 
 	private final QuestionService questionService;
+	
+	private final TaskEngineService taskEngineService;
 
 	public ThumbsUpResource(ThumbsUpService thumbsUpService, CommentService commentService, FitnessActivityRepository fitnessActivityRepository,
 			FitnessActivityService fitnessActivityService, PinFanActivityService pinFanActivityService,
 			QuestionService questionService, EventMessageService eventMessageService, MessageService messageService,
-			ClockInService clockInService) {
+			ClockInService clockInService,TaskEngineService taskEngineService) {
 		this.thumbsUpService = thumbsUpService;
 		this.commentService = commentService;
 		this.fitnessActivityRepository = fitnessActivityRepository;
@@ -99,6 +109,7 @@ public class ThumbsUpResource {
 		this.eventMessageService = eventMessageService;
 		this.messageService = messageService;
 		this.clockInService = clockInService;
+		this.taskEngineService = taskEngineService;
 	}
 
 	/**
@@ -120,6 +131,10 @@ public class ThumbsUpResource {
 		log.debug("REST request to save ThumbsUp : {}", thumbsUpDTO);
 		if (thumbsUpDTO.getId() != null) {
 			throw new BadRequestAlertException("A new thumbsUp cannot already have an ID", ENTITY_NAME, "idexists");
+		}
+		if(thumbsUpDTO.getChannel()!=null&&!thumbsUpDTO.getChannel().equals(ThumbsUpChannel.POINT_PRODUCT))
+		{
+			taskEngineService.saveNewEvent(thumbsUpDTO.getWechatUserId(), "点赞", PointEventType.SALUTE, thumbsUpDTO.getChannel().toString());
 		}
 		ThumbsUpDTO result = null;
 		switch (thumbsUpDTO.getModule()) {

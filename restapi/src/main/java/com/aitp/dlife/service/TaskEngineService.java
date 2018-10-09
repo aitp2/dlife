@@ -2,11 +2,14 @@ package com.aitp.dlife.service;
 
 import java.io.IOException;
 import java.time.DayOfWeek;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -139,6 +142,26 @@ public class TaskEngineService {
 		}
 
 		return dto;
+	}
+	
+	/**
+	 * Save new event.
+	 *
+	 * @param userId
+	 * @param eventName
+	 * @param eventType
+	 * @param targetSystem
+	 * @return the event result DTO
+	 */
+	public EventResultDTO saveNewEvent(String userId,String eventName,PointEventType eventType,String targetSystem) {
+		UserEventDTO userEventDTO =new UserEventDTO();
+		userEventDTO.setUserid(userId);
+		userEventDTO.setEventName(eventName);
+		userEventDTO.setEventType(PointEventType.SALUTE);
+		userEventDTO.setTargetSystem(targetSystem);
+		userEventDTO.setUuid(UUID.randomUUID().toString());
+		userEventDTO.setEventTime(ZonedDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault()));
+		return this.saveNewEvent(userEventDTO);
 	}
 
 	/**
