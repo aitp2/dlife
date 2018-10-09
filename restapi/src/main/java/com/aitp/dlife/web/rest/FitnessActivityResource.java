@@ -120,8 +120,11 @@ public class FitnessActivityResource {
         //log for markting end
 
         //record the activity create event start
-        eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()),EventType.CREATE,
+        EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()),EventType.CREATE,
             result.getWechatUserId(),result.getTitle(),result.getId(),wechatUserDTO.getAvatar(),wechatUserDTO.getNickName());
+        if (null!=eventMessageDTO.getId()){
+            messageService.createMessageForEvent(eventMessageDTO);
+        }
         //record the activity create event end
 
         return ResponseEntity.created(new URI("/api/fitness-activities/" + result.getId()))

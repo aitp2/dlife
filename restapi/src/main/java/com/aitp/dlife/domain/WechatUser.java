@@ -132,20 +132,19 @@ public class WechatUser implements Serializable {
     private String intesting;
 
     /**
-     * 个人积分
-     */
-    @Max(value = Integer.MAX_VALUE)
-    @ApiModelProperty(value = "个人积分")
-    @Column(name = "total_point")
-    private Integer totalPoint;
-    
-    /**
      * 擅长
      */
     @Size(max = 1024)
     @ApiModelProperty(value = "擅长")
     @Column(name = "skill", length = 1024)
     private String skill;
+
+    /**
+     * EID
+     */
+    @ApiModelProperty(value = "EID")
+    @Column(name = "eid")
+    private String eid;
 
     /**
      * 创建时间
@@ -161,8 +160,37 @@ public class WechatUser implements Serializable {
     @Column(name = "modify_time")
     private Instant modifyTime;
 
-    @Column(name = "eid")
-    private String eid;
+    /**
+     * 个人积分
+     */
+    @Max(value = 2147483647)
+    @ApiModelProperty(value = "个人积分")
+    @Column(name = "total_point")
+    private Integer totalPoint;
+
+    /**
+     * 关注数量
+     */
+    @Max(value = 2147483647)
+    @ApiModelProperty(value = "关注数量")
+    @Column(name = "follow_count")
+    private Integer followCount;
+
+    /**
+     * 粉丝数量
+     */
+    @Max(value = 2147483647)
+    @ApiModelProperty(value = "粉丝数量")
+    @Column(name = "followed_count")
+    private Integer followedCount;
+
+    /**
+     * 点赞数量
+     */
+    @Max(value = 2147483647)
+    @ApiModelProperty(value = "点赞数量")
+    @Column(name = "thumbs_up_count")
+    private Integer thumbsUpCount;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -355,6 +383,19 @@ public class WechatUser implements Serializable {
         this.skill = skill;
     }
 
+    public String getEid() {
+        return eid;
+    }
+
+    public WechatUser eid(String eid) {
+        this.eid = eid;
+        return this;
+    }
+
+    public void setEid(String eid) {
+        this.eid = eid;
+    }
+
     public Instant getCreateTime() {
         return createTime;
     }
@@ -381,17 +422,56 @@ public class WechatUser implements Serializable {
         this.modifyTime = modifyTime;
     }
 
-    public String getEid() {
-        return eid;
+    public Integer getTotalPoint() {
+        return totalPoint;
     }
 
-    public WechatUser eid(String eid) {
-        this.eid = eid;
+    public WechatUser totalPoint(Integer totalPoint) {
+        this.totalPoint = totalPoint;
         return this;
     }
 
-    public void setEid(String eid) {
-        this.eid = eid;
+    public void setTotalPoint(Integer totalPoint) {
+        this.totalPoint = totalPoint;
+    }
+
+    public Integer getFollowCount() {
+        return followCount;
+    }
+
+    public WechatUser followCount(Integer followCount) {
+        this.followCount = followCount;
+        return this;
+    }
+
+    public void setFollowCount(Integer followCount) {
+        this.followCount = followCount;
+    }
+
+    public Integer getFollowedCount() {
+        return followedCount;
+    }
+
+    public WechatUser followedCount(Integer followedCount) {
+        this.followedCount = followedCount;
+        return this;
+    }
+
+    public void setFollowedCount(Integer followedCount) {
+        this.followedCount = followedCount;
+    }
+
+    public Integer getThumbsUpCount() {
+        return thumbsUpCount;
+    }
+
+    public WechatUser thumbsUpCount(Integer thumbsUpCount) {
+        this.thumbsUpCount = thumbsUpCount;
+        return this;
+    }
+
+    public void setThumbsUpCount(Integer thumbsUpCount) {
+        this.thumbsUpCount = thumbsUpCount;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -408,19 +488,6 @@ public class WechatUser implements Serializable {
             return false;
         }
         return Objects.equals(getId(), wechatUser.getId());
-    }
-    
-    public Integer getTotalPoint() {
-        return totalPoint;
-    }
-
-    public WechatUser totalPoint(Integer totalPoint) {
-        this.totalPoint = totalPoint;
-        return this;
-    }
-
-    public void setTotalPoint(Integer totalPoint) {
-        this.totalPoint = totalPoint;
     }
 
     @Override
@@ -446,9 +513,13 @@ public class WechatUser implements Serializable {
             ", cookFlag=" + getCookFlag() +
             ", intesting='" + getIntesting() + "'" +
             ", skill='" + getSkill() + "'" +
+            ", eid='" + getEid() + "'" +
             ", createTime='" + getCreateTime() + "'" +
             ", modifyTime='" + getModifyTime() + "'" +
-            ", eid='" + getEid() + "'" +
+            ", totalPoint=" + getTotalPoint() +
+            ", followCount=" + getFollowCount() +
+            ", followedCount=" + getFollowedCount() +
+            ", thumbsUpCount=" + getThumbsUpCount() +
             "}";
     }
 }

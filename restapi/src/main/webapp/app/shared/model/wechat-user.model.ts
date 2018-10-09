@@ -16,8 +16,13 @@ export interface IWechatUser {
     cookFlag?: number;
     intesting?: string;
     skill?: string;
+    eid?: string;
     createTime?: Moment;
     modifyTime?: Moment;
+    totalPoint?: number;
+    followCount?: number;
+    followedCount?: number;
+    thumbsUpCount?: number;
 }
 
 export class WechatUser implements IWechatUser {
@@ -37,7 +42,12 @@ export class WechatUser implements IWechatUser {
         public cookFlag?: number,
         public intesting?: string,
         public skill?: string,
+        public eid?: string,
         public createTime?: Moment,
-        public modifyTime?: Moment
+        public modifyTime?: Moment,
+        public totalPoint?: number,
+        public followCount?: number,
+        public followedCount?: number,
+        public thumbsUpCount?: number
     ) {}
 }

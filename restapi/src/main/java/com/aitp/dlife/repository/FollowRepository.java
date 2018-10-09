@@ -19,9 +19,15 @@ import org.springframework.data.repository.query.Param;
 @SuppressWarnings("unused")
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, Long> {
-	
+
 	Page<Follow> findAllByFollowUserId( Pageable pageable, String wechatUserId);
-	
+
 	Page<Follow> findAllByFollowedUserId( Pageable pageable, String wechatUserId);
-	
+
+    @Query(value = "SELECT * FROM Follow AS f where f.follow_user_id=:followUserId and f.followed_user_id=:followedUserId order by f.modify_time desc",nativeQuery = true)
+    List<Follow> findByFollowUserIdAndFollowedUserId(@Param("followUserId")String followUserId, @Param("followedUserId")String followedUserId);
+
+    @Query(value = "SELECT * FROM Follow AS f where f.followed_user_id=:followedUserId order by f.modify_time desc",nativeQuery = true)
+    List<Follow> findAllByFollowedUserId(@Param("followedUserId")String followedUserId);
+
 }

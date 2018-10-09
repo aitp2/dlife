@@ -30,6 +30,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="message_type" type="varchar(255)" remarks="消息类型">
+                <constraints nullable="true" />
+            </column>
+
             <column name="event_message_id" type="bigint">
                 <constraints nullable="true" />
             </column>

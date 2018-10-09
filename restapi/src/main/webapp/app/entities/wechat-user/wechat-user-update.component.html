@@ -178,6 +178,11 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" for="field_eid" ngbTooltip="EID">Eid</label>
+                    <input type="text" class="form-control" name="eid" id="field_eid"
+                        [(ngModel)]="wechatUser.eid" />
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" for="field_createTime" ngbTooltip="创建时间">Create Time</label>
                     <div class="d-flex">
                         <input id="field_createTime" type="datetime-local" class="form-control" name="createTime" [(ngModel)]="createTime"
@@ -189,6 +194,66 @@
                     <div class="d-flex">
                         <input id="field_modifyTime" type="datetime-local" class="form-control" name="modifyTime" [(ngModel)]="modifyTime"
                         />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_totalPoint" ngbTooltip="个人积分">Total Point</label>
+                    <input type="number" class="form-control" name="totalPoint" id="field_totalPoint"
+                        [(ngModel)]="wechatUser.totalPoint" max="2147483647" jhiMax="2147483647"/>
+                    <div [hidden]="!(editForm.controls.totalPoint?.dirty && editForm.controls.totalPoint?.invalid)">
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.totalPoint?.errors?.max">
+                            This field cannot be more than 2147483647.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.totalPoint?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_followCount" ngbTooltip="关注数量">Follow Count</label>
+                    <input type="number" class="form-control" name="followCount" id="field_followCount"
+                        [(ngModel)]="wechatUser.followCount" max="2147483647" jhiMax="2147483647"/>
+                    <div [hidden]="!(editForm.controls.followCount?.dirty && editForm.controls.followCount?.invalid)">
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.followCount?.errors?.max">
+                            This field cannot be more than 2147483647.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.followCount?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_followedCount" ngbTooltip="粉丝数量">Followed Count</label>
+                    <input type="number" class="form-control" name="followedCount" id="field_followedCount"
+                        [(ngModel)]="wechatUser.followedCount" max="2147483647" jhiMax="2147483647"/>
+                    <div [hidden]="!(editForm.controls.followedCount?.dirty && editForm.controls.followedCount?.invalid)">
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.followedCount?.errors?.max">
+                            This field cannot be more than 2147483647.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.followedCount?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_thumbsUpCount" ngbTooltip="点赞数量">Thumbs Up Count</label>
+                    <input type="number" class="form-control" name="thumbsUpCount" id="field_thumbsUpCount"
+                        [(ngModel)]="wechatUser.thumbsUpCount" max="2147483647" jhiMax="2147483647"/>
+                    <div [hidden]="!(editForm.controls.thumbsUpCount?.dirty && editForm.controls.thumbsUpCount?.invalid)">
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.thumbsUpCount?.errors?.max">
+                            This field cannot be more than 2147483647.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.thumbsUpCount?.errors?.number">
+                            This field should be a number.
+                        </small>
                     </div>
                 </div>
 

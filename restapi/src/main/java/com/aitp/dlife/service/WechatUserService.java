@@ -1,6 +1,8 @@
 package com.aitp.dlife.service;
 
+import com.aitp.dlife.domain.Follow;
 import com.aitp.dlife.domain.WechatUser;
+import com.aitp.dlife.repository.FollowRepository;
 import com.aitp.dlife.repository.WechatUserRepository;
 import com.aitp.dlife.service.dto.UserPointDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
@@ -11,6 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 
 /**
@@ -24,10 +29,13 @@ public class WechatUserService {
 
     private final WechatUserRepository wechatUserRepository;
 
+    private final FollowRepository followRepository;
+
     private final WechatUserMapper wechatUserMapper;
 
-    public WechatUserService(WechatUserRepository wechatUserRepository, WechatUserMapper wechatUserMapper) {
+    public WechatUserService(WechatUserRepository wechatUserRepository, FollowRepository followRepository, WechatUserMapper wechatUserMapper) {
         this.wechatUserRepository = wechatUserRepository;
+        this.followRepository = followRepository;
         this.wechatUserMapper = wechatUserMapper;
     }
 
@@ -71,9 +79,33 @@ public class WechatUserService {
     }
 
     /**
+     * Get one wechatUser by id.
+     *
+     * @param currentId the id of the entity
+     * @param targetId the id of the entity
+     * @return the entity
+     */
+    @Transactional(readOnly = true)
+    public WechatUserDTO findOneAndFollow(Long currentId,Long targetId) {
+        log.debug("Request to get WechatUser : {}", targetId);
+        WechatUser wechatUser = wechatUserRepository.findById(targetId).get();
+        WechatUserDTO wechatUserDTO = wechatUserMapper.toDto(wechatUser);
+
+        List<Follow> follws = followRepository.findByFollowUserIdAndFollowedUserId(currentId + "",targetId + "");
+        if (!CollectionUtils.isEmpty(follws)){
+            wechatUserDTO.setFollowed(Boolean.TRUE);
+        }
+        else{
+            wechatUserDTO.setFollowed(Boolean.FALSE);
+        }
+
+        return wechatUserDTO;
+    }
+
+    /**˙
      * Delete the wechatUser by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entityh
      */
     public void delete(Long id) {
         log.debug("Request to delete WechatUser : {}", id);

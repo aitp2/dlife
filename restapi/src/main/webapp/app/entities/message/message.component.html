@@ -17,6 +17,7 @@
             <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="wechatUserId"><span>Wechat User Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="read"><span>Read</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="messageType"><span>Message Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="eventMessageId"><span>Event Message</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
@@ -26,6 +27,7 @@
                 <td><a [routerLink]="['/message', message.id, 'view' ]">{{message.id}}</a></td>
                 <td>{{message.wechatUserId}}</td>
                 <td>{{message.read}}</td>
+                <td>{{message.messageType}}</td>
                 <td>
                     <div *ngIf="message.eventMessageId">
                         <a [routerLink]="['../event-message', message.eventMessageId , 'view' ]" >{{message.eventMessageId}}</a>

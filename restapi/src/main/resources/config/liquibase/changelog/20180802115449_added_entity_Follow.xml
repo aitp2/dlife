@@ -22,35 +22,39 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="follow_user_id" type="varchar(255)">
+            <column name="follow_user_id" type="varchar(255)" remarks="关注用户的ID">
                 <constraints nullable="true" />
             </column>
 
-            <column name="follow_user_nickname" type="varchar(128)">
+            <column name="follow_user_nickname" type="varchar(128)" remarks="关注用户的昵称">
                 <constraints nullable="true" />
             </column>
 
-            <column name="follow_useravatar" type="varchar(1024)">
+            <column name="follow_useravatar" type="varchar(1024)" remarks="关注用户的头像">
                 <constraints nullable="true" />
             </column>
 
-            <column name="followed_user_id" type="varchar(255)">
+            <column name="followed_user_id" type="varchar(255)" remarks="被关注用户ID">
                 <constraints nullable="true" />
             </column>
 
-            <column name="followed_user_nickname" type="varchar(128)">
+            <column name="followed_user_nickname" type="varchar(128)" remarks="被关注用户昵称">
                 <constraints nullable="true" />
             </column>
 
-            <column name="followed_useravatar" type="varchar(1024)">
+            <column name="followed_useravatar" type="varchar(1024)" remarks="被关注用户头像">
                 <constraints nullable="true" />
             </column>
 
-            <column name="create_time" type="datetime">
+            <column name="create_time" type="datetime" remarks="创建时间">
                 <constraints nullable="true" />
             </column>
 
-            <column name="modify_time" type="datetime">
+            <column name="modify_time" type="datetime" remarks="修改时间">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="mutual" type="bit" remarks="是否相互关注">
                 <constraints nullable="true" />
             </column>
 

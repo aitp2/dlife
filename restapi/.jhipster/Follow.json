@@ -3,10 +3,12 @@
     "fields": [
         {
             "fieldName": "followUserId",
+            "javadoc": "关注用户的ID",
             "fieldType": "String"
         },
         {
             "fieldName": "followUserNickname",
+            "javadoc": "关注用户的昵称",
             "fieldType": "String",
             "fieldValidateRules": [
                 "maxlength"
@@ -15,6 +17,7 @@
         },
         {
             "fieldName": "followUseravatar",
+            "javadoc": "关注用户的头像",
             "fieldType": "String",
             "fieldValidateRules": [
                 "maxlength"
@@ -23,10 +26,12 @@
         },
         {
             "fieldName": "followedUserId",
+            "javadoc": "被关注用户ID",
             "fieldType": "String"
         },
         {
             "fieldName": "followedUserNickname",
+            "javadoc": "被关注用户昵称",
             "fieldType": "String",
             "fieldValidateRules": [
                 "maxlength"
@@ -35,6 +40,7 @@
         },
         {
             "fieldName": "followedUseravatar",
+            "javadoc": "被关注用户头像",
             "fieldType": "String",
             "fieldValidateRules": [
                 "maxlength"
@@ -43,11 +49,18 @@
         },
         {
             "fieldName": "createTime",
+            "javadoc": "创建时间",
             "fieldType": "Instant"
         },
         {
             "fieldName": "modifyTime",
+            "javadoc": "修改时间",
             "fieldType": "Instant"
+        },
+        {
+            "fieldName": "mutual",
+            "javadoc": "是否相互关注",
+            "fieldType": "Boolean"
         }
     ],
     "relationships": [],

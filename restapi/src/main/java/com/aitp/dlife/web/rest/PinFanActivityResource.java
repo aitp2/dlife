@@ -97,7 +97,15 @@ public class PinFanActivityResource {
             }
         }
         result.setPinfanPics(pinfanPicsDTOS);
-        
+
+        //record the activity create event start
+        EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.PINFAN,DateUtil.getYMDDateString(new Date()),EventType.CREATE,
+            result.getWechatUserId(),result.getActivitiyTile(),result.getId(),result.getAvatar(),result.getNickName());
+        if (null!=eventMessageDTO.getId()){
+            messageService.createMessageForEvent(eventMessageDTO);
+        }
+        //record the activity create event end
+
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(pinFanActivityDTO.getWechatUserId()));
         String sexString="";
@@ -128,8 +136,8 @@ public class PinFanActivityResource {
      * or with status 400 (Bad Request) if the p65	inFanActivityDTO is not valid,
      * or with status 500 (Internal Server Error) if the pinFanActivityDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
-     * @throws InvocationTargetException 
-     * @throws IllegalAccessException 
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
      */
     @PutMapping("/pin-fan-activities")
     @Timed
@@ -151,7 +159,7 @@ public class PinFanActivityResource {
 		if (result.getStatus() == 1) {
 			result.setCompletedSequence(pinFanActivityService.getCompletedSequence(result.getWechatUserId()));
 		}
-        
+
         //record the activity modify event start
         EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.PINFAN,DateUtil.getYMDDateString(new Date()),EventType.UPDATE,
             result.getWechatUserId(),result.getActivitiyTile(),result.getId(),result.getAvatar(),result.getNickName());
