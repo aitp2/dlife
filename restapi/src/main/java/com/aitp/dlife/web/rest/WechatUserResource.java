@@ -1,5 +1,6 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.service.dto.QuestionDTO;
 import com.aitp.dlife.web.rest.util.BeanPropertiesUtils;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
@@ -10,6 +11,10 @@ import com.aitp.dlife.web.rest.util.PaginationUtil;
 import com.aitp.dlife.service.dto.UserPointDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -33,6 +38,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @RestController
 @RequestMapping("/api")
+@Api(value = "用户API", tags = "用户API")
 public class WechatUserResource {
 
     private final Logger log = LoggerFactory.getLogger(WechatUserResource.class);
@@ -53,6 +59,7 @@ public class WechatUserResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/wechat-users")
+    @ApiOperation(value = "创建用户", response = WechatUserDTO.class, produces = "application/json")
     @Timed
     public ResponseEntity<WechatUserDTO> createWechatUser(@Valid @RequestBody WechatUserDTO wechatUserDTO) throws URISyntaxException {
         log.debug("REST request to save WechatUser : {}", wechatUserDTO);
@@ -80,6 +87,7 @@ public class WechatUserResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/wechat-users")
+    @ApiOperation(value = "更新用户信息", response = WechatUserDTO.class, produces = "application/json")
     @Timed
     public ResponseEntity<WechatUserDTO> updateWechatUser(@Valid @RequestBody WechatUserDTO wechatUserDTO) throws URISyntaxException {
         log.debug("REST request to update WechatUser : {}", wechatUserDTO);
@@ -93,7 +101,7 @@ public class WechatUserResource {
         	  //set default messages
             dbRecord.setModifyTime(DateUtil.getYMDDateString(new Date()));
         }
-      
+
 
         WechatUserDTO result = wechatUserService.save(dbRecord);
         return ResponseEntity.ok()
@@ -108,6 +116,9 @@ public class WechatUserResource {
      * @return the ResponseEntity with status 200 (OK) and the list of wechatUsers in body
      */
     @GetMapping("/wechat-users")
+    @ApiOperation(value = "获取所有用户信息", response = WechatUserDTO.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "pageable", value = "分页信息", required = false) })
     @Timed
     public ResponseEntity<List<WechatUserDTO>> getAllWechatUsers(Pageable pageable) {
         log.debug("REST request to get a page of WechatUsers");
@@ -123,10 +134,40 @@ public class WechatUserResource {
      * @return the ResponseEntity with status 200 (OK) and with body the wechatUserDTO, or with status 404 (Not Found)
      */
     @GetMapping("/wechat-users/{id}")
+    @ApiOperation(value = "获取具体用户信息", response = WechatUserDTO.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "id", value = "用户ID", required = true) })
     @Timed
     public ResponseEntity<WechatUserDTO> getWechatUser(@PathVariable Long id) {
         log.debug("REST request to get WechatUser : {}", id);
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(wechatUserDTO));
+    }
+
+    /**
+     * GET  /wechat-users/:id : get the "id" wechatUser.
+     *
+     * @param currentId the id of the wechatUserDTO to retrieve
+     * @param targetId the id of the wechatUserDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the wechatUserDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/wechat-users/follow/{currentId}/{targetId}")
+    @ApiOperation(value = "获取具体用户信息和关注信息", response = WechatUserDTO.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "currentId", value = "当前用户ID", required = false),
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "targetId", value = "目标用户ID", required = true)})
+    @Timed
+    public ResponseEntity<WechatUserDTO> getWechatUserAndFollowMessage(@PathVariable Long currentId,@PathVariable Long targetId) {
+        log.debug("REST request to get WechatUser : {}", targetId);
+
+        WechatUserDTO wechatUserDTO;
+        if (currentId == null){
+            wechatUserDTO = wechatUserService.findOne(targetId);
+        }
+        else{
+            wechatUserDTO = wechatUserService.findOneAndFollow(currentId,targetId);
+        }
+
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(wechatUserDTO));
     }
 
@@ -137,6 +178,9 @@ public class WechatUserResource {
      * @return
      */
     @GetMapping("/wechat-users/userinfo/{openid}")
+    @ApiOperation(value = "获取具体用户信息", response = WechatUserDTO.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "id", value = "用户OpenID", required = true) })
     @Timed
     public ResponseEntity<WechatUserDTO> getWechatUserByOpenID(@PathVariable String openid) {
         log.debug("REST request to get WechatUser : {}", openid);
@@ -151,6 +195,9 @@ public class WechatUserResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/wechat-users/{id}")
+    @ApiOperation(value = "删除具体用户信息", response = WechatUserDTO.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "id", value = "用户ID", required = true) })
     @Timed
     public ResponseEntity<Void> deleteWechatUser(@PathVariable Long id) {
         log.debug("REST request to delete WechatUser : {}", id);
@@ -176,10 +223,13 @@ public class WechatUserResource {
     /**
      * GET  /wechat-users/userinfo/:openid : get the "openid" wechatUser.
      *
-     * @param openid
+     * @param id
      * @return
      */
     @GetMapping("/wechat-users/user-point/{id}")
+    @ApiOperation(value = "获取具体用户积分信息", response = WechatUserDTO.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "id", value = "用户ID", required = true) })
     @Timed
     public ResponseEntity<UserPointDTO> getWechatUserPointByID(@PathVariable Long id) {
         log.debug("REST request to get points for user : {}", id);

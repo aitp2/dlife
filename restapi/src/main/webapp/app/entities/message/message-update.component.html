@@ -25,6 +25,12 @@
                     <input type="checkbox" class="form-control" name="read" id="field_read"
                         [(ngModel)]="message.read" />
                 </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_messageType" ngbTooltip="消息类型">Message Type</label>
+                    <select class="form-control" name="messageType" [(ngModel)]="message.messageType" id="field_messageType" >
+                        <option value="FOLLOW">FOLLOW</option>
+                    </select>
+                </div>
 
                 <div class="form-group">
                     <label class="form-control-label" for="field_eventMessage">Event Message</label>

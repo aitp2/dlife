@@ -10,6 +10,9 @@ import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import com.aitp.dlife.service.dto.FollowDTO;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +59,9 @@ public class FollowResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/follows")
+    @ApiOperation(value = "关注用户", response = FollowDTO.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "body", dataType = "json", defaultValue = "", name = "followDTO", value = "关注用户的内容", required = true) })
     @Timed
     public ResponseEntity<FollowDTO> createFollow(@Valid @RequestBody FollowDTO followDTO) throws URISyntaxException {
         log.debug("REST request to save Follow : {}", followDTO);
@@ -73,16 +79,6 @@ public class FollowResource {
         } catch (NumberFormatException e) {
             throw new BadRequestAlertException("The request wechat user id must be number type", ENTITY_NAME, "notNumberType");
         }
-        WechatUserDTO followUserDTO = wechatUserService.findOne(Long.valueOf(followDTO.getFollowUserId()));
-        if (followUserDTO == null)
-        {
-            throw new BadRequestAlertException("Can not get the wehcatUser by user id:" + followDTO.getFollowUserId(), ENTITY_NAME, "noFollowUser");
-        }
-        else
-        {
-            followDTO.setFollowUseravatar(followUserDTO.getAvatar());
-            followDTO.setFollowUserNickname(followUserDTO.getNickName());
-        }
 
         //set followed user message
         if (StringUtils.isEmpty(followDTO.getFollowedUserId()))
@@ -94,22 +90,8 @@ public class FollowResource {
         } catch (NumberFormatException e) {
             throw new BadRequestAlertException("The request wechat user id must be number type", ENTITY_NAME, "notNumberType");
         }
-        WechatUserDTO followedUserDTO = wechatUserService.findOne(Long.valueOf(followDTO.getFollowedUserId()));
-        if (followedUserDTO == null)
-        {
-            throw new BadRequestAlertException("Can not get the wehcatUser by user id:" + followDTO.getFollowUserId(), ENTITY_NAME, "noFollowUser");
-        }
-        else
-        {
-            followDTO.setFollowedUseravatar(followedUserDTO.getAvatar());
-            followDTO.setFollowedUserNickname(followedUserDTO.getNickName());
-        }
 
-        //set default messages
-        followDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
-        followDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
-
-        FollowDTO result = followService.save(followDTO);
+        FollowDTO result = followService.createFollow(followDTO);
         return ResponseEntity.created(new URI("/api/follows/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -125,6 +107,9 @@ public class FollowResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/follows")
+    @ApiOperation(value = "更新关注信息", response = FollowDTO.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "body", dataType = "json", defaultValue = "", name = "followDTO", value = "关注用户的内容", required = true) })
     @Timed
     public ResponseEntity<FollowDTO> updateFollow(@Valid @RequestBody FollowDTO followDTO) throws URISyntaxException {
         log.debug("REST request to update Follow : {}", followDTO);
@@ -148,6 +133,11 @@ public class FollowResource {
      * @return the ResponseEntity with status 200 (OK) and the list of follows in body
      */
     @GetMapping("/follows")
+    @ApiOperation(value = "获取关注信息", response = FollowDTO.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "pageable", value = "分页信息", required = false),
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "followWechatUserId", value = "用于查询我关注的人的信息", required = false),
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "followedWechatUserId", value = "用于查询我的粉丝的信息", required = false)})
     @Timed
     public ResponseEntity<List<FollowDTO>> getAllFollows(Pageable pageable,
     		@RequestParam(value = "followWechatUserId", required = false) String followWechatUserId,
@@ -172,6 +162,9 @@ public class FollowResource {
      * @return the ResponseEntity with status 200 (OK) and with body the followDTO, or with status 404 (Not Found)
      */
     @GetMapping("/follows/{id}")
+    @ApiOperation(value = "获得具体的关注信息", response = FollowDTO.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "id", value = "对象的ID", required = true) })
     @Timed
     public ResponseEntity<FollowDTO> getFollow(@PathVariable Long id) {
         log.debug("REST request to get Follow : {}", id);
@@ -186,6 +179,9 @@ public class FollowResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/follows/{id}")
+    @ApiOperation(value = "删除关注信息", response = FollowDTO.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "id", value = "对象的ID", required = true) })
     @Timed
     public ResponseEntity<Void> deleteFollow(@PathVariable Long id) {
         log.debug("REST request to delete Follow : {}", id);

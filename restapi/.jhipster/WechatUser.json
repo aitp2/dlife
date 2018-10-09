@@ -1,7 +1,5 @@
 {
-    "fluentMethods": true,
-    "clientRootFolder": "",
-    "relationships": [],
+    "name": "WechatUser",
     "fields": [
         {
             "fieldName": "openId",
@@ -131,6 +129,11 @@
             "fieldValidateRulesMaxlength": 1024
         },
         {
+            "fieldName": "eid",
+            "javadoc": "EID",
+            "fieldType": "String"
+        },
+        {
             "fieldName": "createTime",
             "javadoc": "创建时间",
             "fieldType": "Instant"
@@ -141,16 +144,51 @@
             "fieldType": "Instant"
         },
         {
-            "fieldName": "eid",
-            "fieldType": "String"
+            "fieldName": "totalPoint",
+            "javadoc": "个人积分",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "max"
+            ],
+            "fieldValidateRulesMax": 2147483647
+        },
+        {
+            "fieldName": "followCount",
+            "javadoc": "关注数量",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "max"
+            ],
+            "fieldValidateRulesMax": 2147483647
+        },
+        {
+            "fieldName": "followedCount",
+            "javadoc": "粉丝数量",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "max"
+            ],
+            "fieldValidateRulesMax": 2147483647
+        },
+        {
+            "fieldName": "thumbsUpCount",
+            "javadoc": "点赞数量",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "max"
+            ],
+            "fieldValidateRulesMax": 2147483647
         }
     ],
+    "relationships": [],
     "changelogDate": "20180802115448",
-    "dto": "mapstruct",
-    "searchEngine": false,
-    "service": "serviceClass",
+    "javadoc": "用户信息",
     "entityTableName": "wechat_user",
-    "jpaMetamodelFiltering": false,
+    "dto": "mapstruct",
     "pagination": "pagination",
-    "javadoc": "用户信息"
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

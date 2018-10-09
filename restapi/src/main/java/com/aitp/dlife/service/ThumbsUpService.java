@@ -1,12 +1,12 @@
 package com.aitp.dlife.service;
 
 import com.aitp.dlife.domain.ThumbsUp;
+import com.aitp.dlife.domain.WechatUser;
 import com.aitp.dlife.repository.ClockInRepository;
 import com.aitp.dlife.repository.CommentRepository;
 import com.aitp.dlife.repository.ThumbsUpRepository;
-import com.aitp.dlife.repository.specification.CommentSpecification;
+import com.aitp.dlife.repository.WechatUserRepository;
 import com.aitp.dlife.repository.specification.ThumbsUpSpecification;
-import com.aitp.dlife.service.dto.QueryDTO;
 import com.aitp.dlife.service.dto.ThumbsUpDTO;
 import com.aitp.dlife.service.mapper.ThumbsUpMapper;
 import com.aitp.dlife.web.rest.errors.UniquenessConflictException;
@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -37,16 +36,19 @@ public class ThumbsUpService {
     private final ThumbsUpRepository thumbsUpRepository;
 
     private  final CommentRepository commentRepository;
-    
+
     private final ClockInRepository clockInRepository;
-    
+
+    private final WechatUserRepository wechatUserRepository;
+
     private final ThumbsUpMapper thumbsUpMapper;
 
-    public ThumbsUpService(ThumbsUpRepository thumbsUpRepository, ThumbsUpMapper thumbsUpMapper,ClockInRepository clockInRepository,CommentRepository commentRepository) {
+    public ThumbsUpService(ThumbsUpRepository thumbsUpRepository, ThumbsUpMapper thumbsUpMapper, ClockInRepository clockInRepository, CommentRepository commentRepository, WechatUserRepository wechatUserRepository) {
         this.thumbsUpRepository = thumbsUpRepository;
         this.thumbsUpMapper = thumbsUpMapper;
         this.commentRepository = commentRepository;
         this.clockInRepository = clockInRepository;
+        this.wechatUserRepository = wechatUserRepository;
     }
 
     /**
@@ -83,7 +85,7 @@ public class ThumbsUpService {
     /**
      * Get all the thumbsUps.
      *
-     * @param pageable the pagination information
+     * @param spec the pagination information
      * @return the list of entities
      */
     @Transactional(readOnly = true)
@@ -116,5 +118,29 @@ public class ThumbsUpService {
     public void delete(Long id) {
         log.debug("Request to delete ThumbsUp : {}", id);
         thumbsUpRepository.deleteById(id);
+    }
+
+    /**
+     * update the user's thumbs up count
+     *
+     * @param wechatUserId
+     * @param add
+     */
+    public void updateUserThumbsUpCount(String wechatUserId, boolean add){
+        log.debug("Request to update the Thumbs Up count User id: {}", wechatUserId);
+        WechatUser wechatUser = wechatUserRepository.getOne(Long.valueOf(wechatUserId));
+        Integer newCount;
+        if (add){
+            newCount = (wechatUser.getThumbsUpCount() == null ? Integer.valueOf(1) : Integer.valueOf(wechatUser.getThumbsUpCount().intValue() + 1));
+        }else{
+            newCount = (wechatUser.getThumbsUpCount() == null ? Integer.valueOf(0) : Integer.valueOf(wechatUser.getThumbsUpCount().intValue() - 1));
+        }
+
+        if (newCount.intValue() < 0){
+            newCount = Integer.valueOf(0);
+        }
+
+        wechatUser.setThumbsUpCount(newCount);
+        wechatUserRepository.save(wechatUser);
     }
 }

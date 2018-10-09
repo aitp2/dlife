@@ -131,6 +131,8 @@ public class ThumbsUpResource {
 			commentDTO = commentService.save(commentDTO);
 			updateDateTime(commentDTO,
 					EventMessageBuilder.buildEventMessageDTO(thumbsUpDTO).object(commentDTO.getObjectId()).get());
+
+            thumbsUpService.updateUserThumbsUpCount(commentDTO.getWechatUserId(),true);
 			break;
 		case ACTIVITY:
 			ClockInDTO clockInDTO = clockInService.findOne(thumbsUpDTO.getObjectId());
@@ -144,13 +146,15 @@ public class ThumbsUpResource {
 					.object(fitnessActivityDTO.getId()).title(fitnessActivityDTO.getTitle()).type(EventType.CLOCKTHUMBSUP).get();
 			eventMessageDTO = eventMessageService.save(eventMessageDTO);
 			if (null != eventMessageDTO.getId()) {
-			messageService.createMessageForEvent(eventMessageDTO);
+                messageService.createMessageForEvent(eventMessageDTO);
 
-			FitnessActivity fitnessActivity = fitnessActivityRepository.findById(fitnessActivityDTO.getId()).get();
-			fitnessActivity.setModifyTime(Instant.now());
-			fitnessActivityRepository.save(fitnessActivity);
+                FitnessActivity fitnessActivity = fitnessActivityRepository.findById(fitnessActivityDTO.getId()).get();
+                fitnessActivity.setModifyTime(Instant.now());
+                fitnessActivityRepository.save(fitnessActivity);
 
 			}
+
+            thumbsUpService.updateUserThumbsUpCount(clockInDTO.getWechatUserId(),true);
 			break;
 		default:
 			break;
@@ -276,11 +280,14 @@ public class ThumbsUpResource {
 			thumbsUp--;
 			commentDTO.setRating1(thumbsUp);
 			commentService.save(commentDTO);
+            thumbsUpService.updateUserThumbsUpCount(commentDTO.getWechatUserId(),false);
 			break;
 		case ACTIVITY:
 		    ClockInDTO clockInDTO = clockInService.findOne(thumbsUpDTO.getObjectId());
 		    clockInDTO.setThumbsUpCount(clockInDTO.getThumbsUpCount() == null ? 0 : clockInDTO.getThumbsUpCount()-1);
 		    clockInService.save(clockInDTO);
+            thumbsUpService.updateUserThumbsUpCount(clockInDTO.getWechatUserId(),false);
+            break;
 		default:
 			break;
 		}

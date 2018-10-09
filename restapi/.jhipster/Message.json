@@ -14,6 +14,12 @@
             "fieldName": "read",
             "javadoc": "是否读取",
             "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "messageType",
+            "javadoc": "消息类型",
+            "fieldType": "MessageType",
+            "fieldValues": "FOLLOW,COMMON"
         }
     ],
     "relationships": [

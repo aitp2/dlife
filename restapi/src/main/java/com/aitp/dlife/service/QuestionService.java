@@ -3,11 +3,10 @@ package com.aitp.dlife.service;
 import com.aitp.dlife.domain.Comment;
 import com.aitp.dlife.domain.Question;
 import com.aitp.dlife.domain.enumeration.CommentChannel;
+import com.aitp.dlife.domain.enumeration.EventChannel;
+import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.repository.QuestionRepository;
-import com.aitp.dlife.service.dto.CommentDTO;
-import com.aitp.dlife.service.dto.QuestionDTO;
-import com.aitp.dlife.service.dto.QuestionPicDTO;
-import com.aitp.dlife.service.dto.WechatUserDTO;
+import com.aitp.dlife.service.dto.*;
 import com.aitp.dlife.service.mapper.QuestionMapper;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -46,12 +45,18 @@ public class QuestionService {
 
     private final CommentService commentService;
 
-    public QuestionService(QuestionRepository questionRepository, QuestionMapper questionMapper, QuestionPicService questionPicService, WechatUserService wechatUserService, CommentService commentService) {
+    private final EventMessageService eventMessageService;
+
+    private final MessageService messageService;
+
+    public QuestionService(QuestionRepository questionRepository, QuestionMapper questionMapper, QuestionPicService questionPicService, WechatUserService wechatUserService, CommentService commentService, EventMessageService eventMessageService, MessageService messageService) {
         this.questionRepository = questionRepository;
         this.questionMapper = questionMapper;
         this.questionPicService = questionPicService;
         this.wechatUserService = wechatUserService;
         this.commentService = commentService;
+        this.eventMessageService = eventMessageService;
+        this.messageService = messageService;
     }
 
     /**
@@ -86,12 +91,18 @@ public class QuestionService {
         questionDTO.setAnswerCount(Integer.valueOf(0));
         questionDTO.setReadingCount(Integer.valueOf(0));
 
+        String userAvatar = null;
+        String userNickName = null;
+
         // set the user info
         if (StringUtils.isEmpty(questionDTO.getAvatar()) || StringUtils.isEmpty(questionDTO.getNickName())){
             WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(questionDTO.getWechatUserId()));
             if (wechatUserDTO != null){
                 questionDTO.setAvatar(wechatUserDTO.getAvatar());
                 questionDTO.setNickName(wechatUserDTO.getNickName());
+
+                userAvatar = wechatUserDTO.getAvatar();
+                userNickName = wechatUserDTO.getNickName();
             }
         }
 
@@ -110,6 +121,13 @@ public class QuestionService {
         }
         result.setQuestionPics(questionPicDTOs);
 
+        //record the question create event start
+        EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.FAQS,DateUtil.getYMDDateString(new Date()), EventType.CREATE,
+            result.getWechatUserId(),result.getTitle(),result.getId(),userAvatar,userNickName);
+        if (null!=eventMessageDTO.getId()){
+            messageService.createMessageForEvent(eventMessageDTO);
+        }
+        //record the question create event end
 
         return result;
     }

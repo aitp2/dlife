@@ -39,11 +39,11 @@ public class EventMessageService {
     private final EventMessageRepository eventMessageRepository;
 
     private final FitnessActivityRepository fitnessActivityRepository;
-    
+
     private final EventMessageMapper eventMessageMapper;
 
-    private final QuestionRepository questionRepository; 
-    
+    private final QuestionRepository questionRepository;
+
     private final PinFanActivityRepository pinFanActivityRepository;
 
 
@@ -83,10 +83,10 @@ public class EventMessageService {
             .map(eventMessageMapper::toDto);
     }
 
-    
-    
-    
-    
+
+
+
+
     /**
      * Get all the event message by channel.
      *

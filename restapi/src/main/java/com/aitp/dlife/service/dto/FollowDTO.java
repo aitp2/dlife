@@ -33,6 +33,8 @@ public class FollowDTO implements Serializable {
 
     private String modifyTime;
 
+    private Boolean mutual;
+
     public Long getId() {
         return id;
     }
@@ -105,6 +107,14 @@ public class FollowDTO implements Serializable {
         this.modifyTime = modifyTime;
     }
 
+    public Boolean getMutual() {
+        return mutual;
+    }
+
+    public void setMutual(Boolean mutual) {
+        this.mutual = mutual;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -138,6 +148,7 @@ public class FollowDTO implements Serializable {
             ", followedUseravatar='" + getFollowedUseravatar() + "'" +
             ", createTime='" + getCreateTime() + "'" +
             ", modifyTime='" + getModifyTime() + "'" +
+            ", mutual='" + getMutual() + "'" +
             "}";
     }
 }

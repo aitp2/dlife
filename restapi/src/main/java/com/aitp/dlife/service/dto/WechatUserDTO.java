@@ -52,8 +52,16 @@ public class WechatUserDTO implements Serializable {
 
     @Size(max = 1024)
     private String skill;
-    
+
     private String eid;
+
+    private Integer followCount;
+
+    private Integer followedCount;
+
+    private Integer thumbsUpCount;
+
+    private Boolean followed;
 
     private String createTime;
 
@@ -194,7 +202,7 @@ public class WechatUserDTO implements Serializable {
     public void setModifyTime(String modifyTime) {
         this.modifyTime = modifyTime;
     }
-    
+
 
     public String getEid() {
 		return eid;
@@ -204,7 +212,39 @@ public class WechatUserDTO implements Serializable {
 		this.eid = eid;
 	}
 
-	@Override
+    public Integer getFollowCount() {
+        return followCount;
+    }
+
+    public void setFollowCount(Integer followCount) {
+        this.followCount = followCount;
+    }
+
+    public Integer getFollowedCount() {
+        return followedCount;
+    }
+
+    public void setFollowedCount(Integer followedCount) {
+        this.followedCount = followedCount;
+    }
+
+    public Integer getThumbsUpCount() {
+        return thumbsUpCount;
+    }
+
+    public void setThumbsUpCount(Integer thumbsUpCount) {
+        this.thumbsUpCount = thumbsUpCount;
+    }
+
+    public Boolean getFollowed() {
+        return followed;
+    }
+
+    public void setFollowed(Boolean followed) {
+        this.followed = followed;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -231,6 +271,7 @@ public class WechatUserDTO implements Serializable {
 				+ userName + ", nickName=" + nickName + ", avatar=" + avatar + ", mobileNum=" + mobileNum + ", project="
 				+ project + ", seat=" + seat + ", introduce=" + introduce + ", sex=" + sex + ", companyRole="
 				+ companyRole + ", cookFlag=" + cookFlag + ", intesting=" + intesting + ", skill=" + skill + ", eid="
-				+ eid + ", createTime=" + createTime + ", modifyTime=" + modifyTime + "]";
+				+ eid + ", createTime=" + createTime + ", modifyTime=" + modifyTime + ", followCount=" + followCount
+                + ", followedCount=" + followedCount + ", thumbsUpCount=" + thumbsUpCount + ", followed=" + followed + "]";
 	}
 }

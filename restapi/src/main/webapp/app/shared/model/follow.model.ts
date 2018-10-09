@@ -10,6 +10,7 @@ export interface IFollow {
     followedUseravatar?: string;
     createTime?: Moment;
     modifyTime?: Moment;
+    mutual?: boolean;
 }
 
 export class Follow implements IFollow {
@@ -22,6 +23,9 @@ export class Follow implements IFollow {
         public followedUserNickname?: string,
         public followedUseravatar?: string,
         public createTime?: Moment,
-        public modifyTime?: Moment
-    ) {}
+        public modifyTime?: Moment,
+        public mutual?: boolean
+    ) {
+        this.mutual = false;
+    }
 }
