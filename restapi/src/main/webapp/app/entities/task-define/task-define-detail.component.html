@@ -1,0 +1,87 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="taskDefine">
+            <h2><span>Task Define</span> {{taskDefine.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Task Code</span></dt>
+                <dd>
+                    <span>{{taskDefine.taskCode}}</span>
+                </dd>
+                <dt><span>Name</span></dt>
+                <dd>
+                    <span>{{taskDefine.name}}</span>
+                </dd>
+                <dt><span>Status</span></dt>
+                <dd>
+                    <span>{{taskDefine.status}}</span>
+                </dd>
+                <dt><span>Period</span></dt>
+                <dd>
+                    <span>{{taskDefine.period}}</span>
+                </dd>
+                <dt><span>Maxlimit</span></dt>
+                <dd>
+                    <span>{{taskDefine.maxlimit}}</span>
+                </dd>
+                <dt><span>Total Point</span></dt>
+                <dd>
+                    <span>{{taskDefine.totalPoint}}</span>
+                </dd>
+                <dt><span>Target Systems</span></dt>
+                <dd>
+                    <span>{{taskDefine.targetSystems}}</span>
+                </dd>
+                <dt><span>Event Type</span></dt>
+                <dd>
+                    <span>{{taskDefine.eventType}}</span>
+                </dd>
+                <dt><span>Conditions</span></dt>
+                <dd>
+                    <span>{{taskDefine.conditions}}</span>
+                </dd>
+                <dt><span>Strategy</span></dt>
+                <dd>
+                    <span>{{taskDefine.strategy}}</span>
+                </dd>
+                <dt><span>Apply Strategy</span></dt>
+                <dd>
+                    <span>{{taskDefine.applyStrategy}}</span>
+                </dd>
+                <dt><span>Priority</span></dt>
+                <dd>
+                    <span>{{taskDefine.priority}}</span>
+                </dd>
+                <dt><span>Create By</span></dt>
+                <dd>
+                    <span>{{taskDefine.createBy}}</span>
+                </dd>
+                <dt><span>Create Time</span></dt>
+                <dd>
+                    <span>{{taskDefine.createTime}}</span>
+                </dd>
+                <dt><span>Last Modify By</span></dt>
+                <dd>
+                    <span>{{taskDefine.lastModifyBy}}</span>
+                </dd>
+                <dt><span>Last Modify Time</span></dt>
+                <dd>
+                    <span>{{taskDefine.lastModifyTime}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/task-define', taskDefine.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

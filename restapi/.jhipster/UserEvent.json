@@ -1,0 +1,83 @@
+{
+    "name": "UserEvent",
+    "fields": [
+        {
+            "fieldName": "userid",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "uuid",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "targetSystem",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "eventType",
+            "fieldType": "PointEventType",
+            "fieldValues": "SALUTE,LOGIN,MESSAGE,MESSAGEWITHIMAGE,REPLY,REPLYWITHIMAGE,JIONACTION,FOCUS,NEWFUN,CARD,CARDWITHIMAGE,PUBILSHACTION,PUBILSHQUESTION,RECHARGE,SYSRECHARGE,REDEEM"
+        },
+        {
+            "fieldName": "eventName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "eventTime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "validateTo",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "param1",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "parem2",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "param3",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "createBy",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "createTime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "lastModifyBy",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "lastModifyTime",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "applyTask",
+            "otherEntityName": "taskDefine",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180915103825",
+    "entityTableName": "user_event",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

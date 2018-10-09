@@ -2,11 +2,10 @@ package com.aitp.dlife.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.service.TaskDefineService;
-import com.aitp.dlife.service.dto.TaskDefineDTO;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
-
+import com.aitp.dlife.service.dto.TaskDefineDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,0 +1,92 @@
+{
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "taskCode",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "period",
+            "fieldType": "TaskPeriod",
+            "fieldValues": "DAILY,WEEKLY,MOTHLY,FOREVER"
+        },
+        {
+            "fieldName": "maxlimit",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "totalPoint",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "targetSystems",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "eventType",
+            "fieldType": "PointEventType",
+            "fieldValues": "SALUTE,LOGIN,MESSAGE,MESSAGEWITHIMAGE,REPLY,REPLYWITHIMAGE,JIONACTION,FOCUS,NEWFUN,CARD,CARDWITHIMAGE,PUBILSHACTION,PUBILSHQUESTION,RECHARGE,SYSRECHARGE,REDEEM"
+        },
+        {
+            "fieldName": "conditions",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "strategy",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "applyStrategy",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "priority",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "createBy",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "createTime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "lastModifyBy",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "lastModifyTime",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "changelogDate": "20180915103823",
+    "dto": "mapstruct",
+    "searchEngine": false,
+    "service": "serviceClass",
+    "entityTableName": "task_define",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pagination"
+}

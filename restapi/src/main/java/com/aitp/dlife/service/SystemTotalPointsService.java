@@ -4,7 +4,6 @@ import com.aitp.dlife.domain.SystemTotalPoints;
 import com.aitp.dlife.repository.SystemTotalPointsRepository;
 import com.aitp.dlife.service.dto.SystemTotalPointsDTO;
 import com.aitp.dlife.service.mapper.SystemTotalPointsMapper;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

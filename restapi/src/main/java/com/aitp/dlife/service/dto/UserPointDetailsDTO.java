@@ -1,9 +1,9 @@
 package com.aitp.dlife.service.dto;
 
 import java.time.ZonedDateTime;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
-
 import com.aitp.dlife.domain.enumeration.PointEventType;
 
 /**
@@ -13,14 +13,18 @@ public class UserPointDetailsDTO implements Serializable {
 
     private Long id;
 
+    @NotNull
     private String userid;
 
+    @NotNull
     private ZonedDateTime applyTime;
 
+    @NotNull
     private Integer changePoint;
 
     private PointEventType eventType;
 
+    @NotNull
     private String descript;
 
     private String targetSystem;

@@ -1,0 +1,75 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="userPointDetails">
+            <h2><span>User Point Details</span> {{userPointDetails.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Userid</span></dt>
+                <dd>
+                    <span>{{userPointDetails.userid}}</span>
+                </dd>
+                <dt><span>Apply Time</span></dt>
+                <dd>
+                    <span>{{userPointDetails.applyTime}}</span>
+                </dd>
+                <dt><span>Change Point</span></dt>
+                <dd>
+                    <span>{{userPointDetails.changePoint}}</span>
+                </dd>
+                <dt><span>Event Type</span></dt>
+                <dd>
+                    <span>{{userPointDetails.eventType}}</span>
+                </dd>
+                <dt><span>Descript</span></dt>
+                <dd>
+                    <span>{{userPointDetails.descript}}</span>
+                </dd>
+                <dt><span>Target System</span></dt>
+                <dd>
+                    <span>{{userPointDetails.targetSystem}}</span>
+                </dd>
+                <dt><span>Handle By</span></dt>
+                <dd>
+                    <span>{{userPointDetails.handleBy}}</span>
+                </dd>
+                <dt><span>Total Point</span></dt>
+                <dd>
+                    <span>{{userPointDetails.totalPoint}}</span>
+                </dd>
+                <dt><span>Validate String</span></dt>
+                <dd>
+                    <span>{{userPointDetails.validateString}}</span>
+                </dd>
+                <dt><span>Create By</span></dt>
+                <dd>
+                    <span>{{userPointDetails.createBy}}</span>
+                </dd>
+                <dt><span>Create Time</span></dt>
+                <dd>
+                    <span>{{userPointDetails.createTime}}</span>
+                </dd>
+                <dt><span>Last Modify By</span></dt>
+                <dd>
+                    <span>{{userPointDetails.lastModifyBy}}</span>
+                </dd>
+                <dt><span>Last Modify Time</span></dt>
+                <dd>
+                    <span>{{userPointDetails.lastModifyTime}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/user-point-details', userPointDetails.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
