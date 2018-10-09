@@ -10,6 +10,7 @@ import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
 import com.aitp.dlife.service.dto.FollowDTO;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -36,6 +37,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
+@Api(value = "用户关注API", tags = "用户关注API")
 public class FollowResource {
 
     private final Logger log = LoggerFactory.getLogger(FollowResource.class);
