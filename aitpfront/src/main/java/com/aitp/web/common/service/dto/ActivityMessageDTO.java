@@ -5,10 +5,15 @@ import java.util.List;
 
 public class ActivityMessageDTO {
 
+
 	private String touser;
 
 	private String templateID;
 
+	private String url;
+
+	private String type;
+	
 	private List<WechatMessageData> wechatMessageDatas;
 
 	public String getTouser() {
@@ -43,4 +48,19 @@ public class ActivityMessageDTO {
 		return wechatMessageDatas;
 	}
 
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }
