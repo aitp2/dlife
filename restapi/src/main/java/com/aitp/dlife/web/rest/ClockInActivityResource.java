@@ -59,11 +59,11 @@ public class ClockInActivityResource {
 		response.setClockInSuccess(clockInActivityService.clockIn(request));
 		if(CollectionUtils.isEmpty(request.getPics()))
 		{
-			taskEngineService.saveNewEvent(request.getWechatUserId(), "打卡", PointEventType.CARD, CommentChannel.FIT.toString(), request.getActivityParticipationId());
+			taskEngineService.saveNewEventWithComment(request.getWechatUserId(), "打卡", PointEventType.CARD, CommentChannel.FIT.toString(), request.getActivityParticipationId());
 		}
 		else
 		{
-			taskEngineService.saveNewEvent(request.getWechatUserId(), "打卡", PointEventType.CARDWITHIMAGE, CommentChannel.FIT.toString(), request.getActivityParticipationId());
+			taskEngineService.saveNewEventWithComment(request.getWechatUserId(), "打卡", PointEventType.CARDWITHIMAGE, CommentChannel.FIT.toString(), request.getActivityParticipationId());
 		}
 		return response;
 	}

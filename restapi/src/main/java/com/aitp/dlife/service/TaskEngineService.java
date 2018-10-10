@@ -182,18 +182,7 @@ public class TaskEngineService {
 		return this.saveNewEvent(userEventDTO);
 	}
 	
-	
-	/**
-	 * Save new event.
-	 *
-	 * @param userId
-	 * @param eventName
-	 * @param eventType
-	 * @param targetSystem
-	 * @param comment 
-	 * @return the event result DTO
-	 */
-	public EventResultDTO saveNewEvent(String userId,String eventName,PointEventType eventType,String targetSystem, Long objectId) {
+	public EventResultDTO saveNewEventWithComment(String userId,String eventName,PointEventType eventType,String targetSystem, Long objectId) {
 		String title=null;
 		if(objectId!=null)
 		{

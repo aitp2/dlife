@@ -172,22 +172,22 @@ public class CommentResource {
 		{
 			if(hasPics)
 			{
-				taskEngineService.saveNewEvent(commentDTO.getWechatUserId(), "评论", PointEventType.MESSAGEWITHIMAGE, commentDTO.getChannel().toString(),commentDTO.getObjectId());
+				taskEngineService.saveNewEventWithComment(commentDTO.getWechatUserId(), "评论", PointEventType.MESSAGEWITHIMAGE, commentDTO.getChannel().toString(),commentDTO.getObjectId());
 			}
 			else
 			{
-				taskEngineService.saveNewEvent(commentDTO.getWechatUserId(), "评论", PointEventType.MESSAGE, commentDTO.getChannel().toString(),commentDTO.getObjectId());
+				taskEngineService.saveNewEventWithComment(commentDTO.getWechatUserId(), "评论", PointEventType.MESSAGE, commentDTO.getChannel().toString(),commentDTO.getObjectId());
 			}
 		}
 		else if(CommentChannel.FAQS.equals(commentDTO.getChannel()))
 		{
 			if(hasPics)
 			{
-				taskEngineService.saveNewEvent(commentDTO.getWechatUserId(), "回答", PointEventType.REPLYWITHIMAGE, commentDTO.getChannel().toString(),commentDTO.getObjectId());
+				taskEngineService.saveNewEventWithComment(commentDTO.getWechatUserId(), "回答", PointEventType.REPLYWITHIMAGE, commentDTO.getChannel().toString(),commentDTO.getObjectId());
 			}
 			else
 			{
-				taskEngineService.saveNewEvent(commentDTO.getWechatUserId(), "回答", PointEventType.REPLY, commentDTO.getChannel().toString(),commentDTO.getObjectId());
+				taskEngineService.saveNewEventWithComment(commentDTO.getWechatUserId(), "回答", PointEventType.REPLY, commentDTO.getChannel().toString(),commentDTO.getObjectId());
 			}
 		}
 		return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
