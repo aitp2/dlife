@@ -134,7 +134,7 @@ public class ThumbsUpResource {
 		}
 		if(thumbsUpDTO.getChannel()!=null&&!thumbsUpDTO.getChannel().equals(ThumbsUpChannel.POINT_PRODUCT))
 		{
-			taskEngineService.saveNewEvent(thumbsUpDTO.getWechatUserId(), "点赞", PointEventType.SALUTE, thumbsUpDTO.getChannel().toString());
+			taskEngineService.saveNewEvent(thumbsUpDTO.getWechatUserId(), "点赞", PointEventType.SALUTE, thumbsUpDTO.getChannel().toString(),null);
 		}
 		ThumbsUpDTO result = null;
 		switch (thumbsUpDTO.getModule()) {

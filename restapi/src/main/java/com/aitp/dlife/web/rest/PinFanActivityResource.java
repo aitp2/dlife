@@ -1,7 +1,9 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.domain.enumeration.PointEventType;
 import com.aitp.dlife.service.*;
 import com.aitp.dlife.service.dto.*;
 import com.aitp.dlife.web.rest.util.BeanPropertiesUtils;
@@ -56,13 +58,16 @@ public class PinFanActivityResource {
     private final EventMessageService eventMessageService;
 
     private final MessageService messageService;
+    
+    private final TaskEngineService taskEngineService;
     public PinFanActivityResource(PinFanActivityService pinFanActivityService,PinfanPicsService pinfanPicsService,WechatUserService wechatUserService,
-                                  EventMessageService eventMessageService,MessageService messageService) {
+                                  EventMessageService eventMessageService,MessageService messageService,TaskEngineService taskEngineService) {
         this.pinFanActivityService = pinFanActivityService;
         this.pinfanPicsService=pinfanPicsService;
         this.wechatUserService = wechatUserService;
         this.eventMessageService = eventMessageService;
         this.messageService = messageService;
+        this.taskEngineService = taskEngineService;
     }
 
     /**
@@ -122,7 +127,7 @@ public class PinFanActivityResource {
         log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan","",HttpUtil.baseEncoder(pinFanActivityDTO.getActivitiyTile()),"createActivity",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
         //log for markting end
 
-
+        taskEngineService.saveNewEvent(pinFanActivityDTO.getWechatUserId(), "发起活动", PointEventType.PUBILSHACTION, CommentChannel.PIN.toString(), pinFanActivityDTO.getActivitiyTile());
         return ResponseEntity.created(new URI("/api/pin-fan-activities/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);

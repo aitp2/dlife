@@ -9,10 +9,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ import com.aitp.dlife.domain.UserEvent;
 import com.aitp.dlife.domain.UserPointDetails;
 import com.aitp.dlife.domain.UserTask;
 import com.aitp.dlife.domain.WechatUser;
+import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.domain.enumeration.PointEventType;
 import com.aitp.dlife.repository.SystemTotalPointsRepository;
 import com.aitp.dlife.repository.TaskDefineRepository;
@@ -38,6 +41,9 @@ import com.aitp.dlife.repository.UserPointDetailsRepository;
 import com.aitp.dlife.repository.UserTaskRepository;
 import com.aitp.dlife.repository.WechatUserRepository;
 import com.aitp.dlife.service.dto.EventResultDTO;
+import com.aitp.dlife.service.dto.FitnessActivityDTO;
+import com.aitp.dlife.service.dto.PinFanActivityDTO;
+import com.aitp.dlife.service.dto.QuestionDTO;
 import com.aitp.dlife.service.dto.UserEventDTO;
 import com.aitp.dlife.service.dto.UserPointDetailsDTO;
 import com.aitp.dlife.service.dto.UserTaskDTO;
@@ -102,6 +108,13 @@ public class TaskEngineService {
 	/** The user point details mapper. */
 	@Autowired
 	private UserPointDetailsMapper userPointDetailsMapper;
+	
+	@Autowired
+	private FitnessActivityService fitnessActivityService;
+	@Autowired
+	private PinFanActivityService pinFanActivityService;
+	@Autowired
+	private QuestionService questionService;
 
 	/**
 	 * Save new event.
@@ -151,17 +164,56 @@ public class TaskEngineService {
 	 * @param eventName
 	 * @param eventType
 	 * @param targetSystem
+	 * @param comment 
 	 * @return the event result DTO
 	 */
-	public EventResultDTO saveNewEvent(String userId,String eventName,PointEventType eventType,String targetSystem) {
+	public EventResultDTO saveNewEvent(String userId,String eventName,PointEventType eventType,String targetSystem, String comment) {
 		UserEventDTO userEventDTO =new UserEventDTO();
 		userEventDTO.setUserid(userId);
 		userEventDTO.setEventName(eventName);
-		userEventDTO.setEventType(PointEventType.SALUTE);
+		userEventDTO.setEventType(eventType);
 		userEventDTO.setTargetSystem(targetSystem);
 		userEventDTO.setUuid(UUID.randomUUID().toString());
+		if(StringUtils.isNotBlank(comment))
+		{
+			userEventDTO.setParem2(comment);
+		}
 		userEventDTO.setEventTime(ZonedDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault()));
 		return this.saveNewEvent(userEventDTO);
+	}
+	
+	
+	/**
+	 * Save new event.
+	 *
+	 * @param userId
+	 * @param eventName
+	 * @param eventType
+	 * @param targetSystem
+	 * @param comment 
+	 * @return the event result DTO
+	 */
+	public EventResultDTO saveNewEvent(String userId,String eventName,PointEventType eventType,String targetSystem, Long objectId) {
+		String title=null;
+		if(objectId!=null)
+		{
+			if(CommentChannel.FIT.toString().equals(targetSystem))
+			{
+				FitnessActivityDTO fit = fitnessActivityService.findOne(objectId);
+				title=fit!=null?fit.getTitle():null;
+			}
+			else if(CommentChannel.PIN.toString().equals(targetSystem))
+			{
+				PinFanActivityDTO pin = pinFanActivityService.findOne(objectId);
+				title=pin!=null?pin.getActivitiyTile():null;
+			}
+			else if(CommentChannel.FAQS.toString().equals(targetSystem))
+			{
+				Optional<QuestionDTO> question = questionService.findOne(objectId);
+				title=question.isPresent()?question.get().getTitle():null;
+			}
+		}
+		return  saveNewEvent( userId, eventName, eventType, targetSystem,title);
 	}
 
 	/**

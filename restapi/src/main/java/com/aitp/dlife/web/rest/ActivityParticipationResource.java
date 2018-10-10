@@ -11,11 +11,15 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.domain.enumeration.PointEventType;
 import com.aitp.dlife.service.*;
 import com.aitp.dlife.service.dto.EventMessageDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
+import com.aitp.dlife.service.dto.PinFanActivityDTO;
+import com.aitp.dlife.service.dto.QuestionDTO;
 import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.service.enums.Status;
 import com.aitp.dlife.web.rest.util.HttpUtil;
@@ -74,17 +78,20 @@ public class ActivityParticipationResource {
     private final EventMessageService eventMessageService;
 
     private final MessageService messageService;
+    
+    private final TaskEngineService taskEngineService;
 
 	public ActivityParticipationResource(ActivityParticipationService activityParticipationService,
                                          FitnessActivityRepository fitnessActivityRepository, WechatUserService wechatUserService,
                                          FitnessActivityService fitnessActivityService, EventMessageService eventMessageService,
-                                         MessageService messageService) {
+                                         MessageService messageService,TaskEngineService taskEngineService) {
 		this.activityParticipationService = activityParticipationService;
 		this.fitnessActivityRepository = fitnessActivityRepository;
 		this.wechatUserService = wechatUserService;
 		this.fitnessActivityService = fitnessActivityService;
         this.eventMessageService = eventMessageService;
         this.messageService = messageService;
+        this.taskEngineService=taskEngineService;
     }
 
 	/**
@@ -145,6 +152,8 @@ public class ActivityParticipationResource {
         }
         //record the activity participation event end
 
+        taskEngineService.saveNewEvent(activityParticipationDTO.getWechatUserId(), "参与活动", PointEventType.JIONACTION,CommentChannel.FIT.toString(),dto.getTitle());
+        
 		return ResponseEntity.created(new URI("/api/activity-participations/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
 	}

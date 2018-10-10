@@ -668,7 +668,9 @@ enum CommentChannel {
   COOK,
   FIT,
   PIN,
-  FAQS
+  FAQS,
+  POINT_PRODUCT,
+  PLATFORM
 }
 
 enum EventType{

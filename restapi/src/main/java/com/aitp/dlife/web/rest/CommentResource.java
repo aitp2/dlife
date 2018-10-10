@@ -12,11 +12,14 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +37,8 @@ import com.aitp.dlife.domain.PinFanActivity;
 import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.domain.enumeration.PointEventType;
+import com.aitp.dlife.domain.enumeration.ThumbsUpChannel;
 import com.aitp.dlife.domain.enumeration.ThumbsUpModule;
 import com.aitp.dlife.repository.FitnessActivityRepository;
 import com.aitp.dlife.repository.specification.CommentSpecification;
@@ -47,6 +52,7 @@ import com.aitp.dlife.service.FitnessActivityService;
 import com.aitp.dlife.service.MessageService;
 import com.aitp.dlife.service.PinFanActivityService;
 import com.aitp.dlife.service.QuestionService;
+import com.aitp.dlife.service.TaskEngineService;
 import com.aitp.dlife.service.ThumbsUpService;
 import com.aitp.dlife.service.builder.EventMessageBuilder;
 import com.aitp.dlife.service.dto.ClockInDTO;
@@ -54,6 +60,7 @@ import com.aitp.dlife.service.dto.CommentDTO;
 import com.aitp.dlife.service.dto.CommentPicDTO;
 import com.aitp.dlife.service.dto.EventMessageDTO;
 import com.aitp.dlife.service.dto.FitnessActivityDTO;
+import com.aitp.dlife.service.dto.PinFanActivityDTO;
 import com.aitp.dlife.service.dto.QuestionDTO;
 import com.aitp.dlife.service.dto.ReplyDTO;
 import com.aitp.dlife.service.dto.ThumbsUpDTO;
@@ -101,11 +108,13 @@ public class CommentResource {
 	private final MessageService messageService;
 
 	private final QuestionService questionService;
+	
+	private final TaskEngineService taskEngineService;
 
 	public CommentResource(CommentService commentService, CommentPicService commentPicService,
 			FitnessActivityRepository fitnessActivityRepository, EventMessageService eventMessageService,
 			PinFanActivityService pinFanActivityService, ThumbsUpService thumbsUpService,
-			QuestionService questionService, MessageService messageService,ClockInService clockInService,FitnessActivityService fitnessActivityService) {
+			QuestionService questionService, MessageService messageService,ClockInService clockInService,FitnessActivityService fitnessActivityService,TaskEngineService taskEngineService) {
 		this.commentService = commentService;
 		this.commentPicService = commentPicService;
 		this.fitnessActivityRepository = fitnessActivityRepository;
@@ -116,6 +125,7 @@ public class CommentResource {
 		this.messageService = messageService;
 		this.clockInService = clockInService;
 		this.fitnessActivityService = fitnessActivityService;
+		this.taskEngineService = taskEngineService;
 	}
 
 	/**
@@ -143,11 +153,10 @@ public class CommentResource {
 		commentDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
 
 		CommentDTO result = commentService.add(commentDTO);
-
-
+		boolean hasPics=false;
 		Set<CommentPicDTO> picDTOS = new HashSet<>();
 		if (commentDTO.getCommentPics() != null && !commentDTO.getCommentPics().isEmpty()) {
-
+			hasPics=true;
 			for (CommentPicDTO pics : commentDTO.getCommentPics()) {
 				if (!StringUtils.isEmpty(pics.getCreateTime())) {
 					pics.setCreateTime(DateUtil.getYMDDateString(new Date()));
@@ -158,6 +167,29 @@ public class CommentResource {
 			result.setCommentPics(picDTOS);
 		}
 		updateDateTime(commentDTO,EventMessageBuilder.buildEventMessageDTO(result).type(EventType.COMMENT).get());
+		
+		if(CommentChannel.FIT.equals(commentDTO.getChannel())||CommentChannel.PIN.equals(commentDTO.getChannel()))
+		{
+			if(hasPics)
+			{
+				taskEngineService.saveNewEvent(commentDTO.getWechatUserId(), "评论", PointEventType.MESSAGEWITHIMAGE, commentDTO.getChannel().toString(),commentDTO.getObjectId());
+			}
+			else
+			{
+				taskEngineService.saveNewEvent(commentDTO.getWechatUserId(), "评论", PointEventType.MESSAGE, commentDTO.getChannel().toString(),commentDTO.getObjectId());
+			}
+		}
+		else if(CommentChannel.FAQS.equals(commentDTO.getChannel()))
+		{
+			if(hasPics)
+			{
+				taskEngineService.saveNewEvent(commentDTO.getWechatUserId(), "回答", PointEventType.REPLYWITHIMAGE, commentDTO.getChannel().toString(),commentDTO.getObjectId());
+			}
+			else
+			{
+				taskEngineService.saveNewEvent(commentDTO.getWechatUserId(), "回答", PointEventType.REPLY, commentDTO.getChannel().toString(),commentDTO.getObjectId());
+			}
+		}
 		return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
 	}

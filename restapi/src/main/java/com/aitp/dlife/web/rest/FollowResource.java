@@ -4,7 +4,10 @@ import com.aitp.dlife.service.WechatUserService;
 import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
+import com.aitp.dlife.domain.enumeration.CommentChannel;
+import com.aitp.dlife.domain.enumeration.PointEventType;
 import com.aitp.dlife.service.FollowService;
+import com.aitp.dlife.service.TaskEngineService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
@@ -45,10 +48,13 @@ public class FollowResource {
     private final FollowService followService;
 
     private final WechatUserService wechatUserService;
+    
+    private final TaskEngineService taskEngineService;
 
-    public FollowResource(FollowService followService, WechatUserService wechatUserService) {
+    public FollowResource(FollowService followService, WechatUserService wechatUserService,TaskEngineService taskEngineService) {
         this.followService = followService;
         this.wechatUserService = wechatUserService;
+        this.taskEngineService = taskEngineService;
     }
 
     /**
@@ -92,6 +98,9 @@ public class FollowResource {
         }
 
         FollowDTO result = followService.createFollow(followDTO);
+        
+		taskEngineService.saveNewEvent(followDTO.getFollowUserId(), "关注他人", PointEventType.FOCUS, CommentChannel.PLATFORM.toString(),"");
+		taskEngineService.saveNewEvent(followDTO.getFollowedUserId(), "新增粉丝", PointEventType.NEWFUN, CommentChannel.PLATFORM.toString(),"");
         return ResponseEntity.created(new URI("/api/follows/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
