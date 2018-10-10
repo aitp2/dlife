@@ -3,13 +3,8 @@ package com.aitp.dlife.web.rest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-
 import javax.validation.Valid;
 
 import com.aitp.dlife.domain.FitnessActivity;
@@ -53,7 +48,6 @@ import com.aitp.dlife.service.dto.FitnessActivityDTO;
 import com.aitp.dlife.service.dto.PinFanActivityDTO;
 import com.aitp.dlife.service.dto.QuestionDTO;
 import com.aitp.dlife.service.dto.ThumbsUpDTO;
-import com.aitp.dlife.service.dto.UserEventDTO;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
