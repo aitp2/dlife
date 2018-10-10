@@ -1,0 +1,80 @@
+{
+    "name": "UserPointDetails",
+    "fields": [
+        {
+            "fieldName": "userid",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "applyTime",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "changePoint",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "eventType",
+            "fieldType": "PointEventType",
+            "fieldValues": "SALUTE,LOGIN,MESSAGE,MESSAGEWITHIMAGE,REPLY,REPLYWITHIMAGE,JIONACTION,FOCUS,NEWFUN,CARD,CARDWITHIMAGE,PUBILSHACTION,PUBILSHQUESTION,RECHARGE,SYSRECHARGE,REDEEM"
+        },
+        {
+            "fieldName": "descript",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "targetSystem",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "handleBy",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "totalPoint",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "validateString",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "createBy",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "createTime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "lastModifyBy",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "lastModifyTime",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20180915103827",
+    "entityTableName": "user_point_details",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

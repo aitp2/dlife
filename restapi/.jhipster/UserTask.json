@@ -1,0 +1,58 @@
+{
+    "name": "UserTask",
+    "fields": [
+        {
+            "fieldName": "userid",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "taskStatus",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "gainPoint",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "remainPoint",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "validateTo",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "createBy",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "createTime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "lastModifyBy",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "lastModifyTime",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "task",
+            "otherEntityName": "taskDefine",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180915103824",
+    "entityTableName": "user_task",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

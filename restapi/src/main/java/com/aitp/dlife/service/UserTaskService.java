@@ -4,7 +4,6 @@ import com.aitp.dlife.domain.UserTask;
 import com.aitp.dlife.repository.UserTaskRepository;
 import com.aitp.dlife.service.dto.UserTaskDTO;
 import com.aitp.dlife.service.mapper.UserTaskMapper;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

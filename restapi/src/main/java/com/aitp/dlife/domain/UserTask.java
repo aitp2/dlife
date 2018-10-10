@@ -1,8 +1,6 @@
 package com.aitp.dlife.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
@@ -15,7 +13,6 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "user_task")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class UserTask implements Serializable {
 
     private static final long serialVersionUID = 1L;

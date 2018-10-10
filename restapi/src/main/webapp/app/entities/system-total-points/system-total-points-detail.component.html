@@ -1,0 +1,47 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="systemTotalPoints">
+            <h2><span>System Total Points</span> {{systemTotalPoints.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>System Id</span></dt>
+                <dd>
+                    <span>{{systemTotalPoints.systemId}}</span>
+                </dd>
+                <dt><span>Total Point</span></dt>
+                <dd>
+                    <span>{{systemTotalPoints.totalPoint}}</span>
+                </dd>
+                <dt><span>Create By</span></dt>
+                <dd>
+                    <span>{{systemTotalPoints.createBy}}</span>
+                </dd>
+                <dt><span>Create Time</span></dt>
+                <dd>
+                    <span>{{systemTotalPoints.createTime}}</span>
+                </dd>
+                <dt><span>Last Modify By</span></dt>
+                <dd>
+                    <span>{{systemTotalPoints.lastModifyBy}}</span>
+                </dd>
+                <dt><span>Last Modify Time</span></dt>
+                <dd>
+                    <span>{{systemTotalPoints.lastModifyTime}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/system-total-points', systemTotalPoints.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

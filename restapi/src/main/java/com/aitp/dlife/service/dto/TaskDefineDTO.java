@@ -2,12 +2,10 @@ package com.aitp.dlife.service.dto;
 
 import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
-
-import com.aitp.dlife.domain.enumeration.PointEventType;
-import com.aitp.dlife.domain.enumeration.TaskPeriod;
-
 import java.io.Serializable;
 import java.util.Objects;
+import com.aitp.dlife.domain.enumeration.TaskPeriod;
+import com.aitp.dlife.domain.enumeration.PointEventType;
 
 /**
  * A DTO for the TaskDefine entity.
@@ -26,9 +24,6 @@ public class TaskDefineDTO implements Serializable {
     private Boolean status;
 
     private TaskPeriod period;
-    
-    @NotNull
-    private String priority;
 
     private Integer maxlimit;
 
@@ -43,6 +38,9 @@ public class TaskDefineDTO implements Serializable {
     private String strategy;
 
     private String applyStrategy;
+
+    @NotNull
+    private Integer priority;
 
     private String createBy;
 
@@ -148,6 +146,14 @@ public class TaskDefineDTO implements Serializable {
         this.applyStrategy = applyStrategy;
     }
 
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
     public String getCreateBy() {
         return createBy;
     }
@@ -209,7 +215,6 @@ public class TaskDefineDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", status='" + isStatus() + "'" +
             ", period='" + getPeriod() + "'" +
-            ", priority='" + getPriority() + "'" +
             ", maxlimit=" + getMaxlimit() +
             ", totalPoint=" + getTotalPoint() +
             ", targetSystems='" + getTargetSystems() + "'" +
@@ -217,18 +222,11 @@ public class TaskDefineDTO implements Serializable {
             ", conditions='" + getConditions() + "'" +
             ", strategy='" + getStrategy() + "'" +
             ", applyStrategy='" + getApplyStrategy() + "'" +
+            ", priority=" + getPriority() +
             ", createBy='" + getCreateBy() + "'" +
             ", createTime='" + getCreateTime() + "'" +
             ", lastModifyBy='" + getLastModifyBy() + "'" +
             ", lastModifyTime='" + getLastModifyTime() + "'" +
             "}";
     }
-
-	public String getPriority() {
-		return priority;
-	}
-
-	public void setPriority(String priority) {
-		this.priority = priority;
-	}
 }

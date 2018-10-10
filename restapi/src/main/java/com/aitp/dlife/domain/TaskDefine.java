@@ -1,10 +1,5 @@
 package com.aitp.dlife.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import com.aitp.dlife.domain.enumeration.PointEventType;
-import com.aitp.dlife.domain.enumeration.TaskPeriod;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -13,12 +8,15 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+import com.aitp.dlife.domain.enumeration.TaskPeriod;
+
+import com.aitp.dlife.domain.enumeration.PointEventType;
+
 /**
  * A TaskDefine.
  */
 @Entity
 @Table(name = "task_define")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class TaskDefine implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,10 +41,6 @@ public class TaskDefine implements Serializable {
     @Column(name = "period")
     private TaskPeriod period;
 
-    @NotNull
-    @Column(name = "priority", nullable = false)
-    private String priority;
-    
     @Column(name = "maxlimit")
     private Integer maxlimit;
 
@@ -68,6 +62,10 @@ public class TaskDefine implements Serializable {
 
     @Column(name = "apply_strategy")
     private String applyStrategy;
+
+    @NotNull
+    @Column(name = "priority", nullable = false)
+    private Integer priority;
 
     @Column(name = "create_by")
     private String createBy;
@@ -167,19 +165,6 @@ public class TaskDefine implements Serializable {
     public void setTotalPoint(Integer totalPoint) {
         this.totalPoint = totalPoint;
     }
-    
-    public String getPriority() {
-        return priority;
-    }
-
-    public TaskDefine priority(String priority) {
-        this.priority = priority;
-        return this;
-    }
-
-    public void setPriority(String priority) {
-        this.priority = priority;
-    }
 
     public String getTargetSystems() {
         return targetSystems;
@@ -244,6 +229,19 @@ public class TaskDefine implements Serializable {
 
     public void setApplyStrategy(String applyStrategy) {
         this.applyStrategy = applyStrategy;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public TaskDefine priority(Integer priority) {
+        this.priority = priority;
+        return this;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
     }
 
     public String getCreateBy() {
@@ -334,6 +332,7 @@ public class TaskDefine implements Serializable {
             ", conditions='" + getConditions() + "'" +
             ", strategy='" + getStrategy() + "'" +
             ", applyStrategy='" + getApplyStrategy() + "'" +
+            ", priority=" + getPriority() +
             ", createBy='" + getCreateBy() + "'" +
             ", createTime='" + getCreateTime() + "'" +
             ", lastModifyBy='" + getLastModifyBy() + "'" +

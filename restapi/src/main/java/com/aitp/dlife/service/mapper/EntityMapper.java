@@ -18,5 +18,4 @@ public interface EntityMapper <D, E> {
     List <E> toEntity(List<D> dtoList);
 
     List <D> toDto(List<E> entityList);
-    
 }

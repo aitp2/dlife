@@ -18,7 +18,7 @@
         Added the entity UserPointDetails.
     -->
     <changeSet id="20180915103827-1" author="jhipster">
-         <createTable tableName="user_point_details">
+        <createTable tableName="user_point_details">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>

@@ -1,0 +1,65 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="userTask">
+            <h2><span>User Task</span> {{userTask.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Userid</span></dt>
+                <dd>
+                    <span>{{userTask.userid}}</span>
+                </dd>
+                <dt><span>Task Status</span></dt>
+                <dd>
+                    <span>{{userTask.taskStatus}}</span>
+                </dd>
+                <dt><span>Gain Point</span></dt>
+                <dd>
+                    <span>{{userTask.gainPoint}}</span>
+                </dd>
+                <dt><span>Remain Point</span></dt>
+                <dd>
+                    <span>{{userTask.remainPoint}}</span>
+                </dd>
+                <dt><span>Validate To</span></dt>
+                <dd>
+                    <span>{{userTask.validateTo}}</span>
+                </dd>
+                <dt><span>Create By</span></dt>
+                <dd>
+                    <span>{{userTask.createBy}}</span>
+                </dd>
+                <dt><span>Create Time</span></dt>
+                <dd>
+                    <span>{{userTask.createTime}}</span>
+                </dd>
+                <dt><span>Last Modify By</span></dt>
+                <dd>
+                    <span>{{userTask.lastModifyBy}}</span>
+                </dd>
+                <dt><span>Last Modify Time</span></dt>
+                <dd>
+                    <span>{{userTask.lastModifyTime}}</span>
+                </dd>
+                <dt><span>Task</span></dt>
+                <dd>
+                    <div *ngIf="userTask.taskId">
+                        <a [routerLink]="['/task-define', userTask.taskId, 'view']">{{userTask.taskId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/user-task', userTask.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
