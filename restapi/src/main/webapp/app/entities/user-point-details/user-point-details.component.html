@@ -28,6 +28,7 @@
             <th jhiSortBy="createTime"><span>Create Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="lastModifyBy"><span>Last Modify By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="lastModifyTime"><span>Last Modify Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="eventName"><span>Event Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -47,6 +48,7 @@
                 <td>{{userPointDetails.createTime | date:'medium'}}</td>
                 <td>{{userPointDetails.lastModifyBy}}</td>
                 <td>{{userPointDetails.lastModifyTime | date:'medium'}}</td>
+                <td>{{userPointDetails.eventName}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

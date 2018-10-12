@@ -1,5 +1,14 @@
 {
-    "name": "UserTask",
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "task",
+            "otherEntityName": "taskDefine",
+            "otherEntityField": "id"
+        }
+    ],
     "fields": [
         {
             "fieldName": "userid",
@@ -36,23 +45,21 @@
         {
             "fieldName": "lastModifyTime",
             "fieldType": "ZonedDateTime"
-        }
-    ],
-    "relationships": [
+        },
         {
-            "relationshipType": "many-to-one",
-            "relationshipName": "task",
-            "otherEntityName": "taskDefine",
-            "otherEntityField": "id"
+            "fieldName": "groupid",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "groupName",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180915103824",
-    "entityTableName": "user_task",
     "dto": "mapstruct",
-    "pagination": "pagination",
+    "searchEngine": false,
     "service": "serviceClass",
+    "entityTableName": "user_task",
     "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "clientRootFolder": "",
-    "applications": "*"
+    "pagination": "pagination"
 }

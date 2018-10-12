@@ -43,6 +43,8 @@ public class UserPointDetailsDTO implements Serializable {
 
     private ZonedDateTime lastModifyTime;
 
+    private String eventName;
+
     public Long getId() {
         return id;
     }
@@ -155,6 +157,14 @@ public class UserPointDetailsDTO implements Serializable {
         this.lastModifyTime = lastModifyTime;
     }
 
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -193,6 +203,7 @@ public class UserPointDetailsDTO implements Serializable {
             ", createTime='" + getCreateTime() + "'" +
             ", lastModifyBy='" + getLastModifyBy() + "'" +
             ", lastModifyTime='" + getLastModifyTime() + "'" +
+            ", eventName='" + getEventName() + "'" +
             "}";
     }
 }

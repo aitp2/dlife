@@ -25,4 +25,9 @@ public interface UserTaskRepository extends JpaRepository<UserTask, Long> {
 
 	@Query(value="select * from user_task u where u.userid = ?1 and u.task_id = ?2 and u.validate_to > ?3", nativeQuery = true)
 	List<UserTask> findByConditions(String userid, Long taskId, ZonedDateTime current);
+
+	List<UserTask> findByUseridAndGroupidAndValidateToGreaterThan(String userid, String groupid,
+			ZonedDateTime eventTime);
+
+	List<UserTask> findByUseridAndValidateToGreaterThanAndGroupidIsNotNull(String userid, ZonedDateTime now);
 }

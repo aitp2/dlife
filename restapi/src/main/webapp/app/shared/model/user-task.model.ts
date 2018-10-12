@@ -11,6 +11,8 @@ export interface IUserTask {
     createTime?: Moment;
     lastModifyBy?: string;
     lastModifyTime?: Moment;
+    groupid?: string;
+    groupName?: string;
     taskId?: number;
 }
 
@@ -26,6 +28,8 @@ export class UserTask implements IUserTask {
         public createTime?: Moment,
         public lastModifyBy?: string,
         public lastModifyTime?: Moment,
+        public groupid?: string,
+        public groupName?: string,
         public taskId?: number
     ) {}
 }

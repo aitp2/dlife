@@ -31,6 +31,7 @@
             <th jhiSortBy="createTime"><span>Create Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="lastModifyBy"><span>Last Modify By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="lastModifyTime"><span>Last Modify Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="groupid"><span>Groupid</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -53,6 +54,7 @@
                 <td>{{taskDefine.createTime | date:'medium'}}</td>
                 <td>{{taskDefine.lastModifyBy}}</td>
                 <td>{{taskDefine.lastModifyTime | date:'medium'}}</td>
+                <td>{{taskDefine.groupid}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

@@ -24,6 +24,8 @@
             <th jhiSortBy="createTime"><span>Create Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="lastModifyBy"><span>Last Modify By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="lastModifyTime"><span>Last Modify Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="groupid"><span>Groupid</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="groupName"><span>Group Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="taskId"><span>Task</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
@@ -40,6 +42,8 @@
                 <td>{{userTask.createTime | date:'medium'}}</td>
                 <td>{{userTask.lastModifyBy}}</td>
                 <td>{{userTask.lastModifyTime | date:'medium'}}</td>
+                <td>{{userTask.groupid}}</td>
+                <td>{{userTask.groupName}}</td>
                 <td>
                     <div *ngIf="userTask.taskId">
                         <a [routerLink]="['../task-define', userTask.taskId , 'view' ]" >{{userTask.taskId}}</a>

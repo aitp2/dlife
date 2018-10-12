@@ -50,6 +50,8 @@ public class TaskDefineDTO implements Serializable {
 
     private ZonedDateTime lastModifyTime;
 
+    private String groupid;
+
     public Long getId() {
         return id;
     }
@@ -186,6 +188,14 @@ public class TaskDefineDTO implements Serializable {
         this.lastModifyTime = lastModifyTime;
     }
 
+    public String getGroupid() {
+        return groupid;
+    }
+
+    public void setGroupid(String groupid) {
+        this.groupid = groupid;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -227,6 +237,7 @@ public class TaskDefineDTO implements Serializable {
             ", createTime='" + getCreateTime() + "'" +
             ", lastModifyBy='" + getLastModifyBy() + "'" +
             ", lastModifyTime='" + getLastModifyTime() + "'" +
+            ", groupid='" + getGroupid() + "'" +
             "}";
     }
 }

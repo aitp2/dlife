@@ -79,6 +79,9 @@ public class TaskDefine implements Serializable {
     @Column(name = "last_modify_time")
     private ZonedDateTime lastModifyTime;
 
+    @Column(name = "groupid")
+    private String groupid;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -295,6 +298,19 @@ public class TaskDefine implements Serializable {
     public void setLastModifyTime(ZonedDateTime lastModifyTime) {
         this.lastModifyTime = lastModifyTime;
     }
+
+    public String getGroupid() {
+        return groupid;
+    }
+
+    public TaskDefine groupid(String groupid) {
+        this.groupid = groupid;
+        return this;
+    }
+
+    public void setGroupid(String groupid) {
+        this.groupid = groupid;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -337,6 +353,7 @@ public class TaskDefine implements Serializable {
             ", createTime='" + getCreateTime() + "'" +
             ", lastModifyBy='" + getLastModifyBy() + "'" +
             ", lastModifyTime='" + getLastModifyTime() + "'" +
+            ", groupid='" + getGroupid() + "'" +
             "}";
     }
 }

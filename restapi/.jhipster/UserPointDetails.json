@@ -1,5 +1,7 @@
 {
-    "name": "UserPointDetails",
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [],
     "fields": [
         {
             "fieldName": "userid",
@@ -65,16 +67,17 @@
         {
             "fieldName": "lastModifyTime",
             "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "eventName",
+            "fieldType": "String"
         }
     ],
-    "relationships": [],
     "changelogDate": "20180915103827",
-    "entityTableName": "user_point_details",
     "dto": "mapstruct",
-    "pagination": "pagination",
+    "searchEngine": false,
     "service": "serviceClass",
+    "entityTableName": "user_point_details",
     "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "clientRootFolder": "",
-    "applications": "*"
+    "pagination": "pagination"
 }
