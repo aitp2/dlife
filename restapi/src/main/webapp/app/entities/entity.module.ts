@@ -24,6 +24,7 @@ import { AitpapiTaskDefineModule } from './task-define/task-define.module';
 import { AitpapiSystemTotalPointsModule } from './system-total-points/system-total-points.module';
 import { AitpapiUserTaskModule } from './user-task/user-task.module';
 import { AitpapiUserPointDetailsModule } from './user-point-details/user-point-details.module';
+import { AitpapiTaskGroupModule } from './task-group/task-group.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -53,6 +54,7 @@ import { AitpapiUserPointDetailsModule } from './user-point-details/user-point-d
         AitpapiSystemTotalPointsModule,
         AitpapiUserTaskModule,
         AitpapiUserPointDetailsModule,
+        AitpapiTaskGroupModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

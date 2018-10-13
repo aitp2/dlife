@@ -58,6 +58,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="groupid" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="group_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="task_id" type="bigint">
                 <constraints nullable="true" />
             </column>

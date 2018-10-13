@@ -80,6 +80,10 @@
         {
             "fieldName": "lastModifyTime",
             "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "groupid",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180915103823",

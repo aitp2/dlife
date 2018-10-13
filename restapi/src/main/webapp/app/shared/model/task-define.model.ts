@@ -44,6 +44,7 @@ export interface ITaskDefine {
     createTime?: Moment;
     lastModifyBy?: string;
     lastModifyTime?: Moment;
+    groupid?: string;
 }
 
 export class TaskDefine implements ITaskDefine {
@@ -64,7 +65,8 @@ export class TaskDefine implements ITaskDefine {
         public createBy?: string,
         public createTime?: Moment,
         public lastModifyBy?: string,
-        public lastModifyTime?: Moment
+        public lastModifyTime?: Moment,
+        public groupid?: string
     ) {
         this.status = false;
     }

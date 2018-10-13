@@ -4,9 +4,6 @@ import java.time.ZonedDateTime;
 import java.io.Serializable;
 import java.util.Objects;
 
-import com.aitp.dlife.domain.enumeration.PointEventType;
-import com.aitp.dlife.domain.enumeration.TaskPeriod;
-
 /**
  * A DTO for the UserTask entity.
  */
@@ -32,17 +29,11 @@ public class UserTaskDTO implements Serializable {
 
     private ZonedDateTime lastModifyTime;
 
-    private Long taskId;
-    
-    private String taskDefineName;
-    
-    private TaskPeriod peroid;
-    
-    private Integer maxlimit;
-    
-    private String targetSystems;
+    private String groupid;
 
-    private PointEventType eventType;
+    private String groupName;
+
+    private Long taskId;
 
     public Long getId() {
         return id;
@@ -124,6 +115,22 @@ public class UserTaskDTO implements Serializable {
         this.lastModifyTime = lastModifyTime;
     }
 
+    public String getGroupid() {
+        return groupid;
+    }
+
+    public void setGroupid(String groupid) {
+        this.groupid = groupid;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
     public Long getTaskId() {
         return taskId;
     }
@@ -132,47 +139,7 @@ public class UserTaskDTO implements Serializable {
         this.taskId = taskDefineId;
     }
 
-    public String getTaskDefineName() {
-		return taskDefineName;
-	}
-
-	public void setTaskDefineName(String taskDefineName) {
-		this.taskDefineName = taskDefineName;
-	}
-
-	public TaskPeriod getPeroid() {
-		return peroid;
-	}
-
-	public void setPeroid(TaskPeriod peroid) {
-		this.peroid = peroid;
-	}
-
-	public Integer getMaxlimit() {
-		return maxlimit;
-	}
-
-	public void setMaxlimit(Integer maxlimit) {
-		this.maxlimit = maxlimit;
-	}
-
-	public String getTargetSystems() {
-		return targetSystems;
-	}
-
-	public void setTargetSystems(String targetSystems) {
-		this.targetSystems = targetSystems;
-	}
-
-	public PointEventType getEventType() {
-		return eventType;
-	}
-
-	public void setEventType(PointEventType eventType) {
-		this.eventType = eventType;
-	}
-
-	@Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -206,6 +173,8 @@ public class UserTaskDTO implements Serializable {
             ", createTime='" + getCreateTime() + "'" +
             ", lastModifyBy='" + getLastModifyBy() + "'" +
             ", lastModifyTime='" + getLastModifyTime() + "'" +
+            ", groupid='" + getGroupid() + "'" +
+            ", groupName='" + getGroupName() + "'" +
             ", task=" + getTaskId() +
             "}";
     }

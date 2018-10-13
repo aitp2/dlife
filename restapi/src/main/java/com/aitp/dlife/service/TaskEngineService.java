@@ -8,7 +8,9 @@ import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.aitp.dlife.background.TaskEngineRunner;
 import com.aitp.dlife.domain.SystemTotalPoints;
 import com.aitp.dlife.domain.TaskDefine;
+import com.aitp.dlife.domain.TaskGroup;
 import com.aitp.dlife.domain.UserEvent;
 import com.aitp.dlife.domain.UserPointDetails;
 import com.aitp.dlife.domain.UserTask;
@@ -36,6 +39,7 @@ import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.domain.enumeration.PointEventType;
 import com.aitp.dlife.repository.SystemTotalPointsRepository;
 import com.aitp.dlife.repository.TaskDefineRepository;
+import com.aitp.dlife.repository.TaskGroupRepository;
 import com.aitp.dlife.repository.UserEventRepository;
 import com.aitp.dlife.repository.UserPointDetailsRepository;
 import com.aitp.dlife.repository.UserTaskRepository;
@@ -89,6 +93,10 @@ public class TaskEngineService {
 	@Autowired
 	private TaskEngineRunner taskEngineRunner;
 
+	/** The task group repository. */
+	@Autowired
+	private TaskGroupRepository taskGroupRepository;
+
 	/** The customer repository. */
 	@Autowired
 	private WechatUserRepository wechatUserRepository;
@@ -132,7 +140,7 @@ public class TaskEngineService {
 		List<UserEvent> events = userEventRepository.findByUseridAndUuid(userEventDTO.getUserid(),
 				userEventDTO.getUuid());
 		if (validated && events.isEmpty()) {
-			// find task define
+			// find task define, support multi targets
 			List<TaskDefine> defines = taskDefineRepository
 					.findByStatusAndEventTypeAndTargetSystemsLikeOrderByPriorityDesc(true, userEventDTO.getEventType(),
 							"%" + userEventDTO.getTargetSystem() + "%");
@@ -289,9 +297,15 @@ public class TaskEngineService {
 				// taskid
 				long records = userEventRepository.countByConditions(event.getUserid(), true, cond.getPeriodStart(),
 						cond.getPeriodEnd(), event.getEventType().toString(), taskDefine.getId());
+				cond.setRecords(records);
+
+				// find UserTask with groupid
+				if (taskDefine.getGroupid() != null) {
+					findValidUserTaskByGroupid(cond);
+				}
+
 				log.debug("condition record  = " + records);
 
-				cond.setRecords(records);
 				if (evaluate(cond)) {
 					applyEvent(cond);
 					return true;
@@ -302,6 +316,32 @@ public class TaskEngineService {
 			log.error(e.getMessage(), e);
 		}
 		return false;
+	}
+
+	/**
+	 * Find valid user task by groupid.
+	 *
+	 * @param cond
+	 *            the cond
+	 */
+	private void findValidUserTaskByGroupid(Conditions cond) {
+		List<UserTask> tasks = this.userTaskRepository.findByUseridAndGroupidAndValidateToGreaterThan(
+				cond.getUserEvent().getUserid(), cond.getTaskDefine().getGroupid(), cond.getUserEvent().getEventTime());
+		if (tasks.isEmpty()) {
+			TaskGroup taskGroup = taskGroupRepository.getOne(Long.parseLong(cond.getTaskDefine().getGroupid()));
+			UserTask task = new UserTask();
+			task.setCreateBy(MODIFIED_BY);
+			task.setCreateTime(ZonedDateTime.now());
+			task.setGainPoint(0);
+			task.setGroupid(cond.getTaskDefine().getGroupid());
+			task.setGroupName(taskGroup.getGroupName());
+			task.setRemainPoint(taskGroup.getMaxPoints());
+			task.setTaskStatus(0);
+			task.setUserid(cond.getUserEvent().getUserid());
+			cond.setUserTask(task);
+		} else {
+			cond.setUserTask(tasks.get(0));
+		}
 	}
 
 	/**
@@ -350,6 +390,10 @@ public class TaskEngineService {
 	private void applyEvent(Conditions cond) {
 		log.debug("apply start");
 
+		// calculate gaint point
+		Integer gaint = cond.getUserTask().getRemainPoint() > cond.getPoint() ? cond.getPoint() : cond.getUserTask().getRemainPoint();
+		cond.setGaintPoint(gaint);
+		
 		// minus the system total point
 		SystemTotalPoints systotal = applySystemTotalPoints(cond);
 		if (systotal == null) {
@@ -372,18 +416,18 @@ public class TaskEngineService {
 	 *            the cond
 	 */
 	private void applyPointForUser(Conditions cond) {
-		log.info(cond.getUserEvent().getUserid() + " gant point " + cond.getPoint());
+		log.info(cond.getUserEvent().getUserid() + " gant point " + cond.getGaintPoint());
 		WechatUser user = wechatUserRepository.getOne(Long.parseLong(cond.getUserEvent().getUserid()));
 		if (user.getTotalPoint() == null) {
 			user.setTotalPoint(0);
 		}
-		user.setTotalPoint(user.getTotalPoint() + cond.getPoint());
+		user.setTotalPoint(user.getTotalPoint() + cond.getGaintPoint());
 		wechatUserRepository.save(user);
 
 		UserPointDetails detail = new UserPointDetails();
 		detail.setUserid(cond.getUserEvent().getUserid());
 		detail.setApplyTime(cond.getUserEvent().getEventTime());
-		detail.setChangePoint(cond.getPoint());
+		detail.setChangePoint(cond.getGaintPoint());
 		detail.setCreateBy(MODIFIED_BY);
 		detail.setCreateTime(ZonedDateTime.now());
 
@@ -391,9 +435,12 @@ public class TaskEngineService {
 		if (event == null || event.isEmpty()) {
 			event = cond.getTaskDefine().getName();
 		}
-		detail.setDescript(
-				String.format("在%s通过%s获得%d积分", cond.getUserEvent().getTargetSystem(), event, cond.getPoint()));
-
+//		detail.setDescript(
+//				String.format("在%s通过%s获得%d积分", cond.getUserEvent().getTargetSystem(), event, cond.getPoint()));
+		detail.setEventName(event);
+		// description
+		String descript = cond.getUserEvent().getParem2() == null ? StringUtils.EMPTY : cond.getUserEvent().getParem2();
+		detail.setDescript(descript);
 		detail.setEventType(cond.getUserEvent().getEventType());
 		detail.setHandleBy(MODIFIED_BY);
 		detail.setTargetSystem(cond.getUserEvent().getTargetSystem());
@@ -423,13 +470,45 @@ public class TaskEngineService {
 	 *            the cond
 	 */
 	private void applyUserTask(Conditions cond) {
+		if (cond.getUserTask() == null) {
+			applyUserTaskWithoutGroupid(cond);
+		} else {
+			applyUserTaskWithGroupid(cond);
+		}
+	}
+
+	/**
+	 * Apply user task with groupid.
+	 *
+	 * @param cond
+	 *            the cond
+	 */
+	private void applyUserTaskWithGroupid(Conditions cond) {
+		UserTask userTask = cond.getUserTask();
+		userTask.setTaskStatus(userTask.getTaskStatus() + 1);
+		userTask.setGainPoint(userTask.getGainPoint() + cond.getGaintPoint());
+		userTask.setRemainPoint(userTask.getRemainPoint() - cond.getGaintPoint());
+		userTask.setValidateTo(cond.getPeriodEnd());
+		userTask.setLastModifyTime(ZonedDateTime.now());
+		userTask.setLastModifyBy(MODIFIED_BY);
+		userTaskRepository.save(userTask);
+	}
+
+	/**
+	 * Apply user task without groupid.
+	 *
+	 * @param cond
+	 *            the cond
+	 */
+	private void applyUserTaskWithoutGroupid(Conditions cond) {
+		// no task group
 		List<UserTask> lists = userTaskRepository.findByConditions(cond.getUserEvent().getUserid(),
 				cond.getTaskDefine().getId(), ZonedDateTime.now());
 		if (lists.isEmpty()) {
 			// create new one
 			UserTask userTask = new UserTask();
-			userTask.setGainPoint(cond.getPoint());
-			userTask.setRemainPoint(cond.getTaskDefine().getTotalPoint() - cond.getPoint());
+			userTask.setGainPoint(cond.getGaintPoint());
+			userTask.setRemainPoint(cond.getTaskDefine().getTotalPoint() - cond.getGaintPoint());
 			userTask.setTask(cond.getTaskDefine());
 			userTask.setTaskStatus(1);
 			userTask.setUserid(cond.getUserEvent().getUserid());
@@ -441,7 +520,7 @@ public class TaskEngineService {
 			UserTask userTask = lists.get(0);
 			userTask.setLastModifyTime(ZonedDateTime.now());
 			userTask.setLastModifyBy(MODIFIED_BY);
-			userTask.setGainPoint(userTask.getGainPoint() + cond.getPoint());
+			userTask.setGainPoint(userTask.getGainPoint() + cond.getGaintPoint());
 			userTask.setRemainPoint(cond.getTaskDefine().getTotalPoint() - userTask.getGainPoint());
 			userTask.setTaskStatus(userTask.getTaskStatus() + 1);
 			userTaskRepository.save(userTask);
@@ -457,14 +536,14 @@ public class TaskEngineService {
 	 */
 	private SystemTotalPoints applySystemTotalPoints(Conditions cond) {
 		SystemTotalPoints systotal = systemTotalPointsRepository.findBySystemId(SYSTEM_POINT_NAME);
-		if (systotal == null || systotal.getTotalPoint() < cond.getPoint()) {
+		if (systotal == null || systotal.getTotalPoint() < cond.getGaintPoint()) {
 			log.error("System has no point to apply now!!!");
 			this.saveUnApplyUserEvent(cond.getUserEvent());
 			return null;
 		}
 		systotal.setLastModifyBy(MODIFIED_BY);
 		systotal.setLastModifyTime(ZonedDateTime.now());
-		systotal.setTotalPoint(systotal.getTotalPoint() - cond.getPoint());
+		systotal.setTotalPoint(systotal.getTotalPoint() - cond.getGaintPoint());
 		systemTotalPointsRepository.save(systotal);
 		return systotal;
 	}
@@ -515,31 +594,64 @@ public class TaskEngineService {
 	 * @return the user tasks
 	 */
 	public List<UserTaskDTO> getUserTasks(String userid) {
-		List<UserTaskDTO> all = new ArrayList<>();
-		List<TaskDefine> taskList = taskDefineRepository.findByStatusOrderByPriorityDesc(true);
-		for (TaskDefine taskDefine : taskList) {
-			List<UserTask> userTasks = userTaskRepository.findByConditions(userid, taskDefine.getId(),
-					ZonedDateTime.now());
-			UserTaskDTO dto;
-			if (!userTasks.isEmpty()) {
-				dto = userTaskMapper.toDto(userTasks.get(0));
-			} else {
-				dto = new UserTaskDTO();
-				dto.setRemainPoint(taskDefine.getTotalPoint());
-				dto.setGainPoint(0);
-				dto.setTaskStatus(0);
-				dto.setUserid(userid);
-			}
-			dto.setMaxlimit(taskDefine.getMaxlimit());
-			dto.setTargetSystems(taskDefine.getTargetSystems());
-			dto.setTaskDefineName(taskDefine.getName());
-			dto.setEventType(taskDefine.getEventType());
-			dto.setTaskId(taskDefine.getId());
-			dto.setPeroid(taskDefine.getPeriod());
-			all.add(dto);
+		// List<UserTaskDTO> all = new ArrayList<>();
+		// List<TaskDefine> taskList =
+		// taskDefineRepository.findByStatusOrderByPriorityDesc(true);
+		// for (TaskDefine taskDefine : taskList) {
+		// List<UserTask> userTasks =
+		// userTaskRepository.findByConditions(userid, taskDefine.getId(),
+		// ZonedDateTime.now());
+		// UserTaskDTO dto;
+		// if (!userTasks.isEmpty()) {
+		// dto = userTaskMapper.toDto(userTasks.get(0));
+		// } else {
+		// dto = new UserTaskDTO();
+		// dto.setRemainPoint(taskDefine.getTotalPoint());
+		// dto.setGainPoint(0);
+		// dto.setTaskStatus(0);
+		// dto.setUserid(userid);
+		// }
+		// dto.setMaxlimit(taskDefine.getMaxlimit());
+		// dto.setTargetSystems(taskDefine.getTargetSystems());
+		// dto.setTaskDefineName(taskDefine.getName());
+		// dto.setEventType(taskDefine.getEventType());
+		// dto.setTaskId(taskDefine.getId());
+		// dto.setPeroid(taskDefine.getPeriod());
+		// all.add(dto);
+		// }
+		List<TaskGroup> groups = this.taskGroupRepository.findAll();
+		List<UserTask> tasks = userTaskRepository.findByUseridAndValidateToGreaterThanAndGroupidIsNotNull(userid,
+				ZonedDateTime.now());
+		Map<String, TaskGroup> groupids = new HashMap<>();
+		for(UserTask task : tasks) {
+			groupids.put(task.getGroupid(), null);
 		}
-
-		return all;
+		
+		for(TaskGroup taskGroup : groups) {
+			if(!groupids.containsKey(String.valueOf(taskGroup.getId()))) {
+				// create new one
+				UserTask userTask = new UserTask();
+				userTask.setGainPoint(0);
+				userTask.setRemainPoint(taskGroup.getMaxPoints());
+				userTask.setTask(null);
+				userTask.setTaskStatus(0);
+				userTask.setUserid(userid);
+				userTask.setGroupName(taskGroup.getGroupName());
+				userTask.setGroupid(String.valueOf(taskGroup.getId()));
+				
+				// By default is Daily period
+				userTask.setValidateTo(ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays(1));
+				userTask.setCreateBy(MODIFIED_BY);
+				
+				userTask.setCreateTime(ZonedDateTime.now());
+				userTaskRepository.save(userTask);
+				tasks.add(userTask);
+			}
+		}
+		
+		List<UserTaskDTO> dtos = userTaskMapper.toDto(tasks);
+		
+		return dtos;
 	}
 
 	/**

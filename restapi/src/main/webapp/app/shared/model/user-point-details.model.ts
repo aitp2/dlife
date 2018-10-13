@@ -34,6 +34,7 @@ export interface IUserPointDetails {
     createTime?: Moment;
     lastModifyBy?: string;
     lastModifyTime?: Moment;
+    eventName?: string;
 }
 
 export class UserPointDetails implements IUserPointDetails {
@@ -51,6 +52,7 @@ export class UserPointDetails implements IUserPointDetails {
         public createBy?: string,
         public createTime?: Moment,
         public lastModifyBy?: string,
-        public lastModifyTime?: Moment
+        public lastModifyTime?: Moment,
+        public eventName?: string
     ) {}
 }

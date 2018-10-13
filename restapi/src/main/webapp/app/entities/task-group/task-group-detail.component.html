@@ -1,0 +1,55 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="taskGroup">
+            <h2><span>Task Group</span> {{taskGroup.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Group Name</span></dt>
+                <dd>
+                    <span>{{taskGroup.groupName}}</span>
+                </dd>
+                <dt><span>Description</span></dt>
+                <dd>
+                    <span>{{taskGroup.description}}</span>
+                </dd>
+                <dt><span>Max Points</span></dt>
+                <dd>
+                    <span>{{taskGroup.maxPoints}}</span>
+                </dd>
+                <dt><span>Max Count</span></dt>
+                <dd>
+                    <span>{{taskGroup.maxCount}}</span>
+                </dd>
+                <dt><span>Create By</span></dt>
+                <dd>
+                    <span>{{taskGroup.createBy}}</span>
+                </dd>
+                <dt><span>Create Time</span></dt>
+                <dd>
+                    <span>{{taskGroup.createTime}}</span>
+                </dd>
+                <dt><span>Last Modify By</span></dt>
+                <dd>
+                    <span>{{taskGroup.lastModifyBy}}</span>
+                </dd>
+                <dt><span>Last Modify Time</span></dt>
+                <dd>
+                    <span>{{taskGroup.lastModifyTime}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/task-group', taskGroup.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

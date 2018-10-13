@@ -1,0 +1,68 @@
+<div>
+    <h2 id="page-heading">
+        <span>Task Groups</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-task-group" [routerLink]="['/task-group/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create new Task Group
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="taskGroups">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="groupName"><span>Group Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="description"><span>Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="maxPoints"><span>Max Points</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="maxCount"><span>Max Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="createBy"><span>Create By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="createTime"><span>Create Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="lastModifyBy"><span>Last Modify By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="lastModifyTime"><span>Last Modify Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let taskGroup of taskGroups ;trackBy: trackId">
+                <td><a [routerLink]="['/task-group', taskGroup.id, 'view' ]">{{taskGroup.id}}</a></td>
+                <td>{{taskGroup.groupName}}</td>
+                <td>{{taskGroup.description}}</td>
+                <td>{{taskGroup.maxPoints}}</td>
+                <td>{{taskGroup.maxCount}}</td>
+                <td>{{taskGroup.createBy}}</td>
+                <td>{{taskGroup.createTime | date:'medium'}}</td>
+                <td>{{taskGroup.lastModifyBy}}</td>
+                <td>{{taskGroup.lastModifyTime | date:'medium'}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/task-group', taskGroup.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/task-group', taskGroup.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'task-group/'+ taskGroup.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

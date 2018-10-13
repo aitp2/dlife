@@ -67,6 +67,9 @@ public class UserPointDetails implements Serializable {
     @Column(name = "last_modify_time")
     private ZonedDateTime lastModifyTime;
 
+    @Column(name = "event_name")
+    private String eventName;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -244,6 +247,19 @@ public class UserPointDetails implements Serializable {
     public void setLastModifyTime(ZonedDateTime lastModifyTime) {
         this.lastModifyTime = lastModifyTime;
     }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public UserPointDetails eventName(String eventName) {
+        this.eventName = eventName;
+        return this;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -283,6 +299,7 @@ public class UserPointDetails implements Serializable {
             ", createTime='" + getCreateTime() + "'" +
             ", lastModifyBy='" + getLastModifyBy() + "'" +
             ", lastModifyTime='" + getLastModifyTime() + "'" +
+            ", eventName='" + getEventName() + "'" +
             "}";
     }
 }
