@@ -1,7 +1,6 @@
 package com.aitp.dlife.web.rest;
 
 import com.aitp.dlife.service.WechatUserService;
-import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.web.rest.util.DateUtil;
 import com.codahale.metrics.annotation.Timed;
 import com.aitp.dlife.domain.enumeration.CommentChannel;
@@ -50,7 +49,7 @@ public class FollowResource {
     private final FollowService followService;
 
     private final WechatUserService wechatUserService;
-    
+
     private final TaskEngineService taskEngineService;
 
     public FollowResource(FollowService followService, WechatUserService wechatUserService,TaskEngineService taskEngineService) {
@@ -100,7 +99,7 @@ public class FollowResource {
         }
 
         FollowDTO result = followService.createFollow(followDTO);
-        
+
 		taskEngineService.saveNewEvent(followDTO.getFollowUserId(), "关注他人", PointEventType.FOCUS, CommentChannel.PLATFORM.toString(),"");
 		taskEngineService.saveNewEvent(followDTO.getFollowedUserId(), "新增粉丝", PointEventType.NEWFUN, CommentChannel.PLATFORM.toString(),"");
         return ResponseEntity.created(new URI("/api/follows/" + result.getId()))
@@ -146,19 +145,22 @@ public class FollowResource {
     @GetMapping("/follows")
     @ApiOperation(value = "获取关注信息", response = FollowDTO.class, produces = "application/json")
     @ApiImplicitParams({
-        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "pageable", value = "分页信息", required = false),
-        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "followWechatUserId", value = "用于查询我关注的人的信息", required = false),
-        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "followedWechatUserId", value = "用于查询我的粉丝的信息", required = false)})
+        @ApiImplicitParam(paramType = "query", dataType = "String", defaultValue = "", name = "pageable", value = "分页信息", required = false),
+        @ApiImplicitParam(paramType = "query", dataType = "String", defaultValue = "", name = "followWechatUserId", value = "用于查询我关注的人的信息", required = false),
+        @ApiImplicitParam(paramType = "query", dataType = "String", defaultValue = "", name = "followedWechatUserId", value = "用于查询我的粉丝的信息", required = false),
+        @ApiImplicitParam(paramType = "query", dataType = "String", defaultValue = "", name = "currentUserId", value = "用于查询别人的粉丝和关注的人和当前用户的关系, " +
+            "关系由字段followRelated表示，当值是0时表示未关注，当值是1是表示已关注，当值是2时表示互相关注", required = false)})
     @Timed
     public ResponseEntity<List<FollowDTO>> getAllFollows(Pageable pageable,
-    		@RequestParam(value = "followWechatUserId", required = false) String followWechatUserId,
-    		@RequestParam(value = "followedWechatUserId", required = false) String followedWechatUserId) {
-        log.debug("REST request to get a page of Follows");
+        @RequestParam(value = "followWechatUserId", required = false) String followWechatUserId,
+        @RequestParam(value = "followedWechatUserId", required = false) String followedWechatUserId,
+        @RequestParam(value = "currentUserId", required = false) String currentUserId) {
+        log.debug("REST request to get a page of Follows, followWechatUserId:" + followWechatUserId + " followedWechatUserId:" + followedWechatUserId + " currentUserId:" + currentUserId);
         Page<FollowDTO> page = null;
         if(!StringUtils.isEmpty(followWechatUserId)) {
-        	page = followService.findAllByFollowUserId(pageable, followWechatUserId);
+        	page = followService.findAllByFollowUserIdAndCurrentUserId(pageable, followWechatUserId, currentUserId);
         }else if(!StringUtils.isEmpty(followedWechatUserId)) {
-        	page =  followService.findAllByFollowedUserId(pageable, followedWechatUserId);
+        	page =  followService.findAllByFollowedUserIdAndCurrentUserId(pageable, followedWechatUserId, currentUserId);
         }else {
         	page = followService.findAll(pageable);
         }

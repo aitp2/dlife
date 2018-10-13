@@ -35,6 +35,8 @@ public class FollowDTO implements Serializable {
 
     private Boolean mutual;
 
+    private String followRelated;
+
     public Long getId() {
         return id;
     }
@@ -115,6 +117,14 @@ public class FollowDTO implements Serializable {
         this.mutual = mutual;
     }
 
+    public String getFollowRelated() {
+        return followRelated;
+    }
+
+    public void setFollowRelated(String followRelated) {
+        this.followRelated = followRelated;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -149,6 +159,7 @@ public class FollowDTO implements Serializable {
             ", createTime='" + getCreateTime() + "'" +
             ", modifyTime='" + getModifyTime() + "'" +
             ", mutual='" + getMutual() + "'" +
+            ", followRelated='" + getFollowRelated() + "'" +
             "}";
     }
 }

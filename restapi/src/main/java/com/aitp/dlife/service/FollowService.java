@@ -2,9 +2,9 @@ package com.aitp.dlife.service;
 
 import com.aitp.dlife.domain.WechatUser;
 import com.aitp.dlife.repository.WechatUserRepository;
-import com.aitp.dlife.service.dto.WechatUserDTO;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.DateUtil;
+import liquibase.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -238,19 +238,52 @@ public class FollowService {
      * findAllByFollowUserId
      * @param pageable
      * @param wechatUserId
+     * @param currentUserId
      * @return
      */
-    public Page<FollowDTO> findAllByFollowUserId(Pageable pageable, String wechatUserId) {
-    	return followRepository.findAllByFollowUserId(pageable,wechatUserId).map(followMapper::toDto);
+    public Page<FollowDTO> findAllByFollowUserIdAndCurrentUserId(Pageable pageable, String wechatUserId, String currentUserId) {
+        log.debug("Request to get all Follows by FollowUserId And CurrentUserId");
+        Page<FollowDTO> result = followRepository.findAllByFollowUserId(pageable,wechatUserId).map(followMapper::toDto);
+
+        if (!StringUtils.isEmpty(currentUserId) && result != null && !CollectionUtils.isEmpty(result.getContent())){
+            for(FollowDTO followedDTO : result.getContent()){
+                List<Follow> followeds  = followRepository.findByFollowUserIdAndFollowedUserId(currentUserId, followedDTO.getFollowedUserId());
+                if (CollectionUtils.isEmpty(followeds)){
+                    followedDTO.setFollowRelated("0");
+                }
+                else{
+                    followedDTO.setFollowRelated((followeds.get(0).isMutual() != null &&  followeds.get(0).isMutual().booleanValue() ? "2" :"1"));
+                }
+            }
+        }
+
+        return result;
 	}
 
     /**
      * findAllByFollowedUserId
      * @param pageable
      * @param wechatUserId
+     * @param currentUserId
      * @return
      */
-    public Page<FollowDTO> findAllByFollowedUserId(Pageable pageable, String wechatUserId) {
-    	return followRepository.findAllByFollowedUserId(pageable,wechatUserId).map(followMapper::toDto);
+    public Page<FollowDTO> findAllByFollowedUserIdAndCurrentUserId(Pageable pageable, String wechatUserId, String currentUserId) {
+        log.debug("Request to get all Follows by FollowedUserId And CurrentUserId");
+
+        Page<FollowDTO> result = followRepository.findAllByFollowedUserId(pageable,wechatUserId).map(followMapper::toDto);
+
+        if (!StringUtils.isEmpty(currentUserId) && result != null && !CollectionUtils.isEmpty(result.getContent())){
+            for(FollowDTO followDTO : result.getContent()){
+                List<Follow> followeds  = followRepository.findByFollowUserIdAndFollowedUserId(currentUserId, followDTO.getFollowUserId());
+                if (CollectionUtils.isEmpty(followeds)){
+                    followDTO.setFollowRelated("0");
+                }
+                else{
+                    followDTO.setFollowRelated((followeds.get(0).isMutual() != null &&  followeds.get(0).isMutual().booleanValue() ? "2" :"1"));
+                }
+            }
+        }
+
+        return result;
 	}
 }
