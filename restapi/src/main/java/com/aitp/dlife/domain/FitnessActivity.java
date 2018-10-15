@@ -117,11 +117,26 @@ public class FitnessActivity implements Serializable {
     @Column(name = "comment_count")
     private Integer commentCount;
 
+    /**
+     * 更新时间
+     */
+    @ApiModelProperty(value = "更新时间")
     @Column(name = "modify_time")
     private Instant modifyTime;
 
+    /**
+     * 浏览数量
+     */
+    @ApiModelProperty(value = "浏览数量")
     @Column(name = "reading_count")
     private Integer readingCount;
+
+    /**
+     * 打卡提醒时间
+     */
+    @ApiModelProperty(value = "打卡提醒时间")
+    @Column(name = "reminder_time")
+    private Instant reminderTime;
 
     @OneToMany(mappedBy = "fitnessActivity")
     private Set<ActivityParticipation> activityParticipations = new HashSet<>();
@@ -320,6 +335,19 @@ public class FitnessActivity implements Serializable {
         this.readingCount = readingCount;
     }
 
+    public Instant getReminderTime() {
+        return reminderTime;
+    }
+
+    public FitnessActivity reminderTime(Instant reminderTime) {
+        this.reminderTime = reminderTime;
+        return this;
+    }
+
+    public void setReminderTime(Instant reminderTime) {
+        this.reminderTime = reminderTime;
+    }
+
     public Set<ActivityParticipation> getActivityParticipations() {
         return activityParticipations;
     }
@@ -409,6 +437,7 @@ public class FitnessActivity implements Serializable {
             ", commentCount=" + getCommentCount() +
             ", modifyTime='" + getModifyTime() + "'" +
             ", readingCount=" + getReadingCount() +
+            ", reminderTime='" + getReminderTime() + "'" +
             "}";
     }
 }

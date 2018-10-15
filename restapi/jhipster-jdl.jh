@@ -511,8 +511,18 @@ entity FitnessActivity (fitness_activity) {
    * 评论数量
    */
   commentCount Integer,
+  /**
+   * 更新时间
+   */
   modifyTime Instant,
+  /**
+   * 浏览数量
+   */
   readingCount Integer
+  /**
+   * 打卡提醒时间
+   */
+  reminderTime Instant,
 }
 /**
  * 健身活动参与信息

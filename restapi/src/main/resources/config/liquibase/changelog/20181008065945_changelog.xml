@@ -25,4 +25,9 @@
             <column name="thumbs_up_count" type="integer"/>
         </addColumn>
     </changeSet>
+    <changeSet author="zhangxiaowu (generated)" id="1538982004184-6">
+        <addColumn tableName="fitness_activity">
+            <column name="reminder_time" type="datetime"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
