@@ -67,6 +67,11 @@ entity WechatUser (wechat_user) {
    * EID
    */
   eid String,
+  
+  /**
+   * SAPID
+   */
+  sapid String,
 
   /**
    * 创建时间

@@ -53,7 +53,8 @@
 	<include file="config/liquibase/changelog/20180903135055_changelog.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20180917082801_changelog.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20180918091357_changelog.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20181008065945_changelog.xml" relativeToChangelogFile="false"/> -->
+    <include file="config/liquibase/changelog/20181008065945_changelog.xml" relativeToChangelogFile="false"/>
+	<include file="config/liquibase/changelog/20181015085514_changelog.xml" relativeToChangelogFile="false"/> -->
 
 <!-- A8 task engine tables and initial data -->
 <!--     <include file="config/liquibase/changelog/20180915103823_added_entity_TaskDefine.xml" relativeToChangelogFile="false"/>
@@ -66,4 +67,6 @@
 	<include file="config/liquibase/changelog/20180915423519_load_demo_data.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20180915582801_added_column_total_point.xml" relativeToChangelogFile="false"/>
  -->
+ 
+
 </databaseChangeLog>

@@ -66,6 +66,8 @@ public class WechatUserDTO implements Serializable {
     private String createTime;
 
     private String modifyTime;
+    
+    private String sapid;
 
     public Long getId() {
         return id;
@@ -243,8 +245,17 @@ public class WechatUserDTO implements Serializable {
     public void setFollowed(Boolean followed) {
         this.followed = followed;
     }
+    
 
-    @Override
+    public String getSapid() {
+		return sapid;
+	}
+
+	public void setSapid(String sapid) {
+		this.sapid = sapid;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -271,7 +282,8 @@ public class WechatUserDTO implements Serializable {
 				+ userName + ", nickName=" + nickName + ", avatar=" + avatar + ", mobileNum=" + mobileNum + ", project="
 				+ project + ", seat=" + seat + ", introduce=" + introduce + ", sex=" + sex + ", companyRole="
 				+ companyRole + ", cookFlag=" + cookFlag + ", intesting=" + intesting + ", skill=" + skill + ", eid="
-				+ eid + ", createTime=" + createTime + ", modifyTime=" + modifyTime + ", followCount=" + followCount
-                + ", followedCount=" + followedCount + ", thumbsUpCount=" + thumbsUpCount + ", followed=" + followed + "]";
+				+ eid + ", followCount=" + followCount + ", followedCount=" + followedCount + ", thumbsUpCount="
+				+ thumbsUpCount + ", followed=" + followed + ", createTime=" + createTime + ", modifyTime=" + modifyTime
+				+ ", sapid=" + sapid + "]";
 	}
 }

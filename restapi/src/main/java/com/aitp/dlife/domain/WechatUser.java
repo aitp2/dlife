@@ -192,6 +192,9 @@ public class WechatUser implements Serializable {
     @Column(name = "thumbs_up_count")
     private Integer thumbsUpCount;
 
+    @Column(name = "sapid")
+    private String sapid;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -473,6 +476,19 @@ public class WechatUser implements Serializable {
     public void setThumbsUpCount(Integer thumbsUpCount) {
         this.thumbsUpCount = thumbsUpCount;
     }
+
+    public String getSapid() {
+        return sapid;
+    }
+
+    public WechatUser sapid(String sapid) {
+        this.sapid = sapid;
+        return this;
+    }
+
+    public void setSapid(String sapid) {
+        this.sapid = sapid;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -520,6 +536,7 @@ public class WechatUser implements Serializable {
             ", followCount=" + getFollowCount() +
             ", followedCount=" + getFollowedCount() +
             ", thumbsUpCount=" + getThumbsUpCount() +
+            ", sapid='" + getSapid() + "'" +
             "}";
     }
 }
