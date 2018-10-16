@@ -20,6 +20,7 @@ export class FitnessActivityUpdateComponent implements OnInit {
     activityStartTime: string;
     activityEndTime: string;
     modifyTime: string;
+    reminderTime: string;
 
     constructor(private fitnessActivityService: FitnessActivityService, private activatedRoute: ActivatedRoute) {}
 
@@ -41,6 +42,7 @@ export class FitnessActivityUpdateComponent implements OnInit {
         this.fitnessActivity.activityStartTime = moment(this.activityStartTime, DATE_TIME_FORMAT);
         this.fitnessActivity.activityEndTime = moment(this.activityEndTime, DATE_TIME_FORMAT);
         this.fitnessActivity.modifyTime = moment(this.modifyTime, DATE_TIME_FORMAT);
+        this.fitnessActivity.reminderTime = moment(this.reminderTime, DATE_TIME_FORMAT);
         if (this.fitnessActivity.id !== undefined) {
             this.subscribeToSaveResponse(this.fitnessActivityService.update(this.fitnessActivity));
         } else {
@@ -71,5 +73,6 @@ export class FitnessActivityUpdateComponent implements OnInit {
         this.activityStartTime = moment(fitnessActivity.activityStartTime).format(DATE_TIME_FORMAT);
         this.activityEndTime = moment(fitnessActivity.activityEndTime).format(DATE_TIME_FORMAT);
         this.modifyTime = moment(fitnessActivity.modifyTime).format(DATE_TIME_FORMAT);
+        this.reminderTime = moment(fitnessActivity.reminderTime).format(DATE_TIME_FORMAT);
     }
 }

@@ -66,7 +66,11 @@ export class FitnessActivityService {
                     ? fitnessActivity.activityEndTime.toJSON()
                     : null,
             modifyTime:
-                fitnessActivity.modifyTime != null && fitnessActivity.modifyTime.isValid() ? fitnessActivity.modifyTime.toJSON() : null
+                fitnessActivity.modifyTime != null && fitnessActivity.modifyTime.isValid() ? fitnessActivity.modifyTime.toJSON() : null,
+            reminderTime:
+                fitnessActivity.reminderTime != null && fitnessActivity.reminderTime.isValid()
+                    ? fitnessActivity.reminderTime.toJSON()
+                    : null
         });
         return copy;
     }
@@ -77,6 +81,7 @@ export class FitnessActivityService {
         res.body.activityStartTime = res.body.activityStartTime != null ? moment(res.body.activityStartTime) : null;
         res.body.activityEndTime = res.body.activityEndTime != null ? moment(res.body.activityEndTime) : null;
         res.body.modifyTime = res.body.modifyTime != null ? moment(res.body.modifyTime) : null;
+        res.body.reminderTime = res.body.reminderTime != null ? moment(res.body.reminderTime) : null;
         return res;
     }
 
@@ -88,6 +93,7 @@ export class FitnessActivityService {
                 fitnessActivity.activityStartTime != null ? moment(fitnessActivity.activityStartTime) : null;
             fitnessActivity.activityEndTime = fitnessActivity.activityEndTime != null ? moment(fitnessActivity.activityEndTime) : null;
             fitnessActivity.modifyTime = fitnessActivity.modifyTime != null ? moment(fitnessActivity.modifyTime) : null;
+            fitnessActivity.reminderTime = fitnessActivity.reminderTime != null ? moment(fitnessActivity.reminderTime) : null;
         });
         return res;
     }

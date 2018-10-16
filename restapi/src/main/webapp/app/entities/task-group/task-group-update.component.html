@@ -1,0 +1,88 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-task-group-heading">Create or edit a Task Group</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!taskGroup.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="taskGroup.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_groupName">Group Name</label>
+                    <input type="text" class="form-control" name="groupName" id="field_groupName"
+                        [(ngModel)]="taskGroup.groupName" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_description">Description</label>
+                    <input type="text" class="form-control" name="description" id="field_description"
+                        [(ngModel)]="taskGroup.description" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_maxPoints">Max Points</label>
+                    <input type="number" class="form-control" name="maxPoints" id="field_maxPoints"
+                        [(ngModel)]="taskGroup.maxPoints" required/>
+                    <div [hidden]="!(editForm.controls.maxPoints?.dirty && editForm.controls.maxPoints?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.maxPoints?.errors?.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.maxPoints?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_maxCount">Max Count</label>
+                    <input type="number" class="form-control" name="maxCount" id="field_maxCount"
+                        [(ngModel)]="taskGroup.maxCount" required/>
+                    <div [hidden]="!(editForm.controls.maxCount?.dirty && editForm.controls.maxCount?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.maxCount?.errors?.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.maxCount?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_createBy">Create By</label>
+                    <input type="text" class="form-control" name="createBy" id="field_createBy"
+                        [(ngModel)]="taskGroup.createBy" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_createTime">Create Time</label>
+                    <div class="d-flex">
+                        <input id="field_createTime" type="datetime-local" class="form-control" name="createTime" [(ngModel)]="createTime"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_lastModifyBy">Last Modify By</label>
+                    <input type="text" class="form-control" name="lastModifyBy" id="field_lastModifyBy"
+                        [(ngModel)]="taskGroup.lastModifyBy" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_lastModifyTime">Last Modify Time</label>
+                    <div class="d-flex">
+                        <input id="field_lastModifyTime" type="datetime-local" class="form-control" name="lastModifyTime" [(ngModel)]="lastModifyTime"
+                        />
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

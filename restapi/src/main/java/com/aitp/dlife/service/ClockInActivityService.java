@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.aitp.dlife.service.dto.EventMessageDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,8 @@ public class ClockInActivityService {
 	private ClockInMapper clockInMapper;
 	@Autowired
 	private EventMessageService eventMessageService;
+    @Autowired
+    private MessageService messageService;
 
 	/**
 	 * 用户打卡
@@ -92,11 +95,14 @@ public class ClockInActivityService {
 
 		if (activityParticipation.isPresent()) {
 			// record the activity participation event start
-			eventMessageService.recordEventMessage(EventChannel.FITNESS, DateUtil.getYMDDateString(new Date()),
+            EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.FITNESS, DateUtil.getYMDDateString(new Date()),
 					EventType.CLOCKIN, request.getWechatUserId(),
 					activityParticipation.get().getFitnessActivity().getTitle(),
 					activityParticipation.get().getFitnessActivity().getId(), activityParticipation.get().getAvatar(),
 					activityParticipation.get().getNickName());
+            if (null!=eventMessageDTO.getId()){
+                messageService.createMessageForEvent(eventMessageDTO);
+            }
 			// record the activity participation event end
 		}
 
@@ -117,7 +123,7 @@ public class ClockInActivityService {
 
 	/**
 	 * 根据用户Id 活动Id 查询活动完成用户的打卡情况
-	 * 
+	 *
 	 * @param wechatUserId
 	 * @param activityId
 	 * @return
@@ -139,7 +145,7 @@ public class ClockInActivityService {
 
 	/**
 	 * 转换打卡结果
-	 * 
+	 *
 	 * @param clockInActivityResponse
 	 * @param activityParticipationEntity
 	 */

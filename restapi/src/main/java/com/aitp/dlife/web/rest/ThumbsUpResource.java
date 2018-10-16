@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-
 import javax.validation.Valid;
 
 import com.aitp.dlife.domain.FitnessActivity;
@@ -29,6 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.domain.enumeration.PointEventType;
+import com.aitp.dlife.domain.enumeration.ThumbsUpChannel;
 import com.aitp.dlife.repository.specification.ThumbsUpSpecification;
 import com.aitp.dlife.service.ClockInService;
 import com.aitp.dlife.service.CommentService;
@@ -37,6 +38,7 @@ import com.aitp.dlife.service.FitnessActivityService;
 import com.aitp.dlife.service.MessageService;
 import com.aitp.dlife.service.PinFanActivityService;
 import com.aitp.dlife.service.QuestionService;
+import com.aitp.dlife.service.TaskEngineService;
 import com.aitp.dlife.service.ThumbsUpService;
 import com.aitp.dlife.service.builder.EventMessageBuilder;
 import com.aitp.dlife.service.dto.ClockInDTO;
@@ -85,11 +87,13 @@ public class ThumbsUpResource {
 	private final PinFanActivityService pinFanActivityService;
 
 	private final QuestionService questionService;
+	
+	private final TaskEngineService taskEngineService;
 
 	public ThumbsUpResource(ThumbsUpService thumbsUpService, CommentService commentService, FitnessActivityRepository fitnessActivityRepository,
 			FitnessActivityService fitnessActivityService, PinFanActivityService pinFanActivityService,
 			QuestionService questionService, EventMessageService eventMessageService, MessageService messageService,
-			ClockInService clockInService) {
+			ClockInService clockInService,TaskEngineService taskEngineService) {
 		this.thumbsUpService = thumbsUpService;
 		this.commentService = commentService;
 		this.fitnessActivityRepository = fitnessActivityRepository;
@@ -99,6 +103,7 @@ public class ThumbsUpResource {
 		this.eventMessageService = eventMessageService;
 		this.messageService = messageService;
 		this.clockInService = clockInService;
+		this.taskEngineService = taskEngineService;
 	}
 
 	/**
@@ -121,6 +126,10 @@ public class ThumbsUpResource {
 		if (thumbsUpDTO.getId() != null) {
 			throw new BadRequestAlertException("A new thumbsUp cannot already have an ID", ENTITY_NAME, "idexists");
 		}
+		if(thumbsUpDTO.getChannel()!=null&&!thumbsUpDTO.getChannel().equals(ThumbsUpChannel.POINT_PRODUCT))
+		{
+			taskEngineService.saveNewEvent(thumbsUpDTO.getWechatUserId(), "点赞", PointEventType.SALUTE, thumbsUpDTO.getChannel().toString(),null);
+		}
 		ThumbsUpDTO result = null;
 		switch (thumbsUpDTO.getModule()) {
 		case COMMENT:
@@ -131,6 +140,8 @@ public class ThumbsUpResource {
 			commentDTO = commentService.save(commentDTO);
 			updateDateTime(commentDTO,
 					EventMessageBuilder.buildEventMessageDTO(thumbsUpDTO).object(commentDTO.getObjectId()).get());
+
+            thumbsUpService.updateUserThumbsUpCount(commentDTO.getWechatUserId(),true);
 			break;
 		case ACTIVITY:
 			ClockInDTO clockInDTO = clockInService.findOne(thumbsUpDTO.getObjectId());
@@ -144,13 +155,15 @@ public class ThumbsUpResource {
 					.object(fitnessActivityDTO.getId()).title(fitnessActivityDTO.getTitle()).type(EventType.CLOCKTHUMBSUP).get();
 			eventMessageDTO = eventMessageService.save(eventMessageDTO);
 			if (null != eventMessageDTO.getId()) {
-			messageService.createMessageForEvent(eventMessageDTO);
+                messageService.createMessageForEvent(eventMessageDTO);
 
-			FitnessActivity fitnessActivity = fitnessActivityRepository.findById(fitnessActivityDTO.getId()).get();
-			fitnessActivity.setModifyTime(Instant.now());
-			fitnessActivityRepository.save(fitnessActivity);
+                FitnessActivity fitnessActivity = fitnessActivityRepository.findById(fitnessActivityDTO.getId()).get();
+                fitnessActivity.setModifyTime(Instant.now());
+                fitnessActivityRepository.save(fitnessActivity);
 
 			}
+
+            thumbsUpService.updateUserThumbsUpCount(clockInDTO.getWechatUserId(),true);
 			break;
 		default:
 			break;
@@ -276,11 +289,14 @@ public class ThumbsUpResource {
 			thumbsUp--;
 			commentDTO.setRating1(thumbsUp);
 			commentService.save(commentDTO);
+            thumbsUpService.updateUserThumbsUpCount(commentDTO.getWechatUserId(),false);
 			break;
 		case ACTIVITY:
 		    ClockInDTO clockInDTO = clockInService.findOne(thumbsUpDTO.getObjectId());
 		    clockInDTO.setThumbsUpCount(clockInDTO.getThumbsUpCount() == null ? 0 : clockInDTO.getThumbsUpCount()-1);
 		    clockInService.save(clockInDTO);
+            thumbsUpService.updateUserThumbsUpCount(clockInDTO.getWechatUserId(),false);
+            break;
 		default:
 			break;
 		}

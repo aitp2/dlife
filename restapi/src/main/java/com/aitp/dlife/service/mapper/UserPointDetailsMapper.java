@@ -1,7 +1,6 @@
 package com.aitp.dlife.service.mapper;
 
 import com.aitp.dlife.domain.*;
-import com.aitp.dlife.domain.UserPointDetails;
 import com.aitp.dlife.service.dto.UserPointDetailsDTO;
 
 import org.mapstruct.*;

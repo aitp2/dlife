@@ -1,0 +1,161 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-task-define-heading">Create or edit a Task Define</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!taskDefine.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="taskDefine.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_taskCode">Task Code</label>
+                    <input type="text" class="form-control" name="taskCode" id="field_taskCode"
+                        [(ngModel)]="taskDefine.taskCode" required/>
+                    <div [hidden]="!(editForm.controls.taskCode?.dirty && editForm.controls.taskCode?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.taskCode?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_name">Name</label>
+                    <input type="text" class="form-control" name="name" id="field_name"
+                        [(ngModel)]="taskDefine.name" required/>
+                    <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.name?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_status">Status</label>
+                    <input type="checkbox" class="form-control" name="status" id="field_status"
+                        [(ngModel)]="taskDefine.status" />
+                    <div [hidden]="!(editForm.controls.status?.dirty && editForm.controls.status?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.status?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_period">Period</label>
+                    <select class="form-control" name="period" [(ngModel)]="taskDefine.period" id="field_period" >
+                        <option value="DAILY">DAILY</option>
+                        <option value="WEEKLY">WEEKLY</option>
+                        <option value="MOTHLY">MOTHLY</option>
+                        <option value="FOREVER">FOREVER</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_maxlimit">Maxlimit</label>
+                    <input type="number" class="form-control" name="maxlimit" id="field_maxlimit"
+                        [(ngModel)]="taskDefine.maxlimit" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_totalPoint">Total Point</label>
+                    <input type="number" class="form-control" name="totalPoint" id="field_totalPoint"
+                        [(ngModel)]="taskDefine.totalPoint" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_targetSystems">Target Systems</label>
+                    <input type="text" class="form-control" name="targetSystems" id="field_targetSystems"
+                        [(ngModel)]="taskDefine.targetSystems" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_eventType">Event Type</label>
+                    <select class="form-control" name="eventType" [(ngModel)]="taskDefine.eventType" id="field_eventType" >
+                        <option value="SALUTE">SALUTE</option>
+                        <option value="LOGIN">LOGIN</option>
+                        <option value="MESSAGE">MESSAGE</option>
+                        <option value="MESSAGEWITHIMAGE">MESSAGEWITHIMAGE</option>
+                        <option value="REPLY">REPLY</option>
+                        <option value="REPLYWITHIMAGE">REPLYWITHIMAGE</option>
+                        <option value="JIONACTION">JIONACTION</option>
+                        <option value="FOCUS">FOCUS</option>
+                        <option value="NEWFUN">NEWFUN</option>
+                        <option value="CARD">CARD</option>
+                        <option value="CARDWITHIMAGE">CARDWITHIMAGE</option>
+                        <option value="PUBILSHACTION">PUBILSHACTION</option>
+                        <option value="PUBILSHQUESTION">PUBILSHQUESTION</option>
+                        <option value="RECHARGE">RECHARGE</option>
+                        <option value="SYSRECHARGE">SYSRECHARGE</option>
+                        <option value="REDEEM">REDEEM</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_conditions">Conditions</label>
+                    <input type="text" class="form-control" name="conditions" id="field_conditions"
+                        [(ngModel)]="taskDefine.conditions" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_strategy">Strategy</label>
+                    <input type="text" class="form-control" name="strategy" id="field_strategy"
+                        [(ngModel)]="taskDefine.strategy" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_applyStrategy">Apply Strategy</label>
+                    <input type="text" class="form-control" name="applyStrategy" id="field_applyStrategy"
+                        [(ngModel)]="taskDefine.applyStrategy" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_priority">Priority</label>
+                    <input type="number" class="form-control" name="priority" id="field_priority"
+                        [(ngModel)]="taskDefine.priority" required/>
+                    <div [hidden]="!(editForm.controls.priority?.dirty && editForm.controls.priority?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.priority?.errors?.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.priority?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_createBy">Create By</label>
+                    <input type="text" class="form-control" name="createBy" id="field_createBy"
+                        [(ngModel)]="taskDefine.createBy" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_createTime">Create Time</label>
+                    <div class="d-flex">
+                        <input id="field_createTime" type="datetime-local" class="form-control" name="createTime" [(ngModel)]="createTime"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_lastModifyBy">Last Modify By</label>
+                    <input type="text" class="form-control" name="lastModifyBy" id="field_lastModifyBy"
+                        [(ngModel)]="taskDefine.lastModifyBy" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_lastModifyTime">Last Modify Time</label>
+                    <div class="d-flex">
+                        <input id="field_lastModifyTime" type="datetime-local" class="form-control" name="lastModifyTime" [(ngModel)]="lastModifyTime"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_groupid">Groupid</label>
+                    <input type="text" class="form-control" name="groupid" id="field_groupid"
+                        [(ngModel)]="taskDefine.groupid" />
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -29,8 +29,13 @@
             <th jhiSortBy="cookFlag"><span>Cook Flag</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="intesting"><span>Intesting</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="skill"><span>Skill</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="eid"><span>Eid</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="createTime"><span>Create Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="modifyTime"><span>Modify Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="totalPoint"><span>Total Point</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="followCount"><span>Follow Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="followedCount"><span>Followed Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="thumbsUpCount"><span>Thumbs Up Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -51,8 +56,13 @@
                 <td>{{wechatUser.cookFlag}}</td>
                 <td>{{wechatUser.intesting}}</td>
                 <td>{{wechatUser.skill}}</td>
+                <td>{{wechatUser.eid}}</td>
                 <td>{{wechatUser.createTime | date:'medium'}}</td>
                 <td>{{wechatUser.modifyTime | date:'medium'}}</td>
+                <td>{{wechatUser.totalPoint}}</td>
+                <td>{{wechatUser.followCount}}</td>
+                <td>{{wechatUser.followedCount}}</td>
+                <td>{{wechatUser.thumbsUpCount}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

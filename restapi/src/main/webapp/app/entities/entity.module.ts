@@ -20,6 +20,11 @@ import { AitpapiClockinSummaryModule } from './clockin-summary/clockin-summary.m
 import { AitpapiQuestionModule } from './question/question.module';
 import { AitpapiQuestionPicModule } from './question-pic/question-pic.module';
 import { AitpapiThumbsUpModule } from './thumbs-up/thumbs-up.module';
+import { AitpapiTaskDefineModule } from './task-define/task-define.module';
+import { AitpapiSystemTotalPointsModule } from './system-total-points/system-total-points.module';
+import { AitpapiUserTaskModule } from './user-task/user-task.module';
+import { AitpapiUserPointDetailsModule } from './user-point-details/user-point-details.module';
+import { AitpapiTaskGroupModule } from './task-group/task-group.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -45,6 +50,11 @@ import { AitpapiThumbsUpModule } from './thumbs-up/thumbs-up.module';
         AitpapiQuestionModule,
         AitpapiQuestionPicModule,
         AitpapiThumbsUpModule,
+        AitpapiTaskDefineModule,
+        AitpapiSystemTotalPointsModule,
+        AitpapiUserTaskModule,
+        AitpapiUserPointDetailsModule,
+        AitpapiTaskGroupModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

@@ -1,6 +1,7 @@
 package com.aitp.dlife.domain;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -23,33 +24,72 @@ public class Follow implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * 关注用户的ID
+     */
+    @ApiModelProperty(value = "关注用户的ID")
     @Column(name = "follow_user_id")
     private String followUserId;
 
+    /**
+     * 关注用户的昵称
+     */
     @Size(max = 128)
+    @ApiModelProperty(value = "关注用户的昵称")
     @Column(name = "follow_user_nickname", length = 128)
     private String followUserNickname;
 
+    /**
+     * 关注用户的头像
+     */
     @Size(max = 1024)
+    @ApiModelProperty(value = "关注用户的头像")
     @Column(name = "follow_useravatar", length = 1024)
     private String followUseravatar;
 
+    /**
+     * 被关注用户ID
+     */
+    @ApiModelProperty(value = "被关注用户ID")
     @Column(name = "followed_user_id")
     private String followedUserId;
 
+    /**
+     * 被关注用户昵称
+     */
     @Size(max = 128)
+    @ApiModelProperty(value = "被关注用户昵称")
     @Column(name = "followed_user_nickname", length = 128)
     private String followedUserNickname;
 
+    /**
+     * 被关注用户头像
+     */
     @Size(max = 1024)
+    @ApiModelProperty(value = "被关注用户头像")
     @Column(name = "followed_useravatar", length = 1024)
     private String followedUseravatar;
 
+    /**
+     * 创建时间
+     */
+    @ApiModelProperty(value = "创建时间")
     @Column(name = "create_time")
     private Instant createTime;
 
+    /**
+     * 修改时间
+     */
+    @ApiModelProperty(value = "修改时间")
     @Column(name = "modify_time")
     private Instant modifyTime;
+
+    /**
+     * 是否相互关注
+     */
+    @ApiModelProperty(value = "是否相互关注")
+    @Column(name = "mutual")
+    private Boolean mutual;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -163,6 +203,19 @@ public class Follow implements Serializable {
     public void setModifyTime(Instant modifyTime) {
         this.modifyTime = modifyTime;
     }
+
+    public Boolean isMutual() {
+        return mutual;
+    }
+
+    public Follow mutual(Boolean mutual) {
+        this.mutual = mutual;
+        return this;
+    }
+
+    public void setMutual(Boolean mutual) {
+        this.mutual = mutual;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -197,6 +250,7 @@ public class Follow implements Serializable {
             ", followedUseravatar='" + getFollowedUseravatar() + "'" +
             ", createTime='" + getCreateTime() + "'" +
             ", modifyTime='" + getModifyTime() + "'" +
+            ", mutual='" + isMutual() + "'" +
             "}";
     }
 }

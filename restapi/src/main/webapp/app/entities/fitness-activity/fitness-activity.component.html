@@ -29,6 +29,7 @@
             <th jhiSortBy="commentCount"><span>Comment Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="modifyTime"><span>Modify Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="readingCount"><span>Reading Count</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="reminderTime"><span>Reminder Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -49,6 +50,7 @@
                 <td>{{fitnessActivity.commentCount}}</td>
                 <td>{{fitnessActivity.modifyTime | date:'medium'}}</td>
                 <td>{{fitnessActivity.readingCount}}</td>
+                <td>{{fitnessActivity.reminderTime | date:'medium'}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

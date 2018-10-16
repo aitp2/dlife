@@ -58,6 +58,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="groupid" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="group_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="task_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -65,7 +73,7 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="user_task" columnName="validate_to" columnDataType="datetime"/>
-      
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

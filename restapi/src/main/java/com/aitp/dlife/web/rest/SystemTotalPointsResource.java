@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -48,7 +49,7 @@ public class SystemTotalPointsResource {
      */
     @PostMapping("/system-total-points")
     @Timed
-    public ResponseEntity<SystemTotalPointsDTO> createSystemTotalPoints(@RequestBody SystemTotalPointsDTO systemTotalPointsDTO) throws URISyntaxException {
+    public ResponseEntity<SystemTotalPointsDTO> createSystemTotalPoints(@Valid @RequestBody SystemTotalPointsDTO systemTotalPointsDTO) throws URISyntaxException {
         log.debug("REST request to save SystemTotalPoints : {}", systemTotalPointsDTO);
         if (systemTotalPointsDTO.getId() != null) {
             throw new BadRequestAlertException("A new systemTotalPoints cannot already have an ID", ENTITY_NAME, "idexists");
@@ -70,7 +71,7 @@ public class SystemTotalPointsResource {
      */
     @PutMapping("/system-total-points")
     @Timed
-    public ResponseEntity<SystemTotalPointsDTO> updateSystemTotalPoints(@RequestBody SystemTotalPointsDTO systemTotalPointsDTO) throws URISyntaxException {
+    public ResponseEntity<SystemTotalPointsDTO> updateSystemTotalPoints(@Valid @RequestBody SystemTotalPointsDTO systemTotalPointsDTO) throws URISyntaxException {
         log.debug("REST request to update SystemTotalPoints : {}", systemTotalPointsDTO);
         if (systemTotalPointsDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

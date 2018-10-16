@@ -27,8 +27,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.domain.enumeration.PointEventType;
 import com.aitp.dlife.repository.specification.FitnessActivitySpecification;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.DateUtil;
@@ -64,9 +66,11 @@ public class FitnessActivityResource {
     private final ActivityParticipationService activityParticipationService;
 
     private final ClockInActivityService clockInActivityService;
+    
+    private final TaskEngineService taskEngineService;
 
     public FitnessActivityResource(FitnessActivityService fitnessActivityService,PicsService picsService,WechatUserService wechatUserService, EventMessageService eventMessageService,
-                                   MessageService messageService, ActivityParticipationService activityParticipationService, ClockInActivityService clockInActivityService) {
+                                   MessageService messageService, ActivityParticipationService activityParticipationService, ClockInActivityService clockInActivityService,TaskEngineService taskEngineService) {
         this.fitnessActivityService = fitnessActivityService;
         this.picsService = picsService;
         this.wechatUserService=wechatUserService;
@@ -74,6 +78,7 @@ public class FitnessActivityResource {
         this.messageService = messageService;
         this.activityParticipationService = activityParticipationService;
         this.clockInActivityService = clockInActivityService;
+        this.taskEngineService = taskEngineService;
     }
 
     /**
@@ -120,9 +125,14 @@ public class FitnessActivityResource {
         //log for markting end
 
         //record the activity create event start
-        eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()),EventType.CREATE,
+        EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.FITNESS,DateUtil.getYMDDateString(new Date()),EventType.CREATE,
             result.getWechatUserId(),result.getTitle(),result.getId(),wechatUserDTO.getAvatar(),wechatUserDTO.getNickName());
+        if (null!=eventMessageDTO.getId()){
+            messageService.createMessageForEvent(eventMessageDTO);
+        }
         //record the activity create event end
+
+        taskEngineService.saveNewEvent(fitnessActivityDTO.getWechatUserId(), "发起活动", PointEventType.PUBILSHACTION,CommentChannel.FIT.toString(),fitnessActivityDTO.getTitle());
 
         return ResponseEntity.created(new URI("/api/fitness-activities/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

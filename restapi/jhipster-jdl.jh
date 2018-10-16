@@ -62,33 +62,98 @@ entity WechatUser (wechat_user) {
    * 擅长
    */
   skill String maxlength(1024),
-  
+
   /**
    * EID
    */
   eid String,
+  
+  /**
+   * SAPID
+   */
+  sapid String,
+
   /**
    * 创建时间
    */
   createTime Instant,
+
   /**
    * 修改时间
    */
-  modifyTime Instant
+  modifyTime Instant,
+
+  /**
+   * 个人积分
+   */
+  totalPoint Integer max(2147483647),
+
+  /**
+   * 关注数量
+   */
+  followCount Integer max(2147483647),
+
+  /**
+   * 粉丝数量
+   */
+  followedCount Integer max(2147483647),
+
+  /**
+   * 点赞数量
+   */
+  thumbsUpCount Integer max(2147483647)
+
 }
 /**
  * 关注记录信息
  */
 entity Follow (follow) {
+  /**
+   * 关注用户的ID
+   */
   followUserId String,
+
+  /**
+   * 关注用户的昵称
+   */
   followUserNickname String maxlength(128),
+
+  /**
+   * 关注用户的头像
+   */
   followUseravatar String maxlength(1024),
+
+  /**
+   * 被关注用户ID
+   */
   followedUserId String,
+
+  /**
+   * 被关注用户昵称
+   */
   followedUserNickname String maxlength(128),
+
+  /**
+   * 被关注用户头像
+   */
   followedUseravatar String maxlength(1024),
+
+  /**
+   * 创建时间
+   */
   createTime Instant,
-  modifyTime Instant
+
+  /**
+   * 修改时间
+   */
+  modifyTime Instant,
+
+  /**
+   * 是否相互关注
+   */
+  mutual Boolean
 }
+
 /**
  * 评论信息
  */
@@ -182,18 +247,24 @@ entity CommentPic (comment_pic) {
   /**
    * 触发时间
    */
-  createTime Instant 
+  createTime Instant
  }
- 
+
  entity Message(message){
   /**
    * 接收人id
    */
   wechatUserId String maxlength(128),
+
   /**
    * 是否读取
    */
-  read Boolean  
+  read Boolean,
+
+  /**
+   * 消息类型
+   */
+  messageType MessageType
  }
 
 /**
@@ -356,7 +427,7 @@ entity PinFanActivity (pin_fan_activity) {
    * 是否官方
    */
   official Boolean
-   
+
 }
 /**
  * 拼饭活动参与信息
@@ -445,8 +516,18 @@ entity FitnessActivity (fitness_activity) {
    * 评论数量
    */
   commentCount Integer,
+  /**
+   * 更新时间
+   */
   modifyTime Instant,
+  /**
+   * 浏览数量
+   */
   readingCount Integer
+  /**
+   * 打卡提醒时间
+   */
+  reminderTime Instant,
 }
 /**
  * 健身活动参与信息
@@ -602,13 +683,15 @@ enum CommentChannel {
   COOK,
   FIT,
   PIN,
-  FAQS
+  FAQS,
+  POINT_PRODUCT,
+  PLATFORM
 }
 
 enum EventType{
  CREATE,
- ATTEND, 
- QUIT, 
+ ATTEND,
+ QUIT,
  CANCEL,
  UPDATE,
  COMMENT,
@@ -619,6 +702,11 @@ enum EventChannel{
  FITNESS,
  PINFAN,
  FAQS
+}
+
+enum MessageType{
+ FOLLOW,
+ COMMON
 }
 
 relationship OneToMany {

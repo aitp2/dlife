@@ -2,6 +2,7 @@ package com.aitp.dlife.web.rest;
 
 import javax.validation.Valid;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aitp.dlife.domain.enumeration.CommentChannel;
+import com.aitp.dlife.domain.enumeration.PointEventType;
 import com.aitp.dlife.request.ClockInRequest;
 import com.aitp.dlife.response.ClockInActivityResponse;
 import com.aitp.dlife.response.ClockInResponse;
 import com.aitp.dlife.service.ClockInActivityService;
+import com.aitp.dlife.service.TaskEngineService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.codahale.metrics.annotation.Timed;
 
@@ -38,6 +42,9 @@ public class ClockInActivityResource {
 
 	@Autowired
 	private ClockInActivityService clockInActivityService;
+	
+	@Autowired
+	private TaskEngineService taskEngineService;
 
 	@PostMapping("/clock-ins")
 	@ApiOperation(value = "用户打卡", response = ClockInResponse.class, produces = "application/json")
@@ -50,6 +57,14 @@ public class ClockInActivityResource {
 					"请不要重复打卡哦");
 		}
 		response.setClockInSuccess(clockInActivityService.clockIn(request));
+		if(CollectionUtils.isEmpty(request.getPics()))
+		{
+			taskEngineService.saveNewEventWithComment(request.getWechatUserId(), "打卡", PointEventType.CARD, CommentChannel.FIT.toString(), request.getActivityParticipationId());
+		}
+		else
+		{
+			taskEngineService.saveNewEventWithComment(request.getWechatUserId(), "打卡", PointEventType.CARDWITHIMAGE, CommentChannel.FIT.toString(), request.getActivityParticipationId());
+		}
 		return response;
 	}
 

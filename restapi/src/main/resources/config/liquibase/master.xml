@@ -3,7 +3,7 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-	
+
    <!--  <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
    <include file="config/liquibase/changelog/20180802115448_added_entity_WechatUser.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180802115449_added_entity_Follow.xml" relativeToChangelogFile="false"/>
@@ -26,6 +26,7 @@
     <include file="config/liquibase/changelog/20180802115506_added_entity_QuestionPic.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20180807062747_added_entity_ThumbsUp.xml" relativeToChangelogFile="false"/>
     -->
+    <include file="config/liquibase/changelog/20181011150245_added_entity_TaskGroup.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
 	<!--
     <include file="config/liquibase/changelog/20180802115451_added_entity_constraints_CommentPic.xml" relativeToChangelogFile="false"/>
@@ -48,11 +49,13 @@
 	<include file="config/liquibase/changelog/20180830060635_changelog.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20180830075007_changelog.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20180831023801_changelog.xml" relativeToChangelogFile="false"/>
-	<include file="config/liquibase/changelog/20180831105653_changelog.xml" relativeToChangelogFile="false"/> 
-	<include file="config/liquibase/changelog/20180903135055_changelog.xml" relativeToChangelogFile="false"/> 
+	<include file="config/liquibase/changelog/20180831105653_changelog.xml" relativeToChangelogFile="false"/>
+	<include file="config/liquibase/changelog/20180903135055_changelog.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20180917082801_changelog.xml" relativeToChangelogFile="false"/>
-	<include file="config/liquibase/changelog/20180918091357_changelog.xml" relativeToChangelogFile="false"/> -->
-	
+	<include file="config/liquibase/changelog/20180918091357_changelog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20181008065945_changelog.xml" relativeToChangelogFile="false"/>
+	<include file="config/liquibase/changelog/20181015085514_changelog.xml" relativeToChangelogFile="false"/> -->
+
 <!-- A8 task engine tables and initial data -->
 <!--     <include file="config/liquibase/changelog/20180915103823_added_entity_TaskDefine.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180915103824_added_entity_UserTask.xml" relativeToChangelogFile="false"/>
@@ -64,4 +67,6 @@
 	<include file="config/liquibase/changelog/20180915423519_load_demo_data.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20180915582801_added_column_total_point.xml" relativeToChangelogFile="false"/>
  -->
+ 
+
 </databaseChangeLog>

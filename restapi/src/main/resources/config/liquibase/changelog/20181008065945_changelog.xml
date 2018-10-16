@@ -1,0 +1,33 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="zhangxiaowu (generated)" id="1538982004184-1">
+        <addColumn tableName="wechat_user">
+            <column name="follow_count" type="integer"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="zhangxiaowu (generated)" id="1538982004184-2">
+        <addColumn tableName="wechat_user">
+            <column name="followed_count" type="integer"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="zhangxiaowu (generated)" id="1538982004184-3">
+        <addColumn tableName="message">
+            <column name="message_type" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="zhangxiaowu (generated)" id="1538982004184-4">
+        <addColumn tableName="follow">
+            <column name="mutual" type="bit"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="zhangxiaowu (generated)" id="1538982004184-5">
+        <addColumn tableName="wechat_user">
+            <column name="thumbs_up_count" type="integer"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="zhangxiaowu (generated)" id="1538982004184-6">
+        <addColumn tableName="fitness_activity">
+            <column name="reminder_time" type="datetime"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

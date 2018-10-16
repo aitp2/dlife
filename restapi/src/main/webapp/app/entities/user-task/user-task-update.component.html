@@ -1,0 +1,92 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-user-task-heading">Create or edit a User Task</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!userTask.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="userTask.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_userid">Userid</label>
+                    <input type="text" class="form-control" name="userid" id="field_userid"
+                        [(ngModel)]="userTask.userid" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_taskStatus">Task Status</label>
+                    <input type="number" class="form-control" name="taskStatus" id="field_taskStatus"
+                        [(ngModel)]="userTask.taskStatus" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_gainPoint">Gain Point</label>
+                    <input type="number" class="form-control" name="gainPoint" id="field_gainPoint"
+                        [(ngModel)]="userTask.gainPoint" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_remainPoint">Remain Point</label>
+                    <input type="number" class="form-control" name="remainPoint" id="field_remainPoint"
+                        [(ngModel)]="userTask.remainPoint" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_validateTo">Validate To</label>
+                    <div class="d-flex">
+                        <input id="field_validateTo" type="datetime-local" class="form-control" name="validateTo" [(ngModel)]="validateTo"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_createBy">Create By</label>
+                    <input type="text" class="form-control" name="createBy" id="field_createBy"
+                        [(ngModel)]="userTask.createBy" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_createTime">Create Time</label>
+                    <div class="d-flex">
+                        <input id="field_createTime" type="datetime-local" class="form-control" name="createTime" [(ngModel)]="createTime"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_lastModifyBy">Last Modify By</label>
+                    <input type="text" class="form-control" name="lastModifyBy" id="field_lastModifyBy"
+                        [(ngModel)]="userTask.lastModifyBy" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_lastModifyTime">Last Modify Time</label>
+                    <div class="d-flex">
+                        <input id="field_lastModifyTime" type="datetime-local" class="form-control" name="lastModifyTime" [(ngModel)]="lastModifyTime"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_groupid">Groupid</label>
+                    <input type="text" class="form-control" name="groupid" id="field_groupid"
+                        [(ngModel)]="userTask.groupid" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_groupName">Group Name</label>
+                    <input type="text" class="form-control" name="groupName" id="field_groupName"
+                        [(ngModel)]="userTask.groupName" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_task">Task</label>
+                    <select class="form-control" id="field_task" name="task" [(ngModel)]="userTask.taskId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="taskDefineOption.id" *ngFor="let taskDefineOption of taskdefines; trackBy: trackTaskDefineById">{{taskDefineOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

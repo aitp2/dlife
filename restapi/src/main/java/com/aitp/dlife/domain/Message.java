@@ -9,6 +9,8 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.aitp.dlife.domain.enumeration.MessageType;
+
 /**
  * A Message.
  */
@@ -36,6 +38,14 @@ public class Message implements Serializable {
     @ApiModelProperty(value = "是否读取")
     @Column(name = "jhi_read")
     private Boolean read;
+
+    /**
+     * 消息类型
+     */
+    @ApiModelProperty(value = "消息类型")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "message_type")
+    private MessageType messageType;
 
     @ManyToOne
     @JsonIgnoreProperties("messages")
@@ -74,6 +84,19 @@ public class Message implements Serializable {
 
     public void setRead(Boolean read) {
         this.read = read;
+    }
+
+    public MessageType getMessageType() {
+        return messageType;
+    }
+
+    public Message messageType(MessageType messageType) {
+        this.messageType = messageType;
+        return this;
+    }
+
+    public void setMessageType(MessageType messageType) {
+        this.messageType = messageType;
     }
 
     public EventMessage getEventMessage() {
@@ -116,6 +139,7 @@ public class Message implements Serializable {
             "id=" + getId() +
             ", wechatUserId='" + getWechatUserId() + "'" +
             ", read='" + isRead() + "'" +
+            ", messageType='" + getMessageType() + "'" +
             "}";
     }
 }

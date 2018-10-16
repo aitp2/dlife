@@ -1,9 +1,8 @@
 package com.aitp.dlife.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -14,7 +13,6 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "system_total_points")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class SystemTotalPoints implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -23,10 +21,12 @@ public class SystemTotalPoints implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "system_id")
+    @NotNull
+    @Column(name = "system_id", nullable = false)
     private String systemId;
 
-    @Column(name = "total_point")
+    @NotNull
+    @Column(name = "total_point", nullable = false)
     private Integer totalPoint;
 
     @Column(name = "create_by")

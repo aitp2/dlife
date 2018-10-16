@@ -1,22 +1,20 @@
 package com.aitp.dlife.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import com.aitp.dlife.domain.enumeration.PointEventType;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+
+import com.aitp.dlife.domain.enumeration.PointEventType;
 
 /**
  * A UserPointDetails.
  */
 @Entity
 @Table(name = "user_point_details")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class UserPointDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,20 +23,24 @@ public class UserPointDetails implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "userid")
+    @NotNull
+    @Column(name = "userid", nullable = false)
     private String userid;
 
-    @Column(name = "apply_time")
+    @NotNull
+    @Column(name = "apply_time", nullable = false)
     private ZonedDateTime applyTime;
 
-    @Column(name = "change_point")
+    @NotNull
+    @Column(name = "change_point", nullable = false)
     private Integer changePoint;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "event_type")
     private PointEventType eventType;
 
-    @Column(name = "descript")
+    @NotNull
+    @Column(name = "descript", nullable = false)
     private String descript;
 
     @Column(name = "target_system")
@@ -64,6 +66,9 @@ public class UserPointDetails implements Serializable {
 
     @Column(name = "last_modify_time")
     private ZonedDateTime lastModifyTime;
+
+    @Column(name = "event_name")
+    private String eventName;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -242,6 +247,19 @@ public class UserPointDetails implements Serializable {
     public void setLastModifyTime(ZonedDateTime lastModifyTime) {
         this.lastModifyTime = lastModifyTime;
     }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public UserPointDetails eventName(String eventName) {
+        this.eventName = eventName;
+        return this;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -281,6 +299,7 @@ public class UserPointDetails implements Serializable {
             ", createTime='" + getCreateTime() + "'" +
             ", lastModifyBy='" + getLastModifyBy() + "'" +
             ", lastModifyTime='" + getLastModifyTime() + "'" +
+            ", eventName='" + getEventName() + "'" +
             "}";
     }
 }

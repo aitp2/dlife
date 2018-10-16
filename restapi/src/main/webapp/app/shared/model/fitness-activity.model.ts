@@ -18,6 +18,7 @@ export interface IFitnessActivity {
     commentCount?: number;
     modifyTime?: Moment;
     readingCount?: number;
+    reminderTime?: Moment;
     activityParticipations?: IActivityParticipation[];
     pics?: IPics[];
 }
@@ -39,6 +40,7 @@ export class FitnessActivity implements IFitnessActivity {
         public commentCount?: number,
         public modifyTime?: Moment,
         public readingCount?: number,
+        public reminderTime?: Moment,
         public activityParticipations?: IActivityParticipation[],
         public pics?: IPics[]
     ) {}

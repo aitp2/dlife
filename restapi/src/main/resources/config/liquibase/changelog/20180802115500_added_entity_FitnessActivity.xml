@@ -70,11 +70,15 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="modify_time" type="datetime">
+            <column name="modify_time" type="datetime" remarks="更新时间">
                 <constraints nullable="true" />
             </column>
 
-            <column name="reading_count" type="integer">
+            <column name="reading_count" type="integer" remarks="浏览数量">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="reminder_time" type="datetime" remarks="打卡提醒时间">
                 <constraints nullable="true" />
             </column>
 
@@ -85,6 +89,7 @@
         <dropDefaultValue tableName="fitness_activity" columnName="activity_start_time" columnDataType="datetime"/>
         <dropDefaultValue tableName="fitness_activity" columnName="activity_end_time" columnDataType="datetime"/>
         <dropDefaultValue tableName="fitness_activity" columnName="modify_time" columnDataType="datetime"/>
+        <dropDefaultValue tableName="fitness_activity" columnName="reminder_time" columnDataType="datetime"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

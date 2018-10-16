@@ -13,6 +13,10 @@
                 <dd>
                     <span>{{message.read}}</span>
                 </dd>
+                <dt><span ngbTooltip="消息类型">Message Type</span></dt>
+                <dd>
+                    <span>{{message.messageType}}</span>
+                </dd>
                 <dt><span>Event Message</span></dt>
                 <dd>
                     <div *ngIf="message.eventMessageId">

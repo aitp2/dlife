@@ -23,6 +23,7 @@
             <th jhiSortBy="followedUseravatar"><span>Followed Useravatar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="createTime"><span>Create Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="modifyTime"><span>Modify Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="mutual"><span>Mutual</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -37,6 +38,7 @@
                 <td>{{follow.followedUseravatar}}</td>
                 <td>{{follow.createTime | date:'medium'}}</td>
                 <td>{{follow.modifyTime | date:'medium'}}</td>
+                <td>{{follow.mutual}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

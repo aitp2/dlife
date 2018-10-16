@@ -1,8 +1,6 @@
 package com.aitp.dlife.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
@@ -15,7 +13,6 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "user_task")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class UserTask implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,6 +47,12 @@ public class UserTask implements Serializable {
 
     @Column(name = "last_modify_time")
     private ZonedDateTime lastModifyTime;
+
+    @Column(name = "groupid")
+    private String groupid;
+
+    @Column(name = "group_name")
+    private String groupName;
 
     @ManyToOne
     @JsonIgnoreProperties("")
@@ -181,6 +184,32 @@ public class UserTask implements Serializable {
         this.lastModifyTime = lastModifyTime;
     }
 
+    public String getGroupid() {
+        return groupid;
+    }
+
+    public UserTask groupid(String groupid) {
+        this.groupid = groupid;
+        return this;
+    }
+
+    public void setGroupid(String groupid) {
+        this.groupid = groupid;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public UserTask groupName(String groupName) {
+        this.groupName = groupName;
+        return this;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
     public TaskDefine getTask() {
         return task;
     }
@@ -228,6 +257,8 @@ public class UserTask implements Serializable {
             ", createTime='" + getCreateTime() + "'" +
             ", lastModifyBy='" + getLastModifyBy() + "'" +
             ", lastModifyTime='" + getLastModifyTime() + "'" +
+            ", groupid='" + getGroupid() + "'" +
+            ", groupName='" + getGroupName() + "'" +
             "}";
     }
 }

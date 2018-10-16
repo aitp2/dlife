@@ -78,6 +78,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="eid" type="varchar(255)" remarks="EID">
+                <constraints nullable="true" />
+            </column>
+
             <column name="create_time" type="datetime" remarks="创建时间">
                 <constraints nullable="true" />
             </column>
@@ -86,7 +90,23 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="eid" type="varchar(255)">
+            <column name="total_point" type="integer" remarks="个人积分">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="follow_count" type="integer" remarks="关注数量">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="followed_count" type="integer" remarks="粉丝数量">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="thumbs_up_count" type="integer" remarks="点赞数量">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="sapid" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 

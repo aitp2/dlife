@@ -4,6 +4,7 @@ import com.aitp.web.common.service.UserService;
 import com.aitp.web.common.service.beans.AuthInfo;
 import com.aitp.web.common.service.beans.Ticket;
 import com.aitp.web.common.service.beans.Token;
+import com.aitp.web.common.service.beans.UserPointAction;
 import com.aitp.web.common.service.dto.JSSDKConfigDTO;
 import com.aitp.web.common.service.dto.WechatUserDTO;
 import com.aitp.web.common.service.utils.HttpUtil;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.DigestException;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -80,6 +83,16 @@ public class WeChatUser {
                         }else{
                             wechatUserDTO.setUserId(userData.getString("id"));
                         }
+                    	UserPointAction userPointAction=new UserPointAction();
+                    	userPointAction.setEventName("登录");
+                    	userPointAction.setEventType("LOGIN");
+                    	userPointAction.setUuid(UUID.randomUUID().toString());
+                    	userPointAction.setTargetSystem("PLATFORM");
+                    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                    	String nowDateString = sdf.format(new Date());
+                    	userPointAction.setEventTime(nowDateString);
+                    	userPointAction.setUserid(wechatUserDTO.getUserId());
+                    	HttpUtil.doPostJson(restApiPath+"/task-engine/event/new", userPointAction);
                     }
                     logger.info("wechatUserDTO:{}",JSONObject.toJSONString(wechatUserDTO));
                 }

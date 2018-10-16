@@ -1,5 +1,7 @@
 package com.aitp.dlife.service.dto;
 
+import com.aitp.dlife.domain.enumeration.MessageType;
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -19,6 +21,8 @@ public class MessageDTO implements Serializable {
     private Long eventMessageId;
 
     private EventMessageDTO eventMessage;
+
+    private MessageType messageType;
 
     public Long getId() {
         return id;
@@ -60,6 +64,14 @@ public class MessageDTO implements Serializable {
         this.eventMessage = eventMessage;
     }
 
+    public MessageType getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(MessageType messageType) {
+        this.messageType = messageType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -88,6 +100,7 @@ public class MessageDTO implements Serializable {
             ", wechatUserId='" + getWechatUserId() + "'" +
             ", read='" + isRead() + "'" +
             ", eventMessage=" + getEventMessageId() +
+            ", messageType=" + getMessageType() +
             "}";
     }
 }

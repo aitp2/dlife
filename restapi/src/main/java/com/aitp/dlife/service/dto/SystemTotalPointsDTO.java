@@ -1,6 +1,7 @@
 package com.aitp.dlife.service.dto;
 
 import java.time.ZonedDateTime;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -11,8 +12,10 @@ public class SystemTotalPointsDTO implements Serializable {
 
     private Long id;
 
+    @NotNull
     private String systemId;
 
+    @NotNull
     private Integer totalPoint;
 
     private String createBy;

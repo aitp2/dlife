@@ -1,7 +1,9 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.domain.enumeration.PointEventType;
 import com.aitp.dlife.service.*;
 import com.aitp.dlife.service.dto.*;
 import com.aitp.dlife.web.rest.util.BeanPropertiesUtils;
@@ -56,13 +58,16 @@ public class PinFanActivityResource {
     private final EventMessageService eventMessageService;
 
     private final MessageService messageService;
+    
+    private final TaskEngineService taskEngineService;
     public PinFanActivityResource(PinFanActivityService pinFanActivityService,PinfanPicsService pinfanPicsService,WechatUserService wechatUserService,
-                                  EventMessageService eventMessageService,MessageService messageService) {
+                                  EventMessageService eventMessageService,MessageService messageService,TaskEngineService taskEngineService) {
         this.pinFanActivityService = pinFanActivityService;
         this.pinfanPicsService=pinfanPicsService;
         this.wechatUserService = wechatUserService;
         this.eventMessageService = eventMessageService;
         this.messageService = messageService;
+        this.taskEngineService = taskEngineService;
     }
 
     /**
@@ -97,7 +102,15 @@ public class PinFanActivityResource {
             }
         }
         result.setPinfanPics(pinfanPicsDTOS);
-        
+
+        //record the activity create event start
+        EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.PINFAN,DateUtil.getYMDDateString(new Date()),EventType.CREATE,
+            result.getWechatUserId(),result.getActivitiyTile(),result.getId(),result.getAvatar(),result.getNickName());
+        if (null!=eventMessageDTO.getId()){
+            messageService.createMessageForEvent(eventMessageDTO);
+        }
+        //record the activity create event end
+
         //log for markting start
         WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(pinFanActivityDTO.getWechatUserId()));
         String sexString="";
@@ -114,7 +127,7 @@ public class PinFanActivityResource {
         log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan","",HttpUtil.baseEncoder(pinFanActivityDTO.getActivitiyTile()),"createActivity",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
         //log for markting end
 
-
+        taskEngineService.saveNewEvent(pinFanActivityDTO.getWechatUserId(), "发起活动", PointEventType.PUBILSHACTION, CommentChannel.PIN.toString(), pinFanActivityDTO.getActivitiyTile());
         return ResponseEntity.created(new URI("/api/pin-fan-activities/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -128,8 +141,8 @@ public class PinFanActivityResource {
      * or with status 400 (Bad Request) if the p65	inFanActivityDTO is not valid,
      * or with status 500 (Internal Server Error) if the pinFanActivityDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
-     * @throws InvocationTargetException 
-     * @throws IllegalAccessException 
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
      */
     @PutMapping("/pin-fan-activities")
     @Timed
@@ -151,7 +164,7 @@ public class PinFanActivityResource {
 		if (result.getStatus() == 1) {
 			result.setCompletedSequence(pinFanActivityService.getCompletedSequence(result.getWechatUserId()));
 		}
-        
+
         //record the activity modify event start
         EventMessageDTO eventMessageDTO = eventMessageService.recordEventMessage(EventChannel.PINFAN,DateUtil.getYMDDateString(new Date()),EventType.UPDATE,
             result.getWechatUserId(),result.getActivitiyTile(),result.getId(),result.getAvatar(),result.getNickName());

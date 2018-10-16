@@ -23,11 +23,11 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="task_code" type="varchar(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" />
             </column>
 
             <column name="name" type="varchar(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" />
             </column>
 
             <column name="status" type="bit">
@@ -36,10 +36,6 @@
 
             <column name="period" type="varchar(255)">
                 <constraints nullable="true" />
-            </column>
-            
-            <column name="priority" type="integer">
-                <constraints nullable="false" />
             </column>
 
             <column name="maxlimit" type="integer">
@@ -70,6 +66,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="priority" type="integer">
+                <constraints nullable="false" />
+            </column>
+
             <column name="create_by" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
@@ -86,8 +86,13 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="groupid" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

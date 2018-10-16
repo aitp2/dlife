@@ -52,12 +52,22 @@ public class WechatUserDTO implements Serializable {
 
     @Size(max = 1024)
     private String skill;
-    
+
     private String eid;
+
+    private Integer followCount;
+
+    private Integer followedCount;
+
+    private Integer thumbsUpCount;
+
+    private Boolean followed;
 
     private String createTime;
 
     private String modifyTime;
+    
+    private String sapid;
 
     public Long getId() {
         return id;
@@ -194,7 +204,7 @@ public class WechatUserDTO implements Serializable {
     public void setModifyTime(String modifyTime) {
         this.modifyTime = modifyTime;
     }
-    
+
 
     public String getEid() {
 		return eid;
@@ -202,6 +212,47 @@ public class WechatUserDTO implements Serializable {
 
 	public void setEid(String eid) {
 		this.eid = eid;
+	}
+
+    public Integer getFollowCount() {
+        return followCount;
+    }
+
+    public void setFollowCount(Integer followCount) {
+        this.followCount = followCount;
+    }
+
+    public Integer getFollowedCount() {
+        return followedCount;
+    }
+
+    public void setFollowedCount(Integer followedCount) {
+        this.followedCount = followedCount;
+    }
+
+    public Integer getThumbsUpCount() {
+        return thumbsUpCount;
+    }
+
+    public void setThumbsUpCount(Integer thumbsUpCount) {
+        this.thumbsUpCount = thumbsUpCount;
+    }
+
+    public Boolean getFollowed() {
+        return followed;
+    }
+
+    public void setFollowed(Boolean followed) {
+        this.followed = followed;
+    }
+    
+
+    public String getSapid() {
+		return sapid;
+	}
+
+	public void setSapid(String sapid) {
+		this.sapid = sapid;
 	}
 
 	@Override
@@ -231,6 +282,8 @@ public class WechatUserDTO implements Serializable {
 				+ userName + ", nickName=" + nickName + ", avatar=" + avatar + ", mobileNum=" + mobileNum + ", project="
 				+ project + ", seat=" + seat + ", introduce=" + introduce + ", sex=" + sex + ", companyRole="
 				+ companyRole + ", cookFlag=" + cookFlag + ", intesting=" + intesting + ", skill=" + skill + ", eid="
-				+ eid + ", createTime=" + createTime + ", modifyTime=" + modifyTime + "]";
+				+ eid + ", followCount=" + followCount + ", followedCount=" + followedCount + ", thumbsUpCount="
+				+ thumbsUpCount + ", followed=" + followed + ", createTime=" + createTime + ", modifyTime=" + modifyTime
+				+ ", sapid=" + sapid + "]";
 	}
 }

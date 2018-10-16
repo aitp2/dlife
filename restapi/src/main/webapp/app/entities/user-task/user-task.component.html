@@ -1,0 +1,88 @@
+<div>
+    <h2 id="page-heading">
+        <span>User Tasks</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-user-task" [routerLink]="['/user-task/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create new User Task
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="userTasks">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="userid"><span>Userid</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="taskStatus"><span>Task Status</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="gainPoint"><span>Gain Point</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="remainPoint"><span>Remain Point</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="validateTo"><span>Validate To</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="createBy"><span>Create By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="createTime"><span>Create Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="lastModifyBy"><span>Last Modify By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="lastModifyTime"><span>Last Modify Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="groupid"><span>Groupid</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="groupName"><span>Group Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="taskId"><span>Task</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let userTask of userTasks ;trackBy: trackId">
+                <td><a [routerLink]="['/user-task', userTask.id, 'view' ]">{{userTask.id}}</a></td>
+                <td>{{userTask.userid}}</td>
+                <td>{{userTask.taskStatus}}</td>
+                <td>{{userTask.gainPoint}}</td>
+                <td>{{userTask.remainPoint}}</td>
+                <td>{{userTask.validateTo | date:'medium'}}</td>
+                <td>{{userTask.createBy}}</td>
+                <td>{{userTask.createTime | date:'medium'}}</td>
+                <td>{{userTask.lastModifyBy}}</td>
+                <td>{{userTask.lastModifyTime | date:'medium'}}</td>
+                <td>{{userTask.groupid}}</td>
+                <td>{{userTask.groupName}}</td>
+                <td>
+                    <div *ngIf="userTask.taskId">
+                        <a [routerLink]="['../task-define', userTask.taskId , 'view' ]" >{{userTask.taskId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/user-task', userTask.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/user-task', userTask.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'user-task/'+ userTask.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="userTasks && userTasks.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

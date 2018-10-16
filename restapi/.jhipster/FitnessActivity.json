@@ -91,11 +91,18 @@
         },
         {
             "fieldName": "modifyTime",
+            "javadoc": "更新时间",
             "fieldType": "Instant"
         },
         {
             "fieldName": "readingCount",
+            "javadoc": "浏览数量",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "reminderTime",
+            "javadoc": "打卡提醒时间",
+            "fieldType": "Instant"
         }
     ],
     "relationships": [
