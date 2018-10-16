@@ -80,13 +80,14 @@ public class TaskEngineResource {
      */
     @PostMapping("/task-engine/append-point")
     @Timed
-    public ResponseEntity notifyNewEvent(@Valid @RequestBody UserPointDetailsDTO userPointDetailsDTO) throws URISyntaxException {
+    public ResponseEntity<EventResultDTO> notifyNewEvent(@Valid @RequestBody UserPointDetailsDTO userPointDetailsDTO) throws URISyntaxException {
         log.debug("REST request to notify UserPointDetailDTO : {}", userPointDetailsDTO);
         if (userPointDetailsDTO.getUserid() == null ) {
             throw new BadRequestAlertException("A new record must have userid", "UserPointDetailsDTO", "notnull");
         }
-        taskEngineService.updatePointDetails(userPointDetailsDTO);
-        return new ResponseEntity(HttpStatus.OK);
+
+        return new ResponseEntity(taskEngineService.updatePointDetails(userPointDetailsDTO), HttpStatus.OK);
+        
     }
 
 }
