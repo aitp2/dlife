@@ -103,6 +103,11 @@
             "fieldName": "reminderTime",
             "javadoc": "打卡提醒时间",
             "fieldType": "Instant"
+        },
+        {
+            "fieldName": "reminderHour",
+            "javadoc": "打卡提醒时间点",
+            "fieldType": "Integer"
         }
     ],
     "relationships": [

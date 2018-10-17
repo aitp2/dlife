@@ -528,6 +528,10 @@ entity FitnessActivity (fitness_activity) {
    * 打卡提醒时间
    */
   reminderTime Instant,
+   /**
+     * 打卡提醒时间点
+     */
+   reminderHour Integer,
 }
 /**
  * 健身活动参与信息
