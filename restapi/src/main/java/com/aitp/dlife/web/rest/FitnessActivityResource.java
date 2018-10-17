@@ -67,10 +67,10 @@ public class FitnessActivityResource {
 
     private final ClockInActivityService clockInActivityService;
     
-    private final TaskEngineService taskEngineService;
+    private final PointService pointService;
 
     public FitnessActivityResource(FitnessActivityService fitnessActivityService,PicsService picsService,WechatUserService wechatUserService, EventMessageService eventMessageService,
-                                   MessageService messageService, ActivityParticipationService activityParticipationService, ClockInActivityService clockInActivityService,TaskEngineService taskEngineService) {
+                                   MessageService messageService, ActivityParticipationService activityParticipationService, ClockInActivityService clockInActivityService,PointService pointService) {
         this.fitnessActivityService = fitnessActivityService;
         this.picsService = picsService;
         this.wechatUserService=wechatUserService;
@@ -78,7 +78,7 @@ public class FitnessActivityResource {
         this.messageService = messageService;
         this.activityParticipationService = activityParticipationService;
         this.clockInActivityService = clockInActivityService;
-        this.taskEngineService = taskEngineService;
+        this.pointService = pointService;
     }
 
     /**
@@ -132,7 +132,7 @@ public class FitnessActivityResource {
         }
         //record the activity create event end
 
-        taskEngineService.saveNewEvent(fitnessActivityDTO.getWechatUserId(), "发起活动", PointEventType.PUBILSHACTION,CommentChannel.FIT.toString(),fitnessActivityDTO.getTitle());
+        pointService.saveNewEvent(fitnessActivityDTO.getWechatUserId(), "发起活动", PointEventType.PUBILSHACTION,CommentChannel.FIT.toString(),fitnessActivityDTO.getTitle());
 
         return ResponseEntity.created(new URI("/api/fitness-activities/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

@@ -37,8 +37,8 @@ import com.aitp.dlife.service.EventMessageService;
 import com.aitp.dlife.service.FitnessActivityService;
 import com.aitp.dlife.service.MessageService;
 import com.aitp.dlife.service.PinFanActivityService;
+import com.aitp.dlife.service.PointService;
 import com.aitp.dlife.service.QuestionService;
-import com.aitp.dlife.service.TaskEngineService;
 import com.aitp.dlife.service.ThumbsUpService;
 import com.aitp.dlife.service.builder.EventMessageBuilder;
 import com.aitp.dlife.service.dto.ClockInDTO;
@@ -88,12 +88,12 @@ public class ThumbsUpResource {
 
 	private final QuestionService questionService;
 	
-	private final TaskEngineService taskEngineService;
+	private final PointService pointService;
 
 	public ThumbsUpResource(ThumbsUpService thumbsUpService, CommentService commentService, FitnessActivityRepository fitnessActivityRepository,
 			FitnessActivityService fitnessActivityService, PinFanActivityService pinFanActivityService,
 			QuestionService questionService, EventMessageService eventMessageService, MessageService messageService,
-			ClockInService clockInService,TaskEngineService taskEngineService) {
+			ClockInService clockInService,PointService pointService) {
 		this.thumbsUpService = thumbsUpService;
 		this.commentService = commentService;
 		this.fitnessActivityRepository = fitnessActivityRepository;
@@ -103,7 +103,7 @@ public class ThumbsUpResource {
 		this.eventMessageService = eventMessageService;
 		this.messageService = messageService;
 		this.clockInService = clockInService;
-		this.taskEngineService = taskEngineService;
+		this.pointService = pointService;
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class ThumbsUpResource {
 		}
 		if(thumbsUpDTO.getChannel()!=null&&!thumbsUpDTO.getChannel().equals(ThumbsUpChannel.POINT_PRODUCT))
 		{
-			taskEngineService.saveNewEvent(thumbsUpDTO.getWechatUserId(), "点赞", PointEventType.SALUTE, thumbsUpDTO.getChannel().toString(),null);
+			pointService.saveNewEvent(thumbsUpDTO.getWechatUserId(), "点赞", PointEventType.SALUTE, thumbsUpDTO.getChannel().toString(),null);
 		}
 		ThumbsUpDTO result = null;
 		switch (thumbsUpDTO.getModule()) {

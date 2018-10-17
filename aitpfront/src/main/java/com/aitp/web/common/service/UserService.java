@@ -30,4 +30,7 @@ public interface UserService {
      * @return
      */
     JSONObject getUserByWechatUserId(String apiPath,String wechatUserId);
+
+	void addPoint(WechatUserDTO wechatUserDTO);
+
 }

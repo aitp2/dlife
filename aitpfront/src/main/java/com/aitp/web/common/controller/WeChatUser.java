@@ -83,16 +83,7 @@ public class WeChatUser {
                         }else{
                             wechatUserDTO.setUserId(userData.getString("id"));
                         }
-                    	UserPointAction userPointAction=new UserPointAction();
-                    	userPointAction.setEventName("登录");
-                    	userPointAction.setEventType("LOGIN");
-                    	userPointAction.setUuid(UUID.randomUUID().toString());
-                    	userPointAction.setTargetSystem("PLATFORM");
-                    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                    	String nowDateString = sdf.format(new Date());
-                    	userPointAction.setEventTime(nowDateString);
-                    	userPointAction.setUserid(wechatUserDTO.getUserId());
-                    	HttpUtil.doPostJson(restApiPath+"/task-engine/event/new", userPointAction);
+                        userService.addPoint(wechatUserDTO);
                     }
                     logger.info("wechatUserDTO:{}",JSONObject.toJSONString(wechatUserDTO));
                 }

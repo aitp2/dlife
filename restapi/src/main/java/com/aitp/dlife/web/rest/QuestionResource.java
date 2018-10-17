@@ -4,8 +4,8 @@ import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.domain.enumeration.PointEventType;
 import com.aitp.dlife.repository.specification.CommentSpecification;
 import com.codahale.metrics.annotation.Timed;
+import com.aitp.dlife.service.PointService;
 import com.aitp.dlife.service.QuestionService;
-import com.aitp.dlife.service.TaskEngineService;
 import com.aitp.dlife.web.rest.errors.BadRequestAlertException;
 import com.aitp.dlife.web.rest.util.HeaderUtil;
 import com.aitp.dlife.web.rest.util.PaginationUtil;
@@ -46,11 +46,11 @@ public class QuestionResource {
 
     private final QuestionService questionService;
     
-    private final TaskEngineService taskEngineService;
+    private final PointService pointService;
 
-    public QuestionResource(QuestionService questionService,TaskEngineService taskEngineService) {
+    public QuestionResource(QuestionService questionService,PointService pointService) {
         this.questionService = questionService;
-        this.taskEngineService = taskEngineService;
+        this.pointService = pointService;
     }
 
     /**
@@ -75,7 +75,7 @@ public class QuestionResource {
 
         QuestionDTO result = questionService.createNewQuestion(questionDTO);
         
-        taskEngineService.saveNewEvent(questionDTO.getWechatUserId(), "发起问题", PointEventType.PUBILSHQUESTION,CommentChannel.FAQS.toString(),questionDTO.getTitle());
+        pointService.saveNewEvent(questionDTO.getWechatUserId(), "发起问题", PointEventType.PUBILSHQUESTION,CommentChannel.FAQS.toString(),questionDTO.getTitle());
 
         return ResponseEntity.created(new URI("/api/questions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

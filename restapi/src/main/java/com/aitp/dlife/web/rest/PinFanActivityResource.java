@@ -59,15 +59,16 @@ public class PinFanActivityResource {
 
     private final MessageService messageService;
     
-    private final TaskEngineService taskEngineService;
+    private final PointService pointService;
+    
     public PinFanActivityResource(PinFanActivityService pinFanActivityService,PinfanPicsService pinfanPicsService,WechatUserService wechatUserService,
-                                  EventMessageService eventMessageService,MessageService messageService,TaskEngineService taskEngineService) {
+                                  EventMessageService eventMessageService,MessageService messageService,PointService pointService) {
         this.pinFanActivityService = pinFanActivityService;
         this.pinfanPicsService=pinfanPicsService;
         this.wechatUserService = wechatUserService;
         this.eventMessageService = eventMessageService;
         this.messageService = messageService;
-        this.taskEngineService = taskEngineService;
+        this.pointService = pointService;
     }
 
     /**
@@ -127,7 +128,7 @@ public class PinFanActivityResource {
         log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan","",HttpUtil.baseEncoder(pinFanActivityDTO.getActivitiyTile()),"createActivity",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
         //log for markting end
 
-        taskEngineService.saveNewEvent(pinFanActivityDTO.getWechatUserId(), "发起活动", PointEventType.PUBILSHACTION, CommentChannel.PIN.toString(), pinFanActivityDTO.getActivitiyTile());
+        pointService.saveNewEvent(pinFanActivityDTO.getWechatUserId(), "发起活动", PointEventType.PUBILSHACTION, CommentChannel.PIN.toString(), pinFanActivityDTO.getActivitiyTile());
         return ResponseEntity.created(new URI("/api/pin-fan-activities/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
