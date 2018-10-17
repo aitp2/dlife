@@ -8,6 +8,7 @@ import com.aitp.web.common.service.utils.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
@@ -95,9 +96,7 @@ public class UserServiceImp implements UserService{
     	userPointAction.setEventType("LOGIN");
     	userPointAction.setUuid(UUID.randomUUID().toString());
     	userPointAction.setTargetSystem("PLATFORM");
-    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-    	String nowDateString = sdf.format(new Date());
-    	userPointAction.setEventTime(nowDateString);
+    	userPointAction.setEventTime(ZonedDateTime.now().toString());
     	userPointAction.setUserid(wechatUserDTO.getUserId());
     	HttpUtil.doPostJson(restApiPath+"/task-engine/event/new", userPointAction,token);
 	}
