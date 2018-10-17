@@ -75,7 +75,7 @@ public class ActivityParticipationResource {
     private final EventMessageService eventMessageService;
 
     private final MessageService messageService;
-    
+
     private final PointService pointService;
 
 	public ActivityParticipationResource(ActivityParticipationService activityParticipationService,
@@ -150,7 +150,7 @@ public class ActivityParticipationResource {
         //record the activity participation event end
 
         pointService.saveNewEvent(activityParticipationDTO.getWechatUserId(), "参与活动", PointEventType.JIONACTION,CommentChannel.FIT.toString(),dto.getTitle());
-        
+
 		return ResponseEntity.created(new URI("/api/activity-participations/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
 	}
@@ -218,7 +218,10 @@ public class ActivityParticipationResource {
 			@RequestParam Long isClockIn,
 			 @RequestParam  String clockinDate) {
 		log.debug("REST request to get a page of ActivityParticipations");
-		List<FitnessActivityDTO> faActivityDTOs = fitnessActivityService.getActivitiesByState(Status.IN_PROGRESS.getValue());
+		List<FitnessActivityDTO> faActivityDTOs = fitnessActivityService.getActivitiesByStateAndReminderTime(Status.IN_PROGRESS.getValue());
+		if(null==faActivityDTOs || faActivityDTOs.size()<1){
+		    return new ArrayList<>();
+        }
 		List<Long> ids = new ArrayList<>();
 		List<ActivityParticipationDTO> activityParticipationDTOs= new ArrayList<>();
 		for (FitnessActivityDTO fitnessActivityDTO : faActivityDTOs) {

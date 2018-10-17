@@ -2,6 +2,7 @@ package com.aitp.dlife.service;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -166,9 +167,12 @@ public class FitnessActivityService {
         Date nowDate = new Date();
         SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String nowDateString =   sdf.format(nowDate);
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int remindHour = hour>=23?0:hour+1;
         switch (Status.prease(state)) {
             case IN_PROGRESS:
-                return fitnessActivityRepository.findInProgress(nowDateString).stream().map(fitnessActivityMapper::toDto).collect(Collectors.toList());
+                return fitnessActivityRepository.findInProgressAndReminderTime(nowDateString,remindHour).stream().map(fitnessActivityMapper::toDto).collect(Collectors.toList());
             default:
                 throw new CustomParameterizedException("not have the status "+state+" code.","status");
         }
