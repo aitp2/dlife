@@ -156,6 +156,24 @@ public class FitnessActivityService {
 
 	}
 
+    /**
+     * According to state query
+     * @param state
+     * @return
+     */
+    @Deprecated
+    public List<FitnessActivityDTO> getActivitiesByStateAndReminderTime(Integer state){
+        Date nowDate = new Date();
+        SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String nowDateString =   sdf.format(nowDate);
+        switch (Status.prease(state)) {
+            case IN_PROGRESS:
+                return fitnessActivityRepository.findInProgress(nowDateString).stream().map(fitnessActivityMapper::toDto).collect(Collectors.toList());
+            default:
+                throw new CustomParameterizedException("not have the status "+state+" code.","status");
+        }
+    }
+
 	public void ActivityStatus(FitnessActivityDTO fitnessActivityDTO){
         Instant now = Instant.now();
         FitnessActivity fitnessActivity = fitnessActivityMapper.toEntity(fitnessActivityDTO);
