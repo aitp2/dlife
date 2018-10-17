@@ -1,0 +1,377 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="k.c.liu (generated)" id="1539593730530-1">
+        <createTable tableName="system_total_points">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="system_total_pointsPK"/>
+            </column>
+            <column name="create_by" type="VARCHAR(255)"/>
+            <column name="create_time" type="TINYBLOB"/>
+            <column name="last_modify_by" type="VARCHAR(255)"/>
+            <column name="last_modify_time" type="TINYBLOB"/>
+            <column name="system_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_point" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-2">
+        <createTable tableName="task_define">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="task_definePK"/>
+            </column>
+            <column name="apply_strategy" type="VARCHAR(255)"/>
+            <column name="conditions" type="VARCHAR(255)"/>
+            <column name="create_by" type="VARCHAR(255)"/>
+            <column name="create_time" type="TINYBLOB"/>
+            <column name="event_type" type="VARCHAR(255)"/>
+            <column name="groupid" type="VARCHAR(255)"/>
+            <column name="last_modify_by" type="VARCHAR(255)"/>
+            <column name="last_modify_time" type="TINYBLOB"/>
+            <column name="maxlimit" type="INT"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="period" type="VARCHAR(255)"/>
+            <column name="priority" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="strategy" type="VARCHAR(255)"/>
+            <column name="target_systems" type="VARCHAR(255)"/>
+            <column name="task_code" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_point" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-3">
+        <createTable tableName="user_event">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="user_eventPK"/>
+            </column>
+            <column name="create_by" type="VARCHAR(255)"/>
+            <column name="create_time" type="TINYBLOB"/>
+            <column name="event_name" type="VARCHAR(255)"/>
+            <column name="event_time" type="TINYBLOB"/>
+            <column name="event_type" type="VARCHAR(255)"/>
+            <column name="last_modify_by" type="VARCHAR(255)"/>
+            <column name="last_modify_time" type="TINYBLOB"/>
+            <column name="param_1" type="INT"/>
+            <column name="param_3" type="VARCHAR(255)"/>
+            <column name="parem_2" type="VARCHAR(255)"/>
+            <column name="status" type="BIT"/>
+            <column name="target_system" type="VARCHAR(255)"/>
+            <column name="userid" type="VARCHAR(255)"/>
+            <column name="uuid" type="VARCHAR(255)"/>
+            <column name="validate_to" type="TINYBLOB"/>
+            <column name="apply_task_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-4">
+        <createTable tableName="user_point_details">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="user_point_detailsPK"/>
+            </column>
+            <column name="apply_time" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="change_point" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_by" type="VARCHAR(255)"/>
+            <column name="create_time" type="TINYBLOB"/>
+            <column name="descript" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_name" type="VARCHAR(255)"/>
+            <column name="event_type" type="VARCHAR(255)"/>
+            <column name="handle_by" type="VARCHAR(255)"/>
+            <column name="last_modify_by" type="VARCHAR(255)"/>
+            <column name="last_modify_time" type="TINYBLOB"/>
+            <column name="target_system" type="VARCHAR(255)"/>
+            <column name="total_point" type="INT"/>
+            <column name="userid" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="validate_string" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-5">
+        <createTable tableName="user_task">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="user_taskPK"/>
+            </column>
+            <column name="create_by" type="VARCHAR(255)"/>
+            <column name="create_time" type="TINYBLOB"/>
+            <column name="gain_point" type="INT"/>
+            <column name="group_name" type="VARCHAR(255)"/>
+            <column name="groupid" type="VARCHAR(255)"/>
+            <column name="last_modify_by" type="VARCHAR(255)"/>
+            <column name="last_modify_time" type="TINYBLOB"/>
+            <column name="remain_point" type="INT"/>
+            <column name="task_status" type="INT"/>
+            <column name="userid" type="VARCHAR(255)"/>
+            <column name="validate_to" type="TINYBLOB"/>
+            <column name="task_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-6">
+        <addColumn tableName="wechat_user">
+            <column name="follow_count" type="integer"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-7">
+        <addColumn tableName="wechat_user">
+            <column name="followed_count" type="integer"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-8">
+        <addColumn tableName="message">
+            <column name="message_type" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-9">
+        <addColumn tableName="follow">
+            <column name="mutual" type="bit"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-10">
+        <addColumn tableName="wechat_user">
+            <column name="sapid" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-11">
+        <addColumn tableName="wechat_user">
+            <column name="thumbs_up_count" type="integer"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-12">
+        <addColumn tableName="wechat_user">
+            <column name="total_point" type="integer"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-13">
+        <addForeignKeyConstraint baseColumnNames="task_id" baseTableName="user_task" constraintName="FK51vjuw6ac0m550s345ba0yya2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="task_define"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-14">
+        <addForeignKeyConstraint baseColumnNames="apply_task_id" baseTableName="user_event" constraintName="FKbvo1tiy837vb30xhhd237dhty" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="task_define"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-15">
+        <dropForeignKeyConstraint baseTableName="act_ru_identitylink" constraintName="ACT_FK_ATHRZ_PROCEDEF"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-16">
+        <dropForeignKeyConstraint baseTableName="act_ge_bytearray" constraintName="ACT_FK_BYTEARR_DEPL"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-17">
+        <dropForeignKeyConstraint baseTableName="act_ru_event_subscr" constraintName="ACT_FK_EVENT_EXEC"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-18">
+        <dropForeignKeyConstraint baseTableName="act_ru_execution" constraintName="ACT_FK_EXE_PARENT"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-19">
+        <dropForeignKeyConstraint baseTableName="act_ru_execution" constraintName="ACT_FK_EXE_PROCDEF"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-20">
+        <dropForeignKeyConstraint baseTableName="act_ru_execution" constraintName="ACT_FK_EXE_PROCINST"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-21">
+        <dropForeignKeyConstraint baseTableName="act_ru_execution" constraintName="ACT_FK_EXE_SUPER"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-22">
+        <dropForeignKeyConstraint baseTableName="act_ru_identitylink" constraintName="ACT_FK_IDL_PROCINST"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-23">
+        <dropForeignKeyConstraint baseTableName="act_procdef_info" constraintName="ACT_FK_INFO_JSON_BA"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-24">
+        <dropForeignKeyConstraint baseTableName="act_procdef_info" constraintName="ACT_FK_INFO_PROCDEF"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-25">
+        <dropForeignKeyConstraint baseTableName="act_ru_job" constraintName="ACT_FK_JOB_EXCEPTION"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-26">
+        <dropForeignKeyConstraint baseTableName="act_id_membership" constraintName="ACT_FK_MEMB_GROUP"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-27">
+        <dropForeignKeyConstraint baseTableName="act_id_membership" constraintName="ACT_FK_MEMB_USER"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-28">
+        <dropForeignKeyConstraint baseTableName="act_re_model" constraintName="ACT_FK_MODEL_DEPLOYMENT"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-29">
+        <dropForeignKeyConstraint baseTableName="act_re_model" constraintName="ACT_FK_MODEL_SOURCE"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-30">
+        <dropForeignKeyConstraint baseTableName="act_re_model" constraintName="ACT_FK_MODEL_SOURCE_EXTRA"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-31">
+        <dropForeignKeyConstraint baseTableName="act_ru_task" constraintName="ACT_FK_TASK_EXE"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-32">
+        <dropForeignKeyConstraint baseTableName="act_ru_task" constraintName="ACT_FK_TASK_PROCDEF"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-33">
+        <dropForeignKeyConstraint baseTableName="act_ru_task" constraintName="ACT_FK_TASK_PROCINST"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-34">
+        <dropForeignKeyConstraint baseTableName="act_ru_identitylink" constraintName="ACT_FK_TSKASS_TASK"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-35">
+        <dropForeignKeyConstraint baseTableName="act_ru_variable" constraintName="ACT_FK_VAR_BYTEARRAY"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-36">
+        <dropForeignKeyConstraint baseTableName="act_ru_variable" constraintName="ACT_FK_VAR_EXE"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-37">
+        <dropForeignKeyConstraint baseTableName="act_ru_variable" constraintName="ACT_FK_VAR_PROCINST"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-38">
+        <dropUniqueConstraint constraintName="ACT_UNIQ_INFO_PROCDEF" tableName="act_procdef_info"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-39">
+        <dropUniqueConstraint constraintName="ACT_UNIQ_PROCDEF" tableName="act_re_procdef"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-40">
+        <dropUniqueConstraint constraintName="PROC_INST_ID_" tableName="act_hi_procinst"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-41">
+        <dropTable tableName="act_evt_log"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-42">
+        <dropTable tableName="act_ge_bytearray"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-43">
+        <dropTable tableName="act_ge_property"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-44">
+        <dropTable tableName="act_hi_actinst"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-45">
+        <dropTable tableName="act_hi_attachment"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-46">
+        <dropTable tableName="act_hi_comment"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-47">
+        <dropTable tableName="act_hi_detail"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-48">
+        <dropTable tableName="act_hi_identitylink"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-49">
+        <dropTable tableName="act_hi_procinst"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-50">
+        <dropTable tableName="act_hi_taskinst"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-51">
+        <dropTable tableName="act_hi_varinst"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-52">
+        <dropTable tableName="act_id_group"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-53">
+        <dropTable tableName="act_id_info"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-54">
+        <dropTable tableName="act_id_membership"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-55">
+        <dropTable tableName="act_id_user"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-56">
+        <dropTable tableName="act_procdef_info"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-57">
+        <dropTable tableName="act_re_deployment"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-58">
+        <dropTable tableName="act_re_model"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-59">
+        <dropTable tableName="act_re_procdef"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-60">
+        <dropTable tableName="act_ru_event_subscr"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-61">
+        <dropTable tableName="act_ru_execution"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-62">
+        <dropTable tableName="act_ru_identitylink"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-63">
+        <dropTable tableName="act_ru_job"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-64">
+        <dropTable tableName="act_ru_task"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-65">
+        <dropTable tableName="act_ru_variable"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-66">
+        <dropTable tableName="article_referral"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-67">
+        <dropTable tableName="biz_module"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-68">
+        <dropTable tableName="blog_content"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-69">
+        <dropTable tableName="crawler"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-70">
+        <dropTable tableName="oa_notify"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-71">
+        <dropTable tableName="oa_notify_record"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-72">
+        <dropTable tableName="salary"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-73">
+        <dropTable tableName="sys_dept"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-74">
+        <dropTable tableName="sys_dict"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-75">
+        <dropTable tableName="sys_file"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-76">
+        <dropTable tableName="sys_log"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-77">
+        <dropTable tableName="sys_menu"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-78">
+        <dropTable tableName="sys_role"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-79">
+        <dropTable tableName="sys_role_menu"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-80">
+        <dropTable tableName="sys_task"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-81">
+        <dropTable tableName="sys_user"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-82">
+        <dropTable tableName="sys_user_plus"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-83">
+        <dropTable tableName="sys_user_role"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-84">
+        <dropTable tableName="tag"/>
+    </changeSet>
+    <changeSet author="k.c.liu (generated)" id="1539593730530-85">
+        <dropTable tableName="tag_biz"/>
+    </changeSet>
+</databaseChangeLog>

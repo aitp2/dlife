@@ -132,3 +132,6 @@ jhipster:
 # ===================================================================
 
 # application:
+inbound:
+      read:
+        path: /usr/local/apps/deploydir/api/excel

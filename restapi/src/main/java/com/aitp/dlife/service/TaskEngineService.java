@@ -660,13 +660,15 @@ public class TaskEngineService {
 	 * @param userPointDetailsDTO
 	 *            the user point details DTO
 	 */
-	public void updatePointDetails(@Valid UserPointDetailsDTO userPointDetailsDTO) {
+	public EventResultDTO updatePointDetails(@Valid UserPointDetailsDTO userPointDetailsDTO) {
+		EventResultDTO dto = new EventResultDTO();
 		if (PointEventType.SYSRECHARGE.equals(userPointDetailsDTO.getEventType())) {
 			// recharge
 			SystemTotalPoints systotal = systemTotalPointsRepository.findBySystemId(SYSTEM_POINT_NAME);
 			if (systotal == null) {
-				log.error("System has no point record!!!");
-				return;
+				dto.setAccept(false);
+				dto.setMessage("System has no point record!!!");
+				return dto;
 			}
 			systotal.setLastModifyBy(MODIFIED_BY);
 			systotal.setLastModifyTime(ZonedDateTime.now());
@@ -687,7 +689,13 @@ public class TaskEngineService {
 			if (user.getTotalPoint() == null) {
 				user.setTotalPoint(0);
 			}
-			user.setTotalPoint(user.getTotalPoint() + userPointDetailsDTO.getChangePoint());
+			Integer totalPoint = user.getTotalPoint() + userPointDetailsDTO.getChangePoint();
+			if(totalPoint < 0) {
+				dto.setAccept(false);
+				dto.setMessage("Account point is not enough!!!");
+				return dto;
+			}
+			user.setTotalPoint(totalPoint);
 			wechatUserRepository.save(user);
 
 			UserPointDetails detail = userPointDetailsMapper.toEntity(userPointDetailsDTO);
@@ -697,6 +705,9 @@ public class TaskEngineService {
 			detail.setLastModifyTime(ZonedDateTime.now());
 			userPointDetailsRepository.save(detail);
 		}
+		dto.setAccept(true);
+		dto.setMessage("Point changed!!!");
+		return dto;
 	}
 
 }
