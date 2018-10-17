@@ -3,6 +3,7 @@ package com.aitp.web.common.service.utils;
 import java.io.IOException;
 import java.util.Base64;
 
+import com.aitp.web.common.service.beans.UserPointAction;
 import com.aitp.web.common.service.strategy.WeChatApisHttpClientReTryStrategy;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
@@ -141,5 +142,31 @@ public class HttpUtil {
 		// jsonObject.put("sex",true);
 		// String resultData = HttpUtil.doPostJson(urlStr,jsonObject);
 		// System.out.println(resultData);
+	}
+
+	public static String doPostJson(String urlStr, Object value, String token) {
+		String valueString = gson.toJson(value);
+		LOGGER.info("-------------do post json data: url>>{} data>>>{}", urlStr, valueString);
+		String respContent = null;
+		try {
+			HttpClient client = HttpClients.createDefault();
+			HttpPost httpPost = new HttpPost(urlStr);
+			StringEntity entity = new StringEntity(valueString, "utf-8");
+			entity.setContentEncoding("UTF-8");
+			entity.setContentType("application/json");
+			httpPost.setEntity(entity);
+			httpPost.setHeader("Authorization", "Bearer "+token);
+			HttpResponse resp = client.execute(httpPost);
+			LOGGER.info("Status Code:{}", resp.getStatusLine().getStatusCode());
+			if (resp.getStatusLine().getStatusCode() == 201||resp.getStatusLine().getStatusCode() == 200) {
+				HttpEntity resultData = resp.getEntity();
+				respContent = EntityUtils.toString(resultData, "UTF-8");
+			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return respContent;	
 	}
 }

@@ -21,8 +21,10 @@ import com.aitp.dlife.domain.ClockinSummary;
 import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.domain.Pics;
 import com.aitp.dlife.domain.WechatUser;
+import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
+import com.aitp.dlife.domain.enumeration.PointEventType;
 import com.aitp.dlife.repository.ActivityParticipationRepository;
 import com.aitp.dlife.repository.ClockInRepository;
 import com.aitp.dlife.repository.ClockinSummaryRepository;
@@ -61,6 +63,8 @@ public class ClockInActivityService {
 	private EventMessageService eventMessageService;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private PointService pointService;
 
 	/**
 	 * 用户打卡
@@ -259,6 +263,14 @@ public class ClockInActivityService {
 				pics.setCreateTime(Instant.now());
 				picsRepository.save(pics);
 			}
+		}
+		if(CollectionUtils.isEmpty(request.getPics()))
+		{
+			pointService.saveNewEvent(request.getWechatUserId(), "打卡", PointEventType.CARD, CommentChannel.FIT.toString(), activityParticipation.getFitnessActivity().getTitle());
+		}
+		else
+		{
+			pointService.saveNewEvent(request.getWechatUserId(), "打卡", PointEventType.CARDWITHIMAGE, CommentChannel.FIT.toString(), activityParticipation.getFitnessActivity().getTitle());
 		}
 	}
 

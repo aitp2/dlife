@@ -166,54 +166,6 @@ public class TaskEngineService {
 	}
 	
 	/**
-	 * Save new event.
-	 *
-	 * @param userId
-	 * @param eventName
-	 * @param eventType
-	 * @param targetSystem
-	 * @param comment 
-	 * @return the event result DTO
-	 */
-	public EventResultDTO saveNewEvent(String userId,String eventName,PointEventType eventType,String targetSystem, String comment) {
-		UserEventDTO userEventDTO =new UserEventDTO();
-		userEventDTO.setUserid(userId);
-		userEventDTO.setEventName(eventName);
-		userEventDTO.setEventType(eventType);
-		userEventDTO.setTargetSystem(targetSystem);
-		userEventDTO.setUuid(UUID.randomUUID().toString());
-		if(StringUtils.isNotBlank(comment))
-		{
-			userEventDTO.setParem2(comment);
-		}
-		userEventDTO.setEventTime(ZonedDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault()));
-		return this.saveNewEvent(userEventDTO);
-	}
-	
-	public EventResultDTO saveNewEventWithComment(String userId,String eventName,PointEventType eventType,String targetSystem, Long objectId) {
-		String title=null;
-		if(objectId!=null)
-		{
-			if(CommentChannel.FIT.toString().equals(targetSystem))
-			{
-				FitnessActivityDTO fit = fitnessActivityService.findOne(objectId);
-				title=fit!=null?fit.getTitle():null;
-			}
-			else if(CommentChannel.PIN.toString().equals(targetSystem))
-			{
-				PinFanActivityDTO pin = pinFanActivityService.findOne(objectId);
-				title=pin!=null?pin.getActivitiyTile():null;
-			}
-			else if(CommentChannel.FAQS.toString().equals(targetSystem))
-			{
-				Optional<QuestionDTO> question = questionService.findOne(objectId);
-				title=question.isPresent()?question.get().getTitle():null;
-			}
-		}
-		return  saveNewEvent( userId, eventName, eventType, targetSystem,title);
-	}
-
-	/**
 	 * Validate user event DTO.
 	 *
 	 * @param userEventDTO the user event DTO
@@ -559,7 +511,7 @@ public class TaskEngineService {
 		ExpressionParser parser = new SpelExpressionParser();
 		StandardEvaluationContext itemContext = new StandardEvaluationContext(cond);
 		Expression exp = parser.parseExpression(cond.getCondition());
-		return exp.getValue(itemContext, Boolean.class);
+		return (boolean) exp.getValue(itemContext, Boolean.class);
 	}
 
 	/**

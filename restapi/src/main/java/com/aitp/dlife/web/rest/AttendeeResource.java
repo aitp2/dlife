@@ -1,7 +1,6 @@
 package com.aitp.dlife.web.rest;
 
 import java.net.URISyntaxException;
-import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -26,17 +25,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aitp.dlife.domain.PinFanActivity;
 import com.aitp.dlife.domain.enumeration.CommentChannel;
 import com.aitp.dlife.domain.enumeration.EventChannel;
 import com.aitp.dlife.domain.enumeration.EventType;
 import com.aitp.dlife.domain.enumeration.PointEventType;
-import com.aitp.dlife.repository.PinFanActivityRepository;
 import com.aitp.dlife.service.AttendeeService;
 import com.aitp.dlife.service.EventMessageService;
 import com.aitp.dlife.service.MessageService;
 import com.aitp.dlife.service.PinFanActivityService;
-import com.aitp.dlife.service.TaskEngineService;
+import com.aitp.dlife.service.PointService;
 import com.aitp.dlife.service.WechatUserService;
 import com.aitp.dlife.service.dto.AttendeeDTO;
 import com.aitp.dlife.service.dto.EventMessageDTO;
@@ -67,16 +64,16 @@ public class AttendeeResource {
     private final WechatUserService wechatUserService;
     private final EventMessageService eventMessageService;
     private final MessageService messageService;
-    private final TaskEngineService taskEngineService;
+    private final PointService pointService;
 
     public AttendeeResource(AttendeeService attendeeService,PinFanActivityService pinFanActivityService,WechatUserService wechatUserService,
-                            EventMessageService eventMessageService,MessageService messageService,TaskEngineService taskEngineService) {
+                            EventMessageService eventMessageService,MessageService messageService,PointService pointService) {
         this.attendeeService = attendeeService;
         this.pinFanActivityService=pinFanActivityService;
         this.wechatUserService=wechatUserService;
         this.eventMessageService = eventMessageService;
         this.messageService = messageService;
-		this.taskEngineService = taskEngineService;
+		this.pointService = pointService;
     }
 
     /**
@@ -135,7 +132,7 @@ public class AttendeeResource {
         log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}","pinfan",activityDTO.getId(),HttpUtil.baseEncoder(activityDTO.getActivitiyTile()),"attend",DateUtil.getYMDDateString(new Date()),wechatUserDTO.getNickName(),sexString);
         //log for markting end
 
-		taskEngineService.saveNewEvent(attendeeDTO.getWechatUserId(), "参与活动", PointEventType.JIONACTION, CommentChannel.PIN.toString(),activityDTO.getActivitiyTile());
+        pointService.saveNewEvent(attendeeDTO.getWechatUserId(), "参与活动", PointEventType.JIONACTION, CommentChannel.PIN.toString(),activityDTO.getActivitiyTile());
         return ResponseEntity.ok().body(result);
     }
 
