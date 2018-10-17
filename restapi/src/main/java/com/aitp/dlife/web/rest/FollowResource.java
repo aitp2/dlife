@@ -98,6 +98,11 @@ public class FollowResource {
             throw new BadRequestAlertException("The request wechat user id must be number type", ENTITY_NAME, "notNumberType");
         }
 
+        //check is the follow user id same as the followed user id
+        if(followDTO.getFollowUserId().equals(followDTO.getFollowedUserId())){
+            throw new BadRequestAlertException("The request followed use id must different with the follow user id", ENTITY_NAME, "followUserIdSameAsFollowedUserId");
+        }
+
         FollowDTO result = followService.createFollow(followDTO);
 
         pointService.saveNewEvent(followDTO.getFollowUserId(), "关注他人", PointEventType.FOCUS, CommentChannel.PLATFORM.toString(),"");
