@@ -27,15 +27,13 @@ public class PointShopController {
 
     @Autowired
     private PointShopService pointShopService;
-    @ResponseBody
+
     @RequestMapping(path="/sendMessage",method=RequestMethod.POST, produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public Map<String, Object> sendMessage(@RequestBody ActivityMessageDTO message){
+    public String sendMessage(@RequestBody ActivityMessageDTO message){
         logger.info("request to send message for point user:{} type:{}",message.getTouser(),message.getType());
 
         pointShopService.sendMessage(message);
-        Map<String,Object> result = new HashMap<>();
-        result.put("accept",true);
-        result.put("message","消息已发送！");
-        return result;
+
+        return "ok";
     }
 }
