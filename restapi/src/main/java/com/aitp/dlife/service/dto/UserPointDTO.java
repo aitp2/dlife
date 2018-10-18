@@ -14,6 +14,9 @@ public class UserPointDTO {
 	/** The today point. */
 	private Integer todayPoint;
 
+	/** The today max point. */
+	private Integer todayMaxPoint;
+	
 	/**
 	 * Gets the id.
 	 *
@@ -66,5 +69,13 @@ public class UserPointDTO {
 	 */
 	public void setTodayPoint(Integer todayPoint) {
 		this.todayPoint = todayPoint;
+	}
+
+	public Integer getTodayMaxPoint() {
+		return todayMaxPoint;
+	}
+
+	public void setTodayMaxPoint(Integer todayMaxPoint) {
+		this.todayMaxPoint = todayMaxPoint;
 	}
 }

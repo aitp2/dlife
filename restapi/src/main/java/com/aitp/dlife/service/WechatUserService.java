@@ -132,9 +132,12 @@ public class WechatUserService {
 		if(dto.getTotalPoint() == null) {
 			dto.setTotalPoint(0);
 			dto.setTodayPoint(0);
+			dto.setTodayMaxPoint(0);
 		} else {
 			dto.setTodayPoint(this.wechatUserRepository.sumTodayPointsByUserid(String.valueOf(id)));
+			dto.setTodayMaxPoint(this.wechatUserRepository.sumTodayMaxPoints());
 		}
+		
 		return dto;
 	}
 }
