@@ -60,9 +60,10 @@ public class FitnessMessageServiceImpl implements FitnessMessageService{
     }
 
     private FitnessMessageDTO getFitnessByIdFromAPI(String id){
+        String token = userService.getAccessTokenForAdmin();
         final String restApiPath=env.getProperty("rest_api_url");
         FitnessMessageDTO fitnessMessageDTO = new FitnessMessageDTO();
-        String fitnessInfo = HttpUtil.doGetJson(restApiPath+"/fitness-activities/"+id);
+        String fitnessInfo = HttpUtil.doGetJson(restApiPath+"/fitness-activities/"+id,token);
         if (StringUtils.isNotBlank(fitnessInfo)){
             Gson gson = new Gson();
             fitnessMessageDTO = gson.fromJson(fitnessInfo,FitnessMessageDTO.class);
@@ -71,9 +72,10 @@ public class FitnessMessageServiceImpl implements FitnessMessageService{
     }
 
     public List<ActivityParticipationDTO> getActivityParticipationByActivityIdFromAPI(String id){
+        String token = userService.getAccessTokenForAdmin();
         final String restApiPath=env.getProperty("rest_api_url");
         List<ActivityParticipationDTO> dtos = new ArrayList<>();
-        String participationInfo = HttpUtil.doGetJson(restApiPath+"/activity-participations/getParticipationsByActivityId?activityId="+id);
+        String participationInfo = HttpUtil.doGetJson(restApiPath+"/activity-participations/getParticipationsByActivityId?activityId="+id,token);
         if (StringUtils.isNotBlank(participationInfo)){
             Type listType = new TypeToken<ArrayList<ActivityParticipationDTO>>(){}.getType();
             Gson gson = new Gson();

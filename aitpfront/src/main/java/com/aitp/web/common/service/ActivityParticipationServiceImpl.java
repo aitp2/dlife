@@ -21,22 +21,25 @@ public class ActivityParticipationServiceImpl implements ActivityParticipationSe
 
     @Autowired
     private Environment env;
+
+    @Autowired
+    private UserService userService;
 	
 	@Override
 	public List<ActivityParticipationDTO> getNonClockParticipation() {
-		
-		   final String restApiPath=env.getProperty("rest_api_url");
-		   List<ActivityParticipationDTO> activityParticipationDTOs = new ArrayList<ActivityParticipationDTO>();
-	        SimpleDateFormat simpleDateFormat =new SimpleDateFormat("yyyy-MM-dd");
-	        StringBuffer url =  new StringBuffer().append(restApiPath).append("/activity-participations/getNonClock?clockinDate=");
-	        url.append(simpleDateFormat.format(new Date()));
-	        url.append("&isClockIn=0");
-	        String fitnessInfo = HttpUtil.doGetJson(url.toString());
-	        if (StringUtils.isNotBlank(fitnessInfo)){
-	            Gson gson = new Gson();
-	            Type type = new TypeToken<ArrayList<ActivityParticipationDTO>>(){}.getType();
-	            activityParticipationDTOs = gson.fromJson(fitnessInfo,type);
-	        }
+	    String token = userService.getAccessTokenForAdmin();
+	   final String restApiPath=env.getProperty("rest_api_url");
+	   List<ActivityParticipationDTO> activityParticipationDTOs = new ArrayList<ActivityParticipationDTO>();
+		SimpleDateFormat simpleDateFormat =new SimpleDateFormat("yyyy-MM-dd");
+		StringBuffer url =  new StringBuffer().append(restApiPath).append("/activity-participations/getNonClock?clockinDate=");
+		url.append(simpleDateFormat.format(new Date()));
+		url.append("&isClockIn=0");
+		String fitnessInfo = HttpUtil.doGetJson(url.toString(),token);
+		if (StringUtils.isNotBlank(fitnessInfo)){
+			Gson gson = new Gson();
+			Type type = new TypeToken<ArrayList<ActivityParticipationDTO>>(){}.getType();
+			activityParticipationDTOs = gson.fromJson(fitnessInfo,type);
+		}
 		return activityParticipationDTOs;
 	}
 }

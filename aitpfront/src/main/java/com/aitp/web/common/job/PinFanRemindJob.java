@@ -2,6 +2,7 @@ package com.aitp.web.common.job;
 
 
 import com.aitp.web.common.service.PinFanMessageService;
+import com.aitp.web.common.service.UserService;
 import com.aitp.web.common.service.dto.PinFanActivityMessageDTO;
 import com.aitp.web.common.service.utils.HttpUtil;
 import com.google.gson.Gson;
@@ -25,6 +26,9 @@ public class PinFanRemindJob {
 	@Autowired
 	private PinFanMessageService pinFanMessageService;
 
+	@Autowired
+	private UserService userService;
+
 
 	@Scheduled(cron="${cron.pinfan.remind}")
 	public void start(){
@@ -39,8 +43,9 @@ public class PinFanRemindJob {
 	}
 
 	private List<PinFanActivityMessageDTO> getActivityByStartTimeFromAPI(){
+		String token = userService.getAccessTokenForAdmin();
 		final String restApiPath=env.getProperty("rest_api_url");
-		String activityInfos = HttpUtil.doGetJson(restApiPath+"/pin-fan-activities/getActivityForTomorrow");
+		String activityInfos = HttpUtil.doGetJson(restApiPath+"/pin-fan-activities/getActivityForTomorrow",token);
 		Type listType = new TypeToken<ArrayList<PinFanActivityMessageDTO>>(){}.getType();
 		Gson gson = new Gson();
 		return gson.fromJson(activityInfos,listType);
