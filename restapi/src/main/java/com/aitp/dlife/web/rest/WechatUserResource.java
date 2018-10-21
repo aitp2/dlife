@@ -154,7 +154,7 @@ public class WechatUserResource {
     @GetMapping("/wechat-users/follow/{currentId}/{targetId}")
     @ApiOperation(value = "获取具体用户信息和关注信息", response = WechatUserDTO.class, produces = "application/json")
     @ApiImplicitParams({
-        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "currentId", value = "当前用户ID", required = false),
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "currentId", value = "当前用户ID", required = true),
         @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "targetId", value = "目标用户ID", required = true)})
     @Timed
     public ResponseEntity<WechatUserDTO> getWechatUserAndFollowMessage(@PathVariable Long currentId,@PathVariable Long targetId) {

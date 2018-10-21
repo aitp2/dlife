@@ -78,6 +78,7 @@ public class FollowService {
             followDTO = followMapper.toDto(follows.get(0));
         }
 
+        // check is the follow is mutual follow
         List<Follow> followeds  = followRepository.findByFollowUserIdAndFollowedUserId(originalFollowDTO.getFollowedUserId(), originalFollowDTO.getFollowUserId());
         if (!CollectionUtils.isEmpty(followeds)){
             followDTO.setMutual(Boolean.TRUE);
@@ -87,8 +88,6 @@ public class FollowService {
             follow.setModifyTime((new Date()).toInstant());
             followRepository.save(follow);
         }
-
-        addFollowCount(originalFollowDTO);
 
         followDTO.setModifyTime(DateUtil.getYMDDateString(new Date()));
         return save(followDTO);
@@ -153,6 +152,8 @@ public class FollowService {
 
         //set default messages
         followDTO.setCreateTime(DateUtil.getYMDDateString(new Date()));
+
+        addFollowCount(followDTO);
 
         return followDTO;
     }
