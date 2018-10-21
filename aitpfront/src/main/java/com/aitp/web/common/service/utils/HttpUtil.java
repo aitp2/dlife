@@ -50,6 +50,26 @@ public class HttpUtil {
 		return result;
 	}
 
+	public static String doGetJson(String urlStr,String token) {
+		String result = "";
+		HttpClient client = HttpClients.createDefault();
+		HttpGet get = new HttpGet(urlStr);
+        get.setHeader("Authorization", "Bearer "+token);
+		try {
+			HttpResponse response = client.execute(get);
+			int code = response.getStatusLine().getStatusCode();
+			if (code == 200) {
+				HttpEntity entity = response.getEntity();
+				result = EntityUtils.toString(entity, "UTF-8");
+			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 	public static String doPostJson(String urlStr, Object value) {
 		String valueString = gson.toJson(value);
 		LOGGER.info("-------------do post json data: url>>{} data>>>{}", urlStr, valueString);

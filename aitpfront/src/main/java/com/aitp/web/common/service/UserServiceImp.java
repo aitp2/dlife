@@ -51,7 +51,8 @@ public class UserServiceImp implements UserService{
 
     @Override
     public JSONObject getUserByWechatUserId(String apiPath, String wechatUserId) {
-        String userInfo = HttpUtil.doGetJson(apiPath+"/wechat-users/"+wechatUserId);
+        String token = getAccessTokenForAdmin();
+        String userInfo = HttpUtil.doGetJson(apiPath+"/wechat-users/"+wechatUserId,token);
         if(StringUtils.isNotBlank(userInfo)){
             return JSONObject.parseObject(userInfo);
         }
@@ -100,4 +101,22 @@ public class UserServiceImp implements UserService{
     	userPointAction.setUserid(wechatUserDTO.getUserId());
     	HttpUtil.doPostJson(restApiPath+"/task-engine/event/new", userPointAction,token);
 	}
+
+    @Override
+    public String getAccessTokenForAdmin() {
+        String restApiPath=env.getProperty("rest_api_url");
+        UserToken userToken=new UserToken();
+        userToken.setPassword("admin");
+        userToken.setRememberMe("false");
+        userToken.setUsername("admin");
+        String result = HttpUtil.doPostJson(restApiPath+"/authenticate",userToken);
+        try
+        {
+            return JSONObject.parseObject(result, IdToken.class).getId_token();
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
 }

@@ -59,6 +59,16 @@ public class FitnessActivityDTO implements Serializable {
 
     private Integer clockStatus;
 
+    private Integer reminderHour;
+
+    public Integer getReminderHour() {
+        return reminderHour;
+    }
+
+    public void setReminderHour(Integer reminderHour) {
+        this.reminderHour = reminderHour;
+    }
+
     private Set<PicsDTO> images = new HashSet<>();
 
     private List<EventMessageDTO> eventMessages;

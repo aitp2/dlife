@@ -33,4 +33,5 @@ public interface UserService {
 
 	void addPoint(WechatUserDTO wechatUserDTO);
 
+	String getAccessTokenForAdmin();
 }

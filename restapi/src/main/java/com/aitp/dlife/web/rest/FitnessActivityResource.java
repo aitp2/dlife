@@ -66,7 +66,7 @@ public class FitnessActivityResource {
     private final ActivityParticipationService activityParticipationService;
 
     private final ClockInActivityService clockInActivityService;
-    
+
     private final PointService pointService;
 
     public FitnessActivityResource(FitnessActivityService fitnessActivityService,PicsService picsService,WechatUserService wechatUserService, EventMessageService eventMessageService,
@@ -94,6 +94,9 @@ public class FitnessActivityResource {
         log.debug("REST request to save FitnessActivity : {}", fitnessActivityDTO);
         if (fitnessActivityDTO.getId() != null) {
             throw new BadRequestAlertException("A new fitnessActivity cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        if(null == fitnessActivityDTO.getReminderHour()){
+            fitnessActivityDTO.setReminderHour(22);
         }
         Set<PicsDTO> imagesDTO = new HashSet<>();
         fitnessActivityDTO.setCommentCount(0);
@@ -163,6 +166,10 @@ public class FitnessActivityResource {
             fitnessActivityDTO.setStatus(oldDto.getStatus());
             fitnessActivityDTO.setCommentCount(oldDto.getCommentCount());
             fitnessActivityDTO.setReadingCount(oldDto.getReadingCount());
+        }
+
+        if(null == fitnessActivityDTO.getReminderHour()){
+            fitnessActivityDTO.setReminderHour(22);
         }
 
         FitnessActivityDTO result = fitnessActivityService.save(fitnessActivityDTO);
@@ -342,6 +349,9 @@ public class FitnessActivityResource {
 		fitnessActivityRecord.setReadingCount(
 				fitnessActivityRecord.getReadingCount() != null ? fitnessActivityRecord.getReadingCount() + 1 : 1);
 
+        if(null == fitnessActivityRecord.getReminderHour()){
+            fitnessActivityRecord.setReminderHour(22);
+        }
 		FitnessActivityDTO result = fitnessActivityService.save(fitnessActivityRecord);
 
 		return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, id.toString())).body(result);

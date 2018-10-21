@@ -34,4 +34,7 @@ public interface FitnessActivityRepository extends JpaSpecificationExecutor<Fitn
 	@Query(value = "select * from fitness_activity LEFT JOIN activity_participation ON fitness_activity.id = activity_participation.fitness_activity_id  where activity_end_time <:nowData",nativeQuery = true)
 	List<FitnessActivity> findEnd(@Param("nowData")String nowData);
 
+    @Query(value = "select * from fitness_activity LEFT JOIN activity_participation ON fitness_activity.id = activity_participation.fitness_activity_id  where activity_start_time <:nowData and activity_end_time >:nowData and reminder_hour=:remindHour",nativeQuery = true)
+    Set<FitnessActivity> findInProgressAndReminderTime(@Param("nowData")String nowData,@Param("remindHour")Integer remindHour);
+
 }

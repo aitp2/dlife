@@ -151,9 +151,10 @@ public class PinFanMessageServiceImpl implements PinFanMessageService{
 
 
     private PinFanActivityMessageDTO getActivityByIdFromAPI(String id){
+        String token = userService.getAccessTokenForAdmin();
         final String restApiPath=env.getProperty("rest_api_url");
         PinFanActivityMessageDTO pinFanActivityMessageDTO = new PinFanActivityMessageDTO();
-        String pinfanInfo = HttpUtil.doGetJson(restApiPath+"/pin-fan-activities/"+id);
+        String pinfanInfo = HttpUtil.doGetJson(restApiPath+"/pin-fan-activities/"+id,token);
         if (StringUtils.isNotBlank(pinfanInfo)){
             Gson gson = new Gson();
             pinFanActivityMessageDTO = gson.fromJson(pinfanInfo,PinFanActivityMessageDTO.class);
