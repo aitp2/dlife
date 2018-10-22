@@ -195,29 +195,64 @@ public class FollowService {
         if (followDTO != null){
             List<Follow> followeds  = followRepository.findByFollowUserIdAndFollowedUserId(followDTO.getFollowedUserId(), followDTO.getFollowUserId());
 
-            if (!CollectionUtils.isEmpty(followeds)){
-                Follow follow = followeds.get(0);
+            // remove the mutual flag
+            removeMutual(followDTO.getFollowUserId(),followDTO.getFollowedUserId());
 
-                follow.setMutual(Boolean.FALSE);
-                follow.setModifyTime((new Date()).toInstant());
-                followRepository.save(follow);
-            }
-
-            minusFollowCount(followDTO);
+            // minus the follow count from the users
+            minusFollowCount(followDTO.getFollowUserId(),followDTO.getFollowedUserId());
         }
 
         followRepository.deleteById(id);
     }
 
     /**
-     * minus the follow count of the customer
+     * Delete the follow by id.
      *
-     * @param originalFollowDTO
+     * @param followUserId the id of the entity
+     * @param followedUserId the id of the entity
      */
-    protected void minusFollowCount(FollowDTO originalFollowDTO){
+    public void cancelFollow(String followUserId, String followedUserId) {
+        log.debug("Request to cancel Follow followUserId: {}, followedUserId: {}", followUserId,followedUserId);
+        List<Follow> follows  = followRepository.findByFollowUserIdAndFollowedUserId(followUserId, followedUserId);
+
+        if (!CollectionUtils.isEmpty(follows)){
+            Follow follow = follows.get(0);
+
+            // remove the mutual flag
+            removeMutual(followUserId,followedUserId);
+
+            // minus the follow count from the users
+            minusFollowCount(followUserId,followedUserId);
+
+            followRepository.deleteById(follow.getId());
+        }
+        else{
+            log.error("Have no data. Can not cancel follow followUserId: {}, followedUserId: {}", followUserId,followedUserId);
+        }
+
+    }
+
+    protected void removeMutual(String followUserId, String followedUserId){
+        List<Follow> followeds  = followRepository.findByFollowUserIdAndFollowedUserId(followedUserId, followUserId);
+
+        if (!CollectionUtils.isEmpty(followeds)){
+            Follow followed = followeds.get(0);
+
+            followed.setMutual(Boolean.FALSE);
+            followed.setModifyTime((new Date()).toInstant());
+            followRepository.save(followed);
+        }
+    }
+
+    /**
+     *
+     * @param followUserId
+     * @param followedUserId
+     */
+    protected void minusFollowCount(String followUserId, String followedUserId){
 
         //minus follow count
-        Optional<WechatUser> followUserOptional = wechatUserRepository.findById(Long.valueOf(originalFollowDTO.getFollowUserId()));
+        Optional<WechatUser> followUserOptional = wechatUserRepository.findById(Long.valueOf(followUserId));
         if (followUserOptional.isPresent()){
             WechatUser followUser = followUserOptional.get();
             int followCount = (followUser.getFollowCount() == null ? 0 : followUser.getFollowCount().intValue() - 1);
@@ -226,7 +261,7 @@ public class FollowService {
         }
 
         //minus followed count
-        Optional<WechatUser> followedUserOptional = wechatUserRepository.findById(Long.valueOf(originalFollowDTO.getFollowedUserId()));
+        Optional<WechatUser> followedUserOptional = wechatUserRepository.findById(Long.valueOf(followedUserId));
         if (followedUserOptional.isPresent()){
             WechatUser followedUser = followedUserOptional.get();
             int followedCount = (followedUser.getFollowedCount() == null ? 0 : followedUser.getFollowedCount().intValue() - 1);

@@ -197,13 +197,31 @@ public class FollowResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/follows/{id}")
-    @ApiOperation(value = "删除关注信息", response = FollowDTO.class, produces = "application/json")
+    @ApiOperation(value = "删除关注信息", response = Void.class, produces = "application/json")
     @ApiImplicitParams({
-        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "id", value = "对象的ID", required = true) })
+        @ApiImplicitParam(paramType = "path", dataType = "Long", defaultValue = "", name = "id", value = "对象的ID", required = true) })
     @Timed
     public ResponseEntity<Void> deleteFollow(@PathVariable Long id) {
         log.debug("REST request to delete Follow : {}", id);
         followService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    /**
+     * DELETE  /follows/:id : delete the "id" follow.
+     *
+     * @param followUserId the id of the followDTO to delete
+     * @return the ResponseEntity with status 200 (OK)
+     */
+    @PostMapping("/follows/cancel/{followUserId}/{followedUserId}")
+    @ApiOperation(value = "取消关注", response = Void.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "followUserId", value = "关注用户的ID", required = true),
+        @ApiImplicitParam(paramType = "path", dataType = "String", defaultValue = "", name = "followedUserId", value = "被关注用户的ID", required = true)})
+    @Timed
+    public ResponseEntity<Void> cancelFollow(@PathVariable String followUserId,@PathVariable String followedUserId) {
+        log.debug("REST request to delete Follow followUserId: {}, followedUserId: {}", followUserId,followedUserId);
+        followService.cancelFollow(followUserId,followedUserId);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, (followUserId+"_"+followedUserId).toString())).build();
     }
 }
