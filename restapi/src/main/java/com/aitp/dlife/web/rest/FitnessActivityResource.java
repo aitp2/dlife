@@ -261,14 +261,24 @@ public class FitnessActivityResource {
         }
         String userId = spec.getQuerys().getParticipantId().toString();
         List<FitnessActivityDTO> list = fitnessActivityService.findAll(spec);
+        List<FitnessActivityDTO> noClock = new ArrayList<>();
+        List<FitnessActivityDTO> clock = new ArrayList<>();
         for(FitnessActivityDTO activityDTO : list){
             activityDTO.setActivityParticipations(null);
             activityDTO.setClockStatus(0);
             ActivityParticipationDTO dto = activityParticipationService.getByUidAndActivityId(activityDTO.getId(),userId);
             boolean flag = clockInActivityService.isClockedIn(userId,dto.getId());
             activityDTO.setClockStatus(flag?1:0);
+            if (flag){
+                clock.add(activityDTO);
+            }else{
+                noClock.add(activityDTO);
+            }
         }
-        return ResponseEntity.ok(list);
+        List<FitnessActivityDTO> returnList = new ArrayList<>();
+        returnList.addAll(noClock);
+        returnList.addAll(clock);
+        return ResponseEntity.ok(returnList);
     }
 
     /**
