@@ -186,23 +186,32 @@ public class TaskEngineService {
 		// search user event
 		List<UserEvent> events = userEventRepository.findByStatusOrderByCreateTime(false);
 		for (UserEvent event : events) {
-			// search taskdefine
-			List<TaskDefine> defines = taskDefineRepository
-					.findByStatusAndEventTypeAndTargetSystemsLikeOrderByPriorityDesc(true, event.getEventType(),
-							"%" + event.getTargetSystem() + "%");
-			// evaluate
-			if (defines.isEmpty()) {
-				saveUnApplyUserEvent(event);
-				log.warn("no task define for the event " + event.getId());
-				continue;
-			}
-			// apply
-			for (TaskDefine taskDefine : defines) {
-				if (evaluateTaskDefine(event, taskDefine)) {
-					return;
+			try {
+				// search taskdefine
+				List<TaskDefine> defines = taskDefineRepository
+						.findByStatusAndEventTypeAndTargetSystemsLikeOrderByPriorityDesc(true, event.getEventType(),
+								"%" + event.getTargetSystem() + "%");
+				// evaluate
+				if (defines.isEmpty()) {
+					saveUnApplyUserEvent(event);
+					log.warn("no task define for the event " + event.getId());
+					continue;
 				}
+				// apply
+				for (TaskDefine taskDefine : defines) {
+					if (evaluateTaskDefine(event, taskDefine)) {
+						return;
+					}
+				}
+				saveUnApplyUserEvent(event);
+			} catch (Exception e) {
+				log.error("user event error : ", e);
+				// discard user event
+				event.setStatus(true);
+				event.setLastModifyTime(ZonedDateTime.now());
+				event.setLastModifyBy("ERROR");
+				userEventRepository.save(event);
 			}
-			saveUnApplyUserEvent(event);
 		}
 	}
 
