@@ -2,6 +2,7 @@ package com.aitp.dlife.service.dto;
 
 
 
+import javax.persistence.Column;
 import javax.validation.constraints.*;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -83,6 +84,10 @@ public class PinFanActivityDTO implements Serializable {
     private Integer joinStatus = 1;
     
     private Boolean official;
+    
+    private Boolean stick;
+
+    private String stickOrder;
 
     private Set<AttendeeDTO> attendees = new HashSet<>();
 
@@ -369,5 +374,21 @@ public class PinFanActivityDTO implements Serializable {
 	public void setOfficial(Boolean official) {
 		this.official = official;
 	}
-    
+
+	public Boolean getStick() {
+		return stick;
+	}
+
+	public void setStick(Boolean stick) {
+		this.stick = stick;
+	}
+
+	public String getStickOrder() {
+		return stickOrder;
+	}
+
+	public void setStickOrder(String stickOrder) {
+		this.stickOrder = stickOrder;
+	}
+	
 }
