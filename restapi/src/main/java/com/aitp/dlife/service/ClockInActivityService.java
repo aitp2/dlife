@@ -103,7 +103,7 @@ public class ClockInActivityService {
 					EventType.CLOCKIN, request.getWechatUserId(),
 					activityParticipation.get().getFitnessActivity().getTitle(),
 					activityParticipation.get().getFitnessActivity().getId(), activityParticipation.get().getAvatar(),
-					activityParticipation.get().getNickName());
+					activityParticipation.get().getNickName(),request.getSignNote(),null);
             if (null!=eventMessageDTO.getId()){
                 messageService.createMessageForEvent(eventMessageDTO);
             }
