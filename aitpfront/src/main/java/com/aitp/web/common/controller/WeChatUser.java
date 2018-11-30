@@ -1,5 +1,6 @@
 package com.aitp.web.common.controller;
 
+import com.aitp.web.common.service.TokenService;
 import com.aitp.web.common.service.UserService;
 import com.aitp.web.common.service.beans.AuthInfo;
 import com.aitp.web.common.service.beans.Ticket;
@@ -39,6 +40,8 @@ public class WeChatUser {
     AuthClient authClient;
     @Autowired
     UserService userService;
+    @Autowired
+    private TokenService tokenService;
 
     @RequestMapping("/wechat_user.html")
     public WechatUserDTO toAccept(@RequestParam("code") String code, @RequestParam("state") String state){
@@ -82,6 +85,9 @@ public class WeChatUser {
                             }
                         }else{
                             wechatUserDTO.setUserId(userData.getString("id"));
+                        }
+                        if(StringUtils.isNotBlank(wechatUserDTO.getUserId())){
+                            wechatUserDTO.setAccessToken(tokenService.createToken(wechatUserDTO.getUserId(),false));
                         }
                         userService.addPoint(wechatUserDTO);
                     }

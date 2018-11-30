@@ -45,6 +45,12 @@ public class WechatUserDTO {
      */
     private String unionid;
 
+    /**
+     * 微信认证后，aitp平台给出的加密token
+     * aitp鉴权依据
+     * */
+    private String accessToken;
+
     public String getOpenId() {
         return openId;
     }
@@ -123,5 +129,13 @@ public class WechatUserDTO {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 }
