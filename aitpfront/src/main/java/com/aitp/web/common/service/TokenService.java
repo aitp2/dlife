@@ -46,7 +46,7 @@ public class TokenService {
         } else {
             validity = new Date(now + this.tokenValidityInMilliseconds);
         }
-
+         log.info("expiration time:{}",validity);
         return Jwts.builder()
             .setSubject(AUTHORITIES_SUBJEECT)
             .claim(AUTHORITIES_KEY, authorities)

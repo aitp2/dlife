@@ -87,7 +87,7 @@ public class WeChatUser {
                             wechatUserDTO.setUserId(userData.getString("id"));
                         }
                         if(StringUtils.isNotBlank(wechatUserDTO.getUserId())){
-                            wechatUserDTO.setAccessToken(tokenService.createToken(wechatUserDTO.getUserId(),false));
+                            wechatUserDTO.setAccessToken(tokenService.createToken(wechatUserDTO.getUserId(),true));
                         }
                         userService.addPoint(wechatUserDTO);
                     }
