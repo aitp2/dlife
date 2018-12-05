@@ -42,9 +42,9 @@ public class TokenService {
         long now = (new Date()).getTime();
         Date validity;
         if (rememberMe) {
-            validity = new Date(now + this.tokenValidityInMillisecondsForRememberMe);
+            validity = new Date(now + this.tokenValidityInMillisecondsForRememberMe*1000);
         } else {
-            validity = new Date(now + this.tokenValidityInMilliseconds);
+            validity = new Date(now + this.tokenValidityInMilliseconds*1000);
         }
          log.info("expiration time:{}",validity);
         return Jwts.builder()
