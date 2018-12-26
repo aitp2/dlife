@@ -24,11 +24,20 @@ public interface UserService {
     JSONObject createUser(String apiPath,WechatUserDTO wechatUserDTO);
 
     /**
-     * 根据wechatUserId 查询openid
+     * 更新用户信息
      * @param apiPath
-     * @param wechatUserId
+     * @param wechatUserDTO
      * @return
      */
+    void updateUser(String apiPath,WechatUserDTO wechatUserDTO);
+
+
+        /**
+         * 根据wechatUserId 查询openid
+         * @param apiPath
+         * @param wechatUserId
+         * @return
+         */
     JSONObject getUserByWechatUserId(String apiPath,String wechatUserId);
 
 	void addPoint(WechatUserDTO wechatUserDTO);

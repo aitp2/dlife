@@ -195,6 +195,9 @@ public class WechatUser implements Serializable {
     @Column(name = "sapid")
     private String sapid;
 
+    @Column(name = "company")
+    private String company;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -490,6 +493,15 @@ public class WechatUser implements Serializable {
         this.sapid = sapid;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
 
     @Override
     public boolean equals(Object o) {

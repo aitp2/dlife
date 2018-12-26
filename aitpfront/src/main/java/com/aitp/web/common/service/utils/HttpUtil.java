@@ -15,6 +15,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
@@ -30,6 +31,32 @@ public class HttpUtil {
 	static final Logger LOGGER = LoggerFactory.getLogger(HttpUtil.class);
 
 	static Gson gson = new Gson();
+
+	public static String doPutJson(String urlStr, Object value) {
+		String valueString = gson.toJson(value);
+
+		LOGGER.info("-------------do post json data: url>>{} data>>>{}", urlStr, valueString);
+		String respContent = null;
+		try {
+			HttpClient client = HttpClients.createDefault();
+			HttpPut HttpPut = new HttpPut(urlStr);
+			StringEntity entity = new StringEntity(valueString, "utf-8");
+			entity.setContentEncoding("UTF-8");
+			entity.setContentType("application/json");
+			HttpPut.setEntity(entity);
+			HttpResponse resp = client.execute(HttpPut);
+			LOGGER.info("Status Code:{}", resp.getStatusLine().getStatusCode());
+			if (resp.getStatusLine().getStatusCode() == 201) {
+				HttpEntity resultData = resp.getEntity();
+				respContent = EntityUtils.toString(resultData, "UTF-8");
+			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return respContent;
+	}
 
 	public static String doGetJson(String urlStr) {
 		String result = "";

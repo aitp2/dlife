@@ -69,6 +69,8 @@ public class WechatUserDTO implements Serializable {
     
     private String sapid;
 
+    private String company;
+
     public Long getId() {
         return id;
     }
@@ -255,6 +257,13 @@ public class WechatUserDTO implements Serializable {
 		this.sapid = sapid;
 	}
 
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
 	@Override
     public boolean equals(Object o) {
         if (this == o) {

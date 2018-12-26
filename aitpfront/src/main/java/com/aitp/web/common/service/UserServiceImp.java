@@ -42,11 +42,20 @@ public class UserServiceImp implements UserService{
         if (StringUtils.isNotBlank(wechatUserDTO.getSex())){
             jsonObject.put("sex",Integer.valueOf(wechatUserDTO.getSex()));
         }
+        jsonObject.put("company",wechatUserDTO.getCompany());
+        jsonObject.put("company_role",wechatUserDTO.getCompanyRole());
         String resultData=HttpUtil.doPostJson(apiPath+"/wechat-users",jsonObject);
         if(StringUtils.isNotBlank(resultData)){
             return JSONObject.parseObject(resultData);
         }
         return null;
+    }
+
+    public void updateUser(String apiPath,WechatUserDTO wechatUserDTO){
+        wechatUserDTO.setCompany("dlife");
+        wechatUserDTO.setCompanyRole("customer");
+        String resultData=HttpUtil.doPutJson(apiPath+" /wechat-users",wechatUserDTO);
+
     }
 
     @Override

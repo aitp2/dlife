@@ -4,6 +4,11 @@ package com.aitp.web.common.service.dto;
  * 微信用户信息
  */
 public class WechatUserDTO {
+
+    public static final String COMPANY_DLIFE="dlife";
+
+    public static final String COMPANY_DLIFE_ROLE_CUSTOMER="customer";
+
     /**
      * 用户的唯一标识
      */
@@ -45,6 +50,9 @@ public class WechatUserDTO {
      */
     private String unionid;
 
+    private String company;
+
+    private String companyRole;
     /**
      * 微信认证后，aitp平台给出的加密token
      * aitp鉴权依据
@@ -137,5 +145,21 @@ public class WechatUserDTO {
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getCompanyRole() {
+        return companyRole;
+    }
+
+    public void setCompanyRole(String companyRole) {
+        this.companyRole = companyRole;
     }
 }
