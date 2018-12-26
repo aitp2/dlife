@@ -86,6 +86,7 @@ public class WeChatUser {
                                 wechatUserDTO.setUserId(resultData.getString("id"));
                             }
                         }else{
+                            logger.info("---------- wechate user-----company:[{}]",userData.getString("company"));
                             wechatUserDTO.setUserId(userData.getString("id"));
                             if(StringUtils.isEmpty(userData.getString("company"))){
                                 wechatUserDTO.setCompany(WechatUserDTO.COMPANY_DLIFE);
