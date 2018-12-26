@@ -35,6 +35,22 @@ public class UserServiceImp implements UserService{
 
     @Override
     public JSONObject createUser(String apiPath, WechatUserDTO wechatUserDTO) {
+        String resultData=HttpUtil.doPostJson(apiPath+"/wechat-users",initUser(wechatUserDTO));
+        if(StringUtils.isNotBlank(resultData)){
+            return JSONObject.parseObject(resultData);
+        }
+        return null;
+    }
+
+    public JSONObject updateUser(String apiPath,WechatUserDTO wechatUserDTO){
+        String resultData=HttpUtil.doPutJson(apiPath+"/wechat-users",initUser(wechatUserDTO));
+        if(StringUtils.isNotBlank(resultData)){
+            return JSONObject.parseObject(resultData);
+        }
+        return null;
+    }
+
+    protected JSONObject initUser(WechatUserDTO wechatUserDTO){
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("avatar",wechatUserDTO.getHeadimgurl());
         jsonObject.put("openId",wechatUserDTO.getOpenId());
@@ -44,19 +60,10 @@ public class UserServiceImp implements UserService{
         }
         jsonObject.put("company",wechatUserDTO.getCompany());
         jsonObject.put("company_role",wechatUserDTO.getCompanyRole());
-        String resultData=HttpUtil.doPostJson(apiPath+"/wechat-users",jsonObject);
-        if(StringUtils.isNotBlank(resultData)){
-            return JSONObject.parseObject(resultData);
+        if(StringUtils.isNoneEmpty(wechatUserDTO.getUserId())){
+            jsonObject.put("id",wechatUserDTO.getUserId());
         }
-        return null;
-    }
-
-    public JSONObject updateUser(String apiPath,WechatUserDTO wechatUserDTO){
-        String resultData=HttpUtil.doPutJson(apiPath+"/wechat-users",wechatUserDTO);
-        if(StringUtils.isNotBlank(resultData)){
-            return JSONObject.parseObject(resultData);
-        }
-        return null;
+        return jsonObject;
     }
 
     @Override
