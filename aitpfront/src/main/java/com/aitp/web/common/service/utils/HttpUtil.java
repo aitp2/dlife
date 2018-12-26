@@ -32,15 +32,14 @@ public class HttpUtil {
 
 	static Gson gson = new Gson();
 
-	public static String doPutJson(String urlStr, Object value) {
-		String valueString = gson.toJson(value);
+	public static String doPutJson(String urlStr, JSONObject value) {
 
-		LOGGER.info("-------------do post json data: url>>{} data>>>{}", urlStr, valueString);
+		LOGGER.info("-------------do post json data: url>>{} data>>>{}", urlStr, value.toJSONString());
 		String respContent = null;
 		try {
 			HttpClient client = HttpClients.createDefault();
 			HttpPut HttpPut = new HttpPut(urlStr);
-			StringEntity entity = new StringEntity(valueString, "utf-8");
+			StringEntity entity = new StringEntity(value.toString(), "utf-8");
 			entity.setContentEncoding("UTF-8");
 			entity.setContentType("application/json");
 			HttpPut.setEntity(entity);
