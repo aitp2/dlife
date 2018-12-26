@@ -59,7 +59,7 @@ public class UserServiceImp implements UserService{
             jsonObject.put("sex",Integer.valueOf(wechatUserDTO.getSex()));
         }
         jsonObject.put("company",wechatUserDTO.getCompany());
-        jsonObject.put("company_role",wechatUserDTO.getCompanyRole());
+        jsonObject.put("companyRole",wechatUserDTO.getCompanyRole());
         if(StringUtils.isNoneEmpty(wechatUserDTO.getUserId())){
             jsonObject.put("id",wechatUserDTO.getUserId());
         }
