@@ -52,8 +52,6 @@ public class UserServiceImp implements UserService{
     }
 
     public JSONObject updateUser(String apiPath,WechatUserDTO wechatUserDTO){
-        wechatUserDTO.setCompany("dlife");
-        wechatUserDTO.setCompanyRole("customer");
         String resultData=HttpUtil.doPutJson(apiPath+"/wechat-users",wechatUserDTO);
         if(StringUtils.isNotBlank(resultData)){
             return JSONObject.parseObject(resultData);

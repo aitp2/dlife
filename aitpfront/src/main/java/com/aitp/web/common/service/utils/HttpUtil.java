@@ -46,20 +46,20 @@ public class HttpUtil {
 			HttpPut.setEntity(entity);
 			HttpResponse resp = client.execute(HttpPut);
 			LOGGER.info("Status Code:{}", resp.getStatusLine().getStatusCode());
-			if (resp.getStatusLine().getStatusCode() == 201) {
+			if (resp.getStatusLine().getStatusCode() == 200) {
 				HttpEntity resultData = resp.getEntity();
 				respContent = EntityUtils.toString(resultData, "UTF-8");
 			}
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		}catch (Exception e) {
+			LOGGER.error("update user exception",e);
 		}
 		return respContent;
 	}
 
 	public static String doGetJson(String urlStr) {
 		String result = "";
+		LOGGER.info("-------------do get data: url>>{}", urlStr);
+
 		HttpClient client = HttpClients.createDefault();
 		HttpGet get = new HttpGet(urlStr);
 		try {
@@ -69,10 +69,9 @@ public class HttpUtil {
 				HttpEntity entity = response.getEntity();
 				result = EntityUtils.toString(entity, "UTF-8");
 			}
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.info("-------------do post json data: url>>{} result>>>{}", urlStr, result);
+		} catch (Exception e) {
+			LOGGER.error("query user exception",e);
 		}
 		return result;
 	}
