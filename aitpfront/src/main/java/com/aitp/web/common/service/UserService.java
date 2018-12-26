@@ -29,7 +29,7 @@ public interface UserService {
      * @param wechatUserDTO
      * @return
      */
-    void updateUser(String apiPath,WechatUserDTO wechatUserDTO);
+    JSONObject updateUser(String apiPath,WechatUserDTO wechatUserDTO);
 
 
         /**
