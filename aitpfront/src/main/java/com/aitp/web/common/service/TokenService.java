@@ -17,7 +17,7 @@ public class TokenService {
     private final Logger log = LoggerFactory.getLogger(TokenService.class);
 
     private static final String AUTHORITIES_SUBJEECT = "aitp";
-    private static final String AUTHORITIES_KEY = "auth";
+    private static final String AUTHORITIES_KEY = "sub";
 
     private final Base64.Encoder encoder = Base64.getEncoder();
 
