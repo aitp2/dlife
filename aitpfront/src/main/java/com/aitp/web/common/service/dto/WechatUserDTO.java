@@ -7,8 +7,6 @@ public class WechatUserDTO {
 
     public static final String COMPANY_DLIFE="dlife";
 
-    public static final String COMPANY_DLIFE_ROLE_CUSTOMER="customer";
-
     /**
      * 用户的唯一标识
      */

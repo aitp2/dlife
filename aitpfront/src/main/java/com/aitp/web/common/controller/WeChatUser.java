@@ -79,7 +79,6 @@ public class WeChatUser {
                         if(userData==null){//如果用户信息为空，则创建用户信息到数据库
                             logger.info("----------Create wechate user---------");
                             wechatUserDTO.setCompany(WechatUserDTO.COMPANY_DLIFE);
-                            wechatUserDTO.setCompanyRole(WechatUserDTO.COMPANY_DLIFE_ROLE_CUSTOMER);
                             JSONObject resultData = userService.createUser(restApiPath,wechatUserDTO);
                             logger.info("Save user result:{}", resultData);
                             if(resultData!=null){
@@ -90,12 +89,11 @@ public class WeChatUser {
                             wechatUserDTO.setUserId(userData.getString("id"));
                             if(StringUtils.isEmpty(userData.getString("company"))){
                                 wechatUserDTO.setCompany(WechatUserDTO.COMPANY_DLIFE);
-                                wechatUserDTO.setCompanyRole(WechatUserDTO.COMPANY_DLIFE_ROLE_CUSTOMER);
                                 userService.updateUser(restApiPath,wechatUserDTO);
                             }
                         }
                         if(StringUtils.isNotBlank(wechatUserDTO.getUserId())){
-                            wechatUserDTO.setAccessToken(tokenService.createToken(wechatUserDTO.getUserId(),true));
+                            wechatUserDTO.setAccessToken(tokenService.createToken(wechatUserDTO.getUserId(),false));
                         }
                         userService.addPoint(wechatUserDTO);
                     }
