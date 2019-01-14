@@ -307,8 +307,8 @@ public class ActivityParticipationResource {
 
 	@GetMapping("/activity-participations/{wechatUserId}/{activityId}")
 	@Timed
-	public ResponseEntity<ActivityParticipationDTO> getSignUpInfo(@PathVariable String wechatUserId,
-			@PathVariable Long activityId) {
+	public ResponseEntity<ActivityParticipationDTO> getSignUpInfo(@PathVariable("wechatUserId") Long wechatUserId,
+			@PathVariable("activityId") Long activityId) {
 		log.debug("REST request to get ClockinSummary by wechatUserId: {}", wechatUserId);
 
 		// log for markting start
@@ -316,24 +316,14 @@ public class ActivityParticipationResource {
 			throw new BadRequestAlertException("wechatUserId or activityId can not be null", ENTITY_NAME, "idexists");
 		}
 		FitnessActivityDTO dto = fitnessActivityService.findOne(activityId);
-		WechatUserDTO wechatUserDTO = wechatUserService.findOne(Long.valueOf(wechatUserId));
-		String sexString = "";
-        if (null!=wechatUserDTO && null!=wechatUserDTO.getSex()){
-            Integer sex = wechatUserDTO.getSex();
-            if (sex==1) {
-                sexString = "male";
-            }else if(sex==2){
-                sexString = "female";
-            }else{
-                sexString="";
-            }
-        }
-		log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{},sex:{}",
+		WechatUserDTO wechatUserDTO = wechatUserService.findOne(wechatUserId);
+
+		log.debug("module:{},moduleEntryId:{},moduleEntryTitle:{},operator:{},operatorTime:{},nickname:{}",
 				"fit", dto.getId(), HttpUtil.baseEncoder(dto.getTitle()), "PDP", DateUtil.getYMDDateString(new Date()),
-				wechatUserDTO.getNickName(), sexString);
+				wechatUserDTO.getNickName());
 		// log for markting end
 
-		ActivityParticipationDTO result = activityParticipationService.getByUidAndActivityId(activityId, wechatUserId);
+		ActivityParticipationDTO result = activityParticipationService.getByUidAndActivityId(activityId, String.valueOf(wechatUserId));
 		return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
 	}
 
