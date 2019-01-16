@@ -236,6 +236,13 @@ public class ClockInResource {
     public ResponseEntity<List<ClockInDTO>> getNewClockIns(Pageable pageable,ClockInSpecification spec) {
         log.debug("REST request to get a page of ClockIns");
         Page<ClockInDTO> page = clockInService.findAll(pageable,spec);
+
+        page.getContent().parallelStream().forEach(clockIn -> {
+            ThumbsUpSpecification thumbsUpSpecification  = new ThumbsUpSpecification(clockIn.getId(),ThumbsUpModule.ACTIVITY);
+            List<ThumbsUpDTO> thumbsUpDTOs = thumbsUpService.findAll(thumbsUpSpecification);
+            clockIn.setThumbsUpDTOs(new HashSet(thumbsUpDTOs));
+        });
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/clock-ins");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

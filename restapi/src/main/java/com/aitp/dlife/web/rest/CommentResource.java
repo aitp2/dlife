@@ -338,10 +338,11 @@ public class CommentResource {
 	public ResponseEntity<List<CommentDTO>> getAllComments(Pageable pageable, CommentSpecification spec) {
 		log.debug("REST request to get a page of Comments");
 		Page<CommentDTO> page = commentService.findAll(pageable, spec);
-		ThumbsUpSpecification thumbsUpSpecification  = new ThumbsUpSpecification(spec.getQuerys().getObjectId(),ThumbsUpModule.COMMENT);
-		List<ThumbsUpDTO> thumbsUpDTOs = thumbsUpService.findAll(thumbsUpSpecification);
-		page.getContent().parallelStream().forEach(comment -> comment.setThumbsUpDTOs(thumbsUpDTOs.stream()
-				.filter(thb -> thb.getObjectId().equals(comment.getId())&&ThumbsUpModule.COMMENT.equals(thb.getModule())).collect(Collectors.toSet())));
+		page.getContent().parallelStream().forEach(comment ->{
+                ThumbsUpSpecification thumbsUpSpecification  = new ThumbsUpSpecification(comment.getId(),ThumbsUpModule.COMMENT);
+                List<ThumbsUpDTO> thumbsUpDTOs = thumbsUpService.findAll(thumbsUpSpecification);
+                comment.setThumbsUpDTOs(new HashSet(thumbsUpDTOs));
+            });
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/comments");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}
