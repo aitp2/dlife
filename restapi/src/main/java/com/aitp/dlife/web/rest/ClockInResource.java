@@ -237,7 +237,7 @@ public class ClockInResource {
         log.debug("REST request to get a page of ClockIns");
         Page<ClockInDTO> page = clockInService.findAll(pageable,spec);
 
-        page.getContent().parallelStream().forEach(clockIn -> {
+        page.getContent().stream().forEach(clockIn -> {
             ThumbsUpSpecification thumbsUpSpecification  = new ThumbsUpSpecification(clockIn.getId(),ThumbsUpModule.ACTIVITY);
             List<ThumbsUpDTO> thumbsUpDTOs = thumbsUpService.findAll(thumbsUpSpecification);
             clockIn.setThumbsUpDTOs(new HashSet(thumbsUpDTOs));

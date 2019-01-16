@@ -37,7 +37,7 @@ public class ThumbsUpSpecification extends AbstractSpecifcation<ThumbsUpVM> impl
 	public Predicate toPredicate(Root<ThumbsUp> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 		  List<Predicate> predicates = new ArrayList<>();
         if(!ObjectUtils.isEmpty(querys.getObjectId())){
-        	  Path<String> keyName_1 = root.get("keyName_1");
+        	  Path<String> keyName_1 = root.get("objectId");
         	  predicates.add(criteriaBuilder.equal(keyName_1, querys.getObjectId()));
         }
         if(!ObjectUtils.isEmpty(querys.getModel())){
