@@ -71,6 +71,8 @@ public class WechatUserDTO implements Serializable {
 
     private String company;
 
+    private Integer totalPoint;
+
     public Long getId() {
         return id;
     }
@@ -278,6 +280,14 @@ public class WechatUserDTO implements Serializable {
             return false;
         }
         return Objects.equals(getId(), wechatUserDTO.getId());
+    }
+
+    public Integer getTotalPoint() {
+        return totalPoint;
+    }
+
+    public void setTotalPoint(Integer totalPoint) {
+        this.totalPoint = totalPoint;
     }
 
     @Override
