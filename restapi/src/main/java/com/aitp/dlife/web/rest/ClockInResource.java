@@ -214,14 +214,7 @@ public class ClockInResource {
     @Timed
     @ApiOperation(value = "打卡信息列表查询方法", notes = "根据不同传入参数获取打卡信息，具有分页功能，查询条件可传可不传", response = ClockInDTO.class)
     public ResponseEntity<List<ClockInDTO>> getAllClockIns(Pageable pageable,ClockInSpecification spec) {
-        log.debug("REST request to get a page of ClockIns");
-        Page<ClockInDTO> page = clockInService.findAll(pageable,spec);
-    	ThumbsUpSpecification thumbsUpSpecification  = new ThumbsUpSpecification(spec.getQuerys().getActivityId(),ThumbsUpModule.ACTIVITY);
-		List<ThumbsUpDTO> thumbsUpDTOs = thumbsUpService.findAll(thumbsUpSpecification);
-		page.getContent().parallelStream().forEach(clockin -> clockin.setThumbsUpDTOs(thumbsUpDTOs.stream()
-				.filter(thb -> thb.getObjectId().equals(clockin.getId())&&ThumbsUpModule.ACTIVITY.equals(thb.getModule())).collect(Collectors.toSet())));
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/clock-ins");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+       return getNewClockIns(pageable,spec);
     }
 
     /**
