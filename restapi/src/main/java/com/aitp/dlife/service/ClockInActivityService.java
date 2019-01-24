@@ -264,7 +264,7 @@ public class ClockInActivityService {
 				picsRepository.save(pics);
 			}
 		}
-		if(CollectionUtils.isEmpty(request.getPics()))
+		if(CollectionUtils.isEmpty(request.getPics())||StringUtils.isEmpty(request.getTitle()))
 		{
 			pointService.saveNewEvent(request.getWechatUserId(), "打卡", PointEventType.CARD, CommentChannel.FIT.toString(), activityParticipation.getFitnessActivity().getTitle());
 		}

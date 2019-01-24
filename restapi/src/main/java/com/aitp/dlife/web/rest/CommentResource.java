@@ -165,7 +165,7 @@ public class CommentResource {
 		
 		if(CommentChannel.FIT.equals(commentDTO.getChannel())||CommentChannel.PIN.equals(commentDTO.getChannel()))
 		{
-			if(hasPics)
+			if(hasPics&&StringUtils.isNotEmpty(commentDTO.getContent()))
 			{
 				pointService.saveNewEventWithComment(commentDTO.getWechatUserId(), "评论", PointEventType.MESSAGEWITHIMAGE, commentDTO.getChannel().toString(),commentDTO.getObjectId());
 			}
@@ -176,7 +176,7 @@ public class CommentResource {
 		}
 		else if(CommentChannel.FAQS.equals(commentDTO.getChannel()))
 		{
-			if(hasPics)
+			if(hasPics && StringUtils.isNotEmpty(commentDTO.getContent()))
 			{
 				pointService.saveNewEventWithComment(commentDTO.getWechatUserId(), "回答", PointEventType.REPLYWITHIMAGE, commentDTO.getChannel().toString(),commentDTO.getObjectId());
 			}
