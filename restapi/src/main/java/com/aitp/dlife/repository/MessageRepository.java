@@ -25,4 +25,12 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
         ,nativeQuery = true)
     List<Message> findMessageByUser( @Param("wechatUserId")String wechatUserId, @Param("read")boolean read , @Param("eventTypes")List<String> eventTypes);
 
+
+    @Query(value = "SELECT count(1) FROM Message AS m left JOIN Event_Message AS em"
+        + " on m.event_message_id = em.id where "
+        + "  m.wechat_user_id=:wechatUserId"
+        + " and m.jhi_read=:read and em.jhi_type in (:eventTypes)"
+        ,nativeQuery = true)
+    int countMessageByUser( @Param("wechatUserId")String wechatUserId, @Param("read")boolean read, @Param("eventTypes")List<String> eventTypes);
+
 }

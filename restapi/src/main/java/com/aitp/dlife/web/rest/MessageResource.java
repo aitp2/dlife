@@ -25,7 +25,9 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -165,4 +167,30 @@ public class MessageResource {
         }
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(messageDTO));
     }
+
+
+    /**
+     * GET  /messages/:type : get the "id" message.
+     *
+     * @param wechatUserId the id of the messageDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the messageDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/messages/my-message-count")
+    @ApiOperation(value = "我的消息列表", notes = "先获取已读列表，再获取未读列表，当获取未读列表成功后，后台会把未读置为已读；前台根据消息channel和type来唯一区分消息模板", response = MessageDTO.class, produces = "application/json")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "query", dataType = "String", defaultValue = "", name = "wechatUserId", value = "当前用户wechatUserId", required = true),
+        @ApiImplicitParam(paramType = "query", dataType = "String", defaultValue = "0", name = "type", value = "消息类型：0=all,1=comment,2=event,3=like", required = false)
+        })
+    @Timed
+    public ResponseEntity getMyMessageCount(@RequestParam(value="wechatUserId",required = true)String wechatUserId,@RequestParam(value="type",required = false,defaultValue = "0")  String type) {
+        if(null==wechatUserId||null==type){
+            throw new BadRequestAlertException("need request param ", ENTITY_NAME, "param is null");
+        }
+        log.debug("REST request to get Message : {}", wechatUserId);
+        int count = messageService.getMessageCount(wechatUserId,type,false);
+        Map<String,Object> result = new HashMap<>();
+        result.put("unread",count);
+        return ResponseEntity.ok().body(result);
+    }
+
 }

@@ -311,4 +311,8 @@ public class MessageService {
 
         return result;
     }
+
+    public int getMessageCount(String wechatUserId,String type, boolean read){
+        return messageRepository.countMessageByUser(wechatUserId,read,EventType.getMessageTypeList(type).stream().map(EventType::toString).collect(Collectors.toList()));
+    }
 }
