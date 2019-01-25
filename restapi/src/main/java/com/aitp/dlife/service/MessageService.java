@@ -274,7 +274,7 @@ public class MessageService {
             for(String id:userIds.get(MessageType.COMMON)){
                 MessageDTO messageDTO = new MessageDTO();
                 messageDTO.setEventMessageId(dto.getId());
-                messageDTO.setMessageType(MessageType.COMMON);
+                messageDTO.setMessageType(EventChannel.FITNESS.equals(dto.getChannel())?MessageType.ACTIVITY_REPLY:MessageType.COMMON);
                 messageDTO.setRead(false);
                 messageDTO.setWechatUserId(id);
                 messageDTO.setEventMessage(dto);

@@ -68,4 +68,6 @@ public interface ClockInRepository extends JpaSpecificationExecutor<ClockIn>,Jpa
     @Deprecated
     List<ClockIn> getClockinsByActivityId(@Param("activityId")String activityId);
 
+
+
 }
