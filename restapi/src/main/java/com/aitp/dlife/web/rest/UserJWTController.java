@@ -1,7 +1,9 @@
 package com.aitp.dlife.web.rest;
 
+import com.aitp.dlife.domain.User;
 import com.aitp.dlife.security.jwt.JWTConfigurer;
 import com.aitp.dlife.security.jwt.TokenProvider;
+import com.aitp.dlife.service.UserService;
 import com.aitp.dlife.web.rest.vm.LoginVM;
 
 import com.codahale.metrics.annotation.Timed;
@@ -17,6 +19,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Controller to authenticate users.
@@ -29,14 +33,17 @@ public class UserJWTController {
 
     private final AuthenticationManager authenticationManager;
 
-    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager) {
+    private final UserService userService;
+
+    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager, UserService userService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
+        this.userService = userService;
     }
 
     @PostMapping("/authenticate")
     @Timed
-    public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) {
+    public ResponseEntity authorize(@Valid @RequestBody LoginVM loginVM) {
 
         UsernamePasswordAuthenticationToken authenticationToken =
             new UsernamePasswordAuthenticationToken(loginVM.getUsername(), loginVM.getPassword());
@@ -45,29 +52,20 @@ public class UserJWTController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         boolean rememberMe = (loginVM.isRememberMe() == null) ? false : loginVM.isRememberMe();
         String jwt = tokenProvider.createToken(authentication, rememberMe);
+
+        User user = userService.getUserWithAuthoritiesByLogin(loginVM.getUsername()).get();
+        Map<String,Object> result = new HashMap<>();
+        result.put("id_token",jwt);
+        result.put("sapId",user.getSapId());
+        result.put("sex",user.getSex());
+        result.put("userName",user.getFirstName());
+        result.put("project",user.getProject());
+        result.put("eid",user.getLogin());
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer " + jwt);
-        return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity(result, httpHeaders, HttpStatus.OK);
     }
 
-    /**
-     * Object to return as body in JWT Authentication.
-     */
-    static class JWTToken {
 
-        private String idToken;
-
-        JWTToken(String idToken) {
-            this.idToken = idToken;
-        }
-
-        @JsonProperty("id_token")
-        String getIdToken() {
-            return idToken;
-        }
-
-        void setIdToken(String idToken) {
-            this.idToken = idToken;
-        }
-    }
 }

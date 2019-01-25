@@ -82,6 +82,16 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "reset_date")
     private Instant resetDate = null;
 
+    //员工号
+    @Column(name = "sapid")
+    private String sapId;
+    //性别
+    @Column(name = "sex")
+    private String sex;
+    //所在项目
+    @Column(name = "project")
+    private String project;
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(
@@ -227,5 +237,29 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", langKey='" + langKey + '\'' +
             ", activationKey='" + activationKey + '\'' +
             "}";
+    }
+
+    public String getSapId() {
+        return sapId;
+    }
+
+    public void setSapId(String sapId) {
+        this.sapId = sapId;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getProject() {
+        return project;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
     }
 }

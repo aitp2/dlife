@@ -96,7 +96,12 @@ public class WechatUserResource {
         }
 
         WechatUserDTO dbRecord =  wechatUserService.findOne(wechatUserDTO.getId());
+
         if(null != dbRecord) {
+            //如果当前用户设置过性别，则不允许修改为 未知  为了防止绑定EID 设置性别后,被微信数据覆盖
+            if(Integer.valueOf(0).equals(wechatUserDTO.getSex())&&!Integer.valueOf(0).equals(dbRecord.getSex())){
+                wechatUserDTO.setSex(dbRecord.getSex());
+            }
         	BeanUtils.copyProperties(wechatUserDTO, dbRecord, BeanPropertiesUtils.getNullProperties(wechatUserDTO));
         	  //set default messages
             dbRecord.setModifyTime(DateUtil.getYMDDateString(new Date()));
