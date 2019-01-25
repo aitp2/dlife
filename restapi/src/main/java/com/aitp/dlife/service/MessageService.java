@@ -145,10 +145,10 @@ public class MessageService {
     }
 
     @Async
-    public void createMessageForEvent(EventMessageDTO dto) {
+    public void createMessageForEvent(EventMessageDTO dto,MessageType messageType) {
         Map<MessageType,List<String>> userIds = getUserListForMessage(dto);
         if (userIds.size()>0){
-            this.insertMessage(userIds,dto);
+            this.insertMessage(userIds,dto,messageType);
         }
     }
 
@@ -269,12 +269,12 @@ public class MessageService {
      * @param userIds
      * @param dto
      */
-    private void insertMessage(Map<MessageType,List<String>> userIds, EventMessageDTO dto){
+    private void insertMessage(Map<MessageType,List<String>> userIds, EventMessageDTO dto,MessageType messageType){
         if (!MapUtils.isEmpty(userIds)){
             for(String id:userIds.get(MessageType.COMMON)){
                 MessageDTO messageDTO = new MessageDTO();
                 messageDTO.setEventMessageId(dto.getId());
-                messageDTO.setMessageType(EventChannel.FITNESS.equals(dto.getChannel())?MessageType.ACTIVITY_REPLY:MessageType.COMMON);
+                messageDTO.setMessageType(messageType);
                 messageDTO.setRead(false);
                 messageDTO.setWechatUserId(id);
                 messageDTO.setEventMessage(dto);

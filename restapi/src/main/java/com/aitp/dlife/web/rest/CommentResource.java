@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.aitp.dlife.domain.Message;
+import com.aitp.dlife.domain.enumeration.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,11 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aitp.dlife.domain.FitnessActivity;
 import com.aitp.dlife.domain.PinFanActivity;
-import com.aitp.dlife.domain.enumeration.CommentChannel;
-import com.aitp.dlife.domain.enumeration.EventChannel;
-import com.aitp.dlife.domain.enumeration.EventType;
-import com.aitp.dlife.domain.enumeration.PointEventType;
-import com.aitp.dlife.domain.enumeration.ThumbsUpModule;
 import com.aitp.dlife.repository.FitnessActivityRepository;
 import com.aitp.dlife.repository.specification.CommentSpecification;
 import com.aitp.dlife.repository.specification.ReplySpecification;
@@ -161,7 +158,7 @@ public class CommentResource {
 			}
 			result.setCommentPics(picDTOS);
 		}
-		updateDateTime(commentDTO,EventMessageBuilder.buildEventMessageDTO(result).type(EventType.COMMENT).get());
+		updateDateTime(commentDTO,EventMessageBuilder.buildEventMessageDTO(result).type(EventType.COMMENT).get(),MessageType.COMMON);
 		
 		if(CommentChannel.FIT.equals(commentDTO.getChannel())||CommentChannel.PIN.equals(commentDTO.getChannel()))
 		{
@@ -212,7 +209,7 @@ public class CommentResource {
 		switch (replyDTO.getModule()) {
 		case COMMENT:
 			CommentDTO commentDTO = commentService.findOne(replyDTO.getParentId());
-			updateDateTime(commentDTO,EventMessageBuilder.buildEventMessageDTO(result).type(EventType.REPLY).object(commentDTO.getObjectId()).get());
+			updateDateTime(commentDTO,EventMessageBuilder.buildEventMessageDTO(result).type(EventType.REPLY).object(commentDTO.getObjectId()).get(),MessageType.COMMON_REPLY);
 			break;
 		case ACTIVITY:
 			ClockInDTO clockInDTO = clockInService.findOne(replyDTO.getParentId());
@@ -224,7 +221,7 @@ public class CommentResource {
 							intValue())).title(fitnessActivityDTO.getTitle()).Channel(EventChannel.FITNESS).get();
 			eventMessageDTO = eventMessageService.save(eventMessageDTO);
 			if (null != eventMessageDTO.getId()) {
-				messageService.createMessageForEvent(eventMessageDTO);
+				messageService.createMessageForEvent(eventMessageDTO, MessageType.ACTIVITY_REPLY);
 			}
 			break;
 		default:
@@ -261,7 +258,7 @@ public class CommentResource {
 	
 	
 	
-	private void updateDateTime(CommentDTO commentDTO,EventMessageDTO eventMessageDTO){
+	private void updateDateTime(CommentDTO commentDTO,EventMessageDTO eventMessageDTO,MessageType messageType){
 		EventChannel eventChannel = null;
 		String objectTitle = null;
 		if (CommentChannel.FIT.equals(commentDTO.getChannel())) {
@@ -293,7 +290,7 @@ public class CommentResource {
 			eventMessageDTO = eventMessageService.save(eventMessageDTO);
 			// record the activity participation event start
 			if (null != eventMessageDTO.getId()) {
-				messageService.createMessageForEvent(eventMessageDTO);
+				messageService.createMessageForEvent(eventMessageDTO,messageType);
 			}
 			// record the activity participation event end
 		}
