@@ -145,6 +145,12 @@ public class MessageService {
     }
 
     @Async
+    public void createMessageForEvent(EventMessageDTO dto) {
+        createMessageForEvent(dto,MessageType.COMMON);
+    }
+
+
+    @Async
     public void createMessageForEvent(EventMessageDTO dto,MessageType messageType) {
         Map<MessageType,List<String>> userIds = getUserListForMessage(dto);
         if (userIds.size()>0){
