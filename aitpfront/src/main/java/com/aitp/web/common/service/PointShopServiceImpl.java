@@ -22,7 +22,7 @@ public class PointShopServiceImpl implements PointShopService {
 	private static final String EVENT_TYPE_ORDER_PICKPACK="ORDER_PICKPACK";
 	private static final String EVENT_TYPE_ORDER_CREATED="ORDER_CREATED";
 
-	private static final String MESSAGE_EVENT_ORDER_CREATED ="您有新的订单，请及时安排拣配！\n";
+	private static final String MESSAGE_EVENT_ORDER_CREATED ="DLife又有新的订单啦，快去看看吧！";
 	private static final String MESSAGE_EVENT_ORDER_PICKPACK ="您的积分兑换订单已经拣配完成，请在15分钟内前往提取点【{0}】提取您兑换的商品，谢谢！\n";
 	private static final String MESSAGE_EVENT_RECHARGE_POINT ="【dLife积分商城】您已成功充值积分{0}，可前往您的个人中心查看！";
 
@@ -71,7 +71,7 @@ public class PointShopServiceImpl implements PointShopService {
 					messageDTO.addMessageData(new WechatMessageData("first", MessageFormat.format(MESSAGE_EVENT_ORDER_PICKPACK,orderAddress.getValue()), "#000000"));
 					break;
 				case EVENT_TYPE_ORDER_CREATED:
-					templateID= env.getProperty("pickpack_message_templateID");
+					templateID= env.getProperty("placeorder_message_templateID");
 					messageDTO.getWechatMessageDatas().stream().forEach(parameterData->{parameterData.setColor("#000000");});
 					messageDTO.setWechatMessageDatas(messageDTO.getWechatMessageDatas());
 					messageDTO.addMessageData(new WechatMessageData("first", MESSAGE_EVENT_ORDER_CREATED, "#000000"));
