@@ -26,10 +26,10 @@ public class MsessageSenderImp implements MessageSender{
 	@Value("${wechat.messageTemp.getCodeUrl}")
 	private String  getCodeUrl;
 	
-	@Value("${wechat_app_id}")
+	@Value("${wechat_app_id.dlife}")
 	private String wechatAppId;
   
-	@Value("${wechat_app_secret}")
+	@Value("${wechat_app_secret.dlife}")
 	private String wechatAppSecret;
 	
 	

@@ -55,7 +55,6 @@ public class WeChatUser {
         if(companyRoleArr.length!=1){
             company = companyRoleArr[0];
             companyRole = companyRoleArr[1];
-
         }
 
         if(StringUtils.isNotBlank(code)){
