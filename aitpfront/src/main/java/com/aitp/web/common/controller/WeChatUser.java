@@ -34,6 +34,8 @@ import java.util.UUID;
 @RestController
 public class WeChatUser {
     Logger logger = LoggerFactory.getLogger(WeChatUser.class);
+    private static final String REST_API_ID = "wechat_app_id.";
+    private static final String REST_API_SECRET = "wechat_app_secret.";
     @Autowired
     private Environment env;
     @Autowired
@@ -47,11 +49,19 @@ public class WeChatUser {
     public WechatUserDTO toAccept(@RequestParam("code") String code, @RequestParam("state") String state){
         WechatUserDTO wechatUserDTO=new WechatUserDTO();
         String restApiPath=env.getProperty("rest_api_url");
+        String[] companyRoleArr = state.split("_");
+        String company = WechatUserDTO.COMPANY_DLIFE;
+        String companyRole = null;
+        if(companyRoleArr.length!=1){
+            company = companyRoleArr[0];
+            companyRole = companyRoleArr[1];
+
+        }
 
         if(StringUtils.isNotBlank(code)){
             AuthInfo authInfo=new AuthInfo();
-            authInfo.setAppid(env.getProperty("wechat_app_id"));
-            authInfo.setAppsecret(env.getProperty("wechat_app_secret"));
+            authInfo.setAppid(env.getProperty(REST_API_ID+company));
+            authInfo.setAppsecret(env.getProperty(REST_API_SECRET+company));
             authInfo.setAccessTokenUrl(MessageFormat.format(env.getProperty("wechat_access_token_url"),authInfo.getAppid(),authInfo.getAppsecret(),code));
 
             Token token = authClient.loadAccessToken(authInfo);
@@ -76,9 +86,12 @@ public class WeChatUser {
                         wechatUserDTO.setProvince(user.getString("province"));
 
                         JSONObject userData = userService.getUserByOpenid(restApiPath, wechatUserDTO.getOpenId());
+
                         if(userData==null){//如果用户信息为空，则创建用户信息到数据库
                             logger.info("----------Create wechate user---------");
-                            wechatUserDTO.setCompany(WechatUserDTO.COMPANY_DLIFE);
+
+                            wechatUserDTO.setCompany(company);
+                            wechatUserDTO.setCompany(companyRole);
                             JSONObject resultData = userService.createUser(restApiPath,wechatUserDTO);
                             logger.info("Save user result:{}", resultData);
                             if(resultData!=null){
@@ -88,7 +101,8 @@ public class WeChatUser {
                             logger.info("---------- wechate user-----company:[{}]",userData.getString("company"));
                             wechatUserDTO.setUserId(userData.getString("id"));
                             if(StringUtils.isEmpty(userData.getString("company"))){
-                                wechatUserDTO.setCompany(WechatUserDTO.COMPANY_DLIFE);
+                                wechatUserDTO.setCompany(company);
+                                wechatUserDTO.setCompany(companyRole);
                                 userService.updateUser(restApiPath,wechatUserDTO);
                             }
                         }
