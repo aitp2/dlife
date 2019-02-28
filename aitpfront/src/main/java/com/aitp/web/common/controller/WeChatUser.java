@@ -90,7 +90,7 @@ public class WeChatUser {
                             logger.info("----------Create wechate user---------");
 
                             wechatUserDTO.setCompany(company);
-                            wechatUserDTO.setCompany(companyRole);
+                            wechatUserDTO.setCompanyRole(companyRole);
                             JSONObject resultData = userService.createUser(restApiPath,wechatUserDTO);
                             logger.info("Save user result:{}", resultData);
                             if(resultData!=null){
@@ -101,7 +101,7 @@ public class WeChatUser {
                             wechatUserDTO.setUserId(userData.getString("id"));
                             if(StringUtils.isEmpty(userData.getString("company"))){
                                 wechatUserDTO.setCompany(company);
-                                wechatUserDTO.setCompany(companyRole);
+                                wechatUserDTO.setCompanyRole(companyRole);
                                 userService.updateUser(restApiPath,wechatUserDTO);
                             }
                         }
